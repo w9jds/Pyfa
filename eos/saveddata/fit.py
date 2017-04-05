@@ -737,7 +737,7 @@ class Fit(object):
 
         # Follow the chain, if we find any fits not calculated, recalc them all.
         if not self.validateFitChainCalculated():
-           self.clearFitChainCalculated()
+            self.clearFitChainCalculated()
 
         if withBoosters:
             # Recalc ships projecting onto this fit
