@@ -101,7 +101,7 @@ install:
   - ps: "ls \"C:/\""
 
   - ECHO "Filesyste %APPVEYOR_BUILD_FOLDER%:"
-  - ps: "ls %APPVEYOR_BUILD_FOLDER%"
+  - ps: "ls " %APPVEYOR_BUILD_FOLDER%
 
   - ECHO "Filesystem pyfa root:"
   - ps: "ls \"C:\\projects\\pyfa\\\""
