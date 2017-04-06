@@ -266,7 +266,7 @@ class Fit(object):
             self.recalc(fit, withBoosters=False)
         return True
 
-    def removeImplant(self, fitID, position):
+    def removeImplant(self, fitID, position, recalc=True):
         pyfalog.debug("Removing implant from position ({0}) for fit ID: {1}", position, fitID)
         if fitID is None:
             return False
@@ -274,7 +274,8 @@ class Fit(object):
         fit = self.getFit(fitID)
         implant = fit.implants[position]
         fit.implants.remove(implant)
-        self.recalc(fit, withBoosters=False)
+        if recalc:
+            self.recalc(fit, withBoosters=False)
         return True
 
     def addBooster(self, fitID, itemID, recalc=True):
