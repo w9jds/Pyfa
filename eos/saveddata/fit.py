@@ -751,7 +751,7 @@ class Fit(object):
                         # If fit is self, don't recurse
                         self.calculateModifiedFitAttributes(targetFit=self)
                     else:
-                        projected_fit.calculateFitAttributes(withBoosters=withBoosters, targetFit=self, recursion = (recursion + 1))
+                        projected_fit.calculateFitAttributes(withBoosters=withBoosters, targetFit=self, recursion=(recursion + 1))
 
             for command_fit in self.commandFits:
                 if command_fit.getCommandInfo(self.ID).active:
@@ -759,7 +759,7 @@ class Fit(object):
                         # If fit is self, don't recurse
                         self.calculateModifiedFitAttributes(targetFit=self)
                     else:
-                        command_fit.calculateFitAttributes(withBoosters=withBoosters, targetFit=self, recursion = (recursion + 1))
+                        command_fit.calculateFitAttributes(withBoosters=withBoosters, targetFit=self, recursion=(recursion + 1))
 
         self.calculateModifiedFitAttributes()
 
