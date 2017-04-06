@@ -100,11 +100,8 @@ install:
   - ECHO "Filesystem root:"
   - ps: "ls \"C:/\""
 
-  - ECHO "Filesyste %APPVEYOR_BUILD_FOLDER%:"
-  - ps: "ls " %APPVEYOR_BUILD_FOLDER%
-
   - ECHO "Filesystem pyfa root:"
-  - ps: "ls \"C:\\projects\\pyfa\\\""
+  - ps: "ls"
 
   - ECHO "Installed SDKs:"
   - ps: "ls \"C:/Program Files/Microsoft SDKs/Windows\""
@@ -140,25 +137,25 @@ build_script:
   # Build the compiled extension
   # - "python setup.py build"
   - ECHO "Build pyfa:"
-  - copy C:\projects\pyfa\dist_assets\win\pyfa.spec C:\projects\pyfa\pyfa.spec
-  - "pyinstaller.exe --clean --noconfirm --windowed --upx-dir=C:\\projects\\pyfa\\scripts\\upx.exe C:\\projects\\pyfa\\pyfa.spec"
+  - copy .\dist_assets\win\pyfa.spec .\pyfa.spec
+  - "pyinstaller.exe --clean --noconfirm --windowed --upx-dir=.\\scripts\\upx.exe .\\pyfa.spec"
 
   - ECHO "Build pyfa (Debug):"
-  - copy C:\projects\pyfa\dist_assets\win\pyfa_debug.spec C:\projects\pyfa\pyfa_debug.spec
-  - "pyinstaller.exe --clean --noconfirm --windowed --upx-dir=C:\\projects\\pyfa\\scripts\\upx.exe C:\\projects\\pyfa\\pyfa_debug.spec"
+  - copy .\dist_assets\win\pyfa_debug.spec .\pyfa\pyfa_debug.spec
+  - "pyinstaller.exe --clean --noconfirm --windowed --upx-dir=.\\scripts\\upx.exe .\\pyfa_debug.spec"
 
 build: on
 
 after_build:
   - ps: "ls \"./\""
   #- ps: "ls \"C:\\projects\\pyfa\\build\\pyfa\\\""
-  - ps: "ls \"C:\\projects\\pyfa\\dist\\\""
-  - ps: "ls \"C:\\projects\\pyfa\\dist\\pyfa\\\""
+  - ps: "ls \".\\dist\\\""
+  - ps: "ls \".\\dist\\pyfa\\\""
   # Zip
   # APPVEYOR_PULL_REQUEST_NUMBER -and $env:APPVEYOR_BUILD_NUMBER
   #- 7z a build.zip -r C:\projects\pyfa\build\pyfa\*.*
-  - 7z a pyfa.zip -r C:\projects\pyfa\dist\pyfa\*.*
-  - 7z a pyfa_debug.zip -r C:\projects\pyfa\dist\pyfa_debug\*.*
+  - 7z a pyfa.zip -r .\dist\pyfa\*.*
+  - 7z a pyfa_debug.zip -r .\dist\pyfa_debug\*.*
 
 on_success:
   # Do nothing right now
