@@ -123,8 +123,7 @@ def handleGUIException(exc_type, exc_value, exc_traceback):
             if wx and ErrorFrame:
                 pyfa_gui = wx.App(False)
                 if exc_type == PreCheckException:
-                    msgbox = wx.MessageBox(exc_value.message, 'Error', wx.ICON_ERROR | wx.STAY_ON_TOP)
-                    msgbox.ShowModal()
+                    ErrorFrame(exc_value, tb, "Missing prerequisites")
                 else:
                     ErrorFrame(exc_value, tb)
 
@@ -146,8 +145,7 @@ def handleGUIException(exc_type, exc_value, exc_traceback):
         if wx and ErrorFrame:
             pyfa_gui = wx.App(False)
             if exc_type == PreCheckException:
-                msgbox = wx.MessageBox(exc_value.message, 'Error', wx.ICON_ERROR | wx.STAY_ON_TOP)
-                msgbox.ShowModal()
+                ErrorFrame(exc_value, tb, "Missing prerequisites")
             else:
                 ErrorFrame(exc_value, tb)
 
