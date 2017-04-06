@@ -9,7 +9,6 @@ import gui.globalEvents as GE
 from service.settings import SettingsProvider
 from service.fit import Fit
 from service.price import Price
-from service.market import Market
 
 
 class PFGeneralPref(PreferenceView):
@@ -200,9 +199,6 @@ class PFGeneralPref(PreferenceView):
         self.sFit.serviceFittingOptions["priceSystem"] = system
 
         fitID = self.mainFrame.getActiveFit()
-
-        sMkt = Market.getInstance()
-        sMkt.clearPriceCache()
 
         fit = self.sFit.getFit(fitID)
         self.sFit.recalc(fit)
