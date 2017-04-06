@@ -197,7 +197,7 @@ if __name__ == "__main__":
 
     # set title if it wasn't supplied by argument
     if options.title is None:
-        options.title = "pyfa %s%s - Python Fitting Assistant" % (config.version, "" if config.tag.lower() != 'git' else " (git)")
+        options.title = "Pyfa.fit %s%s - Python Fitting Assistant" % (config.version, "" if config.tag.lower() != 'git' else " (git)")
 
     config.debug = options.debug
 

@@ -499,7 +499,7 @@ class MainFrame(wx.Frame):
         # User guide
         self.Bind(wx.EVT_MENU, self.goWiki, id=menuBar.wikiId)
         # EVE Forums
-        #self.Bind(wx.EVT_MENU, self.goForums, id=menuBar.forumId)
+        # self.Bind(wx.EVT_MENU, self.goForums, id=menuBar.forumId)
         # Save current character
         self.Bind(wx.EVT_MENU, self.saveChar, id=menuBar.saveCharId)
         # Save current character as another character
