@@ -751,7 +751,7 @@ class Fit(object):
                         # If fit is self, don't recurse
                         self.calculateModifiedFitAttributes(targetFit=self)
                     else:
-                        projected_fit.calculateFitAttributes(withBoosters=withBoosters, targetFit=self)
+                        projected_fit.calculateFitAttributes(withBoosters=withBoosters, targetFit=self, recursion = (recursion + 1))
 
             for command_fit in self.commandFits:
                 if command_fit.getCommandInfo(self.ID).active:
@@ -759,7 +759,7 @@ class Fit(object):
                         # If fit is self, don't recurse
                         self.calculateModifiedFitAttributes(targetFit=self)
                     else:
-                        command_fit.calculateFitAttributes(withBoosters=withBoosters, targetFit=self)
+                        command_fit.calculateFitAttributes(withBoosters=withBoosters, targetFit=self, recursion = (recursion + 1))
 
         self.calculateModifiedFitAttributes()
 
@@ -803,7 +803,7 @@ class Fit(object):
         # projections from the normal fit calculations. But we must ensure that
         # projection have modifying stuff applied, such as gang boosts and other
         # local modules that may help
-        if self.__calculated:
+        if self.__calculated and not targetFit:
             pyfalog.debug("Fit has already been calculated and is not projected, returning: {0}", self)
             return
 
