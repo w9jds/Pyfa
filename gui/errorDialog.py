@@ -74,13 +74,9 @@ class ErrorFrame(wx.Frame):
         descText = wx.StaticText(self, wx.ID_ANY, desc)
         box.Add(descText, 1, wx.ALL, 5)
 
-        github = wx.HyperlinkCtrl(self, wx.ID_ANY, "Github", "https://github.com/pyfa-org/Pyfa/issues",
+        github = wx.HyperlinkCtrl(self, wx.ID_ANY, "Github", "https://github.com/Pyfa-fit/Pyfa/issues",
                                   wx.DefaultPosition, wx.DefaultSize, wx.HL_DEFAULT_STYLE)
         box.Add(github, 0, wx.ALL, 5)
-
-        eveForums = wx.HyperlinkCtrl(self, wx.ID_ANY, "EVE Forums", "https://forums.eveonline.com/default.aspx?g=posts&t=466425",
-                                     wx.DefaultPosition, wx.DefaultSize, wx.HL_DEFAULT_STYLE)
-        box.Add(eveForums, 0, wx.ALL, 5)
 
         # mainSizer.AddSpacer((0, 5), 0, wx.EXPAND, 5)
 

@@ -449,11 +449,6 @@ class Item(EqBase):
             price = eos.db.getPrice(self.ID)
 
             if price:
-                if self.__price.time > price.time:
-                    # The object is newer than the DB, update the DB.
-                    eos.db.add(self.__price)
-                    eos.db.commit()
-
                 if self.__price.time < price.time:
                     # DB object is newer than local object, update the local object
                     self.__price = price

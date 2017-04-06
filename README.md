@@ -1,9 +1,8 @@
 # pyfa.fit
 
-Master: [![Build Status](https://travis-ci.org/Pyfa-fit/Pyfa.svg?branch=master)](https://travis-ci.org/pyfa-fit/Pyfa)
+_Master_: [![Build Status](https://travis-ci.org/Pyfa-fit/Pyfa.svg?branch=master)](https://travis-ci.org/pyfa-fit/Pyfa) [![Build Status](https://ci.appveyor.com/api/projects/status/Ebag333/pyfa-nr5qw/branch/master?svg=true)](https://ci.appveyor.com/project/Ebag333/pyfa-nr5qw/branch/master)
 
-Development: [![Build Status](https://travis-ci.org/Pyfa-fit/Pyfa.svg?branch=development)](https://travis-ci.org/pyfa-fit/Pyfa)
-
+_Development_: [![Build Status](https://travis-ci.org/Pyfa-fit/Pyfa.svg?branch=development)](https://travis-ci.org/pyfa-fit/Pyfa) [![Build Status](https://ci.appveyor.com/api/projects/status/Ebag333/pyfa-nr5qw/branch/development?svg=true)](https://ci.appveyor.com/project/Ebag333/pyfa-nr5qw/branch/development)
 
 ![pyfa](https://cloud.githubusercontent.com/assets/3904767/10271512/af385ef2-6ade-11e5-8f67-52b8b1e4c797.PNG)
 

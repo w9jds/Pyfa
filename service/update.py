@@ -46,7 +46,7 @@ class CheckUpdateThread(threading.Thread):
         network = Network.getInstance()
 
         try:
-            response = network.request('https://api.github.com/repos/pyfa-org/Pyfa/releases', network.UPDATE)
+            response = network.request('https://api.github.com/repos/Pyfa-fit/Pyfa/releases', network.UPDATE)
             jsonResponse = json.loads(response.read())
             jsonResponse.sort(
                 key=lambda x: calendar.timegm(dateutil.parser.parse(x['published_at']).utctimetuple()),

@@ -144,7 +144,7 @@ class MainFrame(wx.Frame):
     def getInstance(cls):
         return cls.__instance if cls.__instance is not None else MainFrame()
 
-    def __init__(self, title="pyfa"):
+    def __init__(self, title="Pyfa.fit"):
         pyfalog.debug("Initialize MainFrame")
         self.title = title
         wx.Frame.__init__(self, None, wx.ID_ANY, self.title)
@@ -355,7 +355,7 @@ class MainFrame(wx.Frame):
     def ShowAboutBox(self, evt):
         v = sys.version_info
         info = wx.AboutDialogInfo()
-        info.Name = "pyfa"
+        info.Name = "Pyfa.fit"
         info.Version = gui.aboutData.versionString
 
         try:
@@ -446,7 +446,7 @@ class MainFrame(wx.Frame):
 
     @staticmethod
     def goWiki(event):
-        webbrowser.open('https://github.com/pyfa-org/Pyfa/wiki')
+        webbrowser.open('https://github.com/Pyfa-fit/Pyfa/wiki')
 
     @staticmethod
     def goForums(event):
@@ -499,7 +499,7 @@ class MainFrame(wx.Frame):
         # User guide
         self.Bind(wx.EVT_MENU, self.goWiki, id=menuBar.wikiId)
         # EVE Forums
-        self.Bind(wx.EVT_MENU, self.goForums, id=menuBar.forumId)
+        #self.Bind(wx.EVT_MENU, self.goForums, id=menuBar.forumId)
         # Save current character
         self.Bind(wx.EVT_MENU, self.saveChar, id=menuBar.saveCharId)
         # Save current character as another character
