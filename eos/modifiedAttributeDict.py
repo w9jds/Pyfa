@@ -356,7 +356,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
         if skill:
             boostFactor *= self.__handleSkill(skill)
 
-        if remoteResists:
+        if remoteResists and self.fit:
             # @todo: this is such a disgusting hack. Look into sending these checks to the module class before the
             # effect is applied.
             mod = self.fit.getModifier()
