@@ -109,4 +109,6 @@ def defPaths(customSavePath):
 
     # initialize the settings
     from service.settings import EOSSettings
+    from service.settings import SettingsProvider
     eos.config.settings = EOSSettings.getInstance().EOSSettings  # this is kind of confusing, but whatever
+    SettingsProvider.getInstance().saveAll()

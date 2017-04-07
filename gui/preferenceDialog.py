@@ -21,6 +21,7 @@
 import wx
 from gui.preferenceView import PreferenceView
 from gui.bitmapLoader import BitmapLoader
+from service.settings import SettingsProvider
 
 
 class PreferenceDialog(wx.Dialog):
@@ -79,3 +80,7 @@ class PreferenceDialog(wx.Dialog):
 
     def OnBtnOK(self, event):
         self.Close()
+        from service.settings import StatViewSettings
+        statviewinst = StatViewSettings.getInstance()
+        SettingsProvider.getInstance().saveAll()
+        test = True
