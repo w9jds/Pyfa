@@ -26,6 +26,7 @@ import sys
 import traceback
 from imp import find_module
 from optparse import AmbiguousOptionError, BadOptionError, OptionParser
+from multiprocessing import freeze_support
 
 from service.serviceThreads import executeStartupThreads
 
@@ -192,6 +193,7 @@ else:
     options.logginglevel = ERROR
 
 if __name__ == "__main__":
+    freeze_support()
     # Configure paths
     if options.rootsavedata is True:
         config.saveInRoot = True
