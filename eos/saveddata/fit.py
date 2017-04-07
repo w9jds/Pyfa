@@ -651,7 +651,7 @@ class Fit(object):
 
             del self.commandBonuses[warfareBuffID]
 
-    def validateFitChainCalculated(self, recursion_level=0):
+    def validateFitChainCalculated(self):
         """
         Walks up the chain for the fit and anything projected or command fits haven't been calculated
 
@@ -659,17 +659,13 @@ class Fit(object):
         True if all fits are calculated, False if one (or more) is not
         """
 
-        # Here we can control how deep we recurse up through the projected/command fits.
-        if recursion_level == 2:
-            return True
-
         for projected_fit in self.projectedFits:
             if projected_fit.getProjectionInfo(self.ID).active:
                 if projected_fit is not self:
                     if projected_fit.calculated is False:
                         return False
 
-                    projected_calculated = projected_fit.validateFitChainCalculated(recursion_level + 1)
+                    projected_calculated = projected_fit.validateFitChainCalculated()
                     if projected_calculated is False:
                         return False
 
@@ -679,14 +675,14 @@ class Fit(object):
                     if command_fit.calculated is False:
                         return False
 
-                    command_calculated = command_fit.validateFitChainCalculated(recursion_level + 1)
+                    command_calculated = command_fit.validateFitChainCalculated()
                     if command_calculated is False:
                         return False
 
         # print("For (" + str(self.name) + ") returning chain have been calculated")
         return True
 
-    def clearFitChainCalculated(self, recursion_level=0):
+    def clearFitChainCalculated(self):
         """
         Walks up the chain for the fit and clear the calculated flag on any projected or command fits
 
@@ -695,23 +691,19 @@ class Fit(object):
         """
         # print("Clearing calculated flag on: " + str(self.name))
 
-        # Here we can control how deep we recurse up through the projected/command fits.
-        if recursion_level == 2:
-            return
-
         for projected_fit in self.projectedFits:
             if projected_fit.getProjectionInfo(self.ID).active:
                 if projected_fit is not self:
-                    projected_fit.clearFitChainCalculated(recursion_level + 1)
+                    projected_fit.clearFitChainCalculated()
 
         for command_fit in self.commandFits:
             if command_fit.getCommandInfo(self.ID).active:
                 if command_fit is not self:
-                    command_fit.clearFitChainCalculated(recursion_level + 1)
+                    command_fit.clearFitChainCalculated()
 
         self.calculated = False
 
-    def calculateFitAttributes(self, targetFit=None, withBoosters=False, recursion=0):
+    def calculateFitAttributes(self, targetFit=None, withBoosters=False):
         """
         This method handles recursion through the chain of fit, projected fits, and command fits.  We start from our current fit (self), then recurse up through
         the chain of projected fits.  Because this is self recursive, each level will then recurse further up the chain.  We then do the same for command fits
@@ -733,10 +725,6 @@ class Fit(object):
         :return:
         """
 
-        # Control our recursion depth
-        if recursion == 2:
-            return True
-
         pyfalog.debug("Starting fit calculation.")
 
         # Follow the chain, if we find any fits not calculated, recalc them all.
@@ -751,7 +739,7 @@ class Fit(object):
                         # If fit is self, don't recurse
                         self.calculateModifiedFitAttributes(targetFit=self)
                     else:
-                        projected_fit.calculateFitAttributes(withBoosters=withBoosters, targetFit=self, recursion=(recursion + 1))
+                        projected_fit.calculateFitAttributes(withBoosters=withBoosters, targetFit=self)
 
             for command_fit in self.commandFits:
                 if command_fit.getCommandInfo(self.ID).active:
@@ -759,7 +747,7 @@ class Fit(object):
                         # If fit is self, don't recurse
                         self.calculateModifiedFitAttributes(targetFit=self)
                     else:
-                        command_fit.calculateFitAttributes(withBoosters=withBoosters, targetFit=self, recursion=(recursion + 1))
+                        command_fit.calculateFitAttributes(withBoosters=withBoosters, targetFit=self)
 
         self.calculateModifiedFitAttributes()
 
