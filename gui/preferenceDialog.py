@@ -22,6 +22,9 @@ import wx
 from gui.preferenceView import PreferenceView
 from gui.bitmapLoader import BitmapLoader
 from service.settings import SettingsProvider
+from logbook import Logger
+
+pyfalog = Logger(__name__)
 
 
 class PreferenceDialog(wx.Dialog):
@@ -79,8 +82,6 @@ class PreferenceDialog(wx.Dialog):
         self.btnOK.Bind(wx.EVT_BUTTON, self.OnBtnOK)
 
     def OnBtnOK(self, event):
+        pyfalog.debug("Saving preferences.")
         self.Close()
-        from service.settings import StatViewSettings
-        statviewinst = StatViewSettings.getInstance()
         SettingsProvider.getInstance().saveAll()
-        test = True
