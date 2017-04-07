@@ -7,6 +7,7 @@ from gui.bitmapLoader import BitmapLoader
 import gui.mainFrame
 import gui.globalEvents as GE
 from service.settings import SettingsProvider
+from service.settings import GeneralSettings
 from service.fit import Fit
 from service.price import Price
 
@@ -19,6 +20,8 @@ class PFGeneralPref(PreferenceView):
         self.dirtySettings = False
         self.openFitsSettings = SettingsProvider.getInstance().getSettings("pyfaPrevOpenFits",
                                                                            {"enabled": False, "pyfaOpenFits": []})
+        self.sFit = Fit.getInstance()
+        self.generalSettings = GeneralSettings.getInstance()
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -92,7 +95,16 @@ class PFGeneralPref(PreferenceView):
 
         mainSizer.Add(priceSizer, 0, wx.ALL | wx.EXPAND, 0)
 
-        self.sFit = Fit.getInstance()
+        # Search Item Limit
+        searchLimitSizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.chSearchLimitText = wx.StaticText(panel, wx.ID_ANY, u"Item Search Limit:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.chSearchLimitText.Wrap(-1)
+        searchLimitSizer.Add(self.chSearchLimitText, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+        self.editSearchLimit = wx.TextCtrl(panel, wx.ID_ANY, "", wx.DefaultPosition, wx.DefaultSize, 0)
+        searchLimitSizer.Add(self.editSearchLimit, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5)
+
+        mainSizer.Add(searchLimitSizer, 0, wx.ALL | wx.EXPAND, 0)
 
         self.cbGlobalChar.SetValue(self.sFit.serviceFittingOptions["useGlobalCharacter"])
         self.cbGlobalDmgPattern.SetValue(self.sFit.serviceFittingOptions["useGlobalDamagePattern"])
@@ -108,101 +120,57 @@ class PFGeneralPref(PreferenceView):
         self.cbOpenFitInNew.SetValue(self.sFit.serviceFittingOptions["openFitInNew"])
         self.chPriceSystem.SetStringSelection(self.sFit.serviceFittingOptions["priceSystem"])
         self.cbShowShipBrowserTooltip.SetValue(self.sFit.serviceFittingOptions["showShipBrowserTooltip"])
+        self.editSearchLimit.SetValue(unicode(self.generalSettings.get("itemSearchLimit")))
 
-        self.cbGlobalChar.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalCharStateChange)
-        self.cbGlobalDmgPattern.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalDmgPatternStateChange)
-        self.cbFitColorSlots.Bind(wx.EVT_CHECKBOX, self.onCBGlobalColorBySlot)
-        self.cbRackSlots.Bind(wx.EVT_CHECKBOX, self.onCBGlobalRackSlots)
-        self.cbRackLabels.Bind(wx.EVT_CHECKBOX, self.onCBGlobalRackLabels)
-        self.cbCompactSkills.Bind(wx.EVT_CHECKBOX, self.onCBCompactSkills)
-        self.cbReopenFits.Bind(wx.EVT_CHECKBOX, self.onCBReopenFits)
-        self.cbShowTooltip.Bind(wx.EVT_CHECKBOX, self.onCBShowTooltip)
-        self.cbMarketShortcuts.Bind(wx.EVT_CHECKBOX, self.onCBShowShortcuts)
-        self.cbGaugeAnimation.Bind(wx.EVT_CHECKBOX, self.onCBGaugeAnimation)
-        self.cbExportCharges.Bind(wx.EVT_CHECKBOX, self.onCBExportCharges)
-        self.cbOpenFitInNew.Bind(wx.EVT_CHECKBOX, self.onCBOpenFitInNew)
-        self.chPriceSystem.Bind(wx.EVT_CHOICE, self.onPriceSelection)
-        self.cbShowShipBrowserTooltip.Bind(wx.EVT_CHECKBOX, self.onCBShowShipBrowserTooltip)
+        self.cbGlobalChar.Bind(wx.EVT_CHECKBOX, self.OnWindowLeave)
+        self.cbGlobalDmgPattern.Bind(wx.EVT_CHECKBOX, self.OnWindowLeave)
+        self.cbFitColorSlots.Bind(wx.EVT_CHECKBOX, self.OnWindowLeave)
+        self.cbRackSlots.Bind(wx.EVT_CHECKBOX, self.OnWindowLeave)
+        self.cbRackLabels.Bind(wx.EVT_CHECKBOX, self.OnWindowLeave)
+        self.cbCompactSkills.Bind(wx.EVT_CHECKBOX, self.OnWindowLeave)
+        self.cbReopenFits.Bind(wx.EVT_CHECKBOX, self.OnWindowLeave)
+        self.cbShowTooltip.Bind(wx.EVT_CHECKBOX, self.OnWindowLeave)
+        self.cbMarketShortcuts.Bind(wx.EVT_CHECKBOX, self.OnWindowLeave)
+        self.cbGaugeAnimation.Bind(wx.EVT_CHECKBOX, self.OnWindowLeave)
+        self.cbExportCharges.Bind(wx.EVT_CHECKBOX, self.OnWindowLeave)
+        self.cbOpenFitInNew.Bind(wx.EVT_CHECKBOX, self.OnWindowLeave)
+        self.chPriceSystem.Bind(wx.EVT_CHOICE, self.OnWindowLeave)
+        self.cbShowShipBrowserTooltip.Bind(wx.EVT_CHECKBOX, self.OnWindowLeave)
+        self.editSearchLimit.Bind(wx.EVT_LEAVE_WINDOW, self.OnWindowLeave)
 
         self.cbRackLabels.Enable(self.sFit.serviceFittingOptions["rackSlots"] or False)
 
         panel.SetSizer(mainSizer)
         panel.Layout()
 
-    def onCBGlobalColorBySlot(self, event):
-        self.sFit.serviceFittingOptions["colorFitBySlot"] = self.cbFitColorSlots.GetValue()
-        fitID = self.mainFrame.getActiveFit()
-        fit = self.sFit.getFit(fitID)
-        self.sFit.recalc(fit)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
-        event.Skip()
-
-    def onCBGlobalRackSlots(self, event):
-        self.sFit.serviceFittingOptions["rackSlots"] = self.cbRackSlots.GetValue()
-        self.cbRackLabels.Enable(self.cbRackSlots.GetValue())
-        fitID = self.mainFrame.getActiveFit()
-        fit = self.sFit.getFit(fitID)
-        self.sFit.recalc(fit)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
-        event.Skip()
-
-    def onCBGlobalRackLabels(self, event):
-        self.sFit.serviceFittingOptions["rackLabels"] = self.cbRackLabels.GetValue()
-        fitID = self.mainFrame.getActiveFit()
-        fit = self.sFit.getFit(fitID)
-        self.sFit.recalc(fit)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
-        event.Skip()
-
-    def OnCBGlobalCharStateChange(self, event):
-        self.sFit.serviceFittingOptions["useGlobalCharacter"] = self.cbGlobalChar.GetValue()
-        event.Skip()
-
-    def OnCBGlobalDmgPatternStateChange(self, event):
-        self.sFit.serviceFittingOptions["useGlobalDamagePattern"] = self.cbGlobalDmgPattern.GetValue()
-        event.Skip()
-
-    def onCBCompactSkills(self, event):
-        self.sFit.serviceFittingOptions["compactSkills"] = self.cbCompactSkills.GetValue()
-        fitID = self.mainFrame.getActiveFit()
-        fit = self.sFit.getFit(fitID)
-        self.sFit.recalc(fit)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
-        event.Skip()
-
-    def onCBReopenFits(self, event):
-        self.openFitsSettings["enabled"] = self.cbReopenFits.GetValue()
-
-    def onCBShowTooltip(self, event):
-        self.sFit.serviceFittingOptions["showTooltip"] = self.cbShowTooltip.GetValue()
-
-    def onCBShowShortcuts(self, event):
-        self.sFit.serviceFittingOptions["showMarketShortcuts"] = self.cbMarketShortcuts.GetValue()
-
-    def onCBGaugeAnimation(self, event):
-        self.sFit.serviceFittingOptions["enableGaugeAnimation"] = self.cbGaugeAnimation.GetValue()
-
-    def onCBExportCharges(self, event):
-        self.sFit.serviceFittingOptions["exportCharges"] = self.cbExportCharges.GetValue()
-
-    def onCBOpenFitInNew(self, event):
-        self.sFit.serviceFittingOptions["openFitInNew"] = self.cbOpenFitInNew.GetValue()
-
-    def onCBShowShipBrowserTooltip(self, event):
-        self.sFit.serviceFittingOptions["showShipBrowserTooltip"] = self.cbShowShipBrowserTooltip.GetValue()
-
     def getImage(self):
         return BitmapLoader.getBitmap("prefs_settings", "gui")
 
-    def onPriceSelection(self, event):
-        system = self.chPriceSystem.GetString(self.chPriceSystem.GetSelection())
-        self.sFit.serviceFittingOptions["priceSystem"] = system
+    def OnWindowLeave(self, event):
+        self.sFit.serviceFittingOptions["rackSlots"] = self.cbRackSlots.GetValue()
+        self.cbRackLabels.Enable(self.cbRackSlots.GetValue())
+
+        self.sFit.serviceFittingOptions["priceSystem"] = self.chPriceSystem.GetString(self.chPriceSystem.GetSelection())
+        self.sFit.serviceFittingOptions["colorFitBySlot"] = self.cbFitColorSlots.GetValue()
+        self.sFit.serviceFittingOptions["rackLabels"] = self.cbRackLabels.GetValue()
+        self.sFit.serviceFittingOptions["compactSkills"] = self.cbCompactSkills.GetValue()
+        self.sFit.serviceFittingOptions["useGlobalCharacter"] = self.cbGlobalChar.GetValue()
+        self.sFit.serviceFittingOptions["useGlobalDamagePattern"] = self.cbGlobalDmgPattern.GetValue()
+        self.openFitsSettings["enabled"] = self.cbReopenFits.GetValue()
+        self.sFit.serviceFittingOptions["showTooltip"] = self.cbShowTooltip.GetValue()
+        self.sFit.serviceFittingOptions["showMarketShortcuts"] = self.cbMarketShortcuts.GetValue()
+        self.sFit.serviceFittingOptions["enableGaugeAnimation"] = self.cbGaugeAnimation.GetValue()
+        self.sFit.serviceFittingOptions["exportCharges"] = self.cbExportCharges.GetValue()
+        self.sFit.serviceFittingOptions["openFitInNew"] = self.cbOpenFitInNew.GetValue()
+        self.sFit.serviceFittingOptions["showShipBrowserTooltip"] = self.cbShowShipBrowserTooltip.GetValue()
+        # Item Search Limit
+        self.generalSettings.set('itemSearchLimit', int(self.editSearchLimit.GetValue()))
 
         fitID = self.mainFrame.getActiveFit()
-
-        fit = self.sFit.getFit(fitID)
-        self.sFit.recalc(fit)
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+        if fitID:
+            fit = self.sFit.getFit(fitID)
+            self.sFit.recalc(fit)
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
         event.Skip()
 
 
