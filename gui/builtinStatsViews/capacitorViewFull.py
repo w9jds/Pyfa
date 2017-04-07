@@ -176,6 +176,9 @@ class CapacitorViewFull(StatsView):
 
         getattr(self, lblNameState % panel).SetLabel(s)
         getattr(self, lblNameTime % panel).SetLabel(t)
+        time_tooltip_value = "If stable: Time until capacitor stabilizes at lowest point.\nIf unstable: Time until modules are unable to run."
+        getattr(self, lblNameState % panel).SetToolTip(wx.ToolTip(time_tooltip_value))
+        getattr(self, lblNameTime % panel).SetToolTip(wx.ToolTip(time_tooltip_value))
 
         self.panel.Layout()
         self.headerPanel.Layout()
