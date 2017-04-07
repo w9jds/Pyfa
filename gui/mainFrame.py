@@ -268,8 +268,10 @@ class MainFrame(wx.Frame):
         OpenFitsThread(fits, self.closeWaitDialog)
 
     def LoadMainFrameAttribs(self):
-        mainFrameDefaultAttribs = {"wnd_width": 1000, "wnd_height": 700, "wnd_maximized": False, "browser_width": 300,
-                                   "market_height": 0, "fitting_height": -200}
+        mainFrameDefaultAttribs = {
+            "wnd_width"    : 1000, "wnd_height": 700, "wnd_maximized": False, "browser_width": 300,
+            "market_height": 0, "fitting_height": -200
+        }
         self.mainFrameAttribs = SettingsProvider.getInstance().getSettings("pyfaMainWindowAttribs",
                                                                            mainFrameDefaultAttribs)
 
@@ -740,12 +742,14 @@ class MainFrame(wx.Frame):
             self._openAfterImport(fits)
 
     def exportToClipboard(self, event):
-        CopySelectDict = {CopySelectDialog.copyFormatEft: self.clipboardEft,
-                          CopySelectDialog.copyFormatEftImps: self.clipboardEftImps,
-                          CopySelectDialog.copyFormatXml: self.clipboardXml,
-                          CopySelectDialog.copyFormatDna: self.clipboardDna,
-                          CopySelectDialog.copyFormatCrest: self.clipboardCrest,
-                          CopySelectDialog.copyFormatMultiBuy: self.clipboardMultiBuy}
+        CopySelectDict = {
+            CopySelectDialog.copyFormatEft     : self.clipboardEft,
+            CopySelectDialog.copyFormatEftImps : self.clipboardEftImps,
+            CopySelectDialog.copyFormatXml     : self.clipboardXml,
+            CopySelectDialog.copyFormatDna     : self.clipboardDna,
+            CopySelectDialog.copyFormatCrest   : self.clipboardCrest,
+            CopySelectDialog.copyFormatMultiBuy: self.clipboardMultiBuy
+        }
         dlg = CopySelectDialog(self)
         dlg.ShowModal()
         selected = dlg.GetSelected()
@@ -761,12 +765,12 @@ class MainFrame(wx.Frame):
         """ Exports skills needed for active fit and active character """
         sCharacter = Character.getInstance()
         saveDialog = wx.FileDialog(
-            self,
-            "Export Skills Needed As...",
-            wildcard=("EVEMon skills training file (*.emp)|*.emp|"
-                      "EVEMon skills training XML file (*.xml)|*.xml|"
-                      "Text skills training file (*.txt)|*.txt"),
-            style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT,
+                self,
+                "Export Skills Needed As...",
+                wildcard=("EVEMon skills training file (*.emp)|*.emp|"
+                          "EVEMon skills training XML file (*.xml)|*.xml|"
+                          "Text skills training file (*.txt)|*.txt"),
+                style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT,
         )
 
         if saveDialog.ShowModal() == wx.ID_OK:
@@ -792,19 +796,19 @@ class MainFrame(wx.Frame):
         """Handles importing single/multiple EVE XML / EFT cfg fit files"""
         sPort = Port.getInstance()
         dlg = wx.FileDialog(
-            self,
-            "Open One Or More Fitting Files",
-            wildcard=("EVE XML fitting files (*.xml)|*.xml|"
-                      "EFT text fitting files (*.cfg)|*.cfg|"
-                      "All Files (*)|*"),
-            style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE
+                self,
+                "Open One Or More Fitting Files",
+                wildcard=("EVE XML fitting files (*.xml)|*.xml|"
+                          "EFT text fitting files (*.cfg)|*.cfg|"
+                          "All Files (*)|*"),
+                style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE
         )
         if dlg.ShowModal() == wx.ID_OK:
             self.progressDialog = wx.ProgressDialog(
-                "Importing fits",
-                " " * 100,  # set some arbitrary spacing to create width in window
-                parent=self,
-                style=wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME
+                    "Importing fits",
+                    " " * 100,  # set some arbitrary spacing to create width in window
+                    parent=self,
+                    style=wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME
             )
             self.progressDialog.message = None
             sPort.importFitsThreaded(dlg.GetPaths(), self.fileImportCallback)
@@ -819,11 +823,11 @@ class MainFrame(wx.Frame):
         defaultFile = "pyfa-fits-%s.xml" % strftime("%Y%m%d_%H%M%S", gmtime())
 
         saveDialog = wx.FileDialog(
-            self,
-            "Save Backup As...",
-            wildcard="EVE XML fitting file (*.xml)|*.xml",
-            style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT,
-            defaultFile=defaultFile,
+                self,
+                "Save Backup As...",
+                wildcard="EVE XML fitting file (*.xml)|*.xml",
+                style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT,
+                defaultFile=defaultFile,
         )
 
         if saveDialog.ShowModal() == wx.ID_OK:
@@ -835,11 +839,11 @@ class MainFrame(wx.Frame):
             max_ = sFit.countAllFits()
 
             self.progressDialog = wx.ProgressDialog(
-                "Backup fits",
-                "Backing up %d fits to: %s" % (max_, filePath),
-                maximum=max_,
-                parent=self,
-                style=wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME,
+                    "Backup fits",
+                    "Backing up %d fits to: %s" % (max_, filePath),
+                    maximum=max_,
+                    parent=self,
+                    style=wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME,
             )
             Port().backupFits(filePath, self.backupCallback)
             self.progressDialog.ShowModal()
@@ -854,20 +858,20 @@ class MainFrame(wx.Frame):
 
         if not os.path.isdir(os.path.dirname(path)):
             dlg = wx.MessageDialog(
-                self,
-                "Invalid Path\n\nThe following path is invalid or does not exist: \n%s\n\nPlease verify path location pyfa's preferences." % path,
-                "Error",
-                wx.OK | wx.ICON_ERROR
+                    self,
+                    "Invalid Path\n\nThe following path is invalid or does not exist: \n%s\n\nPlease verify path location pyfa's preferences." % path,
+                    "Error",
+                    wx.OK | wx.ICON_ERROR
             )
 
             if dlg.ShowModal() == wx.ID_OK:
                 return
 
         self.progressDialog = wx.ProgressDialog(
-            "Backup fits",
-            "Generating HTML file at: %s" % path,
-            maximum=max_, parent=self,
-            style=wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME
+                "Backup fits",
+                "Generating HTML file at: %s" % path,
+                maximum=max_, parent=self,
+                style=wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME
         )
 
         exportHtml.getInstance().refreshFittingHtml(True, self.backupCallback)
@@ -931,10 +935,10 @@ class MainFrame(wx.Frame):
     def importCharacter(self, event):
         """ Imports character XML file from EVE API """
         dlg = wx.FileDialog(
-            self,
-            "Open One Or More Character Files",
-            wildcard="EVE API XML character files (*.xml)|*.xml|All Files (*)|*",
-            style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE
+                self,
+                "Open One Or More Character Files",
+                wildcard="EVE API XML character files (*.xml)|*.xml|All Files (*)|*",
+                style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE
         )
 
         if dlg.ShowModal() == wx.ID_OK:

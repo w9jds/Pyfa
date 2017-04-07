@@ -7,26 +7,25 @@ import sqlalchemy
 
 
 def upgrade(saveddata_engine):
-
     # 1 = created only
     # 2 = created and modified
     tables = {
-        "boosters": 2,
-        "cargo": 2,
-        "characters": 2,
-        "crest": 1,
-        "damagePatterns": 2,
-        "drones": 2,
-        "fighters": 2,
-        "fits": 2,
-        "projectedFits": 2,
-        "commandFits": 2,
-        "implants": 2,
-        "implantSets": 2,
-        "modules": 2,
-        "overrides": 2,
+        "boosters"       : 2,
+        "cargo"          : 2,
+        "characters"     : 2,
+        "crest"          : 1,
+        "damagePatterns" : 2,
+        "drones"         : 2,
+        "fighters"       : 2,
+        "fits"           : 2,
+        "projectedFits"  : 2,
+        "commandFits"    : 2,
+        "implants"       : 2,
+        "implantSets"    : 2,
+        "modules"        : 2,
+        "overrides"      : 2,
         "characterSkills": 2,
-        "targetResists": 2
+        "targetResists"  : 2
     }
 
     for table in tables.keys():

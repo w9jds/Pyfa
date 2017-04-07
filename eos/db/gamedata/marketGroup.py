@@ -41,4 +41,4 @@ mapper(MarketGroup, marketgroups_table,
            "ID"         : synonym("marketGroupID"),
            "name"       : synonym("marketGroupName"),
            "description": deferred(marketgroups_table.c.description)
-        })
+       })

@@ -131,10 +131,10 @@ class AttributeEditor(wx.Frame):
 
     def OnClear(self, event):
         dlg = wx.MessageDialog(
-            self,
-            "Are you sure you want to delete all overrides?",
-            "Confirm Delete",
-            wx.YES | wx.NO | wx.ICON_EXCLAMATION
+                self,
+                "Are you sure you want to delete all overrides?",
+                "Confirm Delete",
+                wx.YES | wx.NO | wx.ICON_EXCLAMATION
         )
 
         if dlg.ShowModal() == wx.ID_YES:

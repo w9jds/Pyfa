@@ -22,6 +22,7 @@ from gui.PFListPane import PFListPane
 from gui.contextMenu import ContextMenu
 from gui.bitmapLoader import BitmapLoader
 from logbook import Logger
+
 pyfalog = Logger(__name__)
 
 FitRenamed, EVT_FIT_RENAMED = wx.lib.newevent.NewEvent()
@@ -900,8 +901,8 @@ class ShipBrowser(wx.Panel):
                 shipTrait = ship.traits.traitText if (ship.traits is not None) else ""  # empty string if no traits
 
                 self.lpane.AddWidget(
-                    ShipItem(self.lpane, ship.ID, (ship.name, shipTrait, len(sFit.getFitsWithShip(ship.ID))),
-                             ship.race))
+                        ShipItem(self.lpane, ship.ID, (ship.name, shipTrait, len(sFit.getFitsWithShip(ship.ID))),
+                                 ship.race))
 
             for ID, name, shipID, shipName, booster, timestamp in fitList:
                 ship = sMkt.getItem(shipID)
@@ -946,16 +947,16 @@ class ShipBrowser(wx.Panel):
                 # empty string if no traits
 
                 self.lpane.AddWidget(FitItem(
-                    self.lpane,
-                    fit.ID,
-                    (
-                        fit.ship.item.name,
-                        shipTrait,
-                        fit.name,
-                        fit.booster,
-                        fit.timestamp,
-                    ),
-                    fit.ship.item.ID,
+                        self.lpane,
+                        fit.ID,
+                        (
+                            fit.ship.item.name,
+                            shipTrait,
+                            fit.name,
+                            fit.booster,
+                            fit.timestamp,
+                        ),
+                        fit.ship.item.ID,
                 ))
             self.lpane.RefreshList(doFocus=False)
         self.lpane.Thaw()
@@ -1740,10 +1741,10 @@ class FitItem(SFItem.SFBrowserItem):
             self.deleteFit()
         else:
             dlg = wx.MessageDialog(
-                self,
-                "Do you really want to delete this fit?",
-                "Confirm Delete",
-                wx.YES | wx.NO | wx.ICON_QUESTION
+                    self,
+                    "Do you really want to delete this fit?",
+                    "Confirm Delete",
+                    wx.YES | wx.NO | wx.ICON_QUESTION
             )
 
             if dlg.ShowModal() == wx.ID_YES:

@@ -582,11 +582,13 @@ class FittingView(d.Display):
         else:
             event.Skip()
 
-    slotColourMap = {1: wx.Colour(250, 235, 204),  # yellow = low slots
-                     2: wx.Colour(188, 215, 241),  # blue   = mid slots
-                     3: wx.Colour(235, 204, 209),  # red    = high slots
-                     4: '',
-                     5: ''}
+    slotColourMap = {
+        1: wx.Colour(250, 235, 204),  # yellow = low slots
+        2: wx.Colour(188, 215, 241),  # blue   = mid slots
+        3: wx.Colour(235, 204, 209),  # red    = high slots
+        4: '',
+        5: ''
+    }
 
     def slotColour(self, slot):
         return self.slotColourMap.get(slot) or self.GetBackgroundColour()

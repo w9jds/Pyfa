@@ -27,6 +27,7 @@ import wx
 import config
 
 from logbook import Logger
+
 logging = Logger(__name__)
 
 try:

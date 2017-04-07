@@ -26,12 +26,12 @@ from eos.db import saveddata_meta
 from eos.saveddata.booster import Booster
 
 boosters_table = Table("boosters", saveddata_meta,
-                        Column("ID", Integer, primary_key=True),
-                        Column("itemID", Integer),
-                        Column("fitID", Integer, ForeignKey("fits.ID"), nullable=False),
-                        Column("active", Boolean),
-                        Column("created", DateTime, nullable=True, default=func.now()),
-                        Column("modified", DateTime, nullable=True, onupdate=func.now()),
+                       Column("ID", Integer, primary_key=True),
+                       Column("itemID", Integer),
+                       Column("fitID", Integer, ForeignKey("fits.ID"), nullable=False),
+                       Column("active", Boolean),
+                       Column("created", DateTime, nullable=True, default=func.now()),
+                       Column("modified", DateTime, nullable=True, onupdate=func.now()),
                        )
 
 # Legacy booster side effect code, should disable but a mapper relies on it.

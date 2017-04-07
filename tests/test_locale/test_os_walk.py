@@ -7,6 +7,7 @@ sys.path.append(os.path.realpath(os.path.join(script_dir, '..', '..')))
 
 from _development.helpers_locale import GetPath
 
+
 def test_os_walk():
     current_directory = os.path.dirname(os.path.abspath(unicode(__file__)))
     subfolders = os.listdir(current_directory)

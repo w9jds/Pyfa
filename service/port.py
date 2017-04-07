@@ -59,10 +59,10 @@ except ImportError:
 
 EFT_SLOT_ORDER = [Slot.LOW, Slot.MED, Slot.HIGH, Slot.RIG, Slot.SUBSYSTEM]
 INV_FLAGS = {
-    Slot.LOW: 11,
-    Slot.MED: 19,
-    Slot.HIGH: 27,
-    Slot.RIG: 92,
+    Slot.LOW      : 11,
+    Slot.MED      : 19,
+    Slot.HIGH     : 27,
+    Slot.RIG      : 92,
     Slot.SUBSYSTEM: 125
 }
 
@@ -188,9 +188,9 @@ class Port(object):
             if callback:  # Pulse
                 pyfalog.debug("Processing complete, saving fits to database: {0}/{1}", i + 1, numFits)
                 wx.CallAfter(
-                    callback, 1,
-                    "Processing complete, saving fits to database\n(%d/%d)" %
-                    (i + 1, numFits)
+                        callback, 1,
+                        "Processing complete, saving fits to database\n(%d/%d)" %
+                        (i + 1, numFits)
                 )
 
         return True, fits

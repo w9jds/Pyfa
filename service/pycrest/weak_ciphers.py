@@ -67,21 +67,21 @@ class WeakCiphersHTTPSConnection(urllib3.connection.VerifiedHTTPSConnection):  #
             warnings.warn((
                 'System time is way off (before {0}). This will probably '
                 'lead to SSL verification errors').format(
-                urllib3.connection.RECENT_DATE),
-                SystemTimeWarning
+                    urllib3.connection.RECENT_DATE),
+                    SystemTimeWarning
             )
 
         # Wrap socket using verification with the root certs in
         # trusted_root_certs
         self.sock = ssl_.ssl_wrap_socket(
-            conn,
-            self.key_file,
-            self.cert_file,
-            cert_reqs=resolved_cert_reqs,
-            ca_certs=self.ca_certs,
-            server_hostname=hostname,
-            ssl_version=resolved_ssl_version,
-            ciphers=self.ciphers,
+                conn,
+                self.key_file,
+                self.cert_file,
+                cert_reqs=resolved_cert_reqs,
+                ca_certs=self.ca_certs,
+                server_hostname=hostname,
+                ssl_version=resolved_ssl_version,
+                ciphers=self.ciphers,
         )
 
         if self.assert_fingerprint:
@@ -95,7 +95,7 @@ class WeakCiphersHTTPSConnection(urllib3.connection.VerifiedHTTPSConnection):  #
                     'Certificate has no `subjectAltName`, falling back to check for a `commonName` for now. '
                     'This feature is being removed by major browsers and deprecated by RFC 2818. '
                     '(See https://github.com/shazow/urllib3/issues/497 for details.)'),
-                    SecurityWarning
+                        SecurityWarning
                 )
             match_hostname(cert, self.assert_hostname or hostname)
 
@@ -124,9 +124,9 @@ class WeakCiphersAdapter(HTTPAdapter):
         self._pool_block = block
 
         self.poolmanager = WeakCiphersPoolManager(
-            num_pools=connections,
-            maxsize=maxsize,
-            block=block,
-            strict=True,
-            **pool_kwargs
+                num_pools=connections,
+                maxsize=maxsize,
+                block=block,
+                strict=True,
+                **pool_kwargs
         )

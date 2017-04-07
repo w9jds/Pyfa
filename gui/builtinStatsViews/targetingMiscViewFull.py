@@ -125,27 +125,27 @@ class TargetingMiscViewFull(StatsView):
         ))
 
         cargoValues = {
-            "main": lambda: fit.ship.getModifiedItemAttr("capacity"),
-            "fleetHangarCapacity": lambda: fit.ship.getModifiedItemAttr("fleetHangarCapacity"),
-            "shipMaintenanceBayCapacity": lambda: fit.ship.getModifiedItemAttr("shipMaintenanceBayCapacity"),
-            "specialAmmoHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialAmmoHoldCapacity"),
-            "specialFuelBayCapacity": lambda: fit.ship.getModifiedItemAttr("specialFuelBayCapacity"),
-            "specialShipHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialShipHoldCapacity"),
-            "specialSmallShipHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialSmallShipHoldCapacity"),
-            "specialMediumShipHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialMediumShipHoldCapacity"),
-            "specialLargeShipHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialLargeShipHoldCapacity"),
-            "specialIndustrialShipHoldCapacity": lambda: fit.ship.getModifiedItemAttr(
-                "specialIndustrialShipHoldCapacity"),
-            "specialOreHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialOreHoldCapacity"),
-            "specialMineralHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialMineralHoldCapacity"),
-            "specialMaterialBayCapacity": lambda: fit.ship.getModifiedItemAttr("specialMaterialBayCapacity"),
-            "specialGasHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialGasHoldCapacity"),
-            "specialSalvageHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialSalvageHoldCapacity"),
-            "specialCommandCenterHoldCapacity": lambda: fit.ship.getModifiedItemAttr(
-                "specialCommandCenterHoldCapacity"),
+            "main"                                   : lambda: fit.ship.getModifiedItemAttr("capacity"),
+            "fleetHangarCapacity"                    : lambda: fit.ship.getModifiedItemAttr("fleetHangarCapacity"),
+            "shipMaintenanceBayCapacity"             : lambda: fit.ship.getModifiedItemAttr("shipMaintenanceBayCapacity"),
+            "specialAmmoHoldCapacity"                : lambda: fit.ship.getModifiedItemAttr("specialAmmoHoldCapacity"),
+            "specialFuelBayCapacity"                 : lambda: fit.ship.getModifiedItemAttr("specialFuelBayCapacity"),
+            "specialShipHoldCapacity"                : lambda: fit.ship.getModifiedItemAttr("specialShipHoldCapacity"),
+            "specialSmallShipHoldCapacity"           : lambda: fit.ship.getModifiedItemAttr("specialSmallShipHoldCapacity"),
+            "specialMediumShipHoldCapacity"          : lambda: fit.ship.getModifiedItemAttr("specialMediumShipHoldCapacity"),
+            "specialLargeShipHoldCapacity"           : lambda: fit.ship.getModifiedItemAttr("specialLargeShipHoldCapacity"),
+            "specialIndustrialShipHoldCapacity"      : lambda: fit.ship.getModifiedItemAttr(
+                    "specialIndustrialShipHoldCapacity"),
+            "specialOreHoldCapacity"                 : lambda: fit.ship.getModifiedItemAttr("specialOreHoldCapacity"),
+            "specialMineralHoldCapacity"             : lambda: fit.ship.getModifiedItemAttr("specialMineralHoldCapacity"),
+            "specialMaterialBayCapacity"             : lambda: fit.ship.getModifiedItemAttr("specialMaterialBayCapacity"),
+            "specialGasHoldCapacity"                 : lambda: fit.ship.getModifiedItemAttr("specialGasHoldCapacity"),
+            "specialSalvageHoldCapacity"             : lambda: fit.ship.getModifiedItemAttr("specialSalvageHoldCapacity"),
+            "specialCommandCenterHoldCapacity"       : lambda: fit.ship.getModifiedItemAttr(
+                    "specialCommandCenterHoldCapacity"),
             "specialPlanetaryCommoditiesHoldCapacity": lambda: fit.ship.getModifiedItemAttr(
-                "specialPlanetaryCommoditiesHoldCapacity"),
-            "specialQuafeHoldCapacity": lambda: fit.ship.getModifiedItemAttr("specialQuafeHoldCapacity")
+                    "specialPlanetaryCommoditiesHoldCapacity"),
+            "specialQuafeHoldCapacity"               : lambda: fit.ship.getModifiedItemAttr("specialQuafeHoldCapacity")
         }
 
         stats = (("labelTargets", {"main": lambda: fit.maxTargets}, 3, 0, 0, ""),
@@ -201,7 +201,7 @@ class TargetingMiscViewFull(StatsView):
                     elif labelName == "labelSensorStr":
                         if fit.jamChance > 0:
                             label.SetToolTip(
-                                wx.ToolTip("Type: %s\n%.1f%% Chance of Jam" % (fit.scanType, fit.jamChance)))
+                                    wx.ToolTip("Type: %s\n%.1f%% Chance of Jam" % (fit.scanType, fit.jamChance)))
                         else:
                             label.SetToolTip(wx.ToolTip("Type: %s" % fit.scanType))
                     elif labelName == "labelFullAlignTime":

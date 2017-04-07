@@ -31,6 +31,7 @@ pyfalog.info("Initializing database")
 pyfalog.info("Gamedata connection: {0}", config.gamedata_connectionstring)
 pyfalog.info("Saveddata connection: {0}", config.saveddata_connectionstring)
 
+
 class ReadOnlyException(Exception):
     pass
 

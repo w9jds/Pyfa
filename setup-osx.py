@@ -6,17 +6,18 @@ Usage:
 
 from setuptools import setup
 import requests.certs
+
 APP = ['pyfa.py']
 DATA_FILES = ['eve.db', 'README.md', 'LICENSE', 'imgs', requests.certs.where()]
 OPTIONS = {
     'argv_emulation': False,
-    'iconfile': 'dist_assets/mac/pyfa.icns',
-    'packages': ['eos', 'gui', 'service', 'utils']
+    'iconfile'      : 'dist_assets/mac/pyfa.icns',
+    'packages'      : ['eos', 'gui', 'service', 'utils']
 }
 
 setup(
-    app=APP,
-    data_files=DATA_FILES,
-    options={'py2app': OPTIONS},
-    setup_requires=['py2app'],
+        app=APP,
+        data_files=DATA_FILES,
+        options={'py2app': OPTIONS},
+        setup_requires=['py2app'],
 )

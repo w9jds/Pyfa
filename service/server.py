@@ -5,6 +5,7 @@ import threading
 from logbook import Logger
 
 from service.settings import CRESTSettings
+
 pyfalog = Logger(__name__)
 
 # noinspection PyPep8

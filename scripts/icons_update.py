@@ -4,7 +4,6 @@
 This script updates only market/item icons.
 """
 
-
 import argparse
 import os
 import re
@@ -12,11 +11,9 @@ import sqlite3
 
 from PIL import Image
 
-
 parser = argparse.ArgumentParser(description='This script updates module icons for pyfa')
 parser.add_argument('-i', '--icons', required=True, type=str, help='path to unpacked Icons folder from CCP\'s image export')
 args = parser.parse_args()
-
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 db_path = os.path.abspath(os.path.join(script_dir, '..', 'eve.db'))
@@ -57,7 +54,7 @@ MARKET_ROOTS = {
 # Add children to market group list
 # {parent: {children}}
 mkt_tree = {}
-for row in cursor.execute('select marketGroupID, parentGroupID from invmarketgroups'):
+for row in cursor.execute('SELECT marketGroupID, parentGroupID FROM invmarketgroups'):
     parent = row[1]
     # We have all the root groups in the set we need anyway
     if not parent:
@@ -65,6 +62,7 @@ for row in cursor.execute('select marketGroupID, parentGroupID from invmarketgro
     child = row[0]
     children = mkt_tree.setdefault(parent, set())
     children.add(child)
+
 
 # Traverse the tree we just composed to add all children for all needed roots
 def get_children(parent):
@@ -80,13 +78,15 @@ for root in MARKET_ROOTS:
     market_groups.add(root)
     market_groups.update(get_children(root))
 
-
-query_items = 'select distinct i.iconFile from icons as i inner join invtypes as it on it.iconID = i.iconID inner join invgroups as ig on it.groupID = ig.groupID where ig.categoryID in ({})'.format(', '.join(str(i) for i in ITEM_CATEGORIES))
-query_groups = 'select distinct i.iconFile from icons as i inner join invgroups as ig on ig.iconID = i.iconID where ig.categoryID in ({})'.format(', '.join(str(i) for i in ITEM_CATEGORIES))
-query_cats = 'select distinct i.iconFile from icons as i inner join invcategories as ic on ic.iconID = i.iconID where ic.categoryID in ({})'.format(', '.join(str(i) for i in ITEM_CATEGORIES))
-query_market = 'select distinct i.iconFile from icons as i inner join invmarketgroups as img on img.iconID = i.iconID where img.marketGroupID in ({})'.format(', '.join(str(i) for i in market_groups))
+query_items = 'select distinct i.iconFile from icons as i inner join invtypes as it on it.iconID = i.iconID inner join invgroups as ig on it.groupID = ig.groupID where ig.categoryID in ({})'.format(
+    ', '.join(str(i) for i in ITEM_CATEGORIES))
+query_groups = 'select distinct i.iconFile from icons as i inner join invgroups as ig on ig.iconID = i.iconID where ig.categoryID in ({})'.format(
+    ', '.join(str(i) for i in ITEM_CATEGORIES))
+query_cats = 'select distinct i.iconFile from icons as i inner join invcategories as ic on ic.iconID = i.iconID where ic.categoryID in ({})'.format(
+    ', '.join(str(i) for i in ITEM_CATEGORIES))
+query_market = 'select distinct i.iconFile from icons as i inner join invmarketgroups as img on img.iconID = i.iconID where img.marketGroupID in ({})'.format(
+    ', '.join(str(i) for i in market_groups))
 query_attrib = 'select distinct i.iconFile from icons as i inner join dgmattribs as da on da.iconID = i.iconID'
-
 
 needed = set()
 existing = set()
@@ -137,6 +137,7 @@ def unzero(fname):
     else:
         return fname
 
+
 # Get a list of needed icons based on the items / attributes / etc from the database
 for query in (query_items, query_groups, query_cats, query_market, query_attrib):
     for row in cursor.execute(query):
@@ -152,8 +153,8 @@ for fname in os.listdir(icons_dir):
         continue
     fname = strip_path(fname)
     # Get rid of "icon" prefix as well
-    #fname = re.sub('^icon', '', fname)
-    print fname,"exists"
+    # fname = re.sub('^icon', '', fname)
+    print fname, "exists"
     existing.add(fname)
 
 # Get a list of all the icons currently available in export
@@ -169,6 +170,7 @@ for dir in dirs:
         # Often items referred to with 01_01 format,
         fnames = export.setdefault(sizeless.lower(), set())
         fnames.add(fname)
+
 
 def crop_image(img):
     w, h = img.size
@@ -226,7 +228,6 @@ def get_icon_file(request):
 toremove = existing.difference(needed)
 toupdate = existing.intersection(needed)
 toadd = needed.difference(existing)
-
 
 if toremove:
     print('Some icons are not used and will be removed:')

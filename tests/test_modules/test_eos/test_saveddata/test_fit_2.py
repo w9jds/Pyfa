@@ -60,6 +60,7 @@ def test_calculateModifiedAttributes(DB, RifterFit, KeepstarFit):
     for test_dict in keepstar_modifier_dicts:
         assert len(getattr(KeepstarFit.ship.itemModifiedAttributes, test_dict)) == keepstar_modifier_dicts[test_dict]
 
+
 def test_calculateModifiedAttributes_withBooster(DB, RifterFit, HeronFit):
     # TODO: This test is not currently functional or meaningful as projections are not happening correctly.
     # This is true for all tested branches (master, dev, etc)
@@ -122,4 +123,3 @@ def test_calculateModifiedAttributes_withBooster(DB, RifterFit, HeronFit):
 
     for test_dict in rifter_modifier_dicts:
         assert len(getattr(RifterFit.ship.itemModifiedAttributes, test_dict)) == rifter_modifier_dicts[test_dict]
-

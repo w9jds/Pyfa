@@ -33,7 +33,6 @@ from service.market import Market
 
 pyfalog = Logger(__name__)
 
-
 VALIDITY = 24 * 60 * 60  # Price validity period, 24 hours
 REREQUEST = 4 * 60 * 60  # Re-request delay for failed fetches, 4 hours
 TIMEOUT = 15 * 60  # Network timeout delay for connection issues, 15 minutes
@@ -43,11 +42,11 @@ class Price(object):
     instance = None
 
     systemsList = {
-        "Jita": 30000142,
-        "Amarr": 30002187,
+        "Jita"   : 30000142,
+        "Amarr"  : 30002187,
         "Dodixie": 30002659,
-        "Rens": 30002510,
-        "Hek": 30002053
+        "Rens"   : 30002510,
+        "Hek"    : 30002053
     }
 
     def __init__(self):

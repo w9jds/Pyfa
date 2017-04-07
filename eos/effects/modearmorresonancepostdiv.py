@@ -13,8 +13,8 @@ def handler(fit, module, context):
             ("Thermic", "Thermal")
     ):
         fit.ship.multiplyItemAttr(
-            "armor{0}DamageResonance".format(tgtResType),
-            1 / module.getModifiedItemAttr("mode{0}ResistancePostDiv".format(srcResType)),
-            stackingPenalties=True,
-            penaltyGroup="postDiv"
+                "armor{0}DamageResonance".format(tgtResType),
+                1 / module.getModifiedItemAttr("mode{0}ResistancePostDiv".format(srcResType)),
+                stackingPenalties=True,
+                penaltyGroup="postDiv"
         )

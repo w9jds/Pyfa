@@ -69,8 +69,8 @@ other_codecs = [
 
 system_names = {
     'Windows': windows_codecs,
-    'Linux': linux_codecs,
-    'Darwin': mac_codecs,
+    'Linux'  : linux_codecs,
+    'Darwin' : mac_codecs,
 }
 
 
@@ -85,6 +85,7 @@ def GetPath(root, file=None, codec=None):
         path = path.decode(codec)
 
     return path
+
 
 def GetUnicodePath(root, file=None, codec=None):
     # Replace this with the function we actually use for this

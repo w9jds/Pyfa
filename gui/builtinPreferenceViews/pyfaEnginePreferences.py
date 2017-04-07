@@ -22,7 +22,6 @@ class PFFittingEnginePref(PreferenceView):
 
     # noinspection PyAttributeOutsideInit
     def populatePanel(self, panel):
-
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.stTitle = wx.StaticText(panel, wx.ID_ANY, self.title, wx.DefaultPosition, wx.DefaultSize, 0)
@@ -43,7 +42,7 @@ class PFFittingEnginePref(PreferenceView):
         mainSizer.Add(self.cbUniversalAdaptiveArmorHardener, 0, wx.ALL | wx.EXPAND, 5)
 
         self.cbStrictFitting = wx.CheckBox(panel, wx.ID_ANY,
-                                           u"Only allow fits that strictly match fitting rules. If this is diabled, fits allowed may not work in EVE." +
+                                           u"Only allow fits that strictly match fitting rules. If this is disabled, fits allowed may not work in EVE." +
                                            u"\n(Only recommended for expert players)",
                                            wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbStrictFitting, 0, wx.ALL | wx.EXPAND, 5)

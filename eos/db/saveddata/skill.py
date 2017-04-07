@@ -24,7 +24,6 @@ import sqlalchemy.sql.functions as func
 from eos.db import saveddata_meta
 from eos.saveddata.character import Skill
 
-
 skills_table = Table("characterSkills", saveddata_meta,
                      Column("characterID", ForeignKey("characters.ID"), primary_key=True, index=True),
                      Column("itemID", Integer, primary_key=True),
