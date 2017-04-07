@@ -281,7 +281,7 @@ class Miscellanea(ViewColumn):
             return text, tooltip
         elif itemGroup == "Remote Armor Repairer":
             repAmount = stuff.getModifiedItemAttr("armorDamageAmount")
-            cycleTime = stuff.getModifiedItemAttr("duration")
+            cycleTime = stuff.cycleTime
             if not repAmount or not cycleTime:
                 return "", None
             repPerSec = float(repAmount) * 1000 / cycleTime
@@ -402,7 +402,7 @@ class Miscellanea(ViewColumn):
             return text, tooltip
         elif itemGroup in ("Frequency Mining Laser", "Strip Miner", "Mining Laser", "Gas Cloud Harvester", "Mining Drone"):
             miningAmount = stuff.getModifiedItemAttr("specialtyMiningAmount") or stuff.getModifiedItemAttr("miningAmount")
-            cycleTime = getattr(stuff, 'cycleTime', stuff.getModifiedItemAttr("duration"))
+            cycleTime = getattr(stuff, 'cycleTime', stuff.cycleTime)
             if not miningAmount or not cycleTime:
                 return "", None
             minePerSec = (float(miningAmount) * 1000 / cycleTime)
@@ -414,7 +414,7 @@ class Miscellanea(ViewColumn):
             shieldAmount = stuff.getModifiedItemAttr("shieldBonus")
             hullAmount = stuff.getModifiedItemAttr("structureDamageAmount")
             repAmount = armorAmount or shieldAmount or hullAmount
-            cycleTime = stuff.getModifiedItemAttr("duration")
+            cycleTime = stuff.cycleTime
             if not repAmount or not cycleTime:
                 return "", None
             repPerSec = float(repAmount) * 1000 / cycleTime
@@ -438,7 +438,7 @@ class Miscellanea(ViewColumn):
             tooltip = "Energy neutralization per second"
             return text, tooltip
         elif itemGroup == "Micro Jump Drive":
-            cycleTime = stuff.getModifiedItemAttr("duration") / 1000
+            cycleTime = stuff.cycleTime / 1000
             text = "{0}s".format(cycleTime)
             tooltip = "Spoolup time"
             return text, tooltip

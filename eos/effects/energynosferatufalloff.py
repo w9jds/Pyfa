@@ -8,7 +8,7 @@ runTime = "late"
 
 def handler(fit, src, context):
     amount = src.getModifiedItemAttr("powerTransferAmount")
-    time = src.getModifiedItemAttr("duration")
+    time = src.cycleTime
 
     if "projected" in context:
         fit.addDrain(src, time, amount, 0)

@@ -9,5 +9,5 @@ def handler(fit, container, context):
     if "projected" in context:
         if (hasattr(container, "state") and container.state >= State.ACTIVE) or hasattr(container, "amountActive"):
             amount = container.getModifiedItemAttr("energyNeutralizerAmount")
-            time = container.getModifiedItemAttr("duration")
+            time = container.cycleTime
             fit.addDrain(container, time, amount, 0)
