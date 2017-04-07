@@ -379,10 +379,10 @@ class MainFrame(wx.Frame):
                                     "\nmatplotlib: \t {}".format(matplotlib_version if matplotlib_version else "Not Installed"),
                                     500, wx.ClientDC(self))
         if "__WXGTK__" in wx.PlatformInfo:
-            forumUrl = "http://forums.eveonline.com/default.aspx?g=posts&amp;t=466425"
+            forumUrl = "https://github.com/Pyfa-fit/Pyfa"
         else:
-            forumUrl = "http://forums.eveonline.com/default.aspx?g=posts&t=466425"
-        info.WebSite = (forumUrl, "pyfa thread at EVE Online forum")
+            forumUrl = "https://github.com/Pyfa-fit/Pyfa"
+        info.WebSite = (forumUrl, "Pyfa.fit Github Repository")
         wx.AboutBox(info)
 
     def showCharacterEditor(self, event):
