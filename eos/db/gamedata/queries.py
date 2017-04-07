@@ -228,7 +228,7 @@ def getItemsByCategory(filter, where=None, eager=None):
 
 
 @cachedQuery(3, "where", "nameLike", "join")
-def searchItems(nameLike, where=None, join=None, eager=None):
+def searchItems(nameLike, where=None, join=None, eager=None, result_limit=150):
     if not isinstance(nameLike, basestring):
         raise TypeError("Need string as argument")
 
@@ -245,7 +245,7 @@ def searchItems(nameLike, where=None, join=None, eager=None):
             items = items.filter(and_(Item.name.like(token_safe, escape="\\"), where))
         else:
             items = items.filter(Item.name.like(token_safe, escape="\\"))
-    items = items.limit(100).all()
+    items = items.limit(result_limit).all()
     return items
 
 

@@ -30,6 +30,7 @@ import config
 import eos.db
 from service.conversions import Conversions
 from service.settings import SettingsProvider
+from service.settings import GeneralSettings
 
 from eos.gamedata import Category as types_Category, Group as types_Group, Item as types_Item, MarketGroup as types_MarketGroup, \
     MetaGroup as types_MetaGroup, MetaType as types_MetaType
@@ -90,6 +91,9 @@ class SearchWorkerThread(threading.Thread):
         self.name = "SearchWorker"
         pyfalog.debug("Initialize SearchWorkerThread.")
 
+        # Instances
+        self.generalSettings = GeneralSettings.getInstance()
+
     def run(self):
         self.cv = threading.Condition()
         self.searchRequest = None
@@ -117,7 +121,8 @@ class SearchWorkerThread(threading.Thread):
 
             results = eos.db.searchItems(request, where=filter_,
                                          join=(types_Item.group, types_Group.category),
-                                         eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
+                                         eager=("icon", "group.category", "metaGroup", "metaGroup.parent"),
+                                         )
 
             items = set()
             # Return only published items, consult with Market service this time
@@ -137,6 +142,8 @@ class Market(object):
     instance = None
 
     def __init__(self):
+        # Instances
+        self.generalSettings = GeneralSettings.getInstance()
 
         # Init recently used module storage
         serviceMarketRecentlyUsedModules = {"pyfaMarketRecentlyUsedModules": []}
@@ -764,7 +771,9 @@ class Market(object):
         filter_ = types_Category.name.in_(["Ship", "Structure"])
         results = eos.db.searchItems(name, where=filter_,
                                      join=(types_Item.group, types_Group.category),
-                                     eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
+                                     eager=("icon", "group.category", "metaGroup", "metaGroup.parent"),
+                                     result_limit=self.generalSettings["itemSearchLimit"],
+                                     )
         ships = set()
         for item in results:
             if self.getPublicityByItem(item):

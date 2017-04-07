@@ -15,6 +15,7 @@ class PFFittingEnginePref(PreferenceView):
 
     def __init__(self):
         self.dirtySettings = False
+        self.engine_settings = EOSSettings.getInstance()
 
     def refreshPanel(self, fit):
         pass
@@ -23,8 +24,6 @@ class PFFittingEnginePref(PreferenceView):
     def populatePanel(self, panel):
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
-
-        self.engine_settings = EOSSettings.getInstance()
 
         self.stTitle = wx.StaticText(panel, wx.ID_ANY, self.title, wx.DefaultPosition, wx.DefaultSize, 0)
         self.stTitle.Wrap(-1)
@@ -39,10 +38,15 @@ class PFFittingEnginePref(PreferenceView):
         mainSizer.Add(self.cbGlobalForceReload, 0, wx.ALL | wx.EXPAND, 5)
 
         self.cbUniversalAdaptiveArmorHardener = wx.CheckBox(panel, wx.ID_ANY,
-                                                            u"When damage profile is Uniform, set Reactive Armor " +
-                                                            u"Hardener to match (old behavior).",
+                                                            u"When damage profile is Uniform, set Reactive Armor Hardener to match (old behavior).",
                                                             wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbUniversalAdaptiveArmorHardener, 0, wx.ALL | wx.EXPAND, 5)
+
+        self.cbStrictFitting = wx.CheckBox(panel, wx.ID_ANY,
+                                           u"Only allow fits that strictly match fitting rules. If this is diabled, fits allowed may not work in EVE." +
+                                           u"\n(Only recommended for expert players)",
+                                           wx.DefaultPosition, wx.DefaultSize, 0)
+        mainSizer.Add(self.cbStrictFitting, 0, wx.ALL | wx.EXPAND, 5)
 
         # Future code once new cap sim is implemented
         '''
@@ -76,6 +80,9 @@ class PFFittingEnginePref(PreferenceView):
         self.cbUniversalAdaptiveArmorHardener.SetValue(self.engine_settings.get("useStaticAdaptiveArmorHardener"))
         self.cbUniversalAdaptiveArmorHardener.Bind(wx.EVT_CHECKBOX, self.OnCBUniversalAdaptiveArmorHardenerChange)
 
+        self.cbStrictFitting.SetValue(self.engine_settings.get("strictFitting"))
+        self.cbStrictFitting.Bind(wx.EVT_CHECKBOX, self.OnCBStrictFittingChange)
+
         panel.SetSizer(mainSizer)
         panel.Layout()
 
@@ -84,6 +91,9 @@ class PFFittingEnginePref(PreferenceView):
 
     def OnCBUniversalAdaptiveArmorHardenerChange(self, event):
         self.engine_settings.set("useStaticAdaptiveArmorHardener", self.cbUniversalAdaptiveArmorHardener.GetValue())
+
+    def OnCBStrictFittingChange(self, event):
+        self.engine_settings.set("strictFitting", self.cbStrictFitting.GetValue())
 
     def getImage(self):
         return BitmapLoader.getBitmap("settings_fitting", "gui")

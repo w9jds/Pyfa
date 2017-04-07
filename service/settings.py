@@ -73,6 +73,8 @@ class SettingsProvider(object):
             if item not in s.info:
                 s.info[item] = defaults[item]
 
+        self.settings[area] = s
+
         return s
 
     def saveAll(self):
@@ -339,6 +341,34 @@ class CRESTSettings(object):
 
     def set(self, setting_type, value):
         self.serviceCRESTSettings[setting_type] = value
+
+
+class GeneralSettings(object):
+    _instance = None
+
+    @classmethod
+    def getInstance(cls):
+        if cls._instance is None:
+            cls._instance = GeneralSettings()
+
+        return cls._instance
+
+    def __init__(self):
+        # mode
+        # 0 - Do not show
+        # 1 - Minimal/Text Only View
+        # 2 - Full View
+        GeneralDefaultSettings = {
+            "itemSearchLimit"    : 150,
+        }
+
+        self.serviceGeneralDefaultSettings = SettingsProvider.getInstance().getSettings("pyfaGeneralSettings", GeneralDefaultSettings)
+
+    def get(self, type):
+        return self.serviceGeneralDefaultSettings[type]
+
+    def set(self, type, value):
+        self.serviceGeneralDefaultSettings[type] = value
 
 
 class StatViewSettings(object):
