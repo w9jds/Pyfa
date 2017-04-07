@@ -7,8 +7,17 @@ skip_branch_with_pr: true
 init:
   - ps: Update-AppveyorBuild -Version "$env:APPVEYOR_REPO_BRANCH.$(Get-Date -format yyyy.mm.dd).$env:appveyor_build_number"
 
+  - ECHO " "
+  - ECHO "------------------------"
+  - ECHO " "
   - ECHO "JOB NAME:"
   - ECHO %APPVEYOR_JOB_NAME%
+  - ECHO " "
+  - ECHO "BUILD VERSION"
+  - ECHO %AppveyorBuild%
+  - ECHO " "
+  - ECHO "------------------------"
+  - ECHO " "
 
 environment:
   global:
