@@ -18,8 +18,11 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "1.28.2"
-tag = "git"
+version = "2017.04.07"
+if hasattr(sys, 'frozen'):
+    tag = "(release)"
+else:
+    tag = "(live)"
 expansionName = "YC119.3"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
