@@ -10,5 +10,5 @@ def handler(fit, skill, context):
     for dmgType in damageTypes:
         dmgAttr = "{0}Damage".format(dmgType)
         fit.modules.filteredItemBoost(
-            lambda mod: mod.item.group.name == "Super Weapon" and dmgAttr in mod.itemModifiedAttributes,
-            dmgAttr, skill.getModifiedItemAttr("damageMultiplierBonus") * skill.level)
+                lambda mod: mod.item.group.name == "Super Weapon" and dmgAttr in mod.itemModifiedAttributes,
+                dmgAttr, skill.getModifiedItemAttr("damageMultiplierBonus") * skill.level)

@@ -27,6 +27,7 @@ import gui.globalEvents as GE
 from gui.bitmapLoader import BitmapLoader
 
 from logbook import Logger
+
 pyfalog = Logger(__name__)
 
 if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):

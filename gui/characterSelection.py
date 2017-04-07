@@ -25,6 +25,7 @@ import gui.mainFrame
 from service.character import Character
 from service.fit import Fit
 from logbook import Logger
+
 pyfalog = Logger(__name__)
 
 
@@ -202,11 +203,11 @@ class CharacterSelection(wx.Panel):
             for name, info in reqs.iteritems():
                 level, ID, more = info
                 sCharacter.skillReqsDict['skills'].append({
-                    'item': currItem,
+                    'item'   : currItem,
                     'skillID': ID,
-                    'skill': name,
-                    'level': level,
-                    'indent': tabulationLevel,
+                    'skill'  : name,
+                    'level'  : level,
+                    'indent' : tabulationLevel,
                 })
 
                 tip += "%s%s: %d\n" % ("    " * tabulationLevel, name, level)
@@ -228,11 +229,11 @@ class CharacterSelection(wx.Panel):
             for name, info in reqs.iteritems():
                 level, ID, more = info
                 sCharacter.skillReqsDict['skills'].append({
-                    'item': currItem,
+                    'item'   : currItem,
                     'skillID': ID,
-                    'skill': name,
-                    'level': level,
-                    'indent': tabulationLevel,
+                    'skill'  : name,
+                    'level'  : level,
+                    'indent' : tabulationLevel,
                 })
 
                 if name not in skillsMap:

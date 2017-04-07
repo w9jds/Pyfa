@@ -33,7 +33,7 @@ def handler(fit, module, context):
         # pyfalog.debug("Damage Adjusted for Armor Resists: %f/%f/%f/%f", baseDamageTaken[0], baseDamageTaken[1], baseDamageTaken[2], baseDamageTaken[3])
 
         resistanceShiftAmount = module.getModifiedItemAttr(
-            'resistanceShiftAmount') / 100  # The attribute is in percent and we want a fraction
+                'resistanceShiftAmount') / 100  # The attribute is in percent and we want a fraction
         RAHResistance = [
             module.getModifiedItemAttr('armorEmDamageResonance'),
             module.getModifiedItemAttr('armorThermalDamageResonance'),
@@ -90,9 +90,9 @@ def handler(fit, module, context):
             for i, val in enumerate(cycleList):
                 tolerance = 1e-06
                 if abs(RAHResistance[0] - val[0]) <= tolerance and \
-                            abs(RAHResistance[1] - val[1]) <= tolerance and \
-                            abs(RAHResistance[2] - val[2]) <= tolerance and \
-                            abs(RAHResistance[3] - val[3]) <= tolerance:
+                                abs(RAHResistance[1] - val[1]) <= tolerance and \
+                                abs(RAHResistance[2] - val[2]) <= tolerance and \
+                                abs(RAHResistance[3] - val[3]) <= tolerance:
                     loopStart = i
                     # pyfalog.debug("Loop found: %d-%d", loopStart, num)
                     break
@@ -103,7 +103,7 @@ def handler(fit, module, context):
 
         if loopStart < 0:
             pyfalog.error("Reactive Armor Hardener failed to find equilibrium. Damage profile after armor: {0}/{1}/{2}/{3}",
-                         baseDamageTaken[0], baseDamageTaken[1], baseDamageTaken[2], baseDamageTaken[3])
+                          baseDamageTaken[0], baseDamageTaken[1], baseDamageTaken[2], baseDamageTaken[3])
 
         # Average the profiles in the RAH loop, or the last 20 if it didn't find a loop.
         loopCycles = cycleList[loopStart:]

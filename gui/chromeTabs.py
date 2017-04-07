@@ -1290,10 +1290,10 @@ class PFTabsContainer(wx.Panel):
         if selected is not skipTab:
             selected.SetPosition((selpos, self.containerHeight - self.height))
         self.addButton.SetPosition(
-            (
-                round(tabsWidth) + self.inclination * 2,
-                self.containerHeight - self.height / 2 - self.addButton.GetHeight() / 3
-            )
+                (
+                    round(tabsWidth) + self.inclination * 2,
+                    self.containerHeight - self.height / 2 - self.addButton.GetHeight() / 3
+                )
         )
 
     def OnLeaveWindow(self, event):
@@ -1320,10 +1320,10 @@ class PFTabsContainer(wx.Panel):
                 page = self.Parent.GetPage(self.GetTabIndex(self.previewTab))
                 if page.Snapshot():
                     self.previewWnd = PFNotebookPagePreview(
-                        self,
-                        (mposx + 3, mposy + 3),
-                        page.Snapshot(),
-                        self.previewTab.text
+                            self,
+                            (mposx + 3, mposy + 3),
+                            page.Snapshot(),
+                            self.previewTab.text
                     )
                     self.previewWnd.Show()
 
@@ -1333,13 +1333,13 @@ class PFTabsContainer(wx.Panel):
 class PFNotebookPagePreview(wx.Frame):
     def __init__(self, parent, pos, bitmap, title):
         wx.Frame.__init__(
-            self,
-            parent,
-            id=wx.ID_ANY,
-            title=wx.EmptyString,
-            pos=pos,
-            size=wx.DefaultSize,
-            style=wx.NO_BORDER | wx.FRAME_NO_TASKBAR | wx.STAY_ON_TOP
+                self,
+                parent,
+                id=wx.ID_ANY,
+                title=wx.EmptyString,
+                pos=pos,
+                size=wx.DefaultSize,
+                style=wx.NO_BORDER | wx.FRAME_NO_TASKBAR | wx.STAY_ON_TOP
         )
 
         self.title = title

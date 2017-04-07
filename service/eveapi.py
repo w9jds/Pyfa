@@ -567,7 +567,7 @@ class _Parser(object):
                     # the row data contains more attributes than were defined.
                     self.container._cols = attributes[0::2]
                 self.container.append(
-                    [_castfunc(attributes[i], attributes[i + 1]) for i in xrange(0, len(attributes), 2)]
+                        [_castfunc(attributes[i], attributes[i + 1]) for i in xrange(0, len(attributes), 2)]
                 )
             # </hack>
 

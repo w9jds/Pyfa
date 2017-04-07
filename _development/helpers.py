@@ -13,13 +13,13 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.realpath(os.path.join(script_dir, '..', '..')))
 sys._called_from_test = True
 
+
 # noinspection PyUnresolvedReferences,PyUnusedLocal
 @pytest.fixture
 def DBInMemory_test():
     def rollback():
         with sd_lock:
             saveddata_session.rollback()
-
 
     print("Creating database in memory")
     from os.path import realpath, join, dirname, abspath
@@ -47,7 +47,7 @@ def DBInMemory_test():
     # game db because we haven't reached gamedata_meta.create_all()
     try:
         gamedata_version = gamedata_session.execute(
-            "SELECT `field_value` FROM `metadata` WHERE `field_name` LIKE 'client_build'"
+                "SELECT `field_value` FROM `metadata` WHERE `field_name` LIKE 'client_build'"
         ).fetchone()[0]
     except Exception as e:
         print("Missing gamedata version.")
@@ -70,9 +70,9 @@ def DBInMemory_test():
 
     # Import all the definitions for all our database stuff
     # noinspection PyPep8
-    #from eos.db.gamedata import alphaClones, attribute, category, effect, group, icon, item, marketGroup, metaData, metaGroup, queries, traits, unit
+    # from eos.db.gamedata import alphaClones, attribute, category, effect, group, icon, item, marketGroup, metaData, metaGroup, queries, traits, unit
     # noinspection PyPep8
-    #from eos.db.saveddata import booster, cargo, character, crest, damagePattern, databaseRepair, drone, fighter, fit, implant, implantSet, loadDefaultDatabaseValues, miscData, module, override, price, queries, skill, targetResists, user
+    # from eos.db.saveddata import booster, cargo, character, crest, damagePattern, databaseRepair, drone, fighter, fit, implant, implantSet, loadDefaultDatabaseValues, miscData, module, override, price, queries, skill, targetResists, user
 
     # If using in memory saveddata, you'll want to reflect it so the data structure is good.
     if saveddata_connectionstring == "sqlite:///:memory:":
@@ -83,11 +83,12 @@ def DBInMemory_test():
     print(gamedata_engine)
 
     helper = {
-        #'config': eos.config,
-        'gamedata_session'    : gamedata_session,
-        'saveddata_session'    : saveddata_session,
+        # 'config': eos.config,
+        'gamedata_session' : gamedata_session,
+        'saveddata_session': saveddata_session,
     }
     return helper
+
 
 # noinspection PyUnresolvedReferences,PyUnusedLocal
 @pytest.fixture
@@ -104,10 +105,10 @@ def DBInMemory():
     print(eos.db.gamedata_engine)
 
     helper = {
-        'config': eos.config,
-        'db'    : eos.db,
+        'config'           : eos.config,
+        'db'               : eos.db,
         'gamedata_session' : eos.db.gamedata_session,
-        'saveddata_session' : eos.db.saveddata_session,
+        'saveddata_session': eos.db.saveddata_session,
     }
     return helper
 

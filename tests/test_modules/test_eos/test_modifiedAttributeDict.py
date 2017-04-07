@@ -3,6 +3,7 @@
 import math
 import os
 import sys
+
 script_dir = os.path.dirname(os.path.abspath(__file__))
 script_dir = os.path.realpath(os.path.join(script_dir, '..', '..', '..'))
 print script_dir
@@ -11,6 +12,7 @@ sys.path.append(script_dir)
 # noinspection PyPackageRequirements
 from _development.helpers import DBInMemory as DB, Gamedata, Saveddata
 from _development.helpers_fits import RifterFit
+
 
 def test_multiply_stacking_penalties(DB, Saveddata, RifterFit):
     """

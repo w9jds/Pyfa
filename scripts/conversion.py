@@ -257,6 +257,7 @@ Connected Remote Sensor Booster is being converted to F-23 Compact Remote Sensor
 'Tycoon' Remote Tracking Computer Blueprint is being converted to 'Enterprise' Remote Tracking Computer Blueprint
 'Economist' Tracking Computer I Blueprint is being converted to 'Marketeer' Tracking Computer Blueprint"""
 
+
 def main(old, new):
     # Open both databases and get their cursors
     old_db = sqlite3.connect(os.path.expanduser(old))
@@ -282,7 +283,7 @@ def main(old, new):
         old_item, new_item = None, None
 
         if "Blueprint" in old_name or "Blueprint" in new_name:
-            print "Blueprint: Skipping this line: %s"%x
+            print "Blueprint: Skipping this line: %s" % x
             continue
 
         # gather item info
@@ -301,11 +302,10 @@ def main(old, new):
         if not new_item:
             print "Error finding new item in {} -> {}".format(old_name, new_name)
 
-        if not container.get((new_item,new_name), None):
-            container[(new_item,new_name)] = []
+        if not container.get((new_item, new_name), None):
+            container[(new_item, new_name)] = []
 
-
-        container[(new_item,new_name)].append((old_item, old_name))
+        container[(new_item, new_name)].append((old_item, old_name))
 
     print "    # Renamed items"
 

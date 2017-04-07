@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#======================================================================
+# ======================================================================
 # Copyright (C) 2012 Diego Duclos
 #
 # This file is part of eos.
@@ -16,7 +16,7 @@
 #
 # You should have received a copy of the GNU Lesser General Public
 # License along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#======================================================================
+# ======================================================================
 
 import os
 import sys
@@ -29,8 +29,8 @@ sys.path.append(os.path.realpath(os.path.join(path, "..")))
 import json
 import argparse
 
-def main(db, json_path):
 
+def main(db, json_path):
     jsonPath = os.path.expanduser(json_path)
 
     # Import eos.config first and change it
@@ -47,53 +47,53 @@ def main(db, json_path):
 
     # Config dict
     tables = {
-        "clonegrades": eos.gamedata.AlphaCloneSkill,
-        "dgmattribs": eos.gamedata.AttributeInfo,
-        "dgmeffects": eos.gamedata.EffectInfo,
-        "dgmtypeattribs": eos.gamedata.Attribute,
-        "dgmtypeeffects": eos.gamedata.Effect,
-        "dgmunits": eos.gamedata.Unit,
-        "icons": eos.gamedata.Icon,
-        "evecategories": eos.gamedata.Category,
-        "evegroups": eos.gamedata.Group,
-        "invmetagroups": eos.gamedata.MetaGroup,
-        "invmetatypes": eos.gamedata.MetaType,
-        "evetypes": eos.gamedata.Item,
-        "phbtraits": eos.gamedata.Traits,
-        "phbmetadata": eos.gamedata.MetaData,
+        "clonegrades"         : eos.gamedata.AlphaCloneSkill,
+        "dgmattribs"          : eos.gamedata.AttributeInfo,
+        "dgmeffects"          : eos.gamedata.EffectInfo,
+        "dgmtypeattribs"      : eos.gamedata.Attribute,
+        "dgmtypeeffects"      : eos.gamedata.Effect,
+        "dgmunits"            : eos.gamedata.Unit,
+        "icons"               : eos.gamedata.Icon,
+        "evecategories"       : eos.gamedata.Category,
+        "evegroups"           : eos.gamedata.Group,
+        "invmetagroups"       : eos.gamedata.MetaGroup,
+        "invmetatypes"        : eos.gamedata.MetaType,
+        "evetypes"            : eos.gamedata.Item,
+        "phbtraits"           : eos.gamedata.Traits,
+        "phbmetadata"         : eos.gamedata.MetaData,
         "mapbulk_marketGroups": eos.gamedata.MarketGroup,
 
     }
 
     fieldMapping = {
-        "dgmattribs": {
+        "dgmattribs"          : {
             "displayName_en-us": "displayName"
         },
-        "dgmeffects": {
+        "dgmeffects"          : {
             "displayName_en-us": "displayName",
             "description_en-us": "description"
         },
-        "dgmunits": {
+        "dgmunits"            : {
             "displayName_en-us": "displayName"
         },
-        #icons???
-        "evecategories": {
+        # icons???
+        "evecategories"       : {
             "categoryName_en-us": "categoryName"
         },
-        "evegroups": {
+        "evegroups"           : {
             "groupName_en-us": "groupName"
         },
-        "invmetagroups": {
+        "invmetagroups"       : {
             "metaGroupName_en-us": "metaGroupName"
         },
-        "evetypes": {
-            "typeName_en-us": "typeName",
+        "evetypes"            : {
+            "typeName_en-us"   : "typeName",
             "description_en-us": "description"
         },
-        #phbtraits???
+        # phbtraits???
         "mapbulk_marketGroups": {
             "marketGroupName_en-us": "marketGroupName",
-            "description_en-us": "description"
+            "description_en-us"    : "description"
         }
 
     }
@@ -117,10 +117,11 @@ def main(db, json_path):
         for ID in data:
             for skill in data[ID]["skills"]:
                 newData.append({
-                    "alphaCloneID": int(ID),
+                    "alphaCloneID"  : int(ID),
                     "alphaCloneName": data[ID]["internalDescription"],
-                    "typeID": skill["typeID"],
-                    "level": skill["level"]})
+                    "typeID"        : skill["typeID"],
+                    "level"         : skill["level"]
+                })
 
         return newData
 
@@ -196,7 +197,7 @@ def main(db, json_path):
         # (41549, 41548, 41551, 41550) - Micro Bombs (Fighters)
         if (row["published"] or row['groupID'] == 1306
             or row['typeID'] in (3638, 3634, 3636, 3640)
-            or row['typeID'] in (41549, 41548, 41551,41550)):
+            or row['typeID'] in (41549, 41548, 41551, 41550)):
             eveTypes.add(row["typeID"])
 
     # ignore checker
@@ -245,6 +246,7 @@ def main(db, json_path):
     eos.db.gamedata_session.commit()
 
     print("done")
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="This scripts dumps effects from an sqlite cache dump to mongo")

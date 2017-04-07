@@ -32,4 +32,4 @@ mapper(Unit, groups_table,
        properties={
            "ID"  : synonym("unitID"),
            "name": synonym("unitName")
-        })
+       })

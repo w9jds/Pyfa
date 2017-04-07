@@ -12,7 +12,6 @@ except ImportError:
     pyfalog.warning("Failed to import: configforced")
     configforced = None
 
-
 # Turns on debug mode
 debug = False
 # Defines if our saveddata will be in pyfa root or not

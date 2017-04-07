@@ -81,7 +81,7 @@ class PFGeneralPref(PreferenceView):
         mainSizer.Add(self.cbOpenFitInNew, 0, wx.ALL | wx.EXPAND, 5)
 
         self.cbShowShipBrowserTooltip = wx.CheckBox(panel, wx.ID_ANY, u"Show ship browser tooltip",
-                                          wx.DefaultPosition, wx.DefaultSize, 0)
+                                                    wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbShowShipBrowserTooltip, 0, wx.ALL | wx.EXPAND, 5)
 
         priceSizer = wx.BoxSizer(wx.HORIZONTAL)

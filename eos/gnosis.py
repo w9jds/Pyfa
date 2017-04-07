@@ -88,16 +88,16 @@ class GnosisSimulation(object):
 
                 if (capacitor_need and duration) is not None:
                     module_list.append(
-                        {
-                            'Amount': capacitor_need,
-                            'CycleTime': duration,
-                            'Charges': charges,
-                            'ReloadTime': reload_time,
-                            'ReactivationDelay': reactivation_delay,
-                            'ShieldRepair': shield_reps,
-                            'ArmorRepair': armor_reps,
-                            'HullRepair': hull_reps,
-                        }
+                            {
+                                'Amount'           : capacitor_need,
+                                'CycleTime'        : duration,
+                                'Charges'          : charges,
+                                'ReloadTime'       : reload_time,
+                                'ReactivationDelay': reactivation_delay,
+                                'ShieldRepair'     : shield_reps,
+                                'ArmorRepair'      : armor_reps,
+                                'HullRepair'       : hull_reps,
+                            }
                     )
 
         # Projected neuts, nos, and cap transfers
@@ -134,14 +134,14 @@ class GnosisSimulation(object):
 
                 if capacitor_need and duration:
                     module_list.append(
-                        {
-                            'Amount': capacitor_need,
-                            'CycleTime': duration,
-                            'Charges': charges,
-                            'ReloadTime': reload_time,
-                            'ReactivationDelay': reactivation_delay,
-                            'Projected': True,
-                        }
+                            {
+                                'Amount'           : capacitor_need,
+                                'CycleTime'        : duration,
+                                'Charges'          : charges,
+                                'ReloadTime'       : reload_time,
+                                'ReactivationDelay': reactivation_delay,
+                                'Projected'        : True,
+                            }
                     )
 
         for projection_extraAttributes_type in (
@@ -202,17 +202,17 @@ class GnosisSimulation(object):
 
                         if (capacitor_need and duration) is not None:
                             module_list.append(
-                                {
-                                    'Amount': capacitor_need,
-                                    'CycleTime': duration,
-                                    'Charges': charges,
-                                    'ReloadTime': reload_time,
-                                    'ReactivationDelay': reactivation_delay,
-                                    'ShieldRepair': shield_reps,
-                                    'ArmorRepair': armor_reps,
-                                    'HullRepair': hull_reps,
-                                    'Projected': True,
-                                }
+                                    {
+                                        'Amount'           : capacitor_need,
+                                        'CycleTime'        : duration,
+                                        'Charges'          : charges,
+                                        'ReloadTime'       : reload_time,
+                                        'ReactivationDelay': reactivation_delay,
+                                        'ShieldRepair'     : shield_reps,
+                                        'ArmorRepair'      : armor_reps,
+                                        'HullRepair'       : hull_reps,
+                                        'Projected'        : True,
+                                    }
                             )
 
         return_matrix = Capacitor.capacitor_time_simulator(module_list, capacity, recharge_rate)

@@ -35,7 +35,6 @@ from service.settings import GeneralSettings
 from eos.gamedata import Category as types_Category, Group as types_Group, Item as types_Item, MarketGroup as types_MarketGroup, \
     MetaGroup as types_MetaGroup, MetaType as types_MetaType
 
-
 try:
     from collections import OrderedDict
 except ImportError:
@@ -122,6 +121,7 @@ class SearchWorkerThread(threading.Thread):
             results = eos.db.searchItems(request, where=filter_,
                                          join=(types_Item.group, types_Group.category),
                                          eager=("icon", "group.category", "metaGroup", "metaGroup.parent"),
+                                         result_limit=self.generalSettings.get("itemSearchLimit"),
                                          )
 
             items = set()
@@ -772,7 +772,7 @@ class Market(object):
         results = eos.db.searchItems(name, where=filter_,
                                      join=(types_Item.group, types_Group.category),
                                      eager=("icon", "group.category", "metaGroup", "metaGroup.parent"),
-                                     result_limit=self.generalSettings["itemSearchLimit"],
+                                     result_limit=self.generalSettings.get("itemSearchLimit"),
                                      )
         ships = set()
         for item in results:

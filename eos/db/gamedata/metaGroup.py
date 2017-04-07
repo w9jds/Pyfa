@@ -38,7 +38,7 @@ mapper(MetaGroup, metagroups_table,
        properties={
            "ID"  : synonym("metaGroupID"),
            "name": synonym("metaGroupName")
-        })
+       })
 
 mapper(MetaType, metatypes_table,
        properties={
@@ -46,6 +46,6 @@ mapper(MetaType, metatypes_table,
            "parent": relation(Item, primaryjoin=metatypes_table.c.parentTypeID == items_table.c.typeID),
            "items" : relation(Item, primaryjoin=metatypes_table.c.typeID == items_table.c.typeID),
            "info"  : relation(MetaGroup, lazy=False)
-        })
+       })
 
 MetaType.name = association_proxy("info", "name")

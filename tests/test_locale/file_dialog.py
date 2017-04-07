@@ -10,6 +10,7 @@ sys.path.append(os.path.realpath(os.path.join(script_dir, '..', '..')))
 
 from _development.helpers_locale import GetPath, GetUnicodePath
 
+
 class MyForm(wx.Frame):
     # ----------------------------------------------------------------------
     def __init__(self):

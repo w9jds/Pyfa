@@ -13,7 +13,7 @@ stream = open(r"C:\Users\Ryan\Sync\Git\blitzmann\Pyfa\scripts\iconIDs.yaml", "r"
 docs = yaml.load_all(stream)
 
 for doc in docs:
-    for k,v in doc.items():
+    for k, v in doc.items():
         iconDict[str(k)] = {"iconFile": v['iconFile']}
 
 with open('icons.json', 'w') as outfile:

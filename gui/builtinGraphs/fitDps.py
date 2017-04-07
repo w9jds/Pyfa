@@ -26,15 +26,19 @@ from service.attribute import Attribute
 
 
 class FitDpsGraph(Graph):
-    propertyAttributeMap = {"angle": "maxVelocity",
-                            "distance": "maxRange",
-                            "signatureRadius": "signatureRadius",
-                            "velocity": "maxVelocity"}
+    propertyAttributeMap = {
+        "angle"          : "maxVelocity",
+        "distance"       : "maxRange",
+        "signatureRadius": "signatureRadius",
+        "velocity"       : "maxVelocity"
+    }
 
-    propertyLabelMap = {"angle": "Target Angle (degrees)",
-                        "distance": "Distance to Target (km)",
-                        "signatureRadius": "Target Signature Radius (m)",
-                        "velocity": "Target Velocity (m/s)"}
+    propertyLabelMap = {
+        "angle"          : "Target Angle (degrees)",
+        "distance"       : "Distance to Target (km)",
+        "signatureRadius": "Target Signature Radius (m)",
+        "velocity"       : "Target Velocity (m/s)"
+    }
 
     defaults = FitDps.defaults.copy()
 

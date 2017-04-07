@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-#===============================================================================
+# ===============================================================================
 # Copyright (C) 2010-2011 Anton Vorobyov
 #
 # This file is part of eos.
@@ -16,7 +16,7 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#===============================================================================
+# ===============================================================================
 
 
 '''
@@ -34,6 +34,7 @@ import sys
 script_dir = os.path.dirname(__file__)
 default_old = os.path.join(script_dir, "..", "eve.db")
 
+
 def main(old, new, groups=True, effects=True, attributes=True, renames=True):
     # Open both databases and get their cursors
     old_db = sqlite3.connect(os.path.expanduser(old))
@@ -43,9 +44,9 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
 
     # Force some of the items to make them published
     FORCEPUB_TYPES = ("Ibis", "Impairor", "Velator", "Reaper",
-    "Amarr Tactical Destroyer Propulsion Mode",
-    "Amarr Tactical Destroyer Sharpshooter Mode",
-    "Amarr Tactical Destroyer Defense Mode")
+                      "Amarr Tactical Destroyer Propulsion Mode",
+                      "Amarr Tactical Destroyer Sharpshooter Mode",
+                      "Amarr Tactical Destroyer Defense Mode")
     OVERRIDES_TYPEPUB = 'UPDATE invtypes SET published = 1 WHERE typeName = ?'
     for typename in FORCEPUB_TYPES:
         old_cursor.execute(OVERRIDES_TYPEPUB, (typename,))
@@ -106,6 +107,7 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
                     print("    \"{0}\": \"{1}\",".format(couple[0].encode('utf-8'), couple[1].encode('utf-8')))
 
     groupcats = {}
+
     def getgroupcat(grp):
         """Get group category from the new db"""
         if grp in groupcats:
@@ -120,6 +122,7 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
         return cat
 
     itemnames = {}
+
     def getitemname(item):
         """Get item name from the new db"""
         if item in itemnames:
@@ -138,6 +141,7 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
         return name
 
     groupnames = {}
+
     def getgroupname(grp):
         """Get group name from the new db"""
         if grp in groupnames:
@@ -156,6 +160,7 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
         return name
 
     effectnames = {}
+
     def geteffectname(effect):
         """Get effect name from the new db"""
         if effect in effectnames:
@@ -174,6 +179,7 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
         return name
 
     attrnames = {}
+
     def getattrname(attr):
         """Get attribute name from the new db"""
         if attr in attrnames:
@@ -192,10 +198,12 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
         return name
 
     # State table
-    S = {"unchanged": 0,
-         "removed": 1,
-         "changed": 2,
-         "added": 3 }
+    S = {
+        "unchanged": 0,
+        "removed"  : 1,
+        "changed"  : 2,
+        "added"    : 3
+        }
 
     if effects or attributes or groups:
         # Format:
@@ -271,7 +279,6 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
         for state in S:
             global_itmdata[S[state]] = {}
 
-
         # Fill all the data for removed items
         for item in items_old.difference(items_new):
             # Set item state to removed
@@ -295,7 +302,6 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
                     attrdata[S["unchanged"]][attr] = (oldattrs[attr], "NULL")
             # Fill global dictionary with data we've got
             global_itmdata[state][item] = (groupdata, effectsdata, attrdata)
-
 
         # Now, for added items
         for item in items_new.difference(items_old):
@@ -374,7 +380,7 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
     if renames:
         ren_effects = {}
         query = 'SELECT effectID, effectName FROM dgmeffects'
-        findrenames(ren_effects, query, strip = True)
+        findrenames(ren_effects, query, strip=True)
 
         ren_attributes = {}
         query = 'SELECT attributeID, attributeName FROM dgmattribs'
@@ -443,9 +449,11 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
             # Make sure our states are sorted
             stateorder = sorted(global_itmdata)
 
-            TG = {S["unchanged"]: "+", S["changed"]: "*",
-                  S["removed"]: "-",
-                  S["added"]: "+"}
+            TG = {
+                S["unchanged"]: "+", S["changed"]: "*",
+                S["removed"]  : "-",
+                S["added"]    : "+"
+                }
 
             # Cycle through states
             for itmstate in stateorder:
@@ -481,7 +489,7 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
                     attrdata = items[item][2]
                     for attrstate in stateorder:
                         # Skip unchanged and empty attribute sets, also skip attributes display for added and removed items
-                        if (attrstate == S["unchanged"] and itmstate != S["added"]) or itmstate in (S["removed"], ) or attrstate not in attrdata:
+                        if (attrstate == S["unchanged"] and itmstate != S["added"]) or itmstate in (S["removed"],) or attrstate not in attrdata:
                             continue
                         attrs = attrdata[attrstate]
                         attrorder = sorted(attrs, key=lambda attr: getattrname(attr))
@@ -494,6 +502,7 @@ def main(old, new, groups=True, effects=True, attributes=True, renames=True):
                             else:
                                 valline = "{0} => {1}".format(attrs[attr][0] or 0, attrs[attr][1] or 0)
                             print("  [{0}] {1}: {2}".format(TG[attrstate], getattrname(attr), valline))
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Compare two databases generated from eve dump to find eos-related differences")

@@ -359,7 +359,7 @@ class GeneralSettings(object):
         # 1 - Minimal/Text Only View
         # 2 - Full View
         GeneralDefaultSettings = {
-            "itemSearchLimit"    : 150,
+            "itemSearchLimit": 150,
         }
 
         self.serviceGeneralDefaultSettings = SettingsProvider.getInstance().getSettings("pyfaGeneralSettings", GeneralDefaultSettings)
@@ -466,22 +466,22 @@ class ContextMenuSettings(object):
 
 
 class EOSSettings(object):
-        _instance = None
+    _instance = None
 
-        @classmethod
-        def getInstance(cls):
-            if cls._instance is None:
-                cls._instance = EOSSettings()
+    @classmethod
+    def getInstance(cls):
+        if cls._instance is None:
+            cls._instance = EOSSettings()
 
-            return cls._instance
+        return cls._instance
 
-        def __init__(self):
-            self.EOSSettings = SettingsProvider.getInstance().getSettings("pyfaEOSSettings", eos.config.settings)
+    def __init__(self):
+        self.EOSSettings = SettingsProvider.getInstance().getSettings("pyfaEOSSettings", eos.config.settings)
 
-        def get(self, type):
-            return self.EOSSettings[type]
+    def get(self, type):
+        return self.EOSSettings[type]
 
-        def set(self, type, value):
-            self.EOSSettings[type] = value
+    def set(self, type, value):
+        self.EOSSettings[type] = value
 
 # @todo: migrate fit settings (from fit service) here?

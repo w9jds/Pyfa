@@ -81,7 +81,7 @@ class CharacterImportThread(threading.Thread):
                         if int(skill.getAttribute("typeID")) in all_skill_ids and (0 <= int(skill.getAttribute("level")) <= 5):
                             skills.append({
                                 "typeID": int(skill.getAttribute("typeID")),
-                                "level": int(skill.getAttribute("level")),
+                                "level" : int(skill.getAttribute("level")),
                             })
                         else:
                             pyfalog.error(
