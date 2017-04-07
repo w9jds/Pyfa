@@ -190,8 +190,6 @@ class CharacterSelection(wx.Panel):
             if not eos_settings['strictFitting']:
                 tip = "Strict fitting is disabled.\nFits generated may not be legal in EVE. \n\n" + tip
 
-
-
             self.skillReqsStaticBitmap.SetToolTipString(tip.strip())
 
         if newCharID is None:
