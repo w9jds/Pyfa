@@ -73,6 +73,8 @@ class SettingsProvider(object):
             if item not in s.info:
                 s.info[item] = defaults[item]
 
+        self.settings[area] = s
+
         return s
 
     def saveAll(self):
