@@ -13,19 +13,15 @@ pyfa, short for **py**thon **f**itting **a**ssistant, allows you to create, expe
 ## Latest Version and Changelogs
 ###Windows
 
-_*Production Builds*_
-
-Download:
-[x86](https://ci.appveyor.com/api/projects/Ebag333/pyfa-nr5qw/artifacts/pyfa.zip?branch=master&job:Environment%3A%20PYTHON%3DC%3A%5CPython27%2C%20PYTHON_VERSION%3D2.7.x%2C%20PYTHON_ARCH%3D32)
+_*Release Downloads*_:
+[x86](https://ci.appveyor.com/api/projects/Ebag333/pyfa-nr5qw/artifacts/pyfa.zip?branch=master&job=Environment%3A%20PYTHON%3DC%3A%5CPython27%2C%20PYTHON_VERSION%3D2.7.x%2C%20PYTHON_ARCH%3D32)
  | 
-[x64](https://ci.appveyor.com/api/projects/Ebag333/pyfa-nr5qw/artifacts/pyfa.zip?branch=master&job:Environment%3A%20PYTHON%3DC%3A%5CPython27%2C%20PYTHON_VERSION%3D2.7.x%2C%20PYTHON_ARCH%3D64)
+[x64](https://ci.appveyor.com/api/projects/Ebag333/pyfa-nr5qw/artifacts/pyfa.zip?branch=master&job=Environment%3A%20PYTHON%3DC%3A%5CPython27-x64%2C%20PYTHON_VERSION%3D2.7.x%2C%20PYTHON_ARCH%3D64)
 
-_*Development Builds*_
-
-Download:
-[x86](https://ci.appveyor.com/api/projects/Ebag333/pyfa-nr5qw/artifacts/pyfa.zip?branch=development&job:Environment%3A%20PYTHON%3DC%3A%5CPython27%2C%20PYTHON_VERSION%3D2.7.x%2C%20PYTHON_ARCH%3D32)
+_*Development Downloads*_:
+[x86](https://ci.appveyor.com/api/projects/Ebag333/pyfa-nr5qw/artifacts/pyfa.zip?branch=development&job=Environment%3A%20PYTHON%3DC%3A%5CPython27%2C%20PYTHON_VERSION%3D2.7.x%2C%20PYTHON_ARCH%3D32)
  | 
-[x64](https://ci.appveyor.com/api/projects/Ebag333/pyfa-nr5qw/artifacts/pyfa.zip?branch=development&job:Environment%3A%20PYTHON%3DC%3A%5CPython27%2C%20PYTHON_VERSION%3D2.7.x%2C%20PYTHON_ARCH%3D64)
+[x64](https://ci.appveyor.com/api/projects/Ebag333/pyfa-nr5qw/artifacts/pyfa.zip?branch=development&job=Environment%3A%20PYTHON%3DC%3A%5CPython27-x64%2C%20PYTHON_VERSION%3D2.7.x%2C%20PYTHON_ARCH%3D64)
 
 The latest version along with release notes can always be found on the project's [Releases](https://github.com/Pyfa-fit/Pyfa/releases) page. pyfa will notify you if you are running an outdated version.
 
