@@ -20,7 +20,7 @@
 import time
 from copy import deepcopy
 from itertools import chain
-from math import sqrt, log, asinh
+from math import log, asinh
 
 from sqlalchemy.orm import validates, reconstructor
 from sqlalchemy.exc import InvalidRequestError
@@ -32,7 +32,7 @@ from eos.enum import Enum
 from eos.saveddata.ship import Ship
 from eos.saveddata.character import Character
 from eos.saveddata.citadel import Citadel
-from eos.saveddata.module import Module, State, Slot, Hardpoint
+from eos.saveddata.module import Module, State, Slot
 from logbook import Logger
 
 pyfalog = Logger(__name__)
@@ -1138,12 +1138,12 @@ class Fit(object):
                                                                   )
 
         if simulation_matrix['Matrix']['Stability']['FailedToRunModules']:
-            #Modules failed to run, so lets get the effective HP/s only after they failed
+            # Modules failed to run, so lets get the effective HP/s only after they failed
             start_recording_time = simulation_matrix['Matrix']['Stability']['FailedToRunModulesTime']
         else:
             start_recording_time = 0
 
-        total_time = (simulation_matrix['Matrix']['Stability']['RunTime']-start_recording_time)/1000
+        total_time = (simulation_matrix['Matrix']['Stability']['RunTime'] - start_recording_time) / 1000
         if total_time < 60:
             # This is an uncommon scenario, where we run out of cap *RIGHT* as the simulation ends.
             # In this case lets grab the last minute of stats.
@@ -1157,9 +1157,9 @@ class Fit(object):
                 total_hull_reps += _['Hull Reps']
 
         sustainable = {}
-        sustainable["shieldRepair"] = total_shield_reps/total_time
-        sustainable["armorRepair"] = total_armor_reps/total_time
-        sustainable["hullRepair"] = total_hull_reps/total_time
+        sustainable["shieldRepair"] = total_shield_reps / total_time
+        sustainable["armorRepair"] = total_armor_reps / total_time
+        sustainable["hullRepair"] = total_hull_reps / total_time
         sustainable["passiveShield"] = self.calculateShieldRecharge()
 
         # Check to make sure we're not over the maximum reps
@@ -1198,7 +1198,7 @@ class Fit(object):
             capNeed *= min(1, signatureRadius / energyNeutralizerSignatureResolution)
 
         if self.ship.getModifiedItemAttr("energyWarfareResistance"):
-            capNeed *= min(1,self.ship.getModifiedItemAttr("energyWarfareResistance"))
+            capNeed *= min(1, self.ship.getModifiedItemAttr("energyWarfareResistance"))
 
         self.__extraDrains.append((src, cycleTime, capNeed, clipSize))
 
@@ -1209,13 +1209,13 @@ class Fit(object):
                                                                   self.ship.getModifiedItemAttr("rechargeRate"))
 
         self.__capRecharge = GnosisFormulas.get_peak_regen(self.ship.getModifiedItemAttr("capacitorCapacity"),
-                                                   self.ship.getModifiedItemAttr("rechargeRate"))
+                                                           self.ship.getModifiedItemAttr("rechargeRate"))
 
         cap_per_second = 0
         for module_list in simulation_matrix['ModuleDict']:
             if module_list['Charges']:
-                total_run_time = module_list['CycleTime']*module_list['Charges']
-                total_amount = module_list['Amount']*module_list['Charges']
+                total_run_time = module_list['CycleTime'] * module_list['Charges']
+                total_amount = module_list['Amount'] * module_list['Charges']
             else:
                 total_run_time = module_list['CycleTime']
                 total_amount = module_list['Amount']
@@ -1226,7 +1226,7 @@ class Fit(object):
             if module_list['ReactivationDelay']:
                 total_run_time += module_list['ReactivationDelay']
 
-            cap_per_second += total_amount/(total_run_time/1000)
+            cap_per_second += total_amount / (total_run_time / 1000)
 
         self.__capUsed = cap_per_second
 
@@ -1236,7 +1236,7 @@ class Fit(object):
             self.__capState = simulation_matrix['Matrix']['Stability']['FailedToRunModulesTime']
         else:
             low_water_mark = simulation_matrix['Matrix']['Stability']['LowWaterMark']
-            self.__capStable = round(low_water_mark/self.ship.getModifiedItemAttr("capacitorCapacity"), 2)
+            self.__capStable = round(low_water_mark / self.ship.getModifiedItemAttr("capacitorCapacity"), 2)
             self.__capState = simulation_matrix['Matrix']['Stability']['LowWaterMarkTime']
 
     @property

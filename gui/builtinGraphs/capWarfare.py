@@ -58,7 +58,7 @@ class capWarfareGraph(Graph):
         capacitor_recharge = fit.ship.getModifiedItemAttr("rechargeRate")
 
         try:
-           projected = fit.__extraDrains
+            projected = fit.__extraDrains
         except AttributeError:
             projected = False
 

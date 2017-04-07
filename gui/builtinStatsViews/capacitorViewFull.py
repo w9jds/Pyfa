@@ -108,8 +108,8 @@ class CapacitorViewFull(StatsView):
         chargeSizer.Add(wx.StaticText(parent, wx.ID_ANY, " GJ/s"), 0, wx.ALIGN_CENTER)
 
     def refreshPanel(self, fit):
-        #If we did anything intresting, we'd update our labels to reflect the new fit's stats here
-        stats= (
+        # If we did anything intresting, we'd update our labels to reflect the new fit's stats here
+        stats = (
             ("label%sCapacitorCapacity", lambda: fit.ship.getModifiedItemAttr("capacitorCapacity"), 3, 0, 9),
             ("label%sCapacitorRecharge", lambda: fit.capRecharge['DeltaAmount'], 3, 0, 0),
             ("label%sCapacitorDischarge", lambda: fit.capUsed, 3, 0, 0),
@@ -133,7 +133,7 @@ class CapacitorViewFull(StatsView):
             value = value if value is not None else 0
 
             if labelName == "label%sCapacitorRecharge":
-                tooltip_value = "Peak recharge at: " + str(peak_percentage*100) + "%"
+                tooltip_value = "Peak recharge at: " + str(peak_percentage * 100) + "%"
             elif labelName == "label%sCapacitorDischarge":
                 tooltip_value = "Capacitor delta from local and projected modules.\nNeut Resistance: {0:.0f}%".format(neut_resist)
             else:
@@ -173,8 +173,6 @@ class CapacitorViewFull(StatsView):
                     t = "(%ds)" % capState
             else:
                 t = ""
-
-        #s = "Stable: " if capStable else "Lasts "
 
         getattr(self, lblNameState % panel).SetLabel(s)
         getattr(self, lblNameTime % panel).SetLabel(t)
