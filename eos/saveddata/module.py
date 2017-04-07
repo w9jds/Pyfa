@@ -27,6 +27,7 @@ from eos.effectHandlerHelpers import HandledItem, HandledCharge
 from eos.enum import Enum
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
 from eos.saveddata.citadel import Citadel
+from eos.config import settings as eos_settings
 
 pyfalog = Logger(__name__)
 
@@ -201,7 +202,10 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def isCapitalSize(self):
-        return self.getModifiedItemAttr("volume", 0) >= 4000
+        if eos_settings['strictFitting']:
+            return self.getModifiedItemAttr("volume", 0) >= 4000
+        else:
+            return False
 
     @property
     def hpBeforeReload(self):
@@ -413,8 +417,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 if shipGroup is not None:
                     fitsOnGroup.add(shipGroup)
 
-        if (len(fitsOnGroup) > 0 or len(
-                fitsOnType) > 0) and fit.ship.item.group.ID not in fitsOnGroup and fit.ship.item.ID not in fitsOnType:
+        if (len(fitsOnGroup) > 0 or len(fitsOnType) > 0) and \
+                        fit.ship.item.group.ID not in fitsOnGroup and fit.ship.item.ID not in fitsOnType and eos_settings['strictFitting'] is True:
             return False
 
         # AFAIK Citadel modules will always be restricted based on canFitShipType/Group. If we are fitting to a Citadel
