@@ -208,6 +208,15 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             return False
 
     @property
+    def fueledMultiplier(self):
+        if self.charge and self.charge.name == "Nanite Repair Paste":
+            multiplier = 3
+        else:
+            multiplier = 1
+
+        return multiplier
+
+    @property
     def hpBeforeReload(self):
         """
         If item is some kind of repairer with charges, calculate
@@ -373,24 +382,26 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def reloadTime(self):
-        # Get reload time from attrs first, then use
-        # custom value specified otherwise (e.g. in effects)
-        moduleReloadTime = self.getModifiedItemAttr("reloadTime")
-        if moduleReloadTime is None:
-            moduleReloadTime = self.__reloadTime
+        # Determine if we'll take into account reload time or not
+        if hasattr(self, 'owner'):
+            factor_reload = getattr(self.owner, "factorReload", True)
+        else:
+            factor_reload = True
+
+        if factor_reload:
+            # Get reload time from attrs first, then use
+            # custom value specified otherwise (e.g. in effects)
+            moduleReloadTime = self.getModifiedItemAttr("reloadTime")
+            if moduleReloadTime is None:
+                moduleReloadTime = self.__reloadTime
+        else:
+            moduleReloadTime = 0
+
         return moduleReloadTime
 
     @reloadTime.setter
     def reloadTime(self, milliseconds):
         self.__reloadTime = milliseconds
-
-    @property
-    def forceReload(self):
-        return self.__reloadForce
-
-    @forceReload.setter
-    def forceReload(self, type):
-        self.__reloadForce = type
 
     def fits(self, fit, hardpointLimit=True):
         slot = self.slot
@@ -685,13 +696,10 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def cycleTime(self):
-        # Determine if we'll take into account reload time or not
-        factorReload = self.owner.factorReload if self.forceReload is None else self.forceReload
-
         numShots = self.numShots
         speed = self.rawCycleTime
 
-        if factorReload and self.charge:
+        if self.charge:
             raw_reload_time = self.reloadTime
         else:
             raw_reload_time = 0.0
