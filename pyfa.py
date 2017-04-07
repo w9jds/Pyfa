@@ -26,6 +26,9 @@ import sys
 import traceback
 from imp import find_module
 from optparse import AmbiguousOptionError, BadOptionError, OptionParser
+from multiprocessing import freeze_support
+
+from service.serviceThreads import executeStartupThreads
 
 from logbook import CRITICAL, DEBUG, ERROR, FingersCrossedHandler, INFO, Logger, NestedSetup, NullHandler, StreamHandler, TimedRotatingFileHandler, WARNING, \
     __version__ as logbook_version
@@ -106,7 +109,6 @@ def handleGUIException(exc_type, exc_value, exc_traceback):
     tb = traceback.format_tb(exc_traceback)
 
     try:
-
         # Try and output to our log handler
         with logging_setup.threadbound():
             module_list = list(set(sys.modules) & set(globals()))
@@ -191,6 +193,7 @@ else:
     options.logginglevel = ERROR
 
 if __name__ == "__main__":
+    freeze_support()
     # Configure paths
     if options.rootsavedata is True:
         config.saveInRoot = True
@@ -280,6 +283,9 @@ if __name__ == "__main__":
 
     with logging_setup.threadbound():
         pyfalog.info("Starting Pyfa")
+
+        pyfalog.info("Starting threads")
+        executeStartupThreads()
 
         pyfalog.info("Logbook version: {0}", logbook_version)
 
