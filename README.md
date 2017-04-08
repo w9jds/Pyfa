@@ -14,16 +14,16 @@ pyfa, short for **py**thon **f**itting **a**ssistant, allows you to create, expe
 ### Windows
 
 _*Release Downloads*_:
-[x86](https://ci.appveyor.com/api/projects/Ebag333/pyfa-nr5qw/artifacts/pyfa.zip?branch=master&job=Environment%3A%20PYTHON%3DC%3A%5CPython27%2C%20PYTHON_VERSION%3D2.7.x%2C%20PYTHON_ARCH%3D32)
- | 
-[x64](https://ci.appveyor.com/api/projects/Ebag333/pyfa-nr5qw/artifacts/pyfa.zip?branch=master&job=Environment%3A%20PYTHON%3DC%3A%5CPython27-x64%2C%20PYTHON_VERSION%3D2.7.x%2C%20PYTHON_ARCH%3D64)
+[Current Release](https://github.com/Pyfa-fit/Pyfa/releases)
 
 _*Development Downloads*_:
 [x86](https://ci.appveyor.com/api/projects/Ebag333/pyfa-nr5qw/artifacts/pyfa.zip?branch=development&job=Environment%3A%20PYTHON%3DC%3A%5CPython27%2C%20PYTHON_VERSION%3D2.7.x%2C%20PYTHON_ARCH%3D32)
  | 
 [x64](https://ci.appveyor.com/api/projects/Ebag333/pyfa-nr5qw/artifacts/pyfa.zip?branch=development&job=Environment%3A%20PYTHON%3DC%3A%5CPython27-x64%2C%20PYTHON_VERSION%3D2.7.x%2C%20PYTHON_ARCH%3D64)
 
-The latest version along with release notes can always be found on the project's [Releases](https://github.com/Pyfa-fit/Pyfa/releases) page. pyfa will notify you if you are running an outdated version.
+The latest version along with release notes can always be found on the project's [Releases](https://github.com/Pyfa-fit/Pyfa/releases) page. pyfa will notify you if you are running an outdated version.  
+
+Development releases will have newer features, and may not function correctly. Use at your own risk.
 
 ## Installation
 Windows users are supplied self-contained builds of pyfa on the [latest releases](https://github.com/Pyfa-fit/Pyfa/releases/latest) page. An `.exe` installer is also available for Windows builds. Linux and Mac users can run pyfa using their distribution's Python interpreter. There is no official self-contained package for Linux or Mac (a feature currently in progress).
