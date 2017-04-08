@@ -7,15 +7,15 @@ type = "passive"
 
 def handler(fit, src, context):
     fit.fighters.filteredItemMultiply(lambda mod: mod.item.requiresSkill("Fighters"), "shieldCapacity",
-                                   src.getModifiedItemAttr("fighterBonusShieldCapacityPercent"))
+                                      src.getModifiedItemAttr("fighterBonusShieldCapacityPercent"))
     fit.fighters.filteredItemMultiply(lambda mod: mod.item.requiresSkill("Fighters"), "maxVelocity",
-                                   src.getModifiedItemAttr("fighterBonusVelocityPercent"), stackingPenalties=True)
+                                      src.getModifiedItemAttr("fighterBonusVelocityPercent"), stackingPenalties=True)
     fit.fighters.filteredItemMultiply(lambda mod: mod.item.requiresSkill("Fighters"),
-                                   "fighterAbilityAttackMissileDuration",
-                                   src.getModifiedItemAttr("fighterBonusROFPercent"), stackingPenalties=True)
+                                      "fighterAbilityAttackMissileDuration",
+                                      src.getModifiedItemAttr("fighterBonusROFPercent"), stackingPenalties=True)
     fit.fighters.filteredItemMultiply(lambda mod: mod.item.requiresSkill("Fighters"), "fighterAbilityAttackTurretDuration",
-                                   src.getModifiedItemAttr("fighterBonusROFPercent"), stackingPenalties=True)
+                                      src.getModifiedItemAttr("fighterBonusROFPercent"), stackingPenalties=True)
     fit.fighters.filteredItemMultiply(lambda mod: mod.item.requiresSkill("Fighters"), "fighterAbilityMissilesDuration",
-                                   src.getModifiedItemAttr("fighterBonusROFPercent"), stackingPenalties=True)
+                                      src.getModifiedItemAttr("fighterBonusROFPercent"), stackingPenalties=True)
     fit.fighters.filteredItemMultiply(lambda mod: mod.item.requiresSkill("Fighters"), "shieldRechargeRate",
-                                   src.getModifiedItemAttr("fighterBonusShieldRechargePercent"))
+                                      src.getModifiedItemAttr("fighterBonusShieldRechargePercent"))

@@ -32,7 +32,6 @@ from eos.saveddata.module import Module, Slot, Rack
 from gui.builtinViewColumns.state import State
 from gui.bitmapLoader import BitmapLoader
 import gui.builtinViews.emptyView
-from gui.utils.exportHtml import exportHtml
 from logbook import Logger
 from gui.chromeTabs import EVT_NOTEBOOK_PAGE_CHANGED
 
@@ -268,18 +267,17 @@ class FittingView(d.Display):
         We also refresh the fit of the new current page in case
         delete fit caused change in stats (projected)
         """
-        fitID = event.fitID
-
-        if fitID == self.getActiveFit():
+        if event.fitID == self.getActiveFit():
             self.parent.DeletePage(self.parent.GetPageIndex(self))
 
         try:
             # Sometimes there is no active page after deletion, hence the try block
             sFit = Fit.getInstance()
-            sFit.refreshFit(self.getActiveFit())
+            fit = sFit.getFit(self.getActiveFit())
+            sFit.recalc(fit)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
         except wx._core.PyDeadObjectError:
-            pyfalog.warning("Caught dead object")
+            pyfalog.error("Caught dead object")
             pass
 
         event.Skip()
@@ -336,7 +334,7 @@ class FittingView(d.Display):
                     populate = sFit.appendModule(fitID, itemID)
                     if populate is not None:
                         self.slotsChanged()
-                        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+                        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID, action="modadd", typeID=itemID))
 
         event.Skip()
 
@@ -357,7 +355,7 @@ class FittingView(d.Display):
 
         if populate is not None:
             self.slotsChanged()
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID, action="moddel", typeID=module.item.ID))
 
     def addModule(self, x, y, srcIdx):
         """Add a module from the market browser"""
@@ -370,7 +368,8 @@ class FittingView(d.Display):
             if moduleChanged is None:
                 # the new module doesn't fit in specified slot, try to simply append it
                 wx.PostEvent(self.mainFrame, gui.marketBrowser.ItemSelected(itemID=srcIdx))
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
+
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit(), action="modadd", typeID=srcIdx))
 
     def swapCargo(self, x, y, srcIdx):
         """Swap a module from cargo to fitting window"""
@@ -381,10 +380,13 @@ class FittingView(d.Display):
             module = self.mods[dstRow]
 
             sFit = Fit.getInstance()
+            fit = sFit.getFit(self.activeFitID)
+            typeID = fit.cargo[srcIdx].item.ID
+
             sFit.moveCargoToModule(self.mainFrame.getActiveFit(), module.modPosition, srcIdx,
                                    mstate.CmdDown() and module.isEmpty)
 
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit()))
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit(), action="modadd", typeID=typeID))
 
     def swapItems(self, x, y, srcIdx):
         """Swap two modules in fitting window"""
@@ -481,11 +483,9 @@ class FittingView(d.Display):
                     self.populate(self.mods)
                 self.refresh(self.mods)
 
-                exportHtml.getInstance().refreshFittingHtml()
-
             self.Show(self.activeFitID is not None and self.activeFitID == event.fitID)
         except wx._core.PyDeadObjectError:
-            pyfalog.warning("Caught dead object")
+            pyfalog.error("Caught dead object")
         finally:
             event.Skip()
 
@@ -582,11 +582,13 @@ class FittingView(d.Display):
         else:
             event.Skip()
 
-    slotColourMap = {1: wx.Colour(250, 235, 204),  # yellow = low slots
-                     2: wx.Colour(188, 215, 241),  # blue   = mid slots
-                     3: wx.Colour(235, 204, 209),  # red    = high slots
-                     4: '',
-                     5: ''}
+    slotColourMap = {
+        1: wx.Colour(250, 235, 204),  # yellow = low slots
+        2: wx.Colour(188, 215, 241),  # blue   = mid slots
+        3: wx.Colour(235, 204, 209),  # red    = high slots
+        4: '',
+        5: ''
+    }
 
     def slotColour(self, slot):
         return self.slotColourMap.get(slot) or self.GetBackgroundColour()

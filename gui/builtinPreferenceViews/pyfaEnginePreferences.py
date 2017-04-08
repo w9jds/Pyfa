@@ -5,6 +5,7 @@ import wx
 from service.fit import Fit
 from gui.bitmapLoader import BitmapLoader
 from gui.preferenceView import PreferenceView
+from service.settings import EOSSettings
 
 logger = logging.getLogger(__name__)
 
@@ -14,14 +15,13 @@ class PFFittingEnginePref(PreferenceView):
 
     def __init__(self):
         self.dirtySettings = False
+        self.engine_settings = EOSSettings.getInstance()
 
     def refreshPanel(self, fit):
         pass
 
     # noinspection PyAttributeOutsideInit
     def populatePanel(self, panel):
-        # self.openFitsSettings = service.SettingsProvider.getInstance().getSettings("pyfaPrevOpenFits", {"enabled": False, "pyfaOpenFits": []})
-
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.stTitle = wx.StaticText(panel, wx.ID_ANY, self.title, wx.DefaultPosition, wx.DefaultSize, 0)
@@ -35,6 +35,17 @@ class PFFittingEnginePref(PreferenceView):
         self.cbGlobalForceReload = wx.CheckBox(panel, wx.ID_ANY, u"Factor in reload time when calculating capacitor usage, damage, and tank.",
                                                wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbGlobalForceReload, 0, wx.ALL | wx.EXPAND, 5)
+
+        self.cbUniversalAdaptiveArmorHardener = wx.CheckBox(panel, wx.ID_ANY,
+                                                            u"When damage profile is Uniform, set Reactive Armor Hardener to match (old behavior).",
+                                                            wx.DefaultPosition, wx.DefaultSize, 0)
+        mainSizer.Add(self.cbUniversalAdaptiveArmorHardener, 0, wx.ALL | wx.EXPAND, 5)
+
+        self.cbStrictFitting = wx.CheckBox(panel, wx.ID_ANY,
+                                           u"Only allow fits that strictly match fitting rules. If this is disabled, fits allowed may not work in EVE." +
+                                           u"\n(Only recommended for expert players)",
+                                           wx.DefaultPosition, wx.DefaultSize, 0)
+        mainSizer.Add(self.cbStrictFitting, 0, wx.ALL | wx.EXPAND, 5)
 
         # Future code once new cap sim is implemented
         '''
@@ -63,14 +74,25 @@ class PFFittingEnginePref(PreferenceView):
         self.sFit = Fit.getInstance()
 
         self.cbGlobalForceReload.SetValue(self.sFit.serviceFittingOptions["useGlobalForceReload"])
-
         self.cbGlobalForceReload.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalForceReloadStateChange)
+
+        self.cbUniversalAdaptiveArmorHardener.SetValue(self.engine_settings.get("useStaticAdaptiveArmorHardener"))
+        self.cbUniversalAdaptiveArmorHardener.Bind(wx.EVT_CHECKBOX, self.OnCBUniversalAdaptiveArmorHardenerChange)
+
+        self.cbStrictFitting.SetValue(self.engine_settings.get("strictFitting"))
+        self.cbStrictFitting.Bind(wx.EVT_CHECKBOX, self.OnCBStrictFittingChange)
 
         panel.SetSizer(mainSizer)
         panel.Layout()
 
     def OnCBGlobalForceReloadStateChange(self, event):
         self.sFit.serviceFittingOptions["useGlobalForceReload"] = self.cbGlobalForceReload.GetValue()
+
+    def OnCBUniversalAdaptiveArmorHardenerChange(self, event):
+        self.engine_settings.set("useStaticAdaptiveArmorHardener", self.cbUniversalAdaptiveArmorHardener.GetValue())
+
+    def OnCBStrictFittingChange(self, event):
+        self.engine_settings.set("strictFitting", self.cbStrictFitting.GetValue())
 
     def getImage(self):
         return BitmapLoader.getBitmap("settings_fitting", "gui")

@@ -99,10 +99,10 @@ class APIConnection(object):
         if additional_headers is None:
             additional_headers = {}
         if user_agent is None:
-            user_agent = "pyfa/{0} ({1})".format(config.version, config.tag)
+            user_agent = "pyfa-fit/{0} ({1})".format(config.version, config.tag)
         session.headers.update({
             "User-Agent": user_agent,
-            "Accept": "application/json",
+            "Accept"    : "application/json",
         })
         session.headers.update(additional_headers)
         session.mount('https://public-crest.eveonline.com', HTTPAdapter())
@@ -243,9 +243,13 @@ class EVE(APIConnection):
         self.set_auth_values(res)
 
     def temptoken_authorize(self, access_token=None, expires_in=0, refresh_token=None):
-        self.set_auth_values({'access_token': access_token,
-                              'refresh_token': refresh_token,
-                              'expires_in': expires_in})
+        self.set_auth_values(
+                {
+                    'access_token' : access_token,
+                    'refresh_token': refresh_token,
+                    'expires_in'   : expires_in,
+                }
+        )
 
 
 class AuthedConnection(EVE):

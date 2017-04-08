@@ -23,6 +23,7 @@ from sqlalchemy.orm import reconstructor
 
 import eos.db
 from eqBase import EqBase
+from eos.saveddata.price import Price as types_Price
 
 try:
     from collections import OrderedDict
@@ -32,6 +33,8 @@ except ImportError:
 from logbook import Logger
 
 pyfalog = Logger(__name__)
+# Keep a list of handlers that fail to import so we don't keep trying repeatedly.
+badHandlers = []
 
 
 class Effect(EqBase):
@@ -159,34 +162,51 @@ class Effect(EqBase):
         Grab the handler, type and runTime from the effect code if it exists,
         if it doesn't, set dummy values and add a dummy handler
         """
-        try:
-            self.__effectModule = effectModule = __import__('eos.effects.' + self.handlerName, fromlist=True)
-            self.__handler = getattr(effectModule, "handler", effectDummy)
-            self.__runTime = getattr(effectModule, "runTime", "normal")
-            self.__activeByDefault = getattr(effectModule, "activeByDefault", True)
-            t = getattr(effectModule, "type", None)
+        global badHandlers
 
-            t = t if isinstance(t, tuple) or t is None else (t,)
-            self.__type = t
-        except (ImportError) as e:
-            # Effect probably doesn't exist, so create a dummy effect and flag it with a warning.
+        # Skip if we've tried to import before and failed
+        if self.handlerName not in badHandlers:
+            try:
+                self.__effectModule = effectModule = __import__('eos.effects.' + self.handlerName, fromlist=True)
+                self.__handler = getattr(effectModule, "handler", effectDummy)
+                self.__runTime = getattr(effectModule, "runTime", "normal")
+                self.__activeByDefault = getattr(effectModule, "activeByDefault", True)
+                t = getattr(effectModule, "type", None)
+
+                t = t if isinstance(t, tuple) or t is None else (t,)
+                self.__type = t
+            except (ImportError) as e:
+                # Effect probably doesn't exist, so create a dummy effect and flag it with a warning.
+                self.__handler = effectDummy
+                self.__runTime = "normal"
+                self.__activeByDefault = True
+                self.__type = None
+                pyfalog.debug("ImportError generating handler: {0}", e)
+                badHandlers.append(self.handlerName)
+            except (AttributeError) as e:
+                # Effect probably exists but there is an issue with it.  Turn it into a dummy effect so we can continue, but flag it with an error.
+                self.__handler = effectDummy
+                self.__runTime = "normal"
+                self.__activeByDefault = True
+                self.__type = None
+                pyfalog.error("AttributeError generating handler: {0}", e)
+                badHandlers.append(self.handlerName)
+            except Exception as e:
+                self.__handler = effectDummy
+                self.__runTime = "normal"
+                self.__activeByDefault = True
+                self.__type = None
+                pyfalog.critical("Exception generating handler:")
+                pyfalog.critical(e)
+                badHandlers.append(self.handlerName)
+
+            self.__generated = True
+        else:
+            # We've already failed on this one, just pass a dummy effect back
             self.__handler = effectDummy
             self.__runTime = "normal"
             self.__activeByDefault = True
             self.__type = None
-            pyfalog.warning("ImportError generating handler: {0}", e)
-        except (AttributeError) as e:
-            # Effect probably exists but there is an issue with it.  Turn it into a dummy effect so we can continue, but flag it with an error.
-            self.__handler = effectDummy
-            self.__runTime = "normal"
-            self.__activeByDefault = True
-            self.__type = None
-            pyfalog.error("AttributeError generating handler: {0}", e)
-        except Exception as e:
-            pyfalog.critical("Exception generating handler:")
-            pyfalog.critical(e)
-
-        self.__generated = True
 
     def getattr(self, key):
         if not self.__generated:
@@ -418,6 +438,34 @@ class Item(EqBase):
                 return True
 
         return False
+
+    @property
+    def price(self):
+        try:
+            if not hasattr(self, "__price"):
+                self.__price = types_Price(self.ID)
+
+            # Get the price from the DB
+            price = eos.db.getPrice(self.ID)
+
+            if price:
+                if self.__price.time < price.time:
+                    # DB object is newer than local object, update the local object
+                    self.__price = price
+            else:
+                pyfalog.debug("Unable to fetch item price from database.")
+
+            return self.__price
+
+        except Exception as e:
+            # We want to catch our failure and log it, but don't bail out for a single missing price tag.
+            pyfalog.error("Failed to get price for typeID: {0}", self.ID)
+            pyfalog.error(e)
+            if not self.__price.price:
+                self.__price.price = 0
+            self.__price.failed = True
+
+        return self.__price
 
     def __repr__(self):
         return "Item(ID={}, name={}) at {}".format(

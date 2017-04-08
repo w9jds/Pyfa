@@ -27,6 +27,7 @@ import gui.globalEvents as GE
 from gui.bitmapLoader import BitmapLoader
 
 from logbook import Logger
+
 pyfalog = Logger(__name__)
 
 if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
@@ -157,7 +158,7 @@ class MainMenuBar(wx.MenuBar):
         helpMenu = wx.Menu()
         self.Append(helpMenu, "&Help")
         helpMenu.Append(self.wikiId, "Wiki", "Go to wiki on GitHub")
-        helpMenu.Append(self.forumId, "Forums", "Go to EVE Online Forum thread")
+        # helpMenu.Append(self.forumId, "Forums", "Go to EVE Online Forum thread")
         helpMenu.AppendSeparator()
         helpMenu.Append(self.importDatabaseDefaultsId, "Import D&atabase Defaults", "Imports missing database defaults")
         helpMenu.AppendSeparator()

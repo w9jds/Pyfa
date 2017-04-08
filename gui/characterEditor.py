@@ -34,6 +34,7 @@ from service.character import Character
 from service.network import AuthenticationError, TimeoutError
 from service.market import Market
 from logbook import Logger
+
 pyfalog = Logger(__name__)
 
 

@@ -46,11 +46,11 @@ class CheckUpdateThread(threading.Thread):
         network = Network.getInstance()
 
         try:
-            response = network.request('https://api.github.com/repos/pyfa-org/Pyfa/releases', network.UPDATE)
+            response = network.request('https://api.github.com/repos/Pyfa-fit/Pyfa/releases', network.UPDATE)
             jsonResponse = json.loads(response.read())
             jsonResponse.sort(
-                key=lambda x: calendar.timegm(dateutil.parser.parse(x['published_at']).utctimetuple()),
-                reverse=True
+                    key=lambda x: calendar.timegm(dateutil.parser.parse(x['published_at']).utctimetuple()),
+                    reverse=True
             )
 
             for release in jsonResponse:
@@ -74,7 +74,7 @@ class CheckUpdateThread(threading.Thread):
 
                 if config.tag is 'git' and \
                         not release['prerelease'] and \
-                        self.versiontuple(rVersion) >= self.versiontuple(config.version):
+                                self.versiontuple(rVersion) >= self.versiontuple(config.version):
                     wx.CallAfter(self.callback, release)  # git (dev/Singularity) -> Stable
                 elif config.expansionName is not "Singularity":
                     if release['prerelease']:

@@ -166,9 +166,10 @@ class Miscellanea(ViewColumn):
             trackingSpeedBonus = stuff.getModifiedItemAttr("trackingSpeedBonus")
 
             trackingDisruptorAttributes = {
-                "optimal range": optimalRangeBonus,
-                "falloff range": falloffRangeBonus,
-                "tracking speed": trackingSpeedBonus}
+                "optimal range" : optimalRangeBonus,
+                "falloff range" : falloffRangeBonus,
+                "tracking speed": trackingSpeedBonus
+            }
 
             isTrackingDisruptor = any(map(lambda x: x is not None and x != 0, trackingDisruptorAttributes.values()))
 
@@ -181,9 +182,10 @@ class Miscellanea(ViewColumn):
 
             guidanceDisruptorAttributes = {
                 "explosion velocity": explosionVelocityBonus,
-                "explosion radius": explosionRadiusBonus,
-                "flight time": flightTimeBonus,
-                "missile velocity": missileVelocityBonus}
+                "explosion radius"  : explosionRadiusBonus,
+                "flight time"       : flightTimeBonus,
+                "missile velocity"  : missileVelocityBonus
+            }
 
             isGuidanceDisruptor = any(map(lambda x: x is not None and x != 0, guidanceDisruptorAttributes.values()))
 
@@ -217,18 +219,18 @@ class Miscellanea(ViewColumn):
 
             if displayMax == displayMin or displayMin is None:
                 text = "{0}".format(
-                    formatAmount(displayMax, 3, 0, 3),
+                        formatAmount(displayMax, 3, 0, 3),
                 )
             else:
                 text = "{0} | {1}".format(
-                    formatAmount(displayMax, 3, 0, 3),
-                    formatAmount(displayMin, 3, 0, 3),
+                        formatAmount(displayMax, 3, 0, 3),
+                        formatAmount(displayMin, 3, 0, 3),
                 )
             tooltip = "ECM Jammer Strength:\n{0} Gravimetric | {1} Ladar | {2} Magnetometric | {3} Radar".format(
-                formatAmount(grav, 3, 0, 3),
-                formatAmount(ladar, 3, 0, 3),
-                formatAmount(magnet, 3, 0, 3),
-                formatAmount(radar, 3, 0, 3),
+                    formatAmount(grav, 3, 0, 3),
+                    formatAmount(ladar, 3, 0, 3),
+                    formatAmount(magnet, 3, 0, 3),
+                    formatAmount(radar, 3, 0, 3),
             )
             return text, tooltip
         elif itemGroup in ("Remote Sensor Booster", "Sensor Booster", "Signal Amplifier"):
@@ -239,14 +241,14 @@ class Miscellanea(ViewColumn):
                 return "", None
 
             text = "{0}% | {1}% | {2}%".format(
-                formatAmount(scanResBonus, 3, 0, 3),
-                formatAmount(lockRangeBonus, 3, 0, 3),
-                formatAmount(gravBonus, 3, 0, 3),
+                    formatAmount(scanResBonus, 3, 0, 3),
+                    formatAmount(lockRangeBonus, 3, 0, 3),
+                    formatAmount(gravBonus, 3, 0, 3),
             )
             tooltip = "Applied bonuses:\n{0}% scan resolution | {1}% lock range | {2}% sensor strength".format(
-                formatAmount(scanResBonus, 3, 0, 3),
-                formatAmount(lockRangeBonus, 3, 0, 3),
-                formatAmount(gravBonus, 3, 0, 3),
+                    formatAmount(scanResBonus, 3, 0, 3),
+                    formatAmount(lockRangeBonus, 3, 0, 3),
+                    formatAmount(gravBonus, 3, 0, 3),
             )
             return text, tooltip
         elif itemGroup in ("Projected ECCM", "ECCM", "Sensor Backup Array"):
@@ -281,7 +283,7 @@ class Miscellanea(ViewColumn):
             return text, tooltip
         elif itemGroup == "Remote Armor Repairer":
             repAmount = stuff.getModifiedItemAttr("armorDamageAmount")
-            cycleTime = stuff.getModifiedItemAttr("duration")
+            cycleTime = stuff.cycleTime
             if not repAmount or not cycleTime:
                 return "", None
             repPerSec = float(repAmount) * 1000 / cycleTime
@@ -402,7 +404,7 @@ class Miscellanea(ViewColumn):
             return text, tooltip
         elif itemGroup in ("Frequency Mining Laser", "Strip Miner", "Mining Laser", "Gas Cloud Harvester", "Mining Drone"):
             miningAmount = stuff.getModifiedItemAttr("specialtyMiningAmount") or stuff.getModifiedItemAttr("miningAmount")
-            cycleTime = getattr(stuff, 'cycleTime', stuff.getModifiedItemAttr("duration"))
+            cycleTime = getattr(stuff, 'cycleTime', stuff.cycleTime)
             if not miningAmount or not cycleTime:
                 return "", None
             minePerSec = (float(miningAmount) * 1000 / cycleTime)
@@ -414,7 +416,7 @@ class Miscellanea(ViewColumn):
             shieldAmount = stuff.getModifiedItemAttr("shieldBonus")
             hullAmount = stuff.getModifiedItemAttr("structureDamageAmount")
             repAmount = armorAmount or shieldAmount or hullAmount
-            cycleTime = stuff.getModifiedItemAttr("duration")
+            cycleTime = stuff.cycleTime
             if not repAmount or not cycleTime:
                 return "", None
             repPerSec = float(repAmount) * 1000 / cycleTime
@@ -438,7 +440,7 @@ class Miscellanea(ViewColumn):
             tooltip = "Energy neutralization per second"
             return text, tooltip
         elif itemGroup == "Micro Jump Drive":
-            cycleTime = stuff.getModifiedItemAttr("duration") / 1000
+            cycleTime = stuff.cycleTime / 1000
             text = "{0}s".format(cycleTime)
             tooltip = "Spoolup time"
             return text, tooltip
@@ -504,15 +506,15 @@ class Miscellanea(ViewColumn):
             duration = cycles * cycleTime / 1000
             for number_of_cycles in {5, 10, 25}:
                 tooltip = "{0}\n{1} charges lasts {2} seconds ({3} cycles)".format(
-                    tooltip,
-                    formatAmount(number_of_cycles * cycles, 3, 0, 3),
-                    formatAmount((duration + reload_time) * number_of_cycles, 3, 0, 3),
-                    formatAmount(number_of_cycles, 3, 0, 3)
+                        tooltip,
+                        formatAmount(number_of_cycles * cycles, 3, 0, 3),
+                        formatAmount((duration + reload_time) * number_of_cycles, 3, 0, 3),
+                        formatAmount(number_of_cycles, 3, 0, 3)
                 )
             text = "{0} / {1}s (+{2}s)".format(
-                formatAmount(ehp, 3, 0, 9),
-                formatAmount(duration, 3, 0, 3),
-                formatAmount(reload_time, 3, 0, 3)
+                    formatAmount(ehp, 3, 0, 9),
+                    formatAmount(duration, 3, 0, 3),
+                    formatAmount(reload_time, 3, 0, 3)
             )
 
             return text, tooltip
@@ -523,16 +525,16 @@ class Miscellanea(ViewColumn):
             itemArmorResistanceShiftHardenerExp = (1 - stuff.getModifiedItemAttr("armorExplosiveDamageResonance")) * 100
 
             text = "{0}% | {1}% | {2}% | {3}%".format(
-                formatAmount(itemArmorResistanceShiftHardenerEM, 3, 0, 3),
-                formatAmount(itemArmorResistanceShiftHardenerTherm, 3, 0, 3),
-                formatAmount(itemArmorResistanceShiftHardenerKin, 3, 0, 3),
-                formatAmount(itemArmorResistanceShiftHardenerExp, 3, 0, 3),
+                    formatAmount(itemArmorResistanceShiftHardenerEM, 3, 0, 3),
+                    formatAmount(itemArmorResistanceShiftHardenerTherm, 3, 0, 3),
+                    formatAmount(itemArmorResistanceShiftHardenerKin, 3, 0, 3),
+                    formatAmount(itemArmorResistanceShiftHardenerExp, 3, 0, 3),
             )
             tooltip = "Resistances Shifted to Damage Profile:\n{0}% EM | {1}% Therm | {2}% Kin | {3}% Exp".format(
-                formatAmount(itemArmorResistanceShiftHardenerEM, 3, 0, 3),
-                formatAmount(itemArmorResistanceShiftHardenerTherm, 3, 0, 3),
-                formatAmount(itemArmorResistanceShiftHardenerKin, 3, 0, 3),
-                formatAmount(itemArmorResistanceShiftHardenerExp, 3, 0, 3),
+                    formatAmount(itemArmorResistanceShiftHardenerEM, 3, 0, 3),
+                    formatAmount(itemArmorResistanceShiftHardenerTherm, 3, 0, 3),
+                    formatAmount(itemArmorResistanceShiftHardenerKin, 3, 0, 3),
+                    formatAmount(itemArmorResistanceShiftHardenerExp, 3, 0, 3),
             )
             return text, tooltip
         elif stuff.charge is not None:

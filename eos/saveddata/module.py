@@ -27,6 +27,7 @@ from eos.effectHandlerHelpers import HandledItem, HandledCharge
 from eos.enum import Enum
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
 from eos.saveddata.citadel import Citadel
+from eos.config import settings as eos_settings
 
 pyfalog = Logger(__name__)
 
@@ -201,7 +202,19 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def isCapitalSize(self):
-        return self.getModifiedItemAttr("volume", 0) >= 4000
+        if eos_settings['strictFitting']:
+            return self.getModifiedItemAttr("volume", 0) >= 4000
+        else:
+            return False
+
+    @property
+    def fueledMultiplier(self):
+        if self.charge and self.charge.name == "Nanite Repair Paste":
+            multiplier = 3
+        else:
+            multiplier = 1
+
+        return multiplier
 
     @property
     def hpBeforeReload(self):
@@ -330,8 +343,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                     func = self.getModifiedItemAttr
 
                 volley = sum(map(
-                    lambda attr: (func("%sDamage" % attr) or 0) * (1 - getattr(targetResists, "%sAmount" % attr, 0)),
-                    self.DAMAGE_TYPES))
+                        lambda attr: (func("%sDamage" % attr) or 0) * (1 - getattr(targetResists, "%sAmount" % attr, 0)),
+                        self.DAMAGE_TYPES))
                 volley *= self.getModifiedItemAttr("damageMultiplier") or 1
                 if volley:
                     cycleTime = self.cycleTime
@@ -348,7 +361,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             else:
                 if self.state >= State.ACTIVE:
                     volley = self.getModifiedItemAttr("specialtyMiningAmount") or self.getModifiedItemAttr(
-                        "miningAmount") or 0
+                            "miningAmount") or 0
                     if volley:
                         cycleTime = self.cycleTime
                         self.__miningyield = volley / (cycleTime / 1000.0)
@@ -369,24 +382,26 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def reloadTime(self):
-        # Get reload time from attrs first, then use
-        # custom value specified otherwise (e.g. in effects)
-        moduleReloadTime = self.getModifiedItemAttr("reloadTime")
-        if moduleReloadTime is None:
-            moduleReloadTime = self.__reloadTime
+        # Determine if we'll take into account reload time or not
+        if hasattr(self, 'owner'):
+            factor_reload = getattr(self.owner, "factorReload", True)
+        else:
+            factor_reload = True
+
+        if factor_reload:
+            # Get reload time from attrs first, then use
+            # custom value specified otherwise (e.g. in effects)
+            moduleReloadTime = self.getModifiedItemAttr("reloadTime")
+            if moduleReloadTime is None:
+                moduleReloadTime = self.__reloadTime
+        else:
+            moduleReloadTime = 0
+
         return moduleReloadTime
 
     @reloadTime.setter
     def reloadTime(self, milliseconds):
         self.__reloadTime = milliseconds
-
-    @property
-    def forceReload(self):
-        return self.__reloadForce
-
-    @forceReload.setter
-    def forceReload(self, type):
-        self.__reloadForce = type
 
     def fits(self, fit, hardpointLimit=True):
         slot = self.slot
@@ -413,8 +428,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 if shipGroup is not None:
                     fitsOnGroup.add(shipGroup)
 
-        if (len(fitsOnGroup) > 0 or len(
-                fitsOnType) > 0) and fit.ship.item.group.ID not in fitsOnGroup and fit.ship.item.ID not in fitsOnType:
+        if (len(fitsOnGroup) > 0 or len(fitsOnType) > 0) and \
+                        fit.ship.item.group.ID not in fitsOnGroup and fit.ship.item.ID not in fitsOnType and eos_settings['strictFitting'] is True:
             return False
 
         # AFAIK Citadel modules will always be restricted based on canFitShipType/Group. If we are fitting to a Citadel
@@ -559,8 +574,10 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @staticmethod
     def __calculateHardpoint(item):
-        effectHardpointMap = {"turretFitted": Hardpoint.TURRET,
-                              "launcherFitted": Hardpoint.MISSILE}
+        effectHardpointMap = {
+            "turretFitted"  : Hardpoint.TURRET,
+            "launcherFitted": Hardpoint.MISSILE
+        }
 
         if item is None:
             return Hardpoint.NONE
@@ -573,12 +590,14 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @staticmethod
     def __calculateSlot(item):
-        effectSlotMap = {"rigSlot": Slot.RIG,
-                         "loPower": Slot.LOW,
-                         "medPower": Slot.MED,
-                         "hiPower": Slot.HIGH,
-                         "subSystem": Slot.SUBSYSTEM,
-                         "serviceSlot": Slot.SERVICE}
+        effectSlotMap = {
+            "rigSlot"    : Slot.RIG,
+            "loPower"    : Slot.LOW,
+            "medPower"   : Slot.MED,
+            "hiPower"    : Slot.HIGH,
+            "subSystem"  : Slot.SUBSYSTEM,
+            "serviceSlot": Slot.SERVICE
+        }
         if item is None:
             return None
         for effectName, slot in effectSlotMap.iteritems():
@@ -591,9 +610,11 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @validates("ID", "itemID", "ammoID")
     def validator(self, key, val):
-        map = {"ID": lambda _val: isinstance(_val, int),
-               "itemID": lambda _val: _val is None or isinstance(_val, int),
-               "ammoID": lambda _val: isinstance(_val, int)}
+        map = {
+            "ID"    : lambda _val: isinstance(_val, int),
+            "itemID": lambda _val: _val is None or isinstance(_val, int),
+            "ammoID": lambda _val: isinstance(_val, int)
+        }
 
         if not map[key](val):
             raise ValueError(str(val) + " is not a valid value for " + key)
@@ -637,8 +658,8 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                     if effect.runTime == runTime and \
                             effect.activeByDefault and \
                             (effect.isType("offline") or
-                                (effect.isType("passive") and self.state >= State.ONLINE) or
-                                (effect.isType("active") and self.state >= State.ACTIVE)) and \
+                                 (effect.isType("passive") and self.state >= State.ONLINE) or
+                                 (effect.isType("active") and self.state >= State.ACTIVE)) and \
                             (not gang or (gang and effect.isType("gang"))):
 
                         chargeContext = ("moduleCharge",)
@@ -675,13 +696,10 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @property
     def cycleTime(self):
-        # Determine if we'll take into account reload time or not
-        factorReload = self.owner.factorReload if self.forceReload is None else self.forceReload
-
         numShots = self.numShots
         speed = self.rawCycleTime
 
-        if factorReload and self.charge:
+        if self.charge:
             raw_reload_time = self.reloadTime
         else:
             raw_reload_time = 0.0
@@ -760,7 +778,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     def __repr__(self):
         if self.item:
             return "Module(ID={}, name={}) at {}".format(
-                self.item.ID, self.item.name, hex(id(self))
+                    self.item.ID, self.item.name, hex(id(self))
             )
         else:
             return "EmptyModule() at {}".format(hex(id(self)))

@@ -93,7 +93,7 @@ class FighterView(wx.Panel):
                 used = fit.getSlotsUsed(slot)
                 total = fit.getNumSlots(slot)
                 color = wx.Colour(204, 51, 51) if used > total else wx.SystemSettings_GetColour(
-                    wx.SYS_COLOUR_WINDOWTEXT)
+                        wx.SYS_COLOUR_WINDOWTEXT)
 
                 lbl = getattr(self, "label%sUsed" % x.capitalize())
                 lbl.SetLabel(str(int(used)))

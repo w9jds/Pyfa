@@ -29,7 +29,8 @@ pyfalog = Logger(__name__)
 
 
 class SettingsProvider(object):
-    BASE_PATH = os.path.join(config.savePath, 'settings')
+    if config.savePath:
+        BASE_PATH = os.path.join(config.savePath, 'settings')
     settings = {}
     _instance = None
 
@@ -41,36 +42,38 @@ class SettingsProvider(object):
         return cls._instance
 
     def __init__(self):
-        if not os.path.exists(self.BASE_PATH):
-            os.mkdir(self.BASE_PATH)
+        if hasattr(self, 'BASE_PATH'):
+            if not os.path.exists(self.BASE_PATH):
+                os.mkdir(self.BASE_PATH)
 
     def getSettings(self, area, defaults=None):
 
+        if defaults is None:
+            defaults = []
+
         s = self.settings.get(area)
-        if s is None:
+
+        if s is None and hasattr(self, 'BASE_PATH'):
             p = os.path.join(self.BASE_PATH, area)
 
-            if not os.path.exists(p):
-                info = {}
-                if defaults:
-                    for item in defaults:
-                        info[item] = defaults[item]
-
-            else:
+            if os.path.exists(p):
+                # noinspection PyBroadException
                 try:
                     f = open(p, "rb")
                     info = cPickle.load(f)
-                    for item in defaults:
-                        if item not in info:
-                            info[item] = defaults[item]
-
                 except:
                     info = {}
-                    if defaults:
-                        for item in defaults:
-                            info[item] = defaults[item]
+                    # TODO: Add logging message that we failed to open the file
+            else:
+                info = {}
 
-            self.settings[area] = s = Settings(p, info)
+            s = Settings(p, info)
+
+        for item in defaults:
+            if item not in s.info:
+                s.info[item] = defaults[item]
+
+        self.settings[area] = s
 
         return s
 
@@ -150,18 +153,18 @@ class NetworkSettings(object):
         self.serviceNetworkSettings = SettingsProvider.getInstance().getSettings(
                 "pyfaServiceNetworkSettings", serviceNetworkDefaultSettings)
 
-    def isEnabled(self, type):
-        if type & self.serviceNetworkSettings["access"]:
+    def isEnabled(self, setting_type):
+        if setting_type & self.serviceNetworkSettings["access"]:
             return True
         return False
 
-    def toggleAccess(self, type, toggle=True):
+    def toggleAccess(self, setting_type, toggle=True):
         bitfield = self.serviceNetworkSettings["access"]
 
         if toggle:  # Turn bit on
-            self.serviceNetworkSettings["access"] = type | bitfield
+            self.serviceNetworkSettings["access"] = setting_type | bitfield
         else:  # Turn bit off
-            self.serviceNetworkSettings["access"] = ~type & bitfield
+            self.serviceNetworkSettings["access"] = ~setting_type & bitfield
 
     def getMode(self):
         return self.serviceNetworkSettings["mode"]
@@ -187,8 +190,8 @@ class NetworkSettings(object):
     def setPort(self, port):
         self.serviceNetworkSettings["port"] = port
 
-    def setType(self, type):
-        self.serviceNetworkSettings["type"] = type
+    def setType(self, setting_type):
+        self.serviceNetworkSettings["type"] = setting_type
 
     def setAccess(self, access):
         self.serviceNetworkSettings["access"] = access
@@ -260,7 +263,6 @@ class HTMLExportSettings(object):
 
     def __init__(self):
         serviceHTMLExportDefaultSettings = {
-            "enabled": False,
             "path"   : config.pyfaPath + os.sep + 'pyfaFits.html',
             "minimal": False
         }
@@ -268,12 +270,6 @@ class HTMLExportSettings(object):
                 "pyfaServiceHTMLExportSettings",
                 serviceHTMLExportDefaultSettings
         )
-
-    def getEnabled(self):
-        return self.serviceHTMLExportSettings["enabled"]
-
-    def setEnabled(self, enabled):
-        self.serviceHTMLExportSettings["enabled"] = enabled
 
     def getMinimalEnabled(self):
         return self.serviceHTMLExportSettings["minimal"]
@@ -312,11 +308,11 @@ class UpdateSettings(object):
                 serviceUpdateDefaultSettings
         )
 
-    def get(self, type):
-        return self.serviceUpdateSettings[type]
+    def get(self, setting_type):
+        return self.serviceUpdateSettings[setting_type]
 
-    def set(self, type, value):
-        self.serviceUpdateSettings[type] = value
+    def set(self, setting_type, value):
+        self.serviceUpdateSettings[setting_type] = value
 
 
 class CRESTSettings(object):
@@ -340,11 +336,39 @@ class CRESTSettings(object):
                 serviceCRESTDefaultSettings
         )
 
+    def get(self, setting_type):
+        return self.serviceCRESTSettings[setting_type]
+
+    def set(self, setting_type, value):
+        self.serviceCRESTSettings[setting_type] = value
+
+
+class GeneralSettings(object):
+    _instance = None
+
+    @classmethod
+    def getInstance(cls):
+        if cls._instance is None:
+            cls._instance = GeneralSettings()
+
+        return cls._instance
+
+    def __init__(self):
+        # mode
+        # 0 - Do not show
+        # 1 - Minimal/Text Only View
+        # 2 - Full View
+        GeneralDefaultSettings = {
+            "itemSearchLimit": 150,
+        }
+
+        self.serviceGeneralDefaultSettings = SettingsProvider.getInstance().getSettings("pyfaGeneralSettings", GeneralDefaultSettings)
+
     def get(self, type):
-        return self.serviceCRESTSettings[type]
+        return self.serviceGeneralDefaultSettings[type]
 
     def set(self, type, value):
-        self.serviceCRESTSettings[type] = value
+        self.serviceGeneralDefaultSettings[type] = value
 
 
 class StatViewSettings(object):
@@ -442,22 +466,22 @@ class ContextMenuSettings(object):
 
 
 class EOSSettings(object):
-        _instance = None
+    _instance = None
 
-        @classmethod
-        def getInstance(cls):
-            if cls._instance is None:
-                cls._instance = EOSSettings()
+    @classmethod
+    def getInstance(cls):
+        if cls._instance is None:
+            cls._instance = EOSSettings()
 
-            return cls._instance
+        return cls._instance
 
-        def __init__(self):
-            self.EOSSettings = SettingsProvider.getInstance().getSettings("pyfaEOSSettings", eos.config.settings)
+    def __init__(self):
+        self.EOSSettings = SettingsProvider.getInstance().getSettings("pyfaEOSSettings", eos.config.settings)
 
-        def get(self, type):
-            return self.EOSSettings[type]
+    def get(self, type):
+        return self.EOSSettings[type]
 
-        def set(self, type, value):
-            self.EOSSettings[type] = value
+    def set(self, type, value):
+        self.EOSSettings[type] = value
 
 # @todo: migrate fit settings (from fit service) here?

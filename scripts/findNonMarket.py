@@ -86,9 +86,9 @@ for typeid in publishedtypes:
 
 # Category maps
 # { categoryid : set(typeid) }
-globalmap_categoryid_typeid =  {}
+globalmap_categoryid_typeid = {}
 # { typeid : categoryid }
-globalmap_typeid_categoryid =  {}
+globalmap_typeid_categoryid = {}
 for typeid in publishedtypes:
     categoryid = 0
     cursor.execute(QUERY_GROUPID_CATEGORYID,
@@ -102,9 +102,9 @@ for typeid in publishedtypes:
 
 # Base type maps
 # { basetypeid : set(typeid) }
-globalmap_basetypeid_typeid =  {}
+globalmap_basetypeid_typeid = {}
 # { typeid : basetypeid }
-globalmap_typeid_basetypeid =  {}
+globalmap_typeid_basetypeid = {}
 for typeid in publishedtypes:
     # Not all typeIDs in the database have baseTypeID, so assign some
     # default value to it
@@ -124,9 +124,9 @@ for typeid in publishedtypes:
 # Market group maps - we won't use these for further processing, but
 # just as helper for composing other maps
 # { marketgroupid : set(typeid) }
-globalmap_marketgroupid_typeid =  {}
+globalmap_marketgroupid_typeid = {}
 # { typeid : set(marketgroupid) }
-globalmap_typeid_marketgroupid =  {}
+globalmap_typeid_marketgroupid = {}
 for typeid in publishedtypes:
     marketgroupid = 0
     cursor.execute(QUERY_TYPEID_MARKETGROUPID, (typeid,))
@@ -152,9 +152,10 @@ for marketgroupid in INITIALMARKETGROUPIDS:
         if cyclingmarketgroupid:
             if not cyclingmarketgroupid in globalmap_marketgroupid_typeid:
                 globalmap_marketgroupid_typeid[cyclingmarketgroupid] = set()
-            globalmap_marketgroupid_typeid[cyclingmarketgroupid].update\
-            (globalmap_marketgroupid_typeid[marketgroupid])
-        else: break
+            globalmap_marketgroupid_typeid[cyclingmarketgroupid].update \
+                (globalmap_marketgroupid_typeid[marketgroupid])
+        else:
+            break
 # Now, make a reverse map
 for marketgroupid, typeidset in globalmap_marketgroupid_typeid.items():
     for typeid in typeidset:
@@ -165,7 +166,7 @@ for marketgroupid, typeidset in globalmap_marketgroupid_typeid.items():
 # Combine market groups and variations
 # { marketgroupid : set(typeidwithvariations) }
 globalmap_marketgroupid_typeidwithvariations = \
-copy.deepcopy(globalmap_marketgroupid_typeid)
+    copy.deepcopy(globalmap_marketgroupid_typeid)
 # { typeidwithvariations : set(marketgroupid) }
 globalmap_typeidwithvariations_marketgroupid = {}
 for marketgroupid in globalmap_marketgroupid_typeidwithvariations:
@@ -177,21 +178,21 @@ for marketgroupid in globalmap_marketgroupid_typeidwithvariations:
                 # they're variation
                 if not variationid in globalmap_typeid_marketgroupid:
                     typestoadd.add(variationid)
-    globalmap_marketgroupid_typeidwithvariations[marketgroupid].update\
-    (typestoadd)
+    globalmap_marketgroupid_typeidwithvariations[marketgroupid].update \
+        (typestoadd)
 # Make reverse map using simple way too
 for marketgroupid, typeidwithvariationsset in \
-globalmap_marketgroupid_typeidwithvariations.items():
+        globalmap_marketgroupid_typeidwithvariations.items():
     for typeid in typeidwithvariationsset:
         if not typeid in globalmap_typeidwithvariations_marketgroupid:
             globalmap_typeidwithvariations_marketgroupid[typeid] = set()
         globalmap_typeidwithvariations_marketgroupid[typeid].add(marketgroupid)
 
-
 nonmarket = set()
 for typeid in publishedtypes:
     if not typeid in globalmap_typeidwithvariations_marketgroupid:
         nonmarket.add(typeid)
+
 
 def getItemAttrs(typeid):
     attrs = {}
@@ -207,6 +208,7 @@ def getItemAttrs(typeid):
         if row[2] is not None:
             attrs["capacity"] = row[2]
     return attrs
+
 
 def suggestMktGrp(typeid, mode="grp"):
     typecat = globalmap_typeid_categoryid[typeid]
@@ -260,7 +262,7 @@ def suggestMktGrp(typeid, mode="grp"):
         cursor.execute(QUERY_TYPEID_METAGROUPID, (co,))
         for row in cursor:
             metagrp = row[0]
-        if not metagrp in (0,1,2,14):
+        if not metagrp in (0, 1, 2, 14):
             similarity_factor *= 0.01
         if implantness or boosterness or cpu or power or droneBandwidthUsed or volume:
             cgrpattrs = getItemAttrs(co)
@@ -278,10 +280,10 @@ def suggestMktGrp(typeid, mode="grp"):
                 similarity_factor *= 0.01
         if cpu:
             if "cpu" in cgrpattrs and cgrpattrs["cpu"]:
-                    fct = cpu / cgrpattrs["cpu"]
-                    if fct > 1:
-                        fct = 1 / fct
-                    similarity_factor *= fct
+                fct = cpu / cgrpattrs["cpu"]
+                if fct > 1:
+                    fct = 1 / fct
+                similarity_factor *= fct
             else:
                 similarity_factor *= 0.01
         if power:
@@ -314,6 +316,7 @@ def suggestMktGrp(typeid, mode="grp"):
     else:
         winner = None
     return winner
+
 
 def suggestMetaGrp(typeid):
     typename = ""
@@ -408,7 +411,7 @@ for typeid in nonmarket:
             if prependparentid:
                 cursor_parentmarket2 = db.cursor()
                 cursor_parentmarket2.execute(QUERY_MARKETGROUPID_MARKETGROUPNAME,
-                               (prependparentid,))
+                                             (prependparentid,))
                 for row in cursor_parentmarket2:
                     marketgroupname = "{0} > {1}".format(row[0],
                                                          marketgroupname)
@@ -419,14 +422,13 @@ for typeid in nonmarket:
 
     map_typeid_stuff2[typename] = (mkt, marketgroupname)
 
-
     metagroupname = ""
     cursor.execute(QUERY_METAGROUPNAME_METAGROUPID,
                    (meta,))
     for row in cursor:
         metagroupname = row[0]
 
-    #print("---\nItem: {0}\nGroup: {1}\nSuggested market group: {2} ({3})\nMeta group: {4}".format(typename, grpname, marketgroupname, mkt, metagroupname))
+        # print("---\nItem: {0}\nGroup: {1}\nSuggested market group: {2} ({3})\nMeta group: {4}".format(typename, grpname, marketgroupname, mkt, metagroupname))
 
-#print("\n\nmap = {{ {0} }}".format(", ".join("{0}: ({1}, {2})".format(key, map_typeid_stuff[key][0], map_typeid_stuff[key][1]) for key in sorted(map_typeid_stuff))))
+# print("\n\nmap = {{ {0} }}".format(", ".join("{0}: ({1}, {2})".format(key, map_typeid_stuff[key][0], map_typeid_stuff[key][1]) for key in sorted(map_typeid_stuff))))
 print("---\n{0}".format("\n".join("\"{0}\": {1}, # {2}".format(key, map_typeid_stuff2[key][0], map_typeid_stuff2[key][1]) for key in sorted(map_typeid_stuff2))))

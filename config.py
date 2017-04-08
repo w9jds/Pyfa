@@ -12,15 +12,17 @@ except ImportError:
     pyfalog.warning("Failed to import: configforced")
     configforced = None
 
-
 # Turns on debug mode
 debug = False
 # Defines if our saveddata will be in pyfa root or not
 saveInRoot = False
 
 # Version data
-version = "1.28.2"
-tag = "git"
+version = "2017.04.07"
+if hasattr(sys, 'frozen'):
+    tag = "(release)"
+else:
+    tag = "(live)"
 expansionName = "YC119.3"
 expansionVersion = "1.0"
 evemonMinVersion = "4081"
@@ -29,6 +31,7 @@ pyfaPath = None
 savePath = None
 saveDB = None
 gameDB = None
+logPath = None
 
 
 def isFrozen():

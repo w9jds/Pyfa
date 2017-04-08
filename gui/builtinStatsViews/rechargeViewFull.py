@@ -63,8 +63,10 @@ class RechargeViewFull(StatsView):
 
         # Add an empty label first for correct alignment.
         sizerTankStats.Add(wx.StaticText(contentPanel, wx.ID_ANY, ""), 0)
-        toolTipText = {"shieldPassive": "Passive shield recharge", "shieldActive": "Active shield boost",
-                       "armorActive": "Armor repair amount", "hullActive": "Hull repair amount"}
+        toolTipText = {
+            "shieldPassive": "Passive shield recharge", "shieldActive": "Active shield boost",
+            "armorActive"  : "Armor repair amount", "hullActive": "Hull repair amount"
+        }
         for tankType in ("shieldPassive", "shieldActive", "armorActive", "hullActive"):
             bitmap = BitmapLoader.getStaticBitmap("%s_big" % tankType, contentPanel, "gui")
             tooltip = wx.ToolTip(toolTipText[tankType])
@@ -88,14 +90,19 @@ class RechargeViewFull(StatsView):
 
                 box = wx.BoxSizer(wx.HORIZONTAL)
                 box.Add(lbl, 0, wx.EXPAND)
-                box.Add(wx.StaticText(contentPanel, wx.ID_ANY, " HP/s"), 0, wx.EXPAND)
+
+                unitlbl = wx.StaticText(contentPanel, wx.ID_ANY, " EHP/s")
+                setattr(self, "unitLabelTank%s%s" % (stability.capitalize(), tankTypeCap), unitlbl)
+                box.Add(unitlbl, 0, wx.EXPAND)
 
                 sizerTankStats.Add(box, 0, wx.ALIGN_CENTRE)
 
         contentPanel.Layout()
 
     def refreshPanel(self, fit):
-        # If we did anything intresting, we'd update our labels to reflect the new fit's stats here
+        # If we did anything interesting, we'd update our labels to reflect the new fit's stats here
+
+        unit = " EHP/s" if self.parent.nameViewMap['resistancesViewFull'].showEffective else " HP/s"
 
         for stability in ("reinforced", "sustained"):
             if stability == "reinforced" and fit is not None:
@@ -107,6 +114,8 @@ class RechargeViewFull(StatsView):
 
             for name in ("shield", "armor", "hull"):
                 lbl = getattr(self, "labelTank%s%sActive" % (stability.capitalize(), name.capitalize()))
+                unitlbl = getattr(self, "unitLabelTank%s%sActive" % (stability.capitalize(), name.capitalize()))
+                unitlbl.SetLabel(unit)
                 if tank is not None:
                     lbl.SetLabel("%.1f" % tank["%sRepair" % name])
                 else:
@@ -116,6 +125,8 @@ class RechargeViewFull(StatsView):
             label = getattr(self, "labelTankSustainedShieldPassive")
             value = fit.effectiveTank["passiveShield"] if self.effective else fit.tank["passiveShield"]
             label.SetLabel(formatAmount(value, 3, 0, 9))
+            unitlbl = getattr(self, "unitLabelTankSustainedShieldPassive")
+            unitlbl.SetLabel(unit)
 
         else:
             value = 0

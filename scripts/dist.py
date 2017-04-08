@@ -21,7 +21,7 @@ installed). To build the EXE file, `win` must be included in the platforms to
 be built.
 """
 
-#@todo: ensure build directory can be written to
+# @todo: ensure build directory can be written to
 # todo: default build and dist directories
 
 from optparse import OptionParser
@@ -36,6 +36,7 @@ import zipfile
 import errno
 from subprocess import call
 
+
 class FileStub():
     def write(self, *args):
         pass
@@ -43,7 +44,10 @@ class FileStub():
     def flush(self, *args):
         pass
 
+
 i = 0
+
+
 def loginfo(path, names):
     # Print out a "progress" and return directories / files to ignore
     global i
@@ -53,25 +57,29 @@ def loginfo(path, names):
         sys.stdout.flush()
     return ()
 
+
 def copyanything(src, dst):
     try:
         shutil.copytree(src, dst, ignore=loginfo)
-    except: # python >2.5
+    except:  # python >2.5
         try:
             shutil.copy(src, dst)
         except:
             raise
 
+
 def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for x in range(size))
+
 
 def zipdir(path, zip):
     for root, dirs, files in os.walk(path):
         for file in files:
             zip.write(os.path.join(root, file))
 
+
 skels = ['win', 'src', 'mac', 'mac-deprecated']
-iscc =  "C:\Program Files (x86)\Inno Setup 5\ISCC.exe" # inno script location via wine
+iscc = "C:\Program Files (x86)\Inno Setup 5\ISCC.exe"  # inno script location via wine
 
 if __name__ == "__main__":
     oldstd = sys.stdout
@@ -81,7 +89,8 @@ if __name__ == "__main__":
     parser.add_option("-d", "--destination", dest="destination", help="Where to copy our distributable")
     parser.add_option("-p", "--platforms", dest="platforms", help="Comma-separated list of platforms to build", default=','.join(skels))
     parser.add_option("-q", "--quiet", dest="silent", action="store_true")
-    parser.add_option("-w", "--winexe", dest="winexe", action="store_true", help="Build the Windows installer file (needs Inno Setup). Must include 'win' in platform options")
+    parser.add_option("-w", "--winexe", dest="winexe", action="store_true",
+                      help="Build the Windows installer file (needs Inno Setup). Must include 'win' in platform options")
     parser.add_option("-z", "--zip", dest="zip", action="store_true", help="zip archive instead of tar")
 
     options, args = parser.parse_args()
@@ -100,7 +109,7 @@ if __name__ == "__main__":
         if skel not in options.platforms:
             continue
 
-        print "\n======== %s ========"%skel
+        print "\n======== %s ========" % skel
 
         info = {}
         config = {}
@@ -123,23 +132,23 @@ if __name__ == "__main__":
 
         git = False
         if config['tag'].lower() == "git":
-            try: # if there is a git repo associated with base, use master commit
+            try:  # if there is a git repo associated with base, use master commit
                 with open(os.path.join(options.base, ".git", "refs", "heads", "master"), 'r') as f:
                     id = f.readline()[0:6]
                     git = True
-            except: # else, use custom ID
+            except:  # else, use custom ID
                 id = id_generator()
             fileName = "pyfa-{}-{}-{}".format(now, id, info["os"])
         else:
             fileName = "pyfa-{}-{}-{}-{}".format(
-                config['version'],
-                config['expansionName'].lower(),
-                config['expansionVersion'],
-                info["os"]
+                    config['version'],
+                    config['expansionName'].lower(),
+                    config['expansionVersion'],
+                    info["os"]
             )
 
         archiveName = "{}.{}".format(fileName, "zip" if options.zip else "tar.bz2")
-        tmpDir = os.path.join(os.getcwd(), dirName) # tmp directory where files are copied
+        tmpDir = os.path.join(os.getcwd(), dirName)  # tmp directory where files are copied
         tmpFile = os.path.join(os.getcwd(), archiveName)
 
         try:
@@ -162,7 +171,7 @@ if __name__ == "__main__":
                         zipdir(dir, library)
                     library.write('pyfa.py', 'pyfa__main__.py')
                     library.write('config.py')
-            else: # platforms where we don't have a packaged library
+            else:  # platforms where we don't have a packaged library
                 print "Copying modules into", root
                 for dir in setup['packages']:
                     copyanything(dir, os.path.join(root, dir))
@@ -212,23 +221,23 @@ if __name__ == "__main__":
                 print "Compiling EXE"
 
                 if config['tag'].lower() == "git":
-                    if git:   # if git repo info available, use git commit
-                        expansion = "git-%s"%(id)
-                    else: # if there is no git repo, use timestamp
+                    if git:  # if git repo info available, use git commit
+                        expansion = "git-%s" % (id)
+                    else:  # if there is no git repo, use timestamp
                         expansion = now
-                else: # if code is Stable, use expansion name
-                   expansion = "%s %s"%(config['expansionName'], config['expansionVersion']),
+                else:  # if code is Stable, use expansion name
+                    expansion = "%s %s" % (config['expansionName'], config['expansionVersion']),
 
                 calllist = ["wine"] if 'win' not in sys.platform else []
 
                 call(calllist + [
                     iscc,
                     "pyfa-setup.iss",
-                    "/dMyAppVersion=%s"%(config['version']),
-                    "/dMyAppExpansion=%s"%(expansion),
+                    "/dMyAppVersion=%s" % (config['version']),
+                    "/dMyAppExpansion=%s" % (expansion),
                     "/dMyAppDir=pyfa",
-                    "/dMyOutputDir=%s"%destination,
-                    "/dMyOutputFile=%s"%fileName]) #stdout=devnull, stderr=devnull
+                    "/dMyOutputDir=%s" % destination,
+                    "/dMyOutputFile=%s" % fileName])  # stdout=devnull, stderr=devnull
 
                 print "EXE completed"
 
@@ -238,7 +247,7 @@ if __name__ == "__main__":
         finally:
             print "Deleting tmp files\n"
             try:
-                shutil.rmtree("dist") # Inno dir
+                shutil.rmtree("dist")  # Inno dir
             except:
                 pass
             try:

@@ -213,8 +213,8 @@ class exportHtmlThread(threading.Thread):
                         HTMLship = (
                             '        <li data-role="collapsible" data-iconpos="right" data-shadow="false" data-corners="false">\n'
                             '        <h2>' + ship.name + ' <span class="ui-li-count">' + str(
-                                len(fits)) + '</span></h2>\n'
-                                             '          <ul data-role="listview" data-shadow="false" data-inset="true" data-corners="false">\n'
+                                    len(fits)) + '</span></h2>\n'
+                                                 '          <ul data-role="listview" data-shadow="false" data-inset="true" data-corners="false">\n'
                         )
 
                         for fit in fits:
@@ -238,10 +238,10 @@ class exportHtmlThread(threading.Thread):
             if groupFits > 0:
                 # Market group header
                 HTML += (
-                    '    <li data-role="collapsible" data-iconpos="right" data-shadow="false" data-corners="false">\n'
-                    '      <h2>' + group.groupName + ' <span class="ui-li-count">' + str(groupFits) + '</span></h2>\n'
+                    '    <li data-role="collapsible" data-iconpos="right" data-shadow="false" data-corners="false">\n' +
+                    '      <h2>' + group.groupName + ' <span class="ui-li-count">' + str(groupFits) + '</span></h2>\n' +
                     '      <ul data-role="listview" data-shadow="false" data-inset="true" data-corners="false">\n' + HTMLgroup +
-                    '      </ul>\n'
+                    '      </ul>\n' +
                     '    </li>'
                 )
 

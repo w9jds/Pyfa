@@ -43,6 +43,7 @@ from eos.saveddata.citadel import Citadel
 from eos.saveddata.fit import Fit
 from service.market import Market
 from service.attribute import Attribute
+from service.price import Price as ServicePrice
 import gui.mainFrame
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
@@ -623,7 +624,7 @@ class ItemCompare(wx.Panel):
 
     def processPrices(self, prices):
         for i, price in enumerate(prices):
-            self.paramList.SetStringItem(i, len(self.attrs) + 1, formatAmount(price.price, 3, 3, 9, currency=True))
+            self.paramList.SetStringItem(i, len(self.attrs) + 1, formatAmount(price.value, 3, 3, 9, currency=True))
 
     def PopulateList(self, sort=None):
 
@@ -660,9 +661,6 @@ class ItemCompare(wx.Panel):
         self.paramList.InsertColumn(len(self.attrs) + 1, "Price")
         self.paramList.SetColumnWidth(len(self.attrs) + 1, 60)
 
-        sMkt = Market.getInstance()
-        sMkt.getPrices([x.ID for x in self.items], self.processPrices)
-
         for item in self.items:
             i = self.paramList.InsertStringItem(sys.maxint, item.name)
             for x, attr in enumerate(self.attrs.keys()):
@@ -677,6 +675,10 @@ class ItemCompare(wx.Panel):
                         valueUnit = formatAmount(value, 3, 0, 0)
 
                     self.paramList.SetStringItem(i, x + 1, valueUnit)
+
+                # Add prices
+                sPrice = ServicePrice.getInstance()
+                self.paramList.SetStringItem(i, len(self.attrs) + 1, formatAmount(sPrice.getPriceNow(item), 3, 3, 9, currency=True))
 
         self.paramList.RefreshRows()
         self.Layout()
@@ -1043,7 +1045,7 @@ class ItemAffectedBy(wx.Panel):
         container = {}
         for attrName in attributes.iterAfflictions():
             # if value is 0 or there has been no change from original to modified, return
-            if attributes[attrName] == (attributes.getOriginal(attrName) or 0):
+            if attributes[attrName] == (attributes.getOriginal(attrName, 0)):
                 continue
 
             for fit, afflictors in attributes.getAfflictions(attrName).iteritems():
@@ -1170,7 +1172,7 @@ class ItemAffectedBy(wx.Panel):
         container = {}
         for attrName in attributes.iterAfflictions():
             # if value is 0 or there has been no change from original to modified, return
-            if attributes[attrName] == (attributes.getOriginal(attrName) or 0):
+            if attributes[attrName] == (attributes.getOriginal(attrName, 0)):
                 continue
 
             for fit, afflictors in attributes.getAfflictions(attrName).iteritems():

@@ -80,8 +80,10 @@ class ResistancesViewFull(StatsView):
         # Add an empty label, then the rest.
         sizerResistances.Add(wx.StaticText(contentPanel, wx.ID_ANY), wx.GBPosition(row, col), wx.GBSpan(1, 1))
         col += 1
-        toolTipText = {"em": "Electromagnetic resistance", "thermal": "Thermal resistance",
-                       "kinetic": "Kinetic resistance", "explosive": "Explosive resistance"}
+        toolTipText = {
+            "em"     : "Electromagnetic resistance", "thermal": "Thermal resistance",
+            "kinetic": "Kinetic resistance", "explosive": "Explosive resistance"
+        }
         for damageType in ("em", "thermal", "kinetic", "explosive"):
             bitmap = BitmapLoader.getStaticBitmap("%s_big" % damageType, contentPanel, "gui")
             tooltip = wx.ToolTip(toolTipText[damageType])
@@ -103,8 +105,10 @@ class ResistancesViewFull(StatsView):
         gaugeColours = (((38, 133, 198), (52, 86, 98)), ((198, 38, 38), (83, 65, 67)), ((163, 163, 163), (74, 90, 93)),
                         ((198, 133, 38), (81, 83, 67)))
 
-        toolTipText = {"shield": "Shield resistance", "armor": "Armor resistance", "hull": "Hull resistance",
-                       "damagePattern": "Incoming damage pattern"}
+        toolTipText = {
+            "shield"       : "Shield resistance", "armor": "Armor resistance", "hull": "Hull resistance",
+            "damagePattern": "Incoming damage pattern"
+        }
         for tankType in ("shield", "armor", "hull", "separator", "damagePattern"):
             if tankType != "separator":
                 bitmap = BitmapLoader.getStaticBitmap("%s_big" % tankType, contentPanel, "gui")
@@ -197,7 +201,7 @@ class ResistancesViewFull(StatsView):
                 rrFactor = fit.ehp[tankType] / fit.hp[tankType]
                 lbl.SetLabel(formatAmount(ehp[tankType], 3, 0, 9))
                 lbl.SetToolTip(
-                    wx.ToolTip("%s: %d\nResist Multiplier: x%.2f" % (tankType.capitalize(), ehp[tankType], rrFactor)))
+                        wx.ToolTip("%s: %d\nResist Multiplier: x%.2f" % (tankType.capitalize(), ehp[tankType], rrFactor)))
             else:
                 lbl.SetLabel("0")
 

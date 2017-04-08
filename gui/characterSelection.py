@@ -25,6 +25,8 @@ import gui.mainFrame
 from service.character import Character
 from service.fit import Fit
 from logbook import Logger
+from eos.config import settings as eos_settings
+
 pyfalog = Logger(__name__)
 
 
@@ -49,6 +51,7 @@ class CharacterSelection(wx.Panel):
         self.cleanSkills = BitmapLoader.getBitmap("skill_big", "gui")
         self.redSkills = BitmapLoader.getBitmap("skillRed_big", "gui")
         self.greenSkills = BitmapLoader.getBitmap("skillGreen_big", "gui")
+        self.greenSkillsWarning = BitmapLoader.getBitmap("skillGreenWarning_big", "gui")
         self.refresh = BitmapLoader.getBitmap("refresh", "gui")
 
         self.btnRefresh = wx.BitmapButton(self, wx.ID_ANY, self.refresh)
@@ -167,7 +170,11 @@ class CharacterSelection(wx.Panel):
             sCharacter.skillReqsDict = {'charname': fit.character.name, 'skills': []}
             if len(reqs) == 0:
                 tip = "All skill prerequisites have been met"
-                self.skillReqsStaticBitmap.SetBitmap(self.greenSkills)
+
+                if eos_settings['strictFitting']:
+                    self.skillReqsStaticBitmap.SetBitmap(self.greenSkills)
+                else:
+                    self.skillReqsStaticBitmap.SetBitmap(self.greenSkillsWarning)
             else:
                 tip = "Skills required:\n"
                 condensed = sFit.serviceFittingOptions["compactSkills"]
@@ -177,7 +184,12 @@ class CharacterSelection(wx.Panel):
                         tip += "%s: %d\n" % (key, dict_[key])
                 else:
                     tip += self._buildSkillsTooltip(reqs)
+
                 self.skillReqsStaticBitmap.SetBitmap(self.redSkills)
+
+            if not eos_settings['strictFitting']:
+                tip = "Strict fitting is disabled.\nFits generated may not be legal in EVE. \n\n" + tip
+
             self.skillReqsStaticBitmap.SetToolTipString(tip.strip())
 
         if newCharID is None:
@@ -202,11 +214,11 @@ class CharacterSelection(wx.Panel):
             for name, info in reqs.iteritems():
                 level, ID, more = info
                 sCharacter.skillReqsDict['skills'].append({
-                    'item': currItem,
+                    'item'   : currItem,
                     'skillID': ID,
-                    'skill': name,
-                    'level': level,
-                    'indent': tabulationLevel,
+                    'skill'  : name,
+                    'level'  : level,
+                    'indent' : tabulationLevel,
                 })
 
                 tip += "%s%s: %d\n" % ("    " * tabulationLevel, name, level)
@@ -228,11 +240,11 @@ class CharacterSelection(wx.Panel):
             for name, info in reqs.iteritems():
                 level, ID, more = info
                 sCharacter.skillReqsDict['skills'].append({
-                    'item': currItem,
+                    'item'   : currItem,
                     'skillID': ID,
-                    'skill': name,
-                    'level': level,
-                    'indent': tabulationLevel,
+                    'skill'  : name,
+                    'level'  : level,
+                    'indent' : tabulationLevel,
                 })
 
                 if name not in skillsMap:

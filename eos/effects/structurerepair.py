@@ -8,5 +8,5 @@ runTime = "late"
 
 def handler(fit, module, context):
     amount = module.getModifiedItemAttr("structureDamageAmount")
-    speed = module.getModifiedItemAttr("duration") / 1000.0
+    speed = module.cycleTime / 1000.0
     fit.extraAttributes.increase("hullRepair", amount / speed)

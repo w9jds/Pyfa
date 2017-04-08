@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-#======================================================================
+# ======================================================================
 # Copyright (C) 2010 Anton Vorobyov
 #
 # This file is part of eos.
@@ -16,7 +16,7 @@
 #
 # You should have received a copy of the GNU Lesser General Public
 # License along with eos.  If not, see <http://www.gnu.org/licenses/>.
-#======================================================================
+# ======================================================================
 """
 Go through all effects and fill them with 'used by' comments.
 
@@ -66,7 +66,7 @@ usage = "usage: %prog --database=DB [--debug=DEBUG]"
 parser = OptionParser(usage=usage)
 parser.add_option("-d", "--database", help="path to eve cache data dump in \
     sqlite format, default to eve database file included in pyfa (../eve.db)",
-    type="string", default=os.path.join(script_dir, "..", "eve.db"))
+                  type="string", default=os.path.join(script_dir, "..", "eve.db"))
 parser.add_option("-e", "--effects", help="explicit comma-separated list of \
 effects to process", type="string", default="")
 parser.add_option("-r", "--remove", help="remove effect files that are not \
@@ -95,6 +95,7 @@ TYPENAMECOMBS_WEIGHT = 1.0
 # without any grouping
 LOWEST_SCORE = 0.7
 
+
 # Adjust scoring formulae
 def calc_innerscore(affected_decribed, affected_undescribed, total,
                     pereffect_totalaffected, weight=1.0):
@@ -110,8 +111,9 @@ def calc_innerscore(affected_decribed, affected_undescribed, total,
     # If group has just one item - it should have zero score
     affected_total_factor = affected_decribed + affected_undescribed - 1
     innerscore = (coverage_total ** 0.23) * coverage_additionalfactor * \
-    affected_total_factor * weight
+                 affected_total_factor * weight
     return innerscore
+
 
 def calc_outerscore(innerscore_dict, pereffect_totalaffected, weight):
     """Outer score calculation formula"""
@@ -120,7 +122,9 @@ def calc_outerscore(innerscore_dict, pereffect_totalaffected, weight):
         outerscore = innerscore_dict[max(innerscore_dict, key=lambda a:
         innerscore_dict.get(a))] * weight
         return outerscore
-    else: return 0.0
+    else:
+        return 0.0
+
 
 def validate_string(s):
     try:
@@ -131,6 +135,7 @@ def validate_string(s):
         return False
     else:
         return True
+
 
 # Connect to database and set up cursor
 db = sqlite3.connect(os.path.expanduser(options.database))
@@ -215,9 +220,9 @@ for typeid in publishedtypes:
 
 # Category maps
 # { categoryid : set(typeid) }
-globalmap_categoryid_typeid =  {}
+globalmap_categoryid_typeid = {}
 # { typeid : categoryid }
-globalmap_typeid_categoryid =  {}
+globalmap_typeid_categoryid = {}
 for typeid in publishedtypes:
     categoryid = 0
     cursor.execute(QUERY_GROUPID_CATEGORYID,
@@ -231,9 +236,9 @@ for typeid in publishedtypes:
 
 # Base type maps
 # { basetypeid : set(typeid) }
-globalmap_basetypeid_typeid =  {}
+globalmap_basetypeid_typeid = {}
 # { typeid : basetypeid }
-globalmap_typeid_basetypeid =  {}
+globalmap_typeid_basetypeid = {}
 for typeid in publishedtypes:
     # Not all typeIDs in the database have baseTypeID, so assign some
     # default value to it
@@ -253,9 +258,9 @@ for typeid in publishedtypes:
 # Market group maps - we won't use these for further processing, but
 # just as helper for composing other maps
 # { marketgroupid : set(typeid) }
-globalmap_marketgroupid_typeid =  {}
+globalmap_marketgroupid_typeid = {}
 # { typeid : set(marketgroupid) }
-globalmap_typeid_marketgroupid =  {}
+globalmap_typeid_marketgroupid = {}
 for typeid in publishedtypes:
     marketgroupid = 0
     cursor.execute(QUERY_TYPEID_MARKETGROUPID, (typeid,))
@@ -281,9 +286,10 @@ for marketgroupid in INITIALMARKETGROUPIDS:
         if cyclingmarketgroupid:
             if not cyclingmarketgroupid in globalmap_marketgroupid_typeid:
                 globalmap_marketgroupid_typeid[cyclingmarketgroupid] = set()
-            globalmap_marketgroupid_typeid[cyclingmarketgroupid].update\
-            (globalmap_marketgroupid_typeid[marketgroupid])
-        else: break
+            globalmap_marketgroupid_typeid[cyclingmarketgroupid].update \
+                (globalmap_marketgroupid_typeid[marketgroupid])
+        else:
+            break
 # Now, make a reverse map
 for marketgroupid, typeidset in globalmap_marketgroupid_typeid.items():
     for typeid in typeidset:
@@ -294,7 +300,7 @@ for marketgroupid, typeidset in globalmap_marketgroupid_typeid.items():
 # Combine market groups and variations
 # { marketgroupid : set(typeidwithvariations) }
 globalmap_marketgroupid_typeidwithvariations = \
-copy.deepcopy(globalmap_marketgroupid_typeid)
+    copy.deepcopy(globalmap_marketgroupid_typeid)
 # { typeidwithvariations : set(marketgroupid) }
 globalmap_typeidwithvariations_marketgroupid = {}
 for marketgroupid in globalmap_marketgroupid_typeidwithvariations:
@@ -306,11 +312,11 @@ for marketgroupid in globalmap_marketgroupid_typeidwithvariations:
                 # they're variation
                 if not variationid in globalmap_typeid_marketgroupid:
                     typestoadd.add(variationid)
-    globalmap_marketgroupid_typeidwithvariations[marketgroupid].update\
-    (typestoadd)
+    globalmap_marketgroupid_typeidwithvariations[marketgroupid].update \
+        (typestoadd)
 # Make reverse map using simple way too
 for marketgroupid, typeidwithvariationsset in \
-globalmap_marketgroupid_typeidwithvariations.items():
+        globalmap_marketgroupid_typeidwithvariations.items():
     for typeid in typeidwithvariationsset:
         if not typeid in globalmap_typeidwithvariations_marketgroupid:
             globalmap_typeidwithvariations_marketgroupid[typeid] = set()
@@ -321,9 +327,9 @@ globalmap_marketgroupid_typeidwithvariations.items():
 # categories (e.g. skills and modules) and length of original name to
 # assess word coverage of various type name combinations
 # { ((typenamecomb), categoryid) : set(typeid) }
-globalmap_typenamecombtuple_typeid =  {}
+globalmap_typenamecombtuple_typeid = {}
 # { typeid : (set((typenamecomb)), len(typename)) }
-globalmap_typeid_typenamecombtuple =  {}
+globalmap_typeid_typenamecombtuple = {}
 for typeid in publishedtypes:
     typename = ""
     cursor.execute(QUERY_TYPEID_TYPENAME, (typeid,))
@@ -340,11 +346,11 @@ for typeid in publishedtypes:
         # between them, for example: CX|-|1, Hardwiring| - |Inherent,
         # Zainou| |'Snapshot'
         separatingpattern_general = \
-        "((?P<left_part>[^ -]+)(?P<separator>[ -]+)(?P<right_part>([^ -].*)))"
+            "((?P<left_part>[^ -]+)(?P<separator>[ -]+)(?P<right_part>([^ -].*)))"
         # This will help to split names like those used in implants,
         # for example: ZET||500, EE||8
         separatingpattern_series = \
-        "((?P<left_part>[A-Za-z]{2,4})(?P<right_part>[0-9]{1,4}.*))"
+            "((?P<left_part>[A-Za-z]{2,4})(?P<right_part>[0-9]{1,4}.*))"
         # Check remainingstring using both criteria
         matchobject_general = re.match(separatingpattern_general,
                                        remainingstring)
@@ -397,7 +403,7 @@ for typeid in publishedtypes:
             globalmap_typenamecombtuple_typeid[typenamecombtuple].add(typeid)
             if not typeid in globalmap_typeid_typenamecombtuple:
                 globalmap_typeid_typenamecombtuple[typeid] = \
-                (set(), len(typenamesplitted))
+                    (set(), len(typenamesplitted))
             globalmap_typeid_typenamecombtuple[typeid][0].add(typenamecomb)
 
 if options.effects:
@@ -423,11 +429,11 @@ for effect_name in effect_list:
     else:
         if options.remove2:
             print("Warning: effect file " + effect_name +
-              " exists but is not in database, removing")
+                  " exists but is not in database, removing")
             os.remove(os.path.join(effects_path, effect_file))
         else:
             print("Warning: effect file " + effect_name +
-              " exists but is not in database")
+                  " exists but is not in database")
         continue
     for effectid in effectids:
         cursor.execute(QUERY_EFFECTID_TYPEID, (effectid,))
@@ -477,9 +483,9 @@ for effect_name in effect_list:
         for marketgroupid in marketGroupIDs:
             if not marketgroupid in effectmap_marketgroupid_typeidwithvars:
                 effectmap_marketgroupid_typeidwithvars[marketgroupid] = \
-                [set(), False]
-            effectmap_marketgroupid_typeidwithvars[marketgroupid][0].add\
-            (typeid)
+                    [set(), False]
+            effectmap_marketgroupid_typeidwithvars[marketgroupid][0].add \
+                (typeid)
 
     # Per-type name combination map
     # { ((typenamecomb), categoryid) : (set(typeid), describes) }
@@ -491,9 +497,9 @@ for effect_name in effect_list:
                                  globalmap_typeid_categoryid[typeid])
             if not typenamecombtuple in effectmap_typenamecombtuple_typeid:
                 effectmap_typenamecombtuple_typeid[typenamecombtuple] = \
-                [set(), False]
-            effectmap_typenamecombtuple_typeid[typenamecombtuple][0].add\
-            (typeid)
+                    [set(), False]
+            effectmap_typenamecombtuple_typeid[typenamecombtuple][0].add \
+                (typeid)
 
     stopdebugprints = False
     if DEBUG_LEVEL >= 1:
@@ -531,31 +537,31 @@ for effect_name in effect_list:
                 affected_decribed = len(affectedset.intersection
                                         (effect_describedtypes))
                 # Yet undescribed
-                affected_undescribed =  len(affectedset.difference
-                                            (effect_describedtypes))
+                affected_undescribed = len(affectedset.difference
+                                           (effect_describedtypes))
                 # Total number of items from this group (not
                 # necessarily affected by current effect)
                 total = len(globalmap_groupid_typeid[groupid])
                 # Calculate inner score and push it into score
                 # dictionary for current grouping type
-                groupscore[groupid] = calc_innerscore\
-                (affected_decribed, affected_undescribed, total,
-                 pereffect_totalaffected)
+                groupscore[groupid] = calc_innerscore \
+                    (affected_decribed, affected_undescribed, total,
+                     pereffect_totalaffected)
                 # Debug prints for inner data
                 if DEBUG_LEVEL >= 1 and not stopdebugprints:
                     cursor.execute(QUERY_GROUPID_GROUPNAME, (groupid,))
                     for row in cursor:
                         groupName = row[0]
                     coverage = (affected_decribed +
-                    affected_undescribed) / total * 100
+                                affected_undescribed) / total * 100
                     # If debug level is 1, print results only for
                     # 1st iteration
                     if DEBUG_LEVEL == 1:
                         printstr = "Group: {0}: {1}/{2} ({3:.3}%, inner \
 score: {4:.3})"
                         print(printstr.format(groupName,
-                              affected_undescribed, total, coverage,
-                              groupscore[groupid]))
+                                              affected_undescribed, total, coverage,
+                                              groupscore[groupid]))
                     # If it's 2, print results for each
                     # iteration, so we need to include number
                     # of already described items
@@ -563,8 +569,8 @@ score: {4:.3})"
                         printstr = "Group: {0}: {1}+{2}/{3} ({4:.3}%, \
 inner score: {5:.3})"
                         print(printstr.format(groupName,
-                              affected_undescribed, affected_decribed,
-                              total, coverage, groupscore[groupid]))
+                                              affected_undescribed, affected_decribed,
+                                              total, coverage, groupscore[groupid]))
         # Calculate outer score for this grouping type
         groupouterscore = calc_outerscore(groupscore,
                                           pereffect_totalaffected,
@@ -581,31 +587,31 @@ inner score: {5:.3})"
                 affectedset = effectmap_categoryid_typeid[categoryid][0]
                 affected_decribed = len(affectedset.intersection
                                         (effect_describedtypes))
-                affected_undescribed =  len(affectedset.difference
-                                            (effect_describedtypes))
+                affected_undescribed = len(affectedset.difference
+                                           (effect_describedtypes))
                 total = len(globalmap_categoryid_typeid[categoryid])
-                categoryscore[categoryid] = calc_innerscore\
-                (affected_decribed, affected_undescribed, total,
-                 pereffect_totalaffected)
+                categoryscore[categoryid] = calc_innerscore \
+                    (affected_decribed, affected_undescribed, total,
+                     pereffect_totalaffected)
                 if DEBUG_LEVEL >= 1 and not stopdebugprints:
                     cursor.execute(QUERY_CATEGORYID_CATEGORYNAME,
                                    (categoryid,))
                     for row in cursor:
                         categoryname = row[0]
                     coverage = (affected_decribed +
-                    affected_undescribed) / total * 100
+                                affected_undescribed) / total * 100
                     if DEBUG_LEVEL == 1:
                         printstr = "Category: {0}: {1}/{2} ({3:.3}%, \
 inner score: {4:.3})"
                         print(printstr.format(categoryname,
-                              affected_undescribed, total, coverage,
-                              categoryscore[categoryid]))
+                                              affected_undescribed, total, coverage,
+                                              categoryscore[categoryid]))
                     if DEBUG_LEVEL == 2:
                         printstr = "Category: {0}: {1}+{2}/{3} ({4:.3}%, \
 inner score: {5:.3})"
                         print(printstr.format(categoryname,
-                              affected_undescribed, affected_decribed,
-                              total, coverage, categoryscore[categoryid]))
+                                              affected_undescribed, affected_decribed,
+                                              total, coverage, categoryscore[categoryid]))
         categoryouterscore = calc_outerscore(categoryscore,
                                              pereffect_totalaffected,
                                              CATEGORY_WEIGHT)
@@ -620,54 +626,54 @@ inner score: {5:.3})"
                 affectedset = effectmap_basetypeid_typeid[basetypeid][0]
                 affected_decribed = len(affectedset.intersection
                                         (effect_describedtypes))
-                affected_undescribed =  len(affectedset.difference
-                                            (effect_describedtypes))
+                affected_undescribed = len(affectedset.difference
+                                           (effect_describedtypes))
                 total = len(globalmap_basetypeid_typeid[basetypeid])
-                basetypescore[basetypeid] = calc_innerscore\
-                (affected_decribed, affected_undescribed, total,
-                 pereffect_totalaffected)
+                basetypescore[basetypeid] = calc_innerscore \
+                    (affected_decribed, affected_undescribed, total,
+                     pereffect_totalaffected)
                 if DEBUG_LEVEL >= 1 and not stopdebugprints:
                     cursor.execute(QUERY_TYPEID_TYPENAME, (basetypeid,))
                     for row in cursor:
                         basetypename = row[0]
                     coverage = (affected_decribed +
-                    affected_undescribed) / total * 100
+                                affected_undescribed) / total * 100
                     if DEBUG_LEVEL == 1:
                         printstr = "Base item: {0}: {1}/{2} ({3:.3}%, \
 inner score: {4:.3})"
                         print(printstr.format(basetypename,
-                              affected_undescribed, total, coverage,
-                              basetypescore[basetypeid]))
+                                              affected_undescribed, total, coverage,
+                                              basetypescore[basetypeid]))
                     if DEBUG_LEVEL == 2:
                         printstr = "Base item: {0}: {1}+{2}/{3} ({4:.3}%, \
 inner score: {5:.3})"
                         print(printstr.format(basetypename,
-                              affected_undescribed, affected_decribed,
-                              total, coverage, basetypescore[basetypeid]))
+                                              affected_undescribed, affected_decribed,
+                                              total, coverage, basetypescore[basetypeid]))
         basetypeouterscore = calc_outerscore(basetypescore,
                                              pereffect_totalaffected,
                                              BASETYPE_WEIGHT)
-        #Print outer data
+        # Print outer data
         if DEBUG_LEVEL >= 1 and not stopdebugprints:
             printstr = "Base item outer score: {0:.3}"
             print(printstr.format(basetypeouterscore))
 
         marketgroupwithvarsscore = {}
         for marketgroupid in effectmap_marketgroupid_typeidwithvars:
-            describesflag = effectmap_marketgroupid_typeidwithvars\
-            [marketgroupid][1]
+            describesflag = effectmap_marketgroupid_typeidwithvars \
+                [marketgroupid][1]
             if not describesflag:
-                affectedset = effectmap_marketgroupid_typeidwithvars\
-                [marketgroupid][0]
+                affectedset = effectmap_marketgroupid_typeidwithvars \
+                    [marketgroupid][0]
                 affected_decribed = len(affectedset.intersection
                                         (effect_describedtypes))
-                affected_undescribed =  len(affectedset.difference
-                                            (effect_describedtypes))
+                affected_undescribed = len(affectedset.difference
+                                           (effect_describedtypes))
                 total = len(globalmap_marketgroupid_typeidwithvariations
                             [marketgroupid])
-                marketgroupwithvarsscore[marketgroupid] = calc_innerscore\
-                (affected_decribed, affected_undescribed, total,
-                 pereffect_totalaffected)
+                marketgroupwithvarsscore[marketgroupid] = calc_innerscore \
+                    (affected_decribed, affected_undescribed, total,
+                     pereffect_totalaffected)
                 if DEBUG_LEVEL >= 1 and not stopdebugprints:
                     cursor.execute(QUERY_MARKETGROUPID_MARKETGROUPNAME,
                                    (marketgroupid,))
@@ -676,78 +682,78 @@ inner score: {5:.3})"
                     # Prepend market group name with its parents
                     # names
                     prependparentid = marketgroupid
-                    #Limit depth in case if market groups form a loop
+                    # Limit depth in case if market groups form a loop
                     for depth in range(20):
                         cursor_parentmarket = db.cursor()
-                        cursor_parentmarket.execute\
-                        (QUERY_MARKETGROUPID_PARENTGROUPID,
-                         (prependparentid,))
+                        cursor_parentmarket.execute \
+                            (QUERY_MARKETGROUPID_PARENTGROUPID,
+                             (prependparentid,))
                         for row in cursor_parentmarket:
                             prependparentid = row[0]
                         if prependparentid:
-                            cursor.execute\
-                            (QUERY_MARKETGROUPID_MARKETGROUPNAME,
-                             (prependparentid,))
+                            cursor.execute \
+                                (QUERY_MARKETGROUPID_MARKETGROUPNAME,
+                                 (prependparentid,))
                             for row in cursor:
-                                marketgroupname = "{0} > {1}".format\
-                                (row[0],marketgroupname)
+                                marketgroupname = "{0} > {1}".format \
+                                    (row[0], marketgroupname)
                         else:
                             break
                     coverage = (affected_decribed +
-                    affected_undescribed) / total * 100
+                                affected_undescribed) / total * 100
                     if DEBUG_LEVEL == 1:
                         printstr = "Market group with variations: {0}: \
 {1}/{2} ({3:.3}%, inner score: {4:.3})"
                         print(printstr.format(marketgroupname,
-                              affected_undescribed, total, coverage,
-                              marketgroupwithvarsscore[marketgroupid]))
+                                              affected_undescribed, total, coverage,
+                                              marketgroupwithvarsscore[marketgroupid]))
                     if DEBUG_LEVEL == 2:
                         printstr = "Market group with variations: {0}: \
 {1}+{2}/{3} ({4:.3}%, inner score: {5:.3})"
                         print(printstr.format(marketgroupname,
-                              affected_undescribed,
-                              affected_decribed, total, coverage,
-                              marketgroupwithvarsscore[marketgroupid]))
-        marketgroupwithvarsouterscore = calc_outerscore\
-        (marketgroupwithvarsscore, pereffect_totalaffected,
-         MARKETGROUPWITHVARS_WEIGHT)
+                                              affected_undescribed,
+                                              affected_decribed, total, coverage,
+                                              marketgroupwithvarsscore[marketgroupid]))
+        marketgroupwithvarsouterscore = calc_outerscore \
+            (marketgroupwithvarsscore, pereffect_totalaffected,
+             MARKETGROUPWITHVARS_WEIGHT)
         if DEBUG_LEVEL >= 1 and not stopdebugprints:
             printstr = "Market group outer score: {0:.3}"
             print(printstr.format(marketgroupwithvarsouterscore))
 
         typenamecombscore = {}
         for typenamecombtuple in effectmap_typenamecombtuple_typeid:
-            describesflag = effectmap_typenamecombtuple_typeid\
-            [typenamecombtuple][1]
+            describesflag = effectmap_typenamecombtuple_typeid \
+                [typenamecombtuple][1]
             if not describesflag:
-                affectedset = effectmap_typenamecombtuple_typeid\
-                [typenamecombtuple][0]
+                affectedset = effectmap_typenamecombtuple_typeid \
+                    [typenamecombtuple][0]
                 affected_decribed = len(affectedset.intersection
                                         (effect_describedtypes))
-                affected_undescribed =  len(affectedset.difference
-                                            (effect_describedtypes))
+                affected_undescribed = len(affectedset.difference
+                                           (effect_describedtypes))
                 total = len(globalmap_typenamecombtuple_typeid
                             [typenamecombtuple])
                 # Type names are special: wee also need to consider
                 # how certain word combination covers full type
                 # name
                 averagecoverage = 0
-                itemsnamedlikethis = effectmap_typenamecombtuple_typeid\
-                [typenamecombtuple][0]
+                itemsnamedlikethis = effectmap_typenamecombtuple_typeid \
+                    [typenamecombtuple][0]
                 for typeid in itemsnamedlikethis:
                     # Add number of words in combination divided by
                     # total number of words from any given item
                     averagecoverage += len(typenamecombtuple[0]) / \
-                    globalmap_typeid_typenamecombtuple[typeid][1]
+                                       globalmap_typeid_typenamecombtuple[typeid][1]
                 # Then divide by number of items we checked, making
                 # it real average
                 averagecoverage = averagecoverage / len(itemsnamedlikethis)
                 # Pass average coverage as additional balancing
                 # factor with certain weight factor (80%)
                 typenamecombscore[typenamecombtuple] = \
-                calc_innerscore(affected_decribed, affected_undescribed,
-                                total, pereffect_totalaffected,
-                                0.2 + averagecoverage*0.8)
+                    calc_innerscore(affected_decribed, affected_undescribed,
+                                    total, pereffect_totalaffected,
+                                    0.2 + averagecoverage * 0.8)
                 if DEBUG_LEVEL >= 1 and not stopdebugprints:
                     typenamecombprintable = " ".join(typenamecombtuple[0])
                     coverage = (affected_decribed +
@@ -756,15 +762,15 @@ inner score: {5:.3})"
                         printstr = "Type name combination: \"{0}\": \
 {1}/{2} ({3:.3}%, inner score: {4:.3})"
                         print(printstr.format(typenamecombprintable,
-                              affected_undescribed, total, coverage,
-                              typenamecombscore[typenamecombtuple]))
+                                              affected_undescribed, total, coverage,
+                                              typenamecombscore[typenamecombtuple]))
                     if DEBUG_LEVEL == 2:
                         printstr = "Type name combination: \"{0}\": \
 {1}+{2}/{3} ({4:.3}%, inner score: {5:.3})"
                         print(printstr.format(typenamecombprintable,
-                              affected_undescribed, affected_decribed,
-                              total, coverage,
-                              typenamecombscore[typenamecombtuple]))
+                                              affected_undescribed, affected_decribed,
+                                              total, coverage,
+                                              typenamecombscore[typenamecombtuple]))
         typenamecombouterscore = calc_outerscore(typenamecombscore,
                                                  pereffect_totalaffected,
                                                  TYPENAMECOMBS_WEIGHT)
@@ -797,8 +803,8 @@ inner score: {5:.3})"
                 describedbycategory.append(categorywinner)
                 # Add all items described by winning category into
                 # set of described items
-                effect_describedtypes.update\
-                (globalmap_categoryid_typeid[categorywinner])
+                effect_describedtypes.update \
+                    (globalmap_categoryid_typeid[categorywinner])
                 # Set 'describes' flag to avoid processing of this
                 # category during following iterations
                 effectmap_categoryid_typeid[categorywinner][1] = True
@@ -808,8 +814,8 @@ inner score: {5:.3})"
             elif maxouterscore == groupouterscore:
                 groupwinner = max(groupscore, key=groupscore.get)
                 describedbygroup.append(groupwinner)
-                effect_describedtypes.update\
-                (globalmap_groupid_typeid[groupwinner])
+                effect_describedtypes.update \
+                    (globalmap_groupid_typeid[groupwinner])
                 effectmap_groupid_typeid[groupwinner][1] = True
                 if DEBUG_LEVEL >= 2:
                     printstr = "Group winner: {0}"
@@ -818,31 +824,31 @@ inner score: {5:.3})"
                 typenamecombwinner = max(typenamecombscore,
                                          key=typenamecombscore.get)
                 describedbytypenamecomb.append(typenamecombwinner)
-                effect_describedtypes.update\
-                (globalmap_typenamecombtuple_typeid[typenamecombwinner])
-                effectmap_typenamecombtuple_typeid[typenamecombwinner]\
-                [1] = True
+                effect_describedtypes.update \
+                    (globalmap_typenamecombtuple_typeid[typenamecombwinner])
+                effectmap_typenamecombtuple_typeid[typenamecombwinner] \
+                    [1] = True
                 if DEBUG_LEVEL >= 2:
                     printstr = "Named like winner: {0}"
                     print(printstr.format(typenamecombwinner))
             elif maxouterscore == marketgroupwithvarsouterscore:
                 marketgroupwithvarswinner = max(marketgroupwithvarsscore,
-                key=marketgroupwithvarsscore.get)
-                describedbymarketgroupwithvars.append\
-                (marketgroupwithvarswinner)
-                effect_describedtypes.update\
-                (globalmap_marketgroupid_typeidwithvariations
-                 [marketgroupwithvarswinner])
-                effectmap_marketgroupid_typeidwithvars\
-                [marketgroupwithvarswinner][1] = True
+                                                key=marketgroupwithvarsscore.get)
+                describedbymarketgroupwithvars.append \
+                    (marketgroupwithvarswinner)
+                effect_describedtypes.update \
+                    (globalmap_marketgroupid_typeidwithvariations
+                     [marketgroupwithvarswinner])
+                effectmap_marketgroupid_typeidwithvars \
+                    [marketgroupwithvarswinner][1] = True
                 if DEBUG_LEVEL >= 2:
                     printstr = "Market group with variations winner: {0}"
                     print(printstr.format(marketgroupwithvarswinner))
             elif maxouterscore == basetypeouterscore:
                 basetypewinner = max(basetypescore, key=basetypescore.get)
                 describedbybasetype.append(basetypewinner)
-                effect_describedtypes.update\
-                (globalmap_basetypeid_typeid[basetypewinner])
+                effect_describedtypes.update \
+                    (globalmap_basetypeid_typeid[basetypewinner])
                 effectmap_basetypeid_typeid[basetypewinner][1] = True
                 if DEBUG_LEVEL >= 2:
                     printstr = "Base item winner: {0}"
@@ -860,8 +866,8 @@ inner score: {5:.3})"
         # debug data of one iteration from another
         if DEBUG_LEVEL >= 2:
             print("---")
-    singleitems = set(pereffectlist_usedbytypes).difference\
-    (effect_describedtypes)
+    singleitems = set(pereffectlist_usedbytypes).difference \
+        (effect_describedtypes)
     if DEBUG_LEVEL >= 1:
         print("Effect will be described by:")
         print("Single item IDs:", singleitems)
@@ -882,9 +888,12 @@ inner score: {5:.3})"
     numofcommentlines = 0
     for line in effectLines:
         if line:
-            if line[0] == "#": numofcommentlines += 1
-            else: break
-        else: break
+            if line[0] == "#":
+                numofcommentlines += 1
+            else:
+                break
+        else:
+            break
     for i in range(numofcommentlines):
         del effectLines[0]
 
@@ -1058,23 +1067,23 @@ inner score: {5:.3})"
 
     # Compose single list of lines using custom sorting
     commentlines = printing_categorylines + printing_grouplines + \
-    printing_typenamecombtuplelines + printing_marketgroupwithvarslines + \
-    printing_basetypelines + printing_typelines
+                   printing_typenamecombtuplelines + printing_marketgroupwithvarslines + \
+                   printing_basetypelines + printing_typelines
     # Prepend list with "used by"
     if commentlines:
         commentlines = ["# %s\n#\n# Used by:" % \
-            globalmap_effectnameeos_effectnamedb[effect_name]]+commentlines
+                        globalmap_effectnameeos_effectnamedb[effect_name]] + commentlines
     # If effect isn't used, write it to file and to terminal
     else:
         commentlines = ["# Not used by any item"]
         if options.remove:
             print("Warning: effect file " + effect_name +
-              " is not used by any item, removing")
+                  " is not used by any item, removing")
             os.remove(os.path.join(effects_path, effect_file))
             continue
         else:
             print("Warning: effect file " + effect_name +
-              " is not used by any item")
+                  " is not used by any item")
     # Combine "used by" comment lines and actual effect lines
     outputlines = commentlines + effectLines
     # Combine all lines into single string
@@ -1082,7 +1091,7 @@ inner score: {5:.3})"
     # If we're not debugging and contents actually changed - write
     # changes to the file
     if DEBUG_LEVEL == 0 and (effectcontentsprocessed !=
-                             effectcontentssource):
+                                 effectcontentssource):
         effectfile = open(os.path.join(effects_path, effect_file), 'w')
         effectfile.write(effectcontentsprocessed)
         effectfile.close()

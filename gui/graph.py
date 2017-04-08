@@ -36,4 +36,10 @@ class Graph(object):
 
 
 # noinspection PyUnresolvedReferences
-from gui.builtinGraphs import fitDps  # noqa: E402, F401
+from gui.builtinGraphs import (  # noqa: E402, F401
+    fitDps,
+    capWarfare,
+    shieldReps,
+    armorReps,
+    hullReps,
+)

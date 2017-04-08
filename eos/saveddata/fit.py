@@ -20,19 +20,19 @@
 import time
 from copy import deepcopy
 from itertools import chain
-from math import sqrt, log, asinh
+from math import log, asinh
 
 from sqlalchemy.orm import validates, reconstructor
+from sqlalchemy.exc import InvalidRequestError
+from eos.gnosis import GnosisFormulas, GnosisSimulation
 
 import eos.db
-from eos import capSim
 from eos.effectHandlerHelpers import HandledModuleList, HandledDroneCargoList, HandledImplantBoosterList, HandledProjectedDroneList, HandledProjectedModList
 from eos.enum import Enum
 from eos.saveddata.ship import Ship
 from eos.saveddata.character import Character
 from eos.saveddata.citadel import Citadel
-from eos.saveddata.module import Module, State, Slot, Hardpoint
-from utils.timer import Timer
+from eos.saveddata.module import Module, State, Slot
 from logbook import Logger
 
 pyfalog = Logger(__name__)
@@ -181,6 +181,15 @@ class Fit(object):
     @character.setter
     def character(self, char):
         self.__character = char
+
+    @property
+    def calculated(self):
+        return self.__calculated
+
+    @calculated.setter
+    def calculated(self, value):
+        # todo: brief explaination hwo this works
+        self.__calculated = value
 
     @property
     def ship(self):
@@ -392,7 +401,7 @@ class Fit(object):
         self.__droneVolley = None
         self.__droneYield = None
         self.__ehp = None
-        self.__calculated = False
+        self.calculated = False
         self.__capStable = None
         self.__capState = None
         self.__capUsed = None
@@ -459,7 +468,7 @@ class Fit(object):
             self.commandBonuses[warfareBuffID] = (runTime, value, module, effect)
 
     def __runCommandBoosts(self, runTime="normal"):
-        pyfalog.debug("Applying gang boosts for {0}", self)
+        pyfalog.debug("Applying gang boosts for {0}", self.ID)
         for warfareBuffID in self.commandBonuses.keys():
             # Unpack all data required to run effect properly
             effect_runTime, value, thing, effect = self.commandBonuses[warfareBuffID]
@@ -642,41 +651,132 @@ class Fit(object):
 
             del self.commandBonuses[warfareBuffID]
 
-    def calculateModifiedAttributes(self, targetFit=None, withBoosters=False, dirtyStorage=None):
-        timer = Timer(u'Fit: {}, {}'.format(self.ID, self.name), pyfalog)
-        pyfalog.debug("Starting fit calculation on: {0}, withBoosters: {1}", self, withBoosters)
+    def validateFitChainCalculated(self):
+        """
+        Walks up the chain for the fit and anything projected or command fits haven't been calculated
 
-        shadow = False
-        if targetFit and not withBoosters:
-            pyfalog.debug("Applying projections to target: {0}", targetFit)
+        :return:
+        True if all fits are calculated, False if one (or more) is not
+        """
+
+        for projected_fit in self.projectedFits:
+            if projected_fit.getProjectionInfo(self.ID).active:
+                if projected_fit is not self:
+                    if projected_fit.calculated is False:
+                        return False
+
+                    projected_calculated = projected_fit.validateFitChainCalculated()
+                    if projected_calculated is False:
+                        return False
+
+        for command_fit in self.commandFits:
+            if command_fit.getCommandInfo(self.ID).active:
+                if command_fit is not self:
+                    if command_fit.calculated is False:
+                        return False
+
+                    command_calculated = command_fit.validateFitChainCalculated()
+                    if command_calculated is False:
+                        return False
+
+        # print("For (" + str(self.name) + ") returning chain have been calculated")
+        return True
+
+    def clearFitChainCalculated(self):
+        """
+        Walks up the chain for the fit and clear the calculated flag on any projected or command fits
+
+        :return:
+        True if all fits are calculated, False if one (or more) is not
+        """
+        # print("Clearing calculated flag on: " + str(self.name))
+
+        for projected_fit in self.projectedFits:
+            if projected_fit.getProjectionInfo(self.ID).active:
+                if projected_fit is not self:
+                    projected_fit.clearFitChainCalculated()
+
+        for command_fit in self.commandFits:
+            if command_fit.getCommandInfo(self.ID).active:
+                if command_fit is not self:
+                    command_fit.clearFitChainCalculated()
+
+        self.calculated = False
+
+    def calculateFitAttributes(self, targetFit=None, withBoosters=False):
+        """
+        This method handles recursion through the chain of fit, projected fits, and command fits.  We start from our current fit (self), then recurse up through
+        the chain of projected fits.  Because this is self recursive, each level will then recurse further up the chain.  We then do the same for command fits
+        (bursts or formerly gang links).
+
+        In practice if we have Fit B projected onto Fit A, and Fit C projected onto Fit B, it will end up looking like:
+        - Find Fit A, process projected fits
+        - Find Fit B, process projected fits
+        - Find Fit C, no projected fits.
+        - Calculate Fit C
+        - Project Fit C onto Fit B
+        - Calculate Fit B
+        - Project Fit B onto Fit A
+        - Calculate Fit A
+
+        :param targetFit:
+
+        :param withBoosters:
+        :return:
+        """
+
+        pyfalog.debug("Starting fit calculation.")
+
+        # Follow the chain, if we find any fits not calculated, recalc them all.
+        if not self.validateFitChainCalculated():
+            self.clearFitChainCalculated()
+
+        if withBoosters:
+            # Recalc ships projecting onto this fit
+            for projected_fit in self.projectedFits:
+                if projected_fit.getProjectionInfo(self.ID).active:
+                    if projected_fit is self:
+                        # If fit is self, don't recurse
+                        self.calculateModifiedFitAttributes(targetFit=self)
+                    else:
+                        projected_fit.calculateFitAttributes(withBoosters=withBoosters, targetFit=self)
+
+            for command_fit in self.commandFits:
+                if command_fit.getCommandInfo(self.ID).active:
+                    if command_fit is self:
+                        # If fit is self, don't recurse
+                        self.calculateModifiedFitAttributes(targetFit=self)
+                    else:
+                        command_fit.calculateFitAttributes(withBoosters=withBoosters, targetFit=self)
+
+        self.calculateModifiedFitAttributes()
+
+        if targetFit:
+            self.calculateModifiedFitAttributes(targetFit=targetFit)
+
+    def calculateModifiedFitAttributes(self, targetFit=None):
+        """
+        Calculates a fits atttributes.
+
+        :param targetFit:
+        If a target fit is specified, will project onto the target fit.
+        If targetFit is the same as self, then we make a copy in order to properly project it without running into recursion issues.
+        """
+        pyfalog.debug("Starting fit calculation on: {0}", self.name)
+
+        shadow = None
+        projectionInfo = None
+        if targetFit:
+            pyfalog.debug("Calculating projections from {0} to target {1}", self.name, targetFit.name)
             projectionInfo = self.getProjectionInfo(targetFit.ID)
             pyfalog.debug("ProjectionInfo: {0}", projectionInfo)
-            if self == targetFit:
-                copied = self  # original fit
-                shadow = True
-                # Don't inspect this, we genuinely want to reassign self
+            if self is targetFit:
+                # Make a copy of our fit.  targetFit stays as the original, self becomes the copy.
+                # noinspection PyNoneFunctionAssignment
+                shadow = deepcopy(targetFit)
                 # noinspection PyMethodFirstArgAssignment
-                self = deepcopy(self)
-                pyfalog.debug("Handling self projection - making shadow copy of fit. {0} => {1}", copied, self)
-                # we delete the fit because when we copy a fit, flush() is
-                # called to properly handle projection updates. However, we do
-                # not want to save this fit to the database, so simply remove it
-                eos.db.saveddata_session.delete(self)
-
-        if self.commandFits and not withBoosters:
-            for fit in self.commandFits:
-                if self == fit:
-                    continue
-
-                fit.calculateModifiedAttributes(self, True)
-
-        # If we're not explicitly asked to project fit onto something,
-        # set self as target fit
-        if targetFit is None:
-            targetFit = self
-            projected = False
-        else:
-            projected = not withBoosters
+                self = shadow
+                pyfalog.debug("Handling self projection - making shadow copy of fit.")
 
         # If fit is calculated and we have nothing to do here, get out
 
@@ -691,14 +791,15 @@ class Fit(object):
         # projections from the normal fit calculations. But we must ensure that
         # projection have modifying stuff applied, such as gang boosts and other
         # local modules that may help
-        if self.__calculated and not projected and not withBoosters:
+        if self.__calculated and not targetFit:
             pyfalog.debug("Fit has already been calculated and is not projected, returning: {0}", self)
             return
 
         for runTime in ("early", "normal", "late"):
-            # Items that are unrestricted. These items are run on the local fit
-            # first and then projected onto the target fit it one is designated
+            pyfalog.debug("Run time: {0}", runTime)
             u = [
+                # Items that are unrestricted. These items are run on the local fit
+                # first and then projected onto the target fit it one is designated
                 (self.character, self.ship),
                 self.drones,
                 self.fighters,
@@ -719,57 +820,62 @@ class Fit(object):
             # chain unrestricted and restricted into one iterable
             c = chain.from_iterable(u + r)
 
-            # We calculate gang bonuses first so that projected fits get them
-            # if self.gangBoosts is not None:
-            #     self.__calculateGangBoosts(runTime)
-
             for item in c:
                 # Registering the item about to affect the fit allows us to
                 # track "Affected By" relations correctly
                 if item is not None:
-                    if not self.__calculated:
-                        # apply effects locally if this is first time running them on fit
+                    if hasattr(item, 'item'):
+                        item_name = getattr(item.item, 'name', getattr(item.item, 'ID', "Unknown"))
+                    else:
+                        item_name = getattr(item, 'name', getattr(item, 'ID', "Unknown"))
+
+                    pyfalog.debug("Processing item: {0}", str(item_name))
+                    # print("Processing item: " + str(item_name))
+
+                    if targetFit:
+                        # Apply to projected fit
+                        if item not in chain.from_iterable(r) and projectionInfo:
+                            for _ in xrange(projectionInfo.amount):
+                                targetFit.register(item, origin=self)
+                                item.calculateModifiedAttributes(targetFit, runTime, True)
+                        if item in self.modules:
+                            item.calculateModifiedAttributes(targetFit, runTime, False, True)
+                    else:
+                        # Apply to local fit
                         self.register(item)
                         item.calculateModifiedAttributes(self, runTime, False)
 
-                    if targetFit and withBoosters and item in self.modules:
-                        # Apply the gang boosts to target fit
-                        # targetFit.register(item, origin=self)
-                        item.calculateModifiedAttributes(targetFit, runTime, False, True)
+            if self.commandBonuses:
+                if len(self.commandBonuses) > 0:
+                    # Apply command bursts
+                    pyfalog.info("Command bonuses applied.")
+                    self.__runCommandBoosts(runTime)
 
-            if len(self.commandBonuses) > 0:
-                pyfalog.info("Command bonuses applied.")
-                pyfalog.debug(self.commandBonuses)
+            pyfalog.debug('Done with runtime: {0}', runTime)
 
-            if not withBoosters and self.commandBonuses:
-                self.__runCommandBoosts(runTime)
-
-            # Projection effects have been broken out of the main loop, see GH issue #1081
-
-            if projected is True and projectionInfo:
-                for item in chain.from_iterable(u):
-                    if item is not None:
-                        # apply effects onto target fit
-                        for _ in xrange(projectionInfo.amount):
-                            targetFit.register(item, origin=self)
-                            item.calculateModifiedAttributes(targetFit, runTime, True)
-
-            timer.checkpoint('Done with runtime: %s' % runTime)
-
-        # Mark fit as calculated
-        self.__calculated = True
-
-        # Only apply projected fits if fit it not projected itself.
-        if not projected and not withBoosters:
-            for fit in self.projectedFits:
-                if fit.getProjectionInfo(self.ID).active:
-                    fit.calculateModifiedAttributes(self, withBoosters=withBoosters, dirtyStorage=dirtyStorage)
-
-        timer.checkpoint('Done with fit calculation')
+        if not targetFit:
+            # Mark fit as calculated
+            self.calculated = True
 
         if shadow:
-            pyfalog.debug("Delete shadow fit object")
-            del self
+            # Put our original fit back into self
+            # noinspection PyMethodFirstArgAssignment,PyUnusedLocal
+            self = targetFit
+            # Cleanup after ourselves
+            try:
+                # we delete the fit because when we copy a fit, flush() is
+                # called to properly handle projection updates. However, we do
+                # not want to save this fit to the database, so simply remove it
+                eos.db.saveddata_session.delete(shadow)
+            except InvalidRequestError:
+                # Older versions of SQLAlchemy are not forgiving of the delete command. Newer versions seem to use it more as a delete or expunge.
+                # Test a pass here to see if we can just skip it, may need a refresh or other cleanup.
+                print("Caught InvalidRequestError when  deleting the shadow fit out of the database.")
+            del shadow
+
+        pyfalog.debug('Done with fit calculation')
+
+        pyfalog.debug('Done with fit calculation')
 
     def fill(self):
         """
@@ -1008,99 +1114,66 @@ class Fit(object):
 
         return self.__sustainableTank
 
-    def calculateSustainableTank(self, effective=True):
-        if self.__sustainableTank is None:
-            if self.capStable:
-                sustainable = {
-                    "armorRepair" : self.extraAttributes["armorRepair"],
-                    "shieldRepair": self.extraAttributes["shieldRepair"],
-                    "hullRepair"  : self.extraAttributes["hullRepair"]
-                }
-            else:
-                sustainable = {}
+    def calculateSustainableTank(self):
+        total_shield_reps = 0
+        total_armor_reps = 0
+        total_hull_reps = 0
 
-                repairers = []
-                # Map a repairer type to the attribute it uses
-                groupAttrMap = {
-                    "Armor Repair Unit"       : "armorDamageAmount",
-                    "Ancillary Armor Repairer": "armorDamageAmount",
-                    "Hull Repair Unit"        : "structureDamageAmount",
-                    "Shield Booster"          : "shieldBonus",
-                    "Ancillary Shield Booster": "shieldBonus",
-                    "Remote Armor Repairer"   : "armorDamageAmount",
-                    "Remote Shield Booster"   : "shieldBonus"
-                }
-                # Map repairer type to attribute
-                groupStoreMap = {
-                    "Armor Repair Unit"       : "armorRepair",
-                    "Hull Repair Unit"        : "hullRepair",
-                    "Shield Booster"          : "shieldRepair",
-                    "Ancillary Shield Booster": "shieldRepair",
-                    "Remote Armor Repairer"   : "armorRepair",
-                    "Remote Shield Booster"   : "shieldRepair",
-                    "Ancillary Armor Repairer": "armorRepair",
-                }
+        simulation_matrix = GnosisSimulation.capacitor_simulation(self,
+                                                                  self.__extraDrains,
+                                                                  self.ship.getModifiedItemAttr("capacitorCapacity"),
+                                                                  self.ship.getModifiedItemAttr("rechargeRate")
+                                                                  )
 
-                capUsed = self.capUsed
-                for attr in ("shieldRepair", "armorRepair", "hullRepair"):
-                    sustainable[attr] = self.extraAttributes[attr]
-                    dict = self.extraAttributes.getAfflictions(attr)
-                    if self in dict:
-                        for mod, _, amount, used in dict[self]:
-                            if not used:
-                                continue
-                            if mod.projected is False:
-                                usesCap = True
-                                try:
-                                    if mod.capUse:
-                                        capUsed -= mod.capUse
-                                    else:
-                                        usesCap = False
-                                except AttributeError:
-                                    usesCap = False
-                                # Modules which do not use cap are not penalized based on cap use
-                                if usesCap:
-                                    cycleTime = mod.getModifiedItemAttr("duration")
-                                    amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
-                                    sustainable[attr] -= amount / (cycleTime / 1000.0)
-                                    repairers.append(mod)
+        if simulation_matrix['Matrix']['Stability']['FailedToRunModules']:
+            # Modules failed to run, so lets get the effective HP/s only after they failed
+            start_recording_time = simulation_matrix['Matrix']['Stability']['FailedToRunModulesTime']
+        else:
+            start_recording_time = 0
 
-                # Sort repairers by efficiency. We want to use the most efficient repairers first
-                repairers.sort(key=lambda _mod: _mod.getModifiedItemAttr(
-                        groupAttrMap[_mod.item.group.name]) / _mod.getModifiedItemAttr("capacitorNeed"), reverse=True)
+        total_time = (simulation_matrix['Matrix']['Stability']['RunTime'] - start_recording_time) / 1000
+        if total_time < 60:
+            # This is an uncommon scenario, where we run out of cap *RIGHT* as the simulation ends.
+            # In this case lets grab the last minute of stats.
+            start_recording_time -= 60000
+            total_time = 60
 
-                # Loop through every module until we're above peak recharge
-                # Most efficient first, as we sorted earlier.
-                # calculate how much the repper can rep stability & add to total
-                totalPeakRecharge = self.capRecharge
-                for mod in repairers:
-                    if capUsed > totalPeakRecharge:
-                        break
-                    cycleTime = mod.cycleTime
-                    capPerSec = mod.capUse
-                    if capPerSec is not None and cycleTime is not None:
-                        # Check how much this repper can work
-                        sustainability = min(1, (totalPeakRecharge - capUsed) / capPerSec)
+        for _ in simulation_matrix['Matrix']['Cached Runs']:
+            if _['Current Time'] > start_recording_time:
+                total_shield_reps += _['Shield Reps']
+                total_armor_reps += _['Armor Reps']
+                total_hull_reps += _['Hull Reps']
 
-                        # Add the sustainable amount
-                        amount = mod.getModifiedItemAttr(groupAttrMap[mod.item.group.name])
-                        sustainable[groupStoreMap[mod.item.group.name]] += sustainability * (amount / (cycleTime / 1000.0))
-                        capUsed += capPerSec
+        sustainable = {}
+        sustainable["shieldRepair"] = total_shield_reps / total_time
+        sustainable["armorRepair"] = total_armor_reps / total_time
+        sustainable["hullRepair"] = total_hull_reps / total_time
+        sustainable["passiveShield"] = self.calculateShieldRecharge()
 
-            sustainable["passiveShield"] = self.calculateShieldRecharge()
-            self.__sustainableTank = sustainable
+        # Check to make sure we're not over the maximum reps
+        # This can occur if we cut off in the middle of a cycle
+        # For example, AAR if we cut off right before a reload
+        if sustainable["shieldRepair"] > self.extraAttributes.get("shieldRepair"):
+            sustainable["shieldRepair"] = self.extraAttributes.get("shieldRepair")
+
+        if sustainable["armorRepair"] > self.extraAttributes.get("armorRepair"):
+            sustainable["armorRepair"] = self.extraAttributes.get("armorRepair")
+
+        if sustainable["hullRepair"] > self.extraAttributes.get("hullRepair"):
+            sustainable["hullRepair"] = self.extraAttributes.get("hullRepair")
+
+        self.__sustainableTank = sustainable
 
         return self.__sustainableTank
 
-    def calculateCapRecharge(self, percent=PEAK_RECHARGE):
-        capacity = self.ship.getModifiedItemAttr("capacitorCapacity")
-        rechargeRate = self.ship.getModifiedItemAttr("rechargeRate") / 1000.0
-        return 10 / rechargeRate * sqrt(percent) * (1 - sqrt(percent)) * capacity
+    def calculateCapRecharge(self):
+        peak_return = GnosisFormulas.get_peak_regen(self.ship.getModifiedItemAttr("capacitorCapacity"), self.ship.getModifiedItemAttr("rechargeRate"))
+        return peak_return['DeltaAmount']
 
-    def calculateShieldRecharge(self, percent=PEAK_RECHARGE):
-        capacity = self.ship.getModifiedItemAttr("shieldCapacity")
-        rechargeRate = self.ship.getModifiedItemAttr("shieldRechargeRate") / 1000.0
-        return 10 / rechargeRate * sqrt(percent) * (1 - sqrt(percent)) * capacity
+    def calculateShieldRecharge(self):
+        peak_return = GnosisFormulas.get_peak_regen(self.ship.getModifiedItemAttr("shieldCapacity"),
+                                                    self.ship.getModifiedItemAttr("shieldRechargeRate"))
+        return peak_return['DeltaAmount']
 
     def addDrain(self, src, cycleTime, capNeed, clipSize=0):
         """ Used for both cap drains and cap fills (fills have negative capNeed) """
@@ -1110,70 +1183,49 @@ class Fit(object):
 
         # Signature reduction, uses the bomb formula as per CCP Larrikin
         if energyNeutralizerSignatureResolution:
-            capNeed = capNeed * min(1, signatureRadius / energyNeutralizerSignatureResolution)
+            capNeed *= min(1, signatureRadius / energyNeutralizerSignatureResolution)
 
-        resistance = self.ship.getModifiedItemAttr("energyWarfareResistance") or 1 if capNeed > 0 else 1
-        self.__extraDrains.append((cycleTime, capNeed * resistance, clipSize))
+        if self.ship.getModifiedItemAttr("energyWarfareResistance"):
+            capNeed *= min(1, self.ship.getModifiedItemAttr("energyWarfareResistance"))
 
-    def removeDrain(self, i):
-        del self.__extraDrains[i]
-
-    def iterDrains(self):
-        return self.__extraDrains.__iter__()
-
-    def __generateDrain(self):
-        drains = []
-        capUsed = 0
-        capAdded = 0
-        for mod in self.modules:
-            if mod.state >= State.ACTIVE:
-                if (mod.getModifiedItemAttr("capacitorNeed") or 0) != 0:
-                    cycleTime = mod.rawCycleTime or 0
-                    reactivationTime = mod.getModifiedItemAttr("moduleReactivationDelay") or 0
-                    fullCycleTime = cycleTime + reactivationTime
-                    if fullCycleTime > 0:
-                        capNeed = mod.capUse
-                        if capNeed > 0:
-                            capUsed += capNeed
-                        else:
-                            capAdded -= capNeed
-
-                        # If this is a turret, don't stagger activations
-                        disableStagger = mod.hardpoint == Hardpoint.TURRET
-
-                        drains.append((int(fullCycleTime), mod.getModifiedItemAttr("capacitorNeed") or 0,
-                                       mod.numShots or 0, disableStagger))
-
-        for fullCycleTime, capNeed, clipSize in self.iterDrains():
-            # Stagger incoming effects for cap simulation
-            drains.append((int(fullCycleTime), capNeed, clipSize, False))
-            if capNeed > 0:
-                capUsed += capNeed / (fullCycleTime / 1000.0)
-            else:
-                capAdded += -capNeed / (fullCycleTime / 1000.0)
-
-        return drains, capUsed, capAdded
+        self.__extraDrains.append((src, cycleTime, capNeed, clipSize))
 
     def simulateCap(self):
-        drains, self.__capUsed, self.__capRecharge = self.__generateDrain()
-        self.__capRecharge += self.calculateCapRecharge()
-        if len(drains) > 0:
-            sim = capSim.CapSimulator()
-            sim.init(drains)
-            sim.capacitorCapacity = self.ship.getModifiedItemAttr("capacitorCapacity")
-            sim.capacitorRecharge = self.ship.getModifiedItemAttr("rechargeRate")
-            sim.stagger = True
-            sim.scale = False
-            sim.t_max = 6 * 60 * 60 * 1000
-            sim.reload = self.factorReload
-            sim.run()
+        simulation_matrix = GnosisSimulation.capacitor_simulation(self,
+                                                                  self.__extraDrains,
+                                                                  self.ship.getModifiedItemAttr("capacitorCapacity"),
+                                                                  self.ship.getModifiedItemAttr("rechargeRate"))
 
-            capState = (sim.cap_stable_low + sim.cap_stable_high) / (2 * sim.capacitorCapacity)
-            self.__capStable = capState > 0
-            self.__capState = min(100, capState * 100) if self.__capStable else sim.t / 1000.0
+        self.__capRecharge = GnosisFormulas.get_peak_regen(self.ship.getModifiedItemAttr("capacitorCapacity"),
+                                                           self.ship.getModifiedItemAttr("rechargeRate"))
+
+        cap_per_second = 0
+        for module_list in simulation_matrix['ModuleDict']:
+            if module_list['Charges']:
+                total_run_time = module_list['CycleTime'] * module_list['Charges']
+                total_amount = module_list['Amount'] * module_list['Charges']
+            else:
+                total_run_time = module_list['CycleTime']
+                total_amount = module_list['Amount']
+
+            if module_list['ReloadTime'] and module_list['Charges']:
+                total_run_time += module_list['ReloadTime']
+
+            if module_list['ReactivationDelay']:
+                total_run_time += module_list['ReactivationDelay']
+
+            cap_per_second += total_amount / (total_run_time / 1000)
+
+        self.__capUsed = cap_per_second
+
+        if simulation_matrix['Matrix']['Stability']['FailedToRunModules']:
+            # We ran our of cap to run modules.
+            self.__capStable = 0
+            self.__capState = simulation_matrix['Matrix']['Stability']['FailedToRunModulesTime']
         else:
-            self.__capStable = True
-            self.__capState = 100
+            low_water_mark = simulation_matrix['Matrix']['Stability']['LowWaterMark']
+            self.__capStable = round(low_water_mark / self.ship.getModifiedItemAttr("capacitorCapacity"), 2)
+            self.__capState = simulation_matrix['Matrix']['Stability']['LowWaterMarkTime']
 
     @property
     def remoteReps(self):

@@ -34,13 +34,13 @@ def handler(fit, module, context):
 
     # Tanking
     fit.modules.filteredItemBoost(
-        lambda mod: mod.item.requiresSkill("Capital Repair Systems") or mod.item.requiresSkill("Repair Systems"),
-        "armorDamageAmount", module.getModifiedItemAttr("armorDamageAmountBonus"),
-        stackingPenalties=True)
+            lambda mod: mod.item.requiresSkill("Capital Repair Systems") or mod.item.requiresSkill("Repair Systems"),
+            "armorDamageAmount", module.getModifiedItemAttr("armorDamageAmountBonus"),
+            stackingPenalties=True)
     fit.modules.filteredItemBoost(
-        lambda mod: mod.item.requiresSkill("Capital Shield Operation") or mod.item.requiresSkill("Shield Operation"),
-        "shieldBonus", module.getModifiedItemAttr("shieldBoostMultiplier"),
-        stackingPenalties=True)
+            lambda mod: mod.item.requiresSkill("Capital Shield Operation") or mod.item.requiresSkill("Shield Operation"),
+            "shieldBonus", module.getModifiedItemAttr("shieldBoostMultiplier"),
+            stackingPenalties=True)
 
     # Speed penalty
     fit.ship.boostItemAttr("maxVelocity", module.getModifiedItemAttr("speedFactor"))

@@ -28,13 +28,12 @@ from sqlalchemy.sql import or_
 
 import config
 import eos.db
-from service import conversions
+from service.conversions import Conversions
 from service.settings import SettingsProvider
-from service.price import Price
+from service.settings import GeneralSettings
 
 from eos.gamedata import Category as types_Category, Group as types_Group, Item as types_Item, MarketGroup as types_MarketGroup, \
     MetaGroup as types_MetaGroup, MetaType as types_MetaType
-from eos.saveddata.price import Price as types_Price
 
 try:
     from collections import OrderedDict
@@ -85,53 +84,14 @@ class ShipBrowserWorkerThread(threading.Thread):
                     pyfalog.critical(e)
 
 
-class PriceWorkerThread(threading.Thread):
-    def __init__(self):
-        threading.Thread.__init__(self)
-        self.name = "PriceWorker"
-        pyfalog.debug("Initialize PriceWorkerThread.")
-
-    def run(self):
-        pyfalog.debug("Run start")
-        self.queue = Queue.Queue()
-        self.wait = {}
-        self.processUpdates()
-        pyfalog.debug("Run end")
-
-    def processUpdates(self):
-        queue = self.queue
-        while True:
-            # Grab our data
-            callback, requests = queue.get()
-
-            # Grab prices, this is the time-consuming part
-            if len(requests) > 0:
-                Price.fetchPrices(requests)
-
-            wx.CallAfter(callback)
-            queue.task_done()
-
-            # After we fetch prices, go through the list of waiting items and call their callbacks
-            for price in requests:
-                callbacks = self.wait.pop(price.typeID, None)
-                if callbacks:
-                    for callback in callbacks:
-                        wx.CallAfter(callback)
-
-    def trigger(self, prices, callbacks):
-        self.queue.put((callbacks, prices))
-
-    def setToWait(self, itemID, callback):
-        if itemID not in self.wait:
-            self.wait[itemID] = []
-        self.wait[itemID].append(callback)
-
-
 class SearchWorkerThread(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.name = "SearchWorker"
         pyfalog.debug("Initialize SearchWorkerThread.")
+
+        # Instances
+        self.generalSettings = GeneralSettings.getInstance()
 
     def run(self):
         self.cv = threading.Condition()
@@ -160,7 +120,9 @@ class SearchWorkerThread(threading.Thread):
 
             results = eos.db.searchItems(request, where=filter_,
                                          join=(types_Item.group, types_Group.category),
-                                         eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
+                                         eager=("icon", "group.category", "metaGroup", "metaGroup.parent"),
+                                         result_limit=self.generalSettings.get("itemSearchLimit"),
+                                         )
 
             items = set()
             # Return only published items, consult with Market service this time
@@ -180,18 +142,14 @@ class Market(object):
     instance = None
 
     def __init__(self):
-        self.priceCache = {}
+        # Instances
+        self.generalSettings = GeneralSettings.getInstance()
 
         # Init recently used module storage
         serviceMarketRecentlyUsedModules = {"pyfaMarketRecentlyUsedModules": []}
 
         self.serviceMarketRecentlyUsedModules = SettingsProvider.getInstance().getSettings(
                 "pyfaMarketRecentlyUsedModules", serviceMarketRecentlyUsedModules)
-
-        # Start price fetcher
-        self.priceWorkerThread = PriceWorkerThread()
-        self.priceWorkerThread.daemon = True
-        self.priceWorkerThread.start()
 
         # Thread which handles search
         self.searchWorkerThread = SearchWorkerThread()
@@ -229,6 +187,7 @@ class Market(object):
             "Apotheosis"                  : self.les_grp,  # 5th EVE anniversary present
             "Zephyr"                      : self.les_grp,  # 2010 new year gift
             "Primae"                      : self.les_grp,  # Promotion of planetary interaction
+            "Council Diplomatic Shuttle"  : self.les_grp,  # CSM X celebration
             "Freki"                       : self.les_grp,  # AT7 prize
             "Mimir"                       : self.les_grp,  # AT7 prize
             "Utu"                         : self.les_grp,  # AT8 prize
@@ -274,7 +233,6 @@ class Market(object):
             "Guristas Shuttle"                         : False,
             "Mobile Decoy Unit"                        : False,  # Seems to be left over test mod for deployables
             "Tournament Micro Jump Unit"               : False,  # Normally seen only on tournament arenas
-            "Council Diplomatic Shuttle"               : False,  # CSM X celebration
             "Civilian Gatling Railgun"                 : True,
             "Civilian Gatling Pulse Laser"             : True,
             "Civilian Gatling Autocannon"              : True,
@@ -282,8 +240,10 @@ class Market(object):
         }
 
         # do not publish ships that we convert
-        for name in conversions.packs['skinnedShips']:
+        sConversions = Conversions.getInstance()
+        for name in sConversions.PACKS['skinnedShips']:
             self.ITEMS_FORCEPUBLISHED[name] = False
+            pyfalog.debug("Forcing {0} to be unpublished.", name)
 
         if config.debug:
             # Publish Tactical Dessy Modes if in debug
@@ -436,9 +396,14 @@ class Market(object):
             elif isinstance(identity, int):
                 item = eos.db.getItem(identity, *args, **kwargs)
             elif isinstance(identity, basestring):
+                sConversions = Conversions.getInstance()
                 # We normally lookup with string when we are using import/export
                 # features. Check against overrides
-                identity = conversions.all.get(identity, identity)
+                for PACK in sConversions.PACKS:
+                    if identity in sConversions.PACKS[PACK]:
+                        pyfalog.debug("Converting {0} to {1}", identity, sConversions.PACKS[PACK][identity])
+                        identity = sConversions.PACKS[PACK][identity]
+
                 item = eos.db.getItem(identity, *args, **kwargs)
 
             elif isinstance(identity, float):
@@ -806,7 +771,9 @@ class Market(object):
         filter_ = types_Category.name.in_(["Ship", "Structure"])
         results = eos.db.searchItems(name, where=filter_,
                                      join=(types_Item.group, types_Group.category),
-                                     eager=("icon", "group.category", "metaGroup", "metaGroup.parent"))
+                                     eager=("icon", "group.category", "metaGroup", "metaGroup.parent"),
+                                     result_limit=self.generalSettings.get("itemSearchLimit"),
+                                     )
         ships = set()
         for item in results:
             if self.getPublicityByItem(item):
@@ -854,60 +821,6 @@ class Market(object):
         """Filter items by meta lvl"""
         filtered = set(filter(lambda item: self.getMetaGroupIdByItem(item) in metas, items))
         return filtered
-
-    def getPriceNow(self, typeID):
-        """Get price for provided typeID"""
-        price = self.priceCache.get(typeID)
-        if price is None:
-            price = eos.db.getPrice(typeID)
-            if price is None:
-                price = types_Price(typeID)
-                eos.db.add(price)
-
-            self.priceCache[typeID] = price
-
-        return price
-
-    def getPricesNow(self, typeIDs):
-        """Return map of calls to get price against list of typeIDs"""
-        return map(self.getPrice, typeIDs)
-
-    def getPrices(self, typeIDs, callback):
-        """Get prices for multiple typeIDs"""
-        requests = []
-        for typeID in typeIDs:
-            price = self.getPriceNow(typeID)
-            requests.append(price)
-
-        def cb():
-            try:
-                callback(requests)
-            except Exception as e:
-                pyfalog.critical("Callback failed.")
-                pyfalog.critical(e)
-            eos.db.commit()
-
-        self.priceWorkerThread.trigger(requests, cb)
-
-    def waitForPrice(self, item, callback):
-        """
-        Wait for prices to be fetched and callback when finished. This is used with the column prices for modules.
-        Instead of calling them individually, we set them to wait until the entire fit price is called and calculated
-        (see GH #290)
-        """
-
-        def cb():
-            try:
-                callback(item)
-            except Exception as e:
-                pyfalog.critical("Callback failed.")
-                pyfalog.critical(e)
-
-        self.priceWorkerThread.setToWait(item.ID, cb)
-
-    def clearPriceCache(self):
-        self.priceCache.clear()
-        eos.db.clearPrices()
 
     def getSystemWideEffects(self):
         """
