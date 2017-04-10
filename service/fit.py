@@ -188,16 +188,19 @@ class Fit(object):
             return None
 
         fit = self.getFit(fitID)
+        skipClear = True
 
         if self.serviceFittingOptions["useGlobalCharacter"]:
             if fit.character != self.character:
                 fit.character = self.character
+                skipClear = False
 
         if self.serviceFittingOptions["useGlobalDamagePattern"]:
             if fit.damagePattern != self.pattern:
                 fit.damagePattern = self.pattern
+                skipClear = False
 
-        self.recalc(fit)
+        self.recalc(fit, skipClear=skipClear)
 
     def getFit(self, fitID, projected=False, basic=False):
         """
@@ -1058,17 +1061,18 @@ class Fit(object):
         else:
             return currState
 
-    def recalc(self, fit, withBoosters=True):
+    def recalc(self, fit, withBoosters=True, skipClear=False):
         start_time = time()
         pyfalog.info("=" * 10 + "recalc: {0}" + "=" * 10, fit.name)
 
-        # Commit any changes before we recalc
-        fit.clear()
-        eos.db.commit()
+        if not skipClear:
+            # Commit any changes before we recalc
+            fit.clear()
+            eos.db.commit()
 
         if fit.factorReload is not self.serviceFittingOptions["useGlobalForceReload"]:
             fit.factorReload = self.serviceFittingOptions["useGlobalForceReload"]
-        fit.clear()
+            fit.clear()
 
         fit.calculateFitAttributes(withBoosters=withBoosters)
 
