@@ -100,14 +100,14 @@ def defPaths(customSavePath):
 
 
 def getPyfaPath(Append=None):
-    base = getattr(sys.modules['__main__'], "__file__", sys.executable) if isFrozen() else sys.argv[0]
+    base = os.getcwd()
 
     try:
         base = unicode(base)
     except:
         base = unicode(base, sys.getfilesystemencoding())
 
-    root = os.path.dirname(os.path.realpath(os.path.abspath(base)))
+    root = os.path.realpath(os.path.abspath(base))
 
     if not Append:
         return root
