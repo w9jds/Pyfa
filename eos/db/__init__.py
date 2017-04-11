@@ -59,7 +59,7 @@ if config.saveddata_connectionstring is not None:
     saveddata_engine = saveddata_meta.bind = saveddata_factory['Engine']
     saveddata_session = saveddata_factory['Session']
 else:
-    saveddata_meta = None
+    saveddata_session = saveddata_engine = saveddata_meta = None
 
 # Lock controlling any changes introduced to session
 sd_lock = threading.RLock()

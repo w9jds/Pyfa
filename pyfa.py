@@ -28,7 +28,7 @@ from imp import find_module
 from optparse import AmbiguousOptionError, BadOptionError, OptionParser
 from multiprocessing import freeze_support
 
-from service.serviceThreads import executeStartupThreads
+# from service.serviceThreads import executeStartupThreads
 
 from logbook import CRITICAL, DEBUG, ERROR, FingersCrossedHandler, INFO, Logger, NestedSetup, NullHandler, StreamHandler, TimedRotatingFileHandler, WARNING, \
     __version__ as logbook_version
@@ -284,9 +284,6 @@ if __name__ == "__main__":
     with logging_setup.threadbound():
         pyfalog.info("Starting Pyfa")
 
-        pyfalog.info("Starting threads")
-        # executeStartupThreads()
-
         pyfalog.info("Logbook version: {0}", logbook_version)
 
         pyfalog.info("Running in logging mode: {0}", logging_mode)
@@ -382,6 +379,9 @@ if __name__ == "__main__":
             os.mkdir(config.savePath)
 
         eos.db.saveddata_meta.create_all()
+
+        pyfalog.info("Starting threads")
+        # executeStartupThreads()
 
         from gui.mainFrame import MainFrame
 
