@@ -294,13 +294,13 @@ if __name__ == "__main__":
 
         # Output all stdout (print) messages as warnings
         try:
-            sys.stdout = LoggerWriter(pyfalog.warning)
+            sys.stdout = LoggerWriter(pyfalog.info)
         except:
             pyfalog.critical("Cannot redirect.  Continuing without writing stdout to log.")
 
-        # Output all stderr (stacktrace) messages as critical
+        # Output all stderr messages as critical
         try:
-            sys.stderr = LoggerWriter(pyfalog.critical)
+            sys.stderr = LoggerWriter(pyfalog.warning)
         except:
             pyfalog.critical("Cannot redirect.  Continuing without writing stderr to log.")
 
