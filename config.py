@@ -100,14 +100,22 @@ def defPaths(customSavePath):
 
 
 def getPyfaPath(Append=None):
-    base = os.getcwd()
+    print(str(sys.argv[0]))
+    print(str(__file__))
+    print(str(os.getcwd()))
+    print("-----------")
+    print(str(os.path.dirname(os.path.realpath(sys.argv[0]))))
+    print(str(os.path.dirname(os.path.realpath(__file__))))
+
+    # base = os.getcwd()
+    base = os.path.dirname(os.path.realpath(sys.argv[0]))
 
     try:
         base = unicode(base)
     except:
         base = unicode(base, sys.getfilesystemencoding())
 
-    root = os.path.realpath(os.path.abspath(base))
+    root = os.path.realpath(base)
 
     if not Append:
         return root
@@ -117,7 +125,7 @@ def getPyfaPath(Append=None):
     except:
         Append = unicode(Append, sys.getfilesystemencoding())
 
-    path = os.path.abspath(os.path.join(root, Append))
+    path = os.path.realpath(os.path.join(root, Append))
 
     return path
 
@@ -133,6 +141,6 @@ def getSavePath(Append=None):
     except:
         Append = unicode(Append, sys.getfilesystemencoding())
 
-    path = os.path.abspath(os.path.join(root, Append))
+    path = os.path.realpath(os.path.join(root, Append))
 
     return path
