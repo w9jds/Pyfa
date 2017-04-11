@@ -34,6 +34,12 @@ from eos.saveddata.module import Module
 from eos.saveddata.miscData import MiscData
 from eos.saveddata.override import Override
 
+'''
+from eos.db.saveddata import fit as es_fit
+from eos.db.saveddata.fit import fits_table, fighters_table, fitImplants_table, commandFits_table
+from eos.db.saveddata.module import modules_table
+'''
+
 import eos.config
 
 configVal = getattr(eos.config, "saveddataCache", None)
