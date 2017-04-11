@@ -1,9 +1,7 @@
 import os
 import sys
 
-script_dir = os.path.dirname(os.path.abspath(__file__))
-# Add root to python paths, this allows us to import submodules
-sys.path.append(os.path.realpath(os.path.join(script_dir, u'..', u'..')))
+sys.path.append(os.path.realpath(os.getcwd()))
 
 from _development.helpers_locale import GetPath
 
