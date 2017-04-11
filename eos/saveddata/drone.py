@@ -159,6 +159,18 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return self.__miningyield
 
     @property
+    def cycleTime(self):
+        return self.rawCycleTime
+
+    @property
+    def rawCycleTime(self):
+        speed = max(
+                self.getModifiedItemAttr("duration"),  # Most drones
+                0,  # Return 0 if none of the above are valid
+        )
+        return speed
+
+    @property
     def maxRange(self):
         attrs = ("shieldTransferRange", "powerTransferRange",
                  "energyDestabilizationRange", "empFieldRange",
