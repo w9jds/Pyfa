@@ -5,6 +5,7 @@ from gui.bitmapLoader import BitmapLoader
 from gui.utils import helpers_wxPython as wxHelpers
 import config
 from eos.db.saveddata.queries import clearPrices, clearDamagePatterns, clearTargetResists
+from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
 
 import logging
 
@@ -106,17 +107,19 @@ class PFGeneralPref(PreferenceView):
 
     def DeleteDamagePatterns(self, event):
         question = u"This is a destructive action that will delete all damage pattern profiles.\nAre you sure you want to do this?"
-        if wxHelpers.YesNoDialog(question, "Confirm"):
+        if wxHelpers.YesNoDialog(question, u"Confirm"):
             clearDamagePatterns()
+            DefaultDatabaseValues.importRequiredDefaults()
 
     def DeleteTargetResists(self, event):
         question = u"This is a destructive action that will delete all target resist profiles.\nAre you sure you want to do this?"
-        if wxHelpers.YesNoDialog(question, "Confirm"):
+        if wxHelpers.YesNoDialog(question, u"Confirm"):
             clearTargetResists()
+            DefaultDatabaseValues.importRequiredDefaults()
 
     def DeletePrices(self, event):
         question = u"This is a destructive action that will delete all cached prices out of the database.\nAre you sure you want to do this?"
-        if wxHelpers.YesNoDialog(question, "Confirm"):
+        if wxHelpers.YesNoDialog(question, u"Confirm"):
             clearPrices()
 
     def onCBsaveInRoot(self, event):
