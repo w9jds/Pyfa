@@ -1,6 +1,7 @@
 import multiprocessing
-#from service.threads.eosEffectImports import threadedEosEffectsImport
+# from service.threads.eosEffectImports import threadedEosEffectsImport
 from service.threads.testThread import threadedEosEffectsImport
+
 
 def executeStartupThreads():
     """
