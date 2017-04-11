@@ -108,12 +108,14 @@ def getPyfaPath(Append=None):
     print(str(os.path.dirname(os.path.realpath(__file__))))
 
     # base = os.getcwd()
-    base = os.path.dirname(os.path.realpath(sys.argv[0]))
+    base = sys.argv[0]
 
     try:
         base = unicode(base)
     except:
         base = unicode(base, sys.getfilesystemencoding())
+
+    base = os.path.dirname(os.path.realpath(base))
 
     root = os.path.realpath(base)
 
