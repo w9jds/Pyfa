@@ -1,8 +1,12 @@
 import os
 import sys
 import ctypes
-from ctypes import windll, wintypes
 import platform
+
+if platform.system() is "Windows":
+    from ctypes import windll, wintypes
+else:
+    windll = wintypes = None
 
 from logbook import Logger
 
