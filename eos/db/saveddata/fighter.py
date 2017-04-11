@@ -49,7 +49,7 @@ mapper(Fighter, fighters_table,
            "_Fighter__abilities": relation(
                    FighterAbility,
                    backref="fighter",
-                   cascade='all, delete, delete-orphan'),
+                   cascade='all, delete-orphan'),
        })
 
 mapper(FighterAbility, fighter_abilities_table)

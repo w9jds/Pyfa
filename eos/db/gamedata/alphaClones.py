@@ -43,7 +43,7 @@ mapper(AlphaClone, alphaclones_table,
            "ID"    : synonym("alphaCloneID"),
            "skills": relation(
                    AlphaCloneSkill,
-                   cascade="all,delete-orphan",
+                   cascade="all",
                    backref="clone")
        })
 
