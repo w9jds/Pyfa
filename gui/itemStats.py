@@ -858,7 +858,8 @@ class ItemEffects(wx.Panel):
         If effect file does not exist, create it
         """
 
-        file_ = os.path.join(config.pyfaPath, "eos", "effects", "%s.py" % event.GetText().lower())
+        effect_path = os.path.join(u"eos", u"effects", u"%s.py" % event.GetText().lower())
+        file_ = config.getPyfaPath(effect_path)
 
         if not os.path.isfile(file_):
             open(file_, 'a').close()
@@ -866,7 +867,7 @@ class ItemEffects(wx.Panel):
         if 'wxMSW' in wx.PlatformInfo:
             os.startfile(file_)
         elif 'wxMac' in wx.PlatformInfo:
-            os.system("open " + file_)
+            os.system(u"open " + file_)
         else:
             subprocess.call(["xdg-open", file_])
 
