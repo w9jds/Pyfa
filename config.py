@@ -3,12 +3,12 @@ import sys
 import ctypes
 import platform
 
+from logbook import Logger
+
 if platform.system() is "Windows":
     from ctypes import windll, wintypes
 else:
     windll = wintypes = None
-
-from logbook import Logger
 
 pyfalog = Logger(__name__)
 
