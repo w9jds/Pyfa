@@ -18,6 +18,6 @@ def threadedEosEffectsImport():
 
                 try:
                     import_module(mod_name)
-                except ImportError:
+                except:
                     print("Module failed to import: ", str(mod_name))
     print("Completed Eos Effects Import")
