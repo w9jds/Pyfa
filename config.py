@@ -46,17 +46,6 @@ def __createDirs(path):
         os.makedirs(path)
 
 
-def getPyfaRoot():
-    base = getattr(sys.modules['__main__'], "__file__", sys.executable) if isFrozen() else sys.argv[0]
-    root = os.path.dirname(os.path.realpath(os.path.abspath(base)))
-    root = unicode(root, sys.getfilesystemencoding())
-    return root
-
-
-def getDefaultSave():
-    return unicode(os.path.expanduser(os.path.join("~", ".pyfa")), sys.getfilesystemencoding())
-
-
 def defPaths(customSavePath):
     global debug
     global pyfaPath
@@ -71,34 +60,34 @@ def defPaths(customSavePath):
     # Python 2.X uses ANSI by default, so we need to convert the character encoding
     pyfaPath = getattr(configforced, "pyfaPath", pyfaPath)
     if pyfaPath is None:
-        pyfaPath = getPyfaRoot()
+        pyfaPath = getPyfaPath()
 
     # Where we store the saved fits etc, default is the current users home directory
     if saveInRoot is True:
         savePath = getattr(configforced, "savePath", None)
         if savePath is None:
-            savePath = os.path.join(pyfaPath, "saveddata")
+            savePath = getPyfaPath(u"saveddata")
     else:
         savePath = getattr(configforced, "savePath", None)
         if savePath is None:
             if customSavePath is None:  # customSavePath is not overriden
-                savePath = getDefaultSave()
+                savePath = getSavePath()
             else:
                 savePath = customSavePath
 
     __createDirs(savePath)
 
     if isFrozen():
-        os.environ["REQUESTS_CA_BUNDLE"] = os.path.join(pyfaPath, "cacert.pem").encode('utf8')
-        os.environ["SSL_CERT_FILE"] = os.path.join(pyfaPath, "cacert.pem").encode('utf8')
+        os.environ["REQUESTS_CA_BUNDLE"] =  getPyfaPath(u"cacert.pem")
+        os.environ["SSL_CERT_FILE"] = getPyfaPath(u"cacert.pem")
 
     # The database where we store all the fits etc
-    saveDB = os.path.join(savePath, "saveddata.db")
+    saveDB = getSavePath("saveddata.db")
 
     # The database where the static EVE data from the datadump is kept.
     # This is not the standard sqlite datadump but a modified version created by eos
     # maintenance script
-    gameDB = os.path.join(pyfaPath, "eve.db")
+    gameDB = getPyfaPath("eve.db")
 
     # DON'T MODIFY ANYTHING BELOW
     import eos.config
@@ -109,6 +98,41 @@ def defPaths(customSavePath):
     eos.config.saveddata_connectionstring = "sqlite:///" + saveDB + "?check_same_thread=False"
     eos.config.gamedata_connectionstring = "sqlite:///" + gameDB + "?check_same_thread=False"
 
-    # initialize the settings
-    from service.settings import EOSSettings
-    eos.config.settings = EOSSettings.getInstance().EOSSettings  # this is kind of confusing, but whatever
+
+def getPyfaPath(Append=None):
+    base = getattr(sys.modules['__main__'], "__file__", sys.executable) if isFrozen() else sys.argv[0]
+
+    try:
+        base = unicode(base)
+    except:
+        base = unicode(base, sys.getfilesystemencoding())
+
+    root = os.path.dirname(os.path.realpath(os.path.abspath(base)))
+
+    if not Append:
+        return root
+
+    try:
+        Append = unicode(Append)
+    except:
+        Append = unicode(Append, sys.getfilesystemencoding())
+
+    path = os.path.abspath(os.path.join(root, Append))
+
+    return path
+
+
+def getSavePath(Append=None):
+    root = os.path.expanduser(os.path.join(u"~", u".pyfa"))
+
+    if not Append:
+        return root
+
+    try:
+        Append = unicode(Append)
+    except:
+        Append = unicode(Append, sys.getfilesystemencoding())
+
+    path = os.path.abspath(os.path.join(root, Append))
+
+    return path

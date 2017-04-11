@@ -222,11 +222,11 @@ if __name__ == "__main__":
     '''
 
     if options.debug:
-        savePath_filename = "Pyfa_debug.log"
+        savePath_filename = u"Pyfa_debug.log"
     else:
-        savePath_filename = "Pyfa.log"
+        savePath_filename = u"Pyfa.log"
 
-    config.logPath = os.path.join(config.savePath, savePath_filename)
+    config.logPath = config.getSavePath(savePath_filename)
 
     try:
         if options.debug:
@@ -359,7 +359,7 @@ if __name__ == "__main__":
             else:
                 pyfalog.warning("Unknown sqlalchemy version string format, skipping check. Version: {0}", sqlalchemy.__version__)
 
-        requirements_path = os.path.join(config.pyfaPath, "requirements.txt")
+        requirements_path = config.getPyfaPath(u"requirements.txt")
         if os.path.exists(requirements_path):
             file = open(requirements_path, "r")
             for requirement in file:

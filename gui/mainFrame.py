@@ -423,8 +423,8 @@ class MainFrame(wx.Frame):
             if format_ == 0:
                 sPort = Port.getInstance()
                 output = sPort.exportXml(None, fit)
-                if '.' not in os.path.basename(path):
-                    path += ".xml"
+                if u'.' not in os.path.basename(path):
+                    path += u".xml"
             else:
                 print("oops, invalid fit format %d" % format_)
                 try:
@@ -433,7 +433,7 @@ class MainFrame(wx.Frame):
                     pyfalog.error("Tried to destroy an object that doesn't exist in <showExportDialog>.")
                 return
 
-            with open(path, "w", encoding="utf-8") as openfile:
+            with open(path, "w") as openfile:
                 openfile.write(output)
                 openfile.close()
 
@@ -784,8 +784,8 @@ class MainFrame(wx.Frame):
                 saveFmt = "txt"
 
             filePath = saveDialog.GetPath()
-            if '.' not in os.path.basename(filePath):
-                filePath += ".{0}".format(saveFmt)
+            if u'.' not in os.path.basename(filePath):
+                filePath += u".{0}".format(saveFmt)
 
             self.waitDialog = wx.BusyInfo("Exporting skills needed...")
             sCharacter.backupSkills(filePath, saveFmt, self.getActiveFit(), self.closeWaitDialog)
@@ -832,8 +832,8 @@ class MainFrame(wx.Frame):
 
         if saveDialog.ShowModal() == wx.ID_OK:
             filePath = saveDialog.GetPath()
-            if '.' not in os.path.basename(filePath):
-                filePath += ".xml"
+            if u'.' not in os.path.basename(filePath):
+                filePath += u".xml"
 
             sFit = Fit.getInstance()
             max_ = sFit.countAllFits()
