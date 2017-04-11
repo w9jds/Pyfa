@@ -127,7 +127,6 @@ class Price(object):
                 priceobj.failed = None
 
                 # Update the DB.
-                db.add(priceobj)
                 db.commit()
 
                 # delete price from working dict
@@ -143,7 +142,6 @@ class Price(object):
                 priceobj.failed = True
 
                 # Update the DB.
-                db.add(priceobj)
                 db.commit()
 
                 del priceMap[typeID]
@@ -159,7 +157,6 @@ class Price(object):
             priceobj.failed = True
 
             # Update the DB.
-            db.add(priceobj)
             db.commit()
 
     @classmethod
@@ -215,6 +212,10 @@ class Price(object):
             self.priceWorkerThread.setToWait(requests, cb)
         else:
             self.priceWorkerThread.trigger(requests, cb)
+
+    def clearPriceCache(self):
+        pyfalog.debug("Clearing Prices")
+        db.clearPrices()
 
 
 class PriceWorkerThread(threading.Thread):
