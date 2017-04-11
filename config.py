@@ -1,5 +1,8 @@
 import os
 import sys
+import ctypes
+from ctypes import windll, wintypes
+import platform
 
 from logbook import Logger
 
@@ -82,12 +85,12 @@ def defPaths(customSavePath):
         os.environ["SSL_CERT_FILE"] = getPyfaPath(u"cacert.pem")
 
     # The database where we store all the fits etc
-    saveDB = getSavePath("saveddata.db")
+    saveDB = getSavePath(u"saveddata.db")
 
     # The database where the static EVE data from the datadump is kept.
     # This is not the standard sqlite datadump but a modified version created by eos
     # maintenance script
-    gameDB = getPyfaPath("eve.db")
+    gameDB = getPyfaPath(u"eve.db")
 
     # DON'T MODIFY ANYTHING BELOW
     import eos.config
@@ -129,7 +132,13 @@ def getPyfaPath(Append=None):
 
 
 def getSavePath(Append=None):
-    root = os.path.expanduser(os.path.join(u"~", u".pyfa"))
+    if saveInRoot:
+        root = getPyfaPath()
+    else:
+        if platform.system() is "Windows":
+            root = os.path.join(expand_user(), u".pyfa")
+        else:
+            root = os.path.expanduser(os.path.join(u"~", u".pyfa"))
 
     if not Append:
         return root
@@ -142,3 +151,53 @@ def getSavePath(Append=None):
     path = os.path.realpath(os.path.join(root, Append))
 
     return path
+
+
+class GUID(ctypes.Structure):
+    _fields_ = [
+         ('Data1', wintypes.DWORD),
+         ('Data2', wintypes.WORD),
+         ('Data3', wintypes.WORD),
+         ('Data4', wintypes.BYTE * 8)
+    ]
+
+    def __init__(self, l, w1, w2, b1, b2, b3, b4, b5, b6, b7, b8):
+        """Create a new GUID."""
+        self.Data1 = l
+        self.Data2 = w1
+        self.Data3 = w2
+        self.Data4[:] = (b1, b2, b3, b4, b5, b6, b7, b8)
+
+    def __repr__(self):
+        b1, b2, b3, b4, b5, b6, b7, b8 = self.Data4
+        return 'GUID(%x-%x-%x-%x%x%x%x%x%x%x%x)' % (
+                   self.Data1, self.Data2, self.Data3, b1, b2, b3, b4, b5, b6, b7, b8)
+
+
+def expand_user():
+    """
+    There's a bug in Python 2.x for `expanduser` when running in Windows, and there are unicode characters in the path.
+    We have to roll our own to work around it.
+    See:
+    http://bugs.python.org/issue13207
+    http://stackoverflow.com/questions/23888120/an-alternative-to-os-path-expanduser
+    """
+
+    # constants to be used according to the version on shell32
+    CSIDL_PROFILE = 40
+    FOLDERID_Profile = GUID(0x5E6C858F, 0x0E22, 0x4760, 0x9A, 0xFE, 0xEA, 0x33, 0x17, 0xB6, 0x71, 0x73)
+
+    # get the function that we can find from Vista up, not the one in XP
+    get_folder_path = getattr(windll.shell32, 'SHGetKnownFolderPath', None)
+
+    if get_folder_path is not None:
+        # ok, we can use the new function which is recomended by the msdn
+        ptr = ctypes.c_wchar_p()
+        get_folder_path(ctypes.byref(FOLDERID_Profile), 0, 0, ctypes.byref(ptr))
+        return ptr.value
+    else:
+        # use the deprecated one found in XP and on for compatibility reasons
+        get_folder_path = getattr(windll.shell32, 'SHGetSpecialFolderPathW', None)
+        buf = ctypes.create_unicode_buffer(300)
+        get_folder_path(None, buf, CSIDL_PROFILE, False)
+        return buf.value
