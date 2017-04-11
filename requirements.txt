@@ -6,3 +6,4 @@ urllib3
 requests == 2.11.1
 sqlalchemy >= 1.0.5
 EVE_Gnosis
+multiprocess >= 0.70.5

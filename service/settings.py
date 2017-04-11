@@ -22,15 +22,14 @@ import os.path
 import urllib2
 
 import config
-import eos.config
+import eos.config as eos_config
 from logbook import Logger
 
 pyfalog = Logger(__name__)
 
 
 class SettingsProvider(object):
-    if config.savePath:
-        BASE_PATH = os.path.join(config.savePath, 'settings')
+    BASE_PATH = config.getSavePath(u'settings')
     settings = {}
     _instance = None
 
@@ -263,7 +262,7 @@ class HTMLExportSettings(object):
 
     def __init__(self):
         serviceHTMLExportDefaultSettings = {
-            "path"   : config.pyfaPath + os.sep + 'pyfaFits.html',
+            "path"   : config.getPyfaPath(u'pyfaFits.html'),
             "minimal": False
         }
         self.serviceHTMLExportSettings = SettingsProvider.getInstance().getSettings(
@@ -476,7 +475,7 @@ class EOSSettings(object):
         return cls._instance
 
     def __init__(self):
-        self.EOSSettings = SettingsProvider.getInstance().getSettings("pyfaEOSSettings", eos.config.settings)
+        self.EOSSettings = SettingsProvider.getInstance().getSettings("pyfaEOSSettings", eos_config.settings)
 
     def get(self, type):
         return self.EOSSettings[type]
