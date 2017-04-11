@@ -51,11 +51,11 @@ mapper(Character, characters_table,
            "_Character__skills"      : relation(
                    Skill,
                    backref="character",
-                   cascade="all,delete-orphan"),
+                   cascade="all, delete-orphan"),
            "_Character__implants"    : relation(
                    Implant,
                    collection_class=HandledImplantBoosterList,
-                   cascade='all,delete-orphan',
+                   cascade='all, delete-orphan',
                    backref='character',
                    single_parent=True,
                    primaryjoin=charImplants_table.c.charID == characters_table.c.ID,
