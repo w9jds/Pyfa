@@ -285,7 +285,7 @@ if __name__ == "__main__":
         pyfalog.info("Starting Pyfa")
 
         pyfalog.info("Starting threads")
-        executeStartupThreads()
+        # executeStartupThreads()
 
         pyfalog.info("Logbook version: {0}", logbook_version)
 
