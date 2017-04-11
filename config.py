@@ -78,7 +78,7 @@ def defPaths(customSavePath):
     __createDirs(savePath)
 
     if isFrozen():
-        os.environ["REQUESTS_CA_BUNDLE"] =  getPyfaPath(u"cacert.pem")
+        os.environ["REQUESTS_CA_BUNDLE"] = getPyfaPath(u"cacert.pem")
         os.environ["SSL_CERT_FILE"] = getPyfaPath(u"cacert.pem")
 
     # The database where we store all the fits etc

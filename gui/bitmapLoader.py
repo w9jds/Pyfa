@@ -25,8 +25,6 @@ from config import getPyfaPath
 # noinspection PyPackageRequirements
 import wx
 
-import config
-
 from logbook import Logger
 
 logging = Logger(__name__)
