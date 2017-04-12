@@ -11,28 +11,33 @@ _Development_: [![Build Status](https://travis-ci.org/Pyfa-fit/Pyfa.svg?branch=d
 pyfa, short for **py**thon **f**itting **a**ssistant, allows you to create, experiment with, and save ship fittings without being in game. Open source and written in Python, it is available on any platform where Python 2.x and wxWidgets are available, including Windows, Mac OS X, and Linux.
 
 ## Latest Version and Changelogs
-### Windows
+
+The latest version along with release notes can always be found on the project's [Releases](https://github.com/Pyfa-fit/Pyfa/releases) page. pyfa will notify you if you are running an outdated version.  
+
+Development releases will have newer features, and may not function correctly. Use at your own risk.
 
 _*Release Downloads*_:
 [Current Release](https://github.com/Pyfa-fit/Pyfa/releases)
+
+### Windows
 
 _*Development Downloads*_:
 [x86](https://ci.appveyor.com/api/projects/Ebag333/pyfa-nr5qw/artifacts/pyfa.zip?branch=development&job=Environment%3A%20PYTHON%3DC%3A%5CPython27%2C%20PYTHON_VERSION%3D2.7.x%2C%20PYTHON_ARCH%3D32)
  | 
 [x64](https://ci.appveyor.com/api/projects/Ebag333/pyfa-nr5qw/artifacts/pyfa.zip?branch=development&job=Environment%3A%20PYTHON%3DC%3A%5CPython27-x64%2C%20PYTHON_VERSION%3D2.7.x%2C%20PYTHON_ARCH%3D64)
 
-The latest version along with release notes can always be found on the project's [Releases](https://github.com/Pyfa-fit/Pyfa/releases) page. pyfa will notify you if you are running an outdated version.  
+### Linux/OS X
 
-Development releases will have newer features, and may not function correctly. Use at your own risk.
+_*Development Downloads*_:
+Can be fetched by download the current repository
 
 ## Installation
-Windows users are supplied self-contained builds of pyfa on the [latest releases](https://github.com/Pyfa-fit/Pyfa/releases/latest) page. An `.exe` installer is also available for Windows builds. Linux and Mac users can run pyfa using their distribution's Python interpreter. There is no official self-contained package for Linux or Mac (a feature currently in progress).
 
-#### OS X
-There are currently no OS X builds.  You can run by through emulation, or by running pyfa.py directly.
+### Windows
+Windows users are supplied self-contained builds of pyfa on the [latest releases](https://github.com/Pyfa-fit/Pyfa/releases/latest) page. An `.exe` installer is also available for Windows builds.
 
-### Linux Distro-specific Packages
-There are currently no Linux builds.  You can run by through emulation, or by running pyfa.py directly.
+#### Linux/OS X
+ Linux and Mac users can run pyfa using their distribution's Python interpreter. There is no official self-contained package for Linux or Mac (a feature currently in progress).
 
 ### Dependencies
 If you wish to help with development or simply need to run pyfa through a Python interpreter, all requirements are listed in `requirements.txt`.
