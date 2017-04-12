@@ -19,9 +19,9 @@
 
 import threading
 
-from sqlalchemy import MetaData, create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import MetaData
 
+from eos.db.sqlAlchemyHandler import session_engine_factory
 import migration
 from eos import config
 from logbook import Logger
@@ -36,15 +36,10 @@ class ReadOnlyException(Exception):
     pass
 
 
-gamedata_connectionstring = config.gamedata_connectionstring
-if callable(gamedata_connectionstring):
-    gamedata_engine = create_engine("sqlite://", creator=gamedata_connectionstring, echo=config.debug)
-else:
-    gamedata_engine = create_engine(gamedata_connectionstring, echo=config.debug)
-
+gamedata_factory = session_engine_factory(config.gamedata_connectionstring)
 gamedata_meta = MetaData()
-gamedata_meta.bind = gamedata_engine
-gamedata_session = sessionmaker(bind=gamedata_engine, autoflush=False, expire_on_commit=False)()
+gamedata_engine = gamedata_meta.bind = gamedata_factory['Engine']
+gamedata_session = gamedata_factory['Session']
 
 # This should be moved elsewhere, maybe as an actual query. Current, without try-except, it breaks when making a new
 # game db because we haven't reached gamedata_meta.create_all()
@@ -58,17 +53,13 @@ except Exception as e:
     config.gamedata_version = None
 
 saveddata_connectionstring = config.saveddata_connectionstring
-if saveddata_connectionstring is not None:
-    if callable(saveddata_connectionstring):
-        saveddata_engine = create_engine(creator=saveddata_connectionstring, echo=config.debug)
-    else:
-        saveddata_engine = create_engine(saveddata_connectionstring, echo=config.debug)
-
+if config.saveddata_connectionstring is not None:
+    saveddata_factory = session_engine_factory(config.saveddata_connectionstring)
     saveddata_meta = MetaData()
-    saveddata_meta.bind = saveddata_engine
-    saveddata_session = sessionmaker(bind=saveddata_engine, autoflush=False, expire_on_commit=False)()
+    saveddata_engine = saveddata_meta.bind = saveddata_factory['Engine']
+    saveddata_session = saveddata_factory['Session']
 else:
-    saveddata_meta = None
+    saveddata_session = saveddata_engine = saveddata_meta = None
 
 # Lock controlling any changes introduced to session
 sd_lock = threading.RLock()

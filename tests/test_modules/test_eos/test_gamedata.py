@@ -2,9 +2,9 @@
 # This must be done on every test in order to pass in Travis
 import os
 import sys
+import os
 
-script_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.realpath(os.path.join(script_dir, '..', '..', '..')))
+sys.path.append(os.path.realpath(os.getcwd()))
 
 # noinspection PyPackageRequirements
 from _development.helpers import DBInMemory as DB, Gamedata, Saveddata

@@ -20,11 +20,10 @@
 import cStringIO
 import os.path
 import zipfile
+from config import getPyfaPath
 
 # noinspection PyPackageRequirements
 import wx
-
-import config
 
 from logbook import Logger
 
@@ -38,7 +37,7 @@ except ImportError:
 
 class BitmapLoader(object):
     try:
-        archive = zipfile.ZipFile(os.path.join(config.pyfaPath, 'imgs.zip'), 'r')
+        archive = zipfile.ZipFile(getPyfaPath(u'imgs.zip'), 'r')
         logging.info("Using zipped image files.")
     except IOError:
         logging.info("Using local image files.")
@@ -85,7 +84,7 @@ class BitmapLoader(object):
         if cls.archive:
             path = os.path.join(location, filename)
             if os.sep != "/" and os.sep in path:
-                path = path.replace(os.sep, "/")
+                path = path.replace(os.sep, u"/")
 
             try:
                 img_data = cls.archive.read(path)
@@ -94,7 +93,7 @@ class BitmapLoader(object):
             except KeyError:
                 print("Missing icon file from zip: {0}".format(path))
         else:
-            path = os.path.join(config.pyfaPath, 'imgs' + os.sep + location + os.sep + filename)
+            path = getPyfaPath(u'imgs' + os.sep + location + os.sep + filename)
 
             if os.path.exists(path):
                 return wx.Image(path)

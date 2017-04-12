@@ -39,7 +39,7 @@ mapper(ImplantSet, implant_set_table,
            "_ImplantSet__implants": relation(
                    Implant,
                    collection_class=HandledImplantBoosterList,
-                   cascade='all, delete, delete-orphan',
+                   cascade='all, delete-orphan',
                    backref='set',
                    single_parent=True,
                    primaryjoin=implantsSetMap_table.c.setID == implant_set_table.c.ID,

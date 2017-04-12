@@ -254,6 +254,7 @@ class Item(EqBase):
         self.__offensive = None
         self.__assistive = None
         self.__overrides = None
+        self.__price = None
 
     @property
     def attributes(self):
@@ -442,27 +443,31 @@ class Item(EqBase):
     @property
     def price(self):
         try:
-            if not hasattr(self, "__price"):
-                self.__price = types_Price(self.ID)
+            # todo: use `from sqlalchemy import inspect` instead (need to verify it works in old and new OS X builds)
+            if self.__price is not None and getattr(self.__price, '_sa_instance_state', None):
+                pyfalog.debug("Price data for {} was deleted, resetting object".format(self.ID))
+                self.__price = None
 
-            # Get the price from the DB
-            price = eos.db.getPrice(self.ID)
-
-            if price:
-                if self.__price.time < price.time:
-                    # DB object is newer than local object, update the local object
-                    self.__price = price
-            else:
-                pyfalog.debug("Unable to fetch item price from database.")
-
-            return self.__price
-
+            if self.__price is None:
+                db_price = eos.db.getPrice(self.ID)
+                # do not yet have a price in the database for this item, create one
+                if db_price is None:
+                    print "Creating a price for {}".format(self.ID)
+                    self.__price = types_Price(self.ID)
+                    eos.db.add(self.__price)
+                    eos.db.commit()
+                else:
+                    self.__price = db_price
         except Exception as e:
             # We want to catch our failure and log it, but don't bail out for a single missing price tag.
             pyfalog.error("Failed to get price for typeID: {0}", self.ID)
             pyfalog.error(e)
-            if not self.__price.price:
-                self.__price.price = 0
+
+            if not hasattr(self, '__price'):
+                self.__price = types_Price(self.ID)
+            else:
+                if not self.__price.price:
+                    self.__price.price = 0
             self.__price.failed = True
 
         return self.__price

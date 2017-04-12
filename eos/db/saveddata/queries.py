@@ -34,6 +34,12 @@ from eos.saveddata.module import Module
 from eos.saveddata.miscData import MiscData
 from eos.saveddata.override import Override
 
+'''
+from eos.db.saveddata import fit as es_fit
+from eos.db.saveddata.fit import fits_table, fighters_table, fitImplants_table, commandFits_table
+from eos.db.saveddata.module import modules_table
+'''
+
 import eos.config
 
 configVal = getattr(eos.config, "saveddataCache", None)
@@ -332,11 +338,25 @@ def getDamagePatternList(eager=None):
     return patterns
 
 
+def clearDamagePatterns():
+    with sd_lock:
+        deleted_rows = saveddata_session.query(DamagePattern).filter(DamagePattern.name != 'Uniform').delete()
+    commit()
+    return deleted_rows
+
+
 def getTargetResistsList(eager=None):
     eager = processEager(eager)
     with sd_lock:
         patterns = saveddata_session.query(TargetResists).options(*eager).all()
     return patterns
+
+
+def clearTargetResists():
+    with sd_lock:
+        deleted_rows = saveddata_session.query(TargetResists).delete()
+    commit()
+    return deleted_rows
 
 
 def getImplantSetList(eager=None):

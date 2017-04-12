@@ -4,10 +4,7 @@ import math
 import os
 import sys
 
-script_dir = os.path.dirname(os.path.abspath(__file__))
-script_dir = os.path.realpath(os.path.join(script_dir, '..', '..', '..'))
-print script_dir
-sys.path.append(script_dir)
+sys.path.append(os.path.realpath(os.getcwd()))
 
 # noinspection PyPackageRequirements
 from _development.helpers import DBInMemory as DB, Gamedata, Saveddata
