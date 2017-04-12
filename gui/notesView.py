@@ -42,6 +42,7 @@ class NotesView(wx.Panel):
     def delayedSave(self, event):
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.lastFitId)
-        newNotes = self.editNotes.GetValue()
-        fit.notes = newNotes
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fit.ID))
+        if fit:
+            newNotes = self.editNotes.GetValue()
+            fit.notes = newNotes
+            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fit.ID))
