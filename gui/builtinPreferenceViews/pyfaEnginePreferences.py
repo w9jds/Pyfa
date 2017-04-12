@@ -51,11 +51,12 @@ class PFFittingEnginePref(PreferenceView):
         # Search Item Limit
         sizerFireAtPercentCapacitor = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.cbFireAtPercentCapacitorText = wx.StaticText(panel, wx.ID_ANY,
-                                                          u"Use capacitor boosters when this percentage is reached: ",
-                                                          wx.DefaultPosition, wx.DefaultSize, 0
-                                                         )
         self.cbFireAtPercentCapacitorText.Wrap(-1)
+        self.cbFireAtPercentCapacitorText = wx.StaticText(
+                panel, wx.ID_ANY,
+                u"Use capacitor boosters when this percentage is reached: ",
+                wx.DefaultPosition, wx.DefaultSize, 0
+        )
         sizerFireAtPercentCapacitor.Add(self.cbFireAtPercentCapacitorText, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
         self.editFireAtPercentCapacitor = IntCtrl(panel, max=99, limited=True)
         sizerFireAtPercentCapacitor.Add(self.editFireAtPercentCapacitor, 0, wx.ALL, 5)
