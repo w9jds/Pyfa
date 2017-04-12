@@ -222,11 +222,11 @@ if __name__ == "__main__":
     '''
 
     if options.debug:
-        savePath_filename = "Pyfa_debug.log"
+        savePath_filename = u"Pyfa_debug.log"
     else:
-        savePath_filename = "Pyfa.log"
+        savePath_filename = u"Pyfa.log"
 
-    config.logPath = os.path.join(config.savePath, savePath_filename)
+    config.logPath = config.getSavePath(savePath_filename)
 
     try:
         if options.debug:
@@ -284,9 +284,6 @@ if __name__ == "__main__":
     with logging_setup.threadbound():
         pyfalog.info("Starting Pyfa")
 
-        pyfalog.info("Starting threads")
-        executeStartupThreads()
-
         pyfalog.info("Logbook version: {0}", logbook_version)
 
         pyfalog.info("Running in logging mode: {0}", logging_mode)
@@ -294,13 +291,13 @@ if __name__ == "__main__":
 
         # Output all stdout (print) messages as warnings
         try:
-            sys.stdout = LoggerWriter(pyfalog.warning)
+            sys.stdout = LoggerWriter(pyfalog.info)
         except:
             pyfalog.critical("Cannot redirect.  Continuing without writing stdout to log.")
 
-        # Output all stderr (stacktrace) messages as critical
+        # Output all stderr messages as critical
         try:
-            sys.stderr = LoggerWriter(pyfalog.critical)
+            sys.stderr = LoggerWriter(pyfalog.warning)
         except:
             pyfalog.critical("Cannot redirect.  Continuing without writing stderr to log.")
 
@@ -359,7 +356,7 @@ if __name__ == "__main__":
             else:
                 pyfalog.warning("Unknown sqlalchemy version string format, skipping check. Version: {0}", sqlalchemy.__version__)
 
-        requirements_path = os.path.join(config.pyfaPath, "requirements.txt")
+        requirements_path = config.getPyfaPath(u"requirements.txt")
         if os.path.exists(requirements_path):
             file = open(requirements_path, "r")
             for requirement in file:
@@ -382,6 +379,9 @@ if __name__ == "__main__":
             os.mkdir(config.savePath)
 
         eos.db.saveddata_meta.create_all()
+
+        pyfalog.info("Starting threads")
+        executeStartupThreads()
 
         from gui.mainFrame import MainFrame
 

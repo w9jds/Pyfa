@@ -21,6 +21,7 @@ import re
 import threading
 from logbook import Logger
 import Queue
+from time import time
 
 # noinspection PyPackageRequirements
 import wx
@@ -133,6 +134,11 @@ class SearchWorkerThread(threading.Thread):
 
     def scheduleSearch(self, text, callback, filterOn=True):
         self.cv.acquire()
+        self.searchRequestTime = time() + 5
+
+        while self.searchRequestTime < time():
+            self.cv.wait()
+
         self.searchRequest = (text, callback, filterOn)
         self.cv.notify()
         self.cv.release()
