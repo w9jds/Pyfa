@@ -110,7 +110,6 @@ class PFGeneralPref(PreferenceView):
 
         mainSizer.Add(delayTimer, 0, wx.ALL | wx.EXPAND, 0)
 
-
         # Search Item Limit
         searchLimitSizer = wx.BoxSizer(wx.HORIZONTAL)
 
