@@ -262,7 +262,7 @@ class HTMLExportSettings(object):
 
     def __init__(self):
         serviceHTMLExportDefaultSettings = {
-            "path"   : config.getPyfaPath(u'pyfaFits.html'),
+            "path"   : config.getSavePath(u'pyfaFits.html'),
             "minimal": False
         }
         self.serviceHTMLExportSettings = SettingsProvider.getInstance().getSettings(
