@@ -359,6 +359,7 @@ class GeneralSettings(object):
         # 2 - Full View
         GeneralDefaultSettings = {
             "itemSearchLimit": 150,
+            "marketSearchDelay": 250,
         }
 
         self.serviceGeneralDefaultSettings = SettingsProvider.getInstance().getSettings("pyfaGeneralSettings", GeneralDefaultSettings)

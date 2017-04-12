@@ -1,5 +1,6 @@
 # noinspection PyPackageRequirements
 import wx
+from wx.lib.intctrl import IntCtrl
 
 from gui.preferenceView import PreferenceView
 from gui.bitmapLoader import BitmapLoader
@@ -95,14 +96,30 @@ class PFGeneralPref(PreferenceView):
 
         mainSizer.Add(priceSizer, 0, wx.ALL | wx.EXPAND, 0)
 
+        delayTimer = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.stMarketDelay = wx.StaticText(panel, wx.ID_ANY, u"Market Search Delay (ms):", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stMarketDelay.Wrap(-1)
+        self.stMarketDelay.SetToolTip(
+            wx.ToolTip('The delay between a keystroke and the market search. Can help reduce lag when typing fast in the market search box.'))
+
+        delayTimer.Add(self.stMarketDelay, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+
+        self.intDelay = IntCtrl(panel, max=1000, limited=True)
+        delayTimer.Add(self.intDelay, 0, wx.ALL, 5)
+
+        mainSizer.Add(delayTimer, 0, wx.ALL | wx.EXPAND, 0)
+
         # Search Item Limit
         searchLimitSizer = wx.BoxSizer(wx.HORIZONTAL)
 
         self.chSearchLimitText = wx.StaticText(panel, wx.ID_ANY, u"Item Search Limit:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.chSearchLimitText.Wrap(-1)
         searchLimitSizer.Add(self.chSearchLimitText, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
-        self.editSearchLimit = wx.TextCtrl(panel, wx.ID_ANY, "", wx.DefaultPosition, wx.DefaultSize, 0)
-        searchLimitSizer.Add(self.editSearchLimit, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5)
+        self.editSearchLimit = IntCtrl(panel, max=500, limited=True)
+        searchLimitSizer.Add(self.editSearchLimit, 0, wx.ALL, 5)
+        # self.editSearchLimit = wx.TextCtrl(panel, wx.ID_ANY, "", wx.DefaultPosition, wx.DefaultSize, 0)
+        # searchLimitSizer.Add(self.editSearchLimit, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5)
 
         mainSizer.Add(searchLimitSizer, 0, wx.ALL | wx.EXPAND, 0)
 
@@ -120,7 +137,8 @@ class PFGeneralPref(PreferenceView):
         self.cbOpenFitInNew.SetValue(self.sFit.serviceFittingOptions["openFitInNew"])
         self.chPriceSystem.SetStringSelection(self.sFit.serviceFittingOptions["priceSystem"])
         self.cbShowShipBrowserTooltip.SetValue(self.sFit.serviceFittingOptions["showShipBrowserTooltip"])
-        self.editSearchLimit.SetValue(unicode(self.generalSettings.get("itemSearchLimit")))
+        self.intDelay.SetValue(self.generalSettings.get("marketSearchDelay"))
+        self.editSearchLimit.SetValue(int(self.generalSettings.get("itemSearchLimit")))
 
         self.cbGlobalChar.Bind(wx.EVT_CHECKBOX, self.OnWindowLeave)
         self.cbGlobalDmgPattern.Bind(wx.EVT_CHECKBOX, self.OnWindowLeave)
@@ -137,6 +155,8 @@ class PFGeneralPref(PreferenceView):
         self.chPriceSystem.Bind(wx.EVT_CHOICE, self.OnWindowLeave)
         self.cbShowShipBrowserTooltip.Bind(wx.EVT_CHECKBOX, self.OnWindowLeave)
         self.editSearchLimit.Bind(wx.EVT_LEAVE_WINDOW, self.OnWindowLeave)
+        self.intDelay.Bind(wx.lib.intctrl.EVT_INT, self.OnWindowLeave)
+        self.editSearchLimit.Bind(wx.lib.intctrl.EVT_INT, self.OnWindowLeave)
 
         self.cbRackLabels.Enable(self.sFit.serviceFittingOptions["rackSlots"] or False)
 
@@ -165,6 +185,7 @@ class PFGeneralPref(PreferenceView):
         self.sFit.serviceFittingOptions["showShipBrowserTooltip"] = self.cbShowShipBrowserTooltip.GetValue()
         # Item Search Limit
         self.generalSettings.set('itemSearchLimit', int(self.editSearchLimit.GetValue()))
+        self.generalSettings.set('marketSearchDelay', int(self.intDelay.GetValue()))
 
         fitID = self.mainFrame.getActiveFit()
         if fitID:
