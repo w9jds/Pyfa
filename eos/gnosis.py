@@ -4,6 +4,7 @@ Integrates Gnosis into Pyfa
 
 from EVE_Gnosis.formulas.formulas import Formulas
 from EVE_Gnosis.simulations.capacitor import Capacitor
+from eos.config import settings
 
 
 class GnosisFormulas(object):
@@ -86,6 +87,12 @@ class GnosisSimulation(object):
                 if capacitor_need < 0 and not reactivation_delay and add_reactivation_delay:
                     reactivation_delay = add_reactivation_delay
 
+                # If we have charges and a positive influence at the capacitor, only fire it off when we get low enough.
+                if charges and capacitor_need > 0:
+                    fire_at_percent = float(settings['fireAtPercentCapacitor']) / 100
+                else:
+                    fire_at_percent = False
+
                 if (capacitor_need and duration) is not None:
                     module_list.append(
                             {
@@ -97,6 +104,7 @@ class GnosisSimulation(object):
                                 'ShieldRepair'     : shield_reps,
                                 'ArmorRepair'      : armor_reps,
                                 'HullRepair'       : hull_reps,
+                                'FireAtPercent'    : fire_at_percent,
                             }
                     )
 
