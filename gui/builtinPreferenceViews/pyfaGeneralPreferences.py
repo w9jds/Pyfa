@@ -118,8 +118,6 @@ class PFGeneralPref(PreferenceView):
         searchLimitSizer.Add(self.chSearchLimitText, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
         self.editSearchLimit = IntCtrl(panel, max=500, limited=True)
         searchLimitSizer.Add(self.editSearchLimit, 0, wx.ALL, 5)
-        # self.editSearchLimit = wx.TextCtrl(panel, wx.ID_ANY, "", wx.DefaultPosition, wx.DefaultSize, 0)
-        # searchLimitSizer.Add(self.editSearchLimit, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 5)
 
         mainSizer.Add(searchLimitSizer, 0, wx.ALL | wx.EXPAND, 0)
 
