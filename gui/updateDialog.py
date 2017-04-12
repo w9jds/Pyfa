@@ -26,7 +26,7 @@ from service.settings import UpdateSettings as svc_UpdateSettings
 
 class UpdateDialog(wx.Dialog):
     def __init__(self, parent, release):
-        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title="Pyfa Update", pos=wx.DefaultPosition,
+        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title="Pyfa.fit Update", pos=wx.DefaultPosition,
                            size=wx.Size(400, 300), style=wx.DEFAULT_DIALOG_STYLE)
 
         self.UpdateSettings = svc_UpdateSettings.getInstance()
@@ -37,7 +37,7 @@ class UpdateDialog(wx.Dialog):
 
         headSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.headingText = wx.StaticText(self, wx.ID_ANY, "Pyfa Update Available!", wx.DefaultPosition, wx.DefaultSize,
+        self.headingText = wx.StaticText(self, wx.ID_ANY, "Pyfa.fit Update Available!", wx.DefaultPosition, wx.DefaultSize,
                                          wx.ALIGN_CENTRE)
         self.headingText.Wrap(-1)
         self.headingText.SetFont(wx.Font(14, 74, 90, 92, False))
