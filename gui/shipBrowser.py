@@ -1758,7 +1758,7 @@ class FitItem(SFItem.SFBrowserItem):
             self.deleted = True
 
         sFit = Fit.getInstance()
-        fit = sFit.getFit(self.fitID)
+        fit = sFit.getFit(self.fitID, basic=True)
 
         sFit.deleteFit(self.fitID)
 
