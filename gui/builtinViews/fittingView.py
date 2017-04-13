@@ -267,17 +267,19 @@ class FittingView(d.Display):
         We also refresh the fit of the new current page in case
         delete fit caused change in stats (projected)
         """
-        if event.fitID == self.getActiveFit():
+        active_fit_id = self.getActiveFit()
+        if event.fitID == active_fit_id:
             self.parent.DeletePage(self.parent.GetPageIndex(self))
 
         try:
             # Sometimes there is no active page after deletion, hence the try block
             sFit = Fit.getInstance()
-            fit = sFit.getFit(self.getActiveFit())
-            sFit.recalc(fit)
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
+            fit = sFit.getFit(active_fit_id)
+            if fit.ID != event.fitID:
+                sFit.recalc(fit)
+                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
         except wx._core.PyDeadObjectError:
-            pyfalog.error("Caught dead object")
+            pyfalog.error("Caught dead object on fit removed")
             pass
 
         event.Skip()
@@ -486,7 +488,7 @@ class FittingView(d.Display):
 
             self.Show(self.activeFitID is not None and self.activeFitID == event.fitID)
         except wx._core.PyDeadObjectError:
-            pyfalog.error("Caught dead object")
+            pyfalog.error("Caught dead object on fit change")
         finally:
             event.Skip()
 

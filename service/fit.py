@@ -218,10 +218,12 @@ class Fit(object):
         if fit is None:
             fit = eos.db.getFit(fitID)
 
-        if fit not in self.fit_pointer_list:
+        if fit and fit not in self.fit_pointer_list:
             self.fit_pointer_list.append(fit)
 
         if basic:
+            return fit
+        elif fit is None:
             return fit
 
         inited = getattr(fit, "inited", None)

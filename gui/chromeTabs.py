@@ -258,22 +258,54 @@ class PFNotebook(wx.Panel):
         n -- index of page to be deleted
         internal -- True if we're deleting the page from the PFTabsContainer
         """
-        page = self.pages[n]
-        self.pages.remove(page)
-        page.Destroy()
+        if n is not None:
+            page_count = self.pages.__len__()
+            page = self.pages[n]
+            self.pages.remove(page)
 
-        if not internal:
-            # If we're not deleting from the tab, delete the tab
-            # (deleting from the tab automatically deletes itself)
-            self.tabsContainer.DeleteTab(n, True)
+            # TODO: Figure out a way to clean up the objects and garbage collect them.
+            # Destroying this means that we end up with no self object higher up. Because we attach things to self (like mainFrame or getActiveFit()),
+            # we can't simply nuke it, that breaks shit.
+            # See GH #1055
+            # page.Destroy()
 
-        sel = self.tabsContainer.GetSelected()
-        if sel is not None:
-            self.activePage = self.pages[sel]
-            self.ShowActive()
-            wx.PostEvent(self, PageChanged(-1, sel))
-        else:
-            self.activePage = None
+            if not internal:
+                # If we're not deleting from the tab, delete the tab
+                # (deleting from the tab automatically deletes itself)
+                self.tabsContainer.DeleteTab(n, True)
+
+            """
+            We used to try and get the current tab using:
+            sel = self.tabsContainer.GetSelected()
+    
+            But there's a race condition that causes it to give us back the wrong tab.
+            Now we get the tab using a little basic math.
+    
+            See GH #1055
+            """
+            if page_count == 1:
+                # We just deleted the only page.
+                sel = None
+            elif (n + 1) < page_count:
+                # Check if the page being deleted is not the last page
+                # Stay on the same page number. It'll be the page that was one page to the right.
+                sel = n
+            elif (n + 1) == page_count:
+                # We just deleted the last page.  Reduce our count by 1.
+                sel = n - 1
+            else:
+                # Shouldn't ever end up here.
+                pyfalog.error("Invalid page selected when deleting a tab.")
+                sel = None
+
+            if sel is not None:
+                self.tabsContainer.SetSelected(sel)
+                self.activePage = self.pages[sel]
+                # self.activeFitID = fitID
+                self.ShowActive()
+                wx.PostEvent(self, PageChanged(-1, sel))
+            else:
+                self.activePage = None
 
     def SwitchPages(self, src, dest):
         self.pages[src], self.pages[dest] = self.pages[dest], self.pages[src]
