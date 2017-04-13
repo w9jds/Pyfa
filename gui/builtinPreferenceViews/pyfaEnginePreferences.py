@@ -51,15 +51,15 @@ class PFFittingEnginePref(PreferenceView):
         # Search Item Limit
         sizerFireAtPercentCapacitor = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.cbFireAtPercentCapacitorText.Wrap(-1)
-        self.cbFireAtPercentCapacitorText = wx.StaticText(
+        FireAtPercentCapacitorText = wx.StaticText(
                 panel, wx.ID_ANY,
                 u"Use capacitor boosters when this percentage is reached: ",
                 wx.DefaultPosition, wx.DefaultSize, 0
         )
-        sizerFireAtPercentCapacitor.Add(self.cbFireAtPercentCapacitorText, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
-        self.editFireAtPercentCapacitor = IntCtrl(panel, max=99, limited=True)
-        sizerFireAtPercentCapacitor.Add(self.editFireAtPercentCapacitor, 0, wx.ALL, 5)
+        FireAtPercentCapacitorText.Wrap(-1)
+        sizerFireAtPercentCapacitor.Add(FireAtPercentCapacitorText, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+        editFireAtPercentCapacitor = IntCtrl(panel, max=99, limited=True)
+        sizerFireAtPercentCapacitor.Add(editFireAtPercentCapacitor, 0, wx.ALL, 5)
 
         mainSizer.Add(sizerFireAtPercentCapacitor, 0, wx.ALL | wx.EXPAND, 0)
 
@@ -98,8 +98,8 @@ class PFFittingEnginePref(PreferenceView):
         self.cbStrictFitting.SetValue(self.engine_settings.get("strictFitting"))
         self.cbStrictFitting.Bind(wx.EVT_CHECKBOX, self.OnCBStrictFittingChange)
 
-        self.editFireAtPercentCapacitor.SetValue(int(self.engine_settings.get("fireAtPercentCapacitor")))
-        self.editFireAtPercentCapacitor.Bind(wx.lib.intctrl.EVT_INT, self.OnWindowLeave)
+        editFireAtPercentCapacitor.SetValue(int(self.engine_settings.get("fireAtPercentCapacitor")))
+        editFireAtPercentCapacitor.Bind(wx.lib.intctrl.EVT_INT, self.OnWindowLeave)
 
         panel.SetSizer(mainSizer)
         panel.Layout()

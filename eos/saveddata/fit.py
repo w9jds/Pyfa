@@ -675,9 +675,6 @@ class Fit(object):
                 command_fit.calculated = False
                 pyfalog.debug("Clearing fit calculation flag on: {0}", command_fit.ID)
 
-        self.calculated = False
-        pyfalog.debug("Clearing fit calculation flag on: {0}", self.ID)
-
     def calculateFitAttributes(self, targetFit=None, withBoosters=False):
         """
         This method handles recursion through the chain of fit, projected fits, and command fits.  We start from our current fit (self), then recurse up through
