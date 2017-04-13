@@ -521,6 +521,8 @@ def save(stuff):
 def remove(stuff):
     removeCachedEntry(type(stuff), stuff.ID)
     with sd_lock:
+        # Merge the object to make sure we don't already have it in session
+        saveddata_session.merge(stuff)
         saveddata_session.delete(stuff)
     commit()
 
