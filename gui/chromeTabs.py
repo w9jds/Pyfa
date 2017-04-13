@@ -277,10 +277,8 @@ class PFNotebook(wx.Panel):
             """
             We used to try and get the current tab using:
             sel = self.tabsContainer.GetSelected()
-    
             But there's a race condition that causes it to give us back the wrong tab.
             Now we get the tab using a little basic math.
-    
             See GH #1055
             """
             if page_count == 1:
