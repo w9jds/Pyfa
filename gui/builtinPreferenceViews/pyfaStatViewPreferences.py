@@ -53,8 +53,6 @@ class PFStatViewPref(PreferenceView):
         self.rbResistances.Bind(wx.EVT_RADIOBOX, self.OnResistancesChange)
 
         self.rbRecharge = wx.RadioBox(panel, -1, "Shield/Armor Tank", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
-        # Disable minimal as we don't have a view for this yet
-        self.rbRecharge.EnableItem(1, False)
         self.rbRecharge.SetSelection(self.settings.get('recharge'))
         rbSizerRow1.Add(self.rbRecharge, 1, wx.ALL, 5)
         self.rbRecharge.Bind(wx.EVT_RADIOBOX, self.OnRechargeChange)

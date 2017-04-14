@@ -27,8 +27,8 @@ from gui.builtinStatsViews.resistancesViewFull import EFFECTIVE_HP_TOGGLED
 from service.fit import Fit
 
 
-class RechargeViewFull(StatsView):
-    name = "rechargeViewFull"
+class RechargeViewMinimal(StatsView):
+    name = "rechargeViewMinimal"
 
     def __init__(self, parent):
         StatsView.__init__(self)
@@ -55,14 +55,12 @@ class RechargeViewFull(StatsView):
 
         self.panel = contentPanel
         self.headerPanel = headerPanel
-        sizerTankStats = wx.FlexGridSizer(3, 5)
+        sizerTankStats = wx.FlexGridSizer(2, 5)
         for i in range(4):
             sizerTankStats.AddGrowableCol(i + 1)
 
         contentSizer.Add(sizerTankStats, 0, wx.EXPAND, 0)
 
-        # Add an empty label first for correct alignment.
-        sizerTankStats.Add(wx.StaticText(contentPanel, wx.ID_ANY, ""), 0)
         toolTipText = {
             "shieldPassive": "Passive shield recharge",
             "shieldActive" : "Active shield boost",
@@ -71,11 +69,6 @@ class RechargeViewFull(StatsView):
             "reinforced"   : "Reinforced: The maximum possible amount",
             "sustained"    : "Sustained: The average amount accounting for capacitor stability",
         }
-        for tankType in ("shieldPassive", "shieldActive", "armorActive", "hullActive"):
-            bitmap = BitmapLoader.getStaticBitmap("%s_big" % tankType, contentPanel, "gui")
-            tooltip = wx.ToolTip(toolTipText[tankType])
-            bitmap.SetToolTip(tooltip)
-            sizerTankStats.Add(bitmap, 0, wx.ALIGN_CENTER)
 
         for stability in ("reinforced", "sustained"):
             bitmap = BitmapLoader.getStaticBitmap("regen%s_big" % stability.capitalize(), contentPanel, "gui")
@@ -142,4 +135,4 @@ class RechargeViewFull(StatsView):
         self.headerPanel.Layout()
 
 
-RechargeViewFull.register()
+RechargeViewMinimal.register()
