@@ -651,37 +651,6 @@ class Fit(object):
 
             del self.commandBonuses[warfareBuffID]
 
-    def validateFitChainCalculated(self):
-        """
-        Walks up the chain for the fit and anything projected or command fits haven't been calculated
-
-        :return:
-        True if all fits are calculated, False if one (or more) is not
-        """
-
-        for projected_fit in self.projectedFits:
-            if projected_fit.getProjectionInfo(self.ID).active:
-                if projected_fit is not self:
-                    if projected_fit.calculated is False:
-                        return False
-
-                    projected_calculated = projected_fit.validateFitChainCalculated()
-                    if projected_calculated is False:
-                        return False
-
-        for command_fit in self.commandFits:
-            if command_fit.getCommandInfo(self.ID).active:
-                if command_fit is not self:
-                    if command_fit.calculated is False:
-                        return False
-
-                    command_calculated = command_fit.validateFitChainCalculated()
-                    if command_calculated is False:
-                        return False
-
-        # print("For (" + str(self.name) + ") returning chain have been calculated")
-        return True
-
     def clearFitChainCalculated(self):
         """
         Walks up the chain for the fit and clear the calculated flag on any projected or command fits
@@ -689,19 +658,22 @@ class Fit(object):
         :return:
         True if all fits are calculated, False if one (or more) is not
         """
-        # print("Clearing calculated flag on: " + str(self.name))
 
         for projected_fit in self.projectedFits:
             if projected_fit.getProjectionInfo(self.ID).active:
-                if projected_fit is not self:
-                    projected_fit.clearFitChainCalculated()
+                if projected_fit is not self and projected_fit.calculated is True:
+                    projected_fit.calculated = False
+                    pyfalog.debug("Clearing fit calculation flag on: {0}", projected_fit.ID)
+
+                for projected_command_fit in projected_fit.commandFits:
+                    if projected_command_fit is not self and projected_command_fit.calculated is True:
+                        projected_command_fit.calculated = False
+                        pyfalog.debug("Clearing fit calculation flag on: {0}", projected_command_fit.ID)
 
         for command_fit in self.commandFits:
-            if command_fit.getCommandInfo(self.ID).active:
-                if command_fit is not self:
-                    command_fit.clearFitChainCalculated()
-
-        self.calculated = False
+            if command_fit is not self and command_fit.calculated is True:
+                command_fit.calculated = False
+                pyfalog.debug("Clearing fit calculation flag on: {0}", command_fit.ID)
 
     def calculateFitAttributes(self, targetFit=None, withBoosters=False):
         """
@@ -728,8 +700,7 @@ class Fit(object):
         pyfalog.debug("Starting fit calculation.")
 
         # Follow the chain, if we find any fits not calculated, recalc them all.
-        if not self.validateFitChainCalculated():
-            self.clearFitChainCalculated()
+        self.clearFitChainCalculated()
 
         if withBoosters:
             # Recalc ships projecting onto this fit
@@ -739,20 +710,27 @@ class Fit(object):
                         # If fit is self, don't recurse
                         self.calculateModifiedFitAttributes(targetFit=self)
                     else:
-                        projected_fit.calculateFitAttributes(withBoosters=withBoosters, targetFit=self)
+                        for projected_command_fit in projected_fit.commandFits:
+                            projected_onto = projected_command_fit.getCommandInfo(self.ID)
+                            if getattr(projected_onto, 'active', None):
+                                if projected_command_fit is not self:
+                                    projected_command_fit.calculateModifiedFitAttributes()
+                                    projected_command_fit.calculateModifiedFitAttributes(targetFit=projected_fit)
+
+                        projected_fit.calculateModifiedFitAttributes()
+                        projected_fit.calculateModifiedFitAttributes(targetFit=self)
 
             for command_fit in self.commandFits:
-                if command_fit.getCommandInfo(self.ID).active:
+                projected_onto = command_fit.getCommandInfo(self.ID)
+                if getattr(projected_onto, 'active', None):
                     if command_fit is self:
                         # If fit is self, don't recurse
                         self.calculateModifiedFitAttributes(targetFit=self)
                     else:
-                        command_fit.calculateFitAttributes(withBoosters=withBoosters, targetFit=self)
+                        command_fit.calculateModifiedFitAttributes()
+                        command_fit.calculateModifiedFitAttributes(targetFit=self)
 
         self.calculateModifiedFitAttributes()
-
-        if targetFit:
-            self.calculateModifiedFitAttributes(targetFit=targetFit)
 
     def calculateModifiedFitAttributes(self, targetFit=None):
         """
@@ -762,12 +740,11 @@ class Fit(object):
         If a target fit is specified, will project onto the target fit.
         If targetFit is the same as self, then we make a copy in order to properly project it without running into recursion issues.
         """
-        pyfalog.debug("Starting fit calculation on: {0}", self.name)
 
         shadow = None
         projectionInfo = None
         if targetFit:
-            pyfalog.debug("Calculating projections from {0} to target {1}", self.name, targetFit.name)
+            pyfalog.info("Calculating projections from {0} to target {1}", self.name, targetFit.name)
             projectionInfo = self.getProjectionInfo(targetFit.ID)
             pyfalog.debug("ProjectionInfo: {0}", projectionInfo)
             if self is targetFit:
@@ -777,6 +754,8 @@ class Fit(object):
                 # noinspection PyMethodFirstArgAssignment
                 self = shadow
                 pyfalog.debug("Handling self projection - making shadow copy of fit.")
+        else:
+            pyfalog.info("Calculating fit {0}", self.name)
 
         # If fit is calculated and we have nothing to do here, get out
 
@@ -870,10 +849,8 @@ class Fit(object):
             except InvalidRequestError:
                 # Older versions of SQLAlchemy are not forgiving of the delete command. Newer versions seem to use it more as a delete or expunge.
                 # Test a pass here to see if we can just skip it, may need a refresh or other cleanup.
-                print("Caught InvalidRequestError when  deleting the shadow fit out of the database.")
+                pyfalog.warning("Caught InvalidRequestError when deleting the shadow fit out of the database.")
             del shadow
-
-        pyfalog.debug('Done with fit calculation')
 
         pyfalog.debug('Done with fit calculation')
 

@@ -1,6 +1,7 @@
 import logging
 
 import wx
+from wx.lib.intctrl import IntCtrl
 
 from service.fit import Fit
 from gui.bitmapLoader import BitmapLoader
@@ -47,6 +48,21 @@ class PFFittingEnginePref(PreferenceView):
                                            wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbStrictFitting, 0, wx.ALL | wx.EXPAND, 5)
 
+        # Search Item Limit
+        sizerFireAtPercentCapacitor = wx.BoxSizer(wx.HORIZONTAL)
+
+        FireAtPercentCapacitorText = wx.StaticText(
+                panel, wx.ID_ANY,
+                u"Use capacitor boosters when this percentage is reached: ",
+                wx.DefaultPosition, wx.DefaultSize, 0
+        )
+        FireAtPercentCapacitorText.Wrap(-1)
+        sizerFireAtPercentCapacitor.Add(FireAtPercentCapacitorText, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+        editFireAtPercentCapacitor = IntCtrl(panel, max=99, limited=True)
+        sizerFireAtPercentCapacitor.Add(editFireAtPercentCapacitor, 0, wx.ALL, 5)
+
+        mainSizer.Add(sizerFireAtPercentCapacitor, 0, wx.ALL | wx.EXPAND, 0)
+
         # Future code once new cap sim is implemented
         '''
         self.cbGlobalForceReactivationTimer = wx.CheckBox( panel, wx.ID_ANY, u"Factor in reactivation timer", wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -82,6 +98,9 @@ class PFFittingEnginePref(PreferenceView):
         self.cbStrictFitting.SetValue(self.engine_settings.get("strictFitting"))
         self.cbStrictFitting.Bind(wx.EVT_CHECKBOX, self.OnCBStrictFittingChange)
 
+        editFireAtPercentCapacitor.SetValue(int(self.engine_settings.get("fireAtPercentCapacitor")))
+        editFireAtPercentCapacitor.Bind(wx.lib.intctrl.EVT_INT, self.OnWindowLeave)
+
         panel.SetSizer(mainSizer)
         panel.Layout()
 
@@ -98,9 +117,7 @@ class PFFittingEnginePref(PreferenceView):
         return BitmapLoader.getBitmap("settings_fitting", "gui")
 
     def OnWindowLeave(self, event):
-        # We don't want to do anything when they leave,
-        # but in the future we might.
-        pass
+        self.engine_settings.set('fireAtPercentCapacitor', int(self.editFireAtPercentCapacitor.GetValue()))
 
 
 PFFittingEnginePref.register()
