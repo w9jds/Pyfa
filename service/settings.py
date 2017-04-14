@@ -360,6 +360,7 @@ class GeneralSettings(object):
         GeneralDefaultSettings = {
             "itemSearchLimit": 150,
             "marketSearchDelay": 250,
+            "fontSize": 'NORMAL',
         }
 
         self.serviceGeneralDefaultSettings = SettingsProvider.getInstance().getSettings("pyfaGeneralSettings", GeneralDefaultSettings)
