@@ -9,6 +9,10 @@ import gui.mainFrame
 class NotesView(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
+
+        # Establish instances
+        self.sFit = Fit.getInstance()
+
         self.lastFitId = None
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         mainSizer = wx.BoxSizer(wx.VERTICAL)
@@ -18,31 +22,40 @@ class NotesView(wx.Panel):
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
         self.Bind(wx.EVT_TEXT, self.onText)
         self.saveTimer = wx.Timer(self)
+        self.saveTimer.fitID = None
         self.Bind(wx.EVT_TIMER, self.delayedSave, self.saveTimer)
 
     def fitChanged(self, event):
-        sFit = Fit.getInstance()
-        fit = sFit.getFit(event.fitID)
+        fit = self.sFit.getFit(event.fitID)
+
+        self.saveTimer.Stop()  # cancel any pending timers
 
         self.Parent.Parent.DisablePage(self, not fit or fit.isStructure)
 
-        if event.fitID is None and self.lastFitId is not None:
-            self.lastFitId = None
-            event.Skip()
-            return
-        elif event.fitID != self.lastFitId:
-            self.lastFitId = event.fitID
+        # when switching fits, ensure that we save the notes for the previous fit
+        if self.saveTimer.fitID and self.saveTimer.fitID != event.fitID:
+            self.sFit.editNotes(self.saveTimer.fitID, self.editNotes.GetValue())
+
+        if event.fitID is None:
+            self.saveTimer.fitID = None
+        else:
             self.editNotes.SetValue(fit.notes or "")
+            self.saveTimer.fitID = event.fitID
+
+        event.Skip()
+        return
 
     def onText(self, event):
-        # delay the save so we're not writing to sqlite on every keystroke
-        self.saveTimer.Stop()  # cancel the existing timer
-        self.saveTimer.Start(1000, True)
+        fitID = getattr(event, 'fitID', None)
+        if fitID:
+            # delay the save so we're not writing to sqlite on every keystroke
+            self.saveTimer.Stop()  # cancel the existing timer
+            self.saveTimer.Start(1000, True)
+            self.saveTimer.fitID = fitID
 
     def delayedSave(self, event):
-        sFit = Fit.getInstance()
-        fit = sFit.getFit(self.lastFitId)
+        fit = self.sFit.getFit(self.saveTimer.fitID)
         if fit:
-            newNotes = self.editNotes.GetValue()
-            fit.notes = newNotes
-            wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fit.ID))
+            self.sFit.editNotes(self.saveTimer.fitID, self.editNotes.GetValue())
+
+        self.saveTimer.fitID = None
