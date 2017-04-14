@@ -57,8 +57,8 @@ class RechargeViewMinimal(StatsView):
 
         self.panel = contentPanel
         self.headerPanel = headerPanel
-        sizerTankStats = wx.FlexGridSizer(2, 5)
-        for i in range(4):
+        sizerTankStats = wx.FlexGridSizer(2, 4)
+        for i in range(3):
             sizerTankStats.AddGrowableCol(i + 1)
 
         contentSizer.Add(sizerTankStats, 0, wx.EXPAND, 0)
@@ -77,7 +77,7 @@ class RechargeViewMinimal(StatsView):
             tooltip = wx.ToolTip(toolTipText[stability])
             bitmap.SetToolTip(tooltip)
             sizerTankStats.Add(bitmap, 0, wx.ALIGN_CENTER)
-            for tankType in ("shieldPassive", "shieldActive", "armorActive", "hullActive"):
+            for tankType in ("shieldPassive", "shieldActive", "armorActive"):
                 if stability == "sustained" and tankType == "shieldPassive":
                     sizerTankStats.Add(wx.StaticText(contentPanel, wx.ID_ANY, ""))
                     continue
@@ -102,7 +102,10 @@ class RechargeViewMinimal(StatsView):
     def refreshPanel(self, fit):
         # If we did anything interesting, we'd update our labels to reflect the new fit's stats here
 
-        unit = " EHP/s" if self.parent.nameViewMap['resistancesViewMinimal'].showEffective else " HP/s"
+        try:
+            unit = " EHP/s" if self.parent.nameViewMap['resistancesViewFull'].showEffective else " HP/s"
+        except:
+            unit = " EHP/s" if self.parent.nameViewMap['resistancesViewMinimal'].showEffective else " HP/s"
 
         for stability in ("reinforced", "sustained"):
             if stability == "reinforced" and fit is not None:
@@ -112,7 +115,7 @@ class RechargeViewMinimal(StatsView):
             else:
                 tank = None
 
-            for name in ("shield", "armor", "hull"):
+            for name in ("shield", "armor"):
                 lbl = getattr(self, "labelTank%s%sActive" % (stability.capitalize(), name.capitalize()))
                 unitlbl = getattr(self, "unitLabelTank%s%sActive" % (stability.capitalize(), name.capitalize()))
                 unitlbl.SetLabel(unit)

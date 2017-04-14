@@ -81,7 +81,6 @@ class ResistancesViewMinimal(StatsView):
             "kinetic": "Kinetic resistance", "explosive": "Explosive resistance"
         }
 
-
         gaugeColours = (((38, 133, 198), (52, 86, 98)), ((198, 38, 38), (83, 65, 67)), ((163, 163, 163), (74, 90, 93)),
                         ((198, 133, 38), (81, 83, 67)))
 

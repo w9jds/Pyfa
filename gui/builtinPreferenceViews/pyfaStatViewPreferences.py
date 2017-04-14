@@ -102,11 +102,13 @@ class PFStatViewPref(PreferenceView):
         self.rbMining.Bind(wx.EVT_RADIOBOX, self.OnMiningYieldChange)
         '''
 
+        '''
         self.rbDrones = wx.RadioBox(panel, -1, "Drones", wx.DefaultPosition, wx.DefaultSize,
                                     ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
         self.rbDrones.SetSelection(self.settings.get('drones'))
         rbSizerRow3.Add(self.rbDrones, 1, wx.ALL, 5)
         self.rbDrones.Bind(wx.EVT_RADIOBOX, self.OnDroneChange)
+        '''
 
         mainSizer.Add(rbSizerRow3, 1, wx.ALL | wx.EXPAND, 0)
 

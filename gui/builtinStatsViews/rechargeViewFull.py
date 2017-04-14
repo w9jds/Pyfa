@@ -109,7 +109,10 @@ class RechargeViewFull(StatsView):
     def refreshPanel(self, fit):
         # If we did anything interesting, we'd update our labels to reflect the new fit's stats here
 
-        unit = " EHP/s" if self.parent.nameViewMap['resistancesViewFull'].showEffective else " HP/s"
+        try:
+            unit = " EHP/s" if self.parent.nameViewMap['resistancesViewFull'].showEffective else " HP/s"
+        except:
+            unit = " EHP/s" if self.parent.nameViewMap['resistancesViewMinimal'].showEffective else " HP/s"
 
         for stability in ("reinforced", "sustained"):
             if stability == "reinforced" and fit is not None:
