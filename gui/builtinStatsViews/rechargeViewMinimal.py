@@ -28,8 +28,8 @@ from gui.builtinStatsViews.resistancesViewMinimal import EFFECTIVE_HP_TOGGLED as
 from service.fit import Fit
 
 
-class RechargeViewFull(StatsView):
-    name = "rechargeViewFull"
+class RechargeViewMinimal(StatsView):
+    name = "rechargeViewMinimal"
 
     def __init__(self, parent):
         StatsView.__init__(self)
@@ -57,14 +57,12 @@ class RechargeViewFull(StatsView):
 
         self.panel = contentPanel
         self.headerPanel = headerPanel
-        sizerTankStats = wx.FlexGridSizer(3, 5)
-        for i in range(4):
+        sizerTankStats = wx.FlexGridSizer(2, 4)
+        for i in range(3):
             sizerTankStats.AddGrowableCol(i + 1)
 
         contentSizer.Add(sizerTankStats, 0, wx.EXPAND, 0)
 
-        # Add an empty label first for correct alignment.
-        sizerTankStats.Add(wx.StaticText(contentPanel, wx.ID_ANY, ""), 0)
         toolTipText = {
             "shieldPassive": "Passive shield recharge",
             "shieldActive" : "Active shield boost",
@@ -73,18 +71,13 @@ class RechargeViewFull(StatsView):
             "reinforced"   : "Reinforced: The maximum possible amount",
             "sustained"    : "Sustained: The average amount accounting for capacitor stability",
         }
-        for tankType in ("shieldPassive", "shieldActive", "armorActive", "hullActive"):
-            bitmap = BitmapLoader.getStaticBitmap("%s_big" % tankType, contentPanel, "gui")
-            tooltip = wx.ToolTip(toolTipText[tankType])
-            bitmap.SetToolTip(tooltip)
-            sizerTankStats.Add(bitmap, 0, wx.ALIGN_CENTER)
 
         for stability in ("reinforced", "sustained"):
             bitmap = BitmapLoader.getStaticBitmap("regen%s_big" % stability.capitalize(), contentPanel, "gui")
             tooltip = wx.ToolTip(toolTipText[stability])
             bitmap.SetToolTip(tooltip)
             sizerTankStats.Add(bitmap, 0, wx.ALIGN_CENTER)
-            for tankType in ("shieldPassive", "shieldActive", "armorActive", "hullActive"):
+            for tankType in ("shieldPassive", "shieldActive", "armorActive"):
                 if stability == "sustained" and tankType == "shieldPassive":
                     sizerTankStats.Add(wx.StaticText(contentPanel, wx.ID_ANY, ""))
                     continue
@@ -122,7 +115,7 @@ class RechargeViewFull(StatsView):
             else:
                 tank = None
 
-            for name in ("shield", "armor", "hull"):
+            for name in ("shield", "armor"):
                 lbl = getattr(self, "labelTank%s%sActive" % (stability.capitalize(), name.capitalize()))
                 unitlbl = getattr(self, "unitLabelTank%s%sActive" % (stability.capitalize(), name.capitalize()))
                 unitlbl.SetLabel(unit)
@@ -135,8 +128,6 @@ class RechargeViewFull(StatsView):
             label = getattr(self, "labelTankReinforcedShieldPassive")
             value = fit.effectiveTank["passiveShield"] if self.effective else fit.tank["passiveShield"]
             label.SetLabel(formatAmount(value, 3, 0, 9))
-            unitlbl = getattr(self, "unitlabelTankReinforcedShieldPassive")
-            unitlbl.SetLabel(unit)
 
         else:
             value = 0
@@ -147,4 +138,4 @@ class RechargeViewFull(StatsView):
         self.headerPanel.Layout()
 
 
-RechargeViewFull.register()
+RechargeViewMinimal.register()

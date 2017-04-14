@@ -44,6 +44,7 @@ class StatsPane(wx.Panel):
         "capacitor",
         "targetingMisc",
         "price",
+        "drone"
     ]
 
     # Don't have these....yet....
@@ -67,6 +68,8 @@ class StatsPane(wx.Panel):
             pyfalog.debug("Setting disabled view for: {0}", aView)
         else:
             pyfalog.error("Unknown setting for view: {0}", aView)
+
+    test = True
 
     def fitChanged(self, event):
         sFit = Fit.getInstance()
