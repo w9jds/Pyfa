@@ -399,12 +399,6 @@ class StatViewSettings(object):
             "outgoing"     : 2,
         }
 
-        # We don't have these....yet
-        '''
-        "miningyield": 2,
-        "drones": 2
-        '''
-
         self.serviceStatViewDefaultSettings = SettingsProvider.getInstance().getSettings("pyfaServiceStatViewSettings", serviceStatViewDefaultSettings)
 
     def get(self, type):

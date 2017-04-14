@@ -49,6 +49,7 @@ from gui.builtinStatsViews import (  # noqa: E402, F401
     firepowerViewFull,
     miningyieldViewFull,
     capacitorViewFull,
+    capacitorViewMinimal,
     rechargeViewMinimal,
     rechargeViewFull,
     targetingMiscViewMinimal,
@@ -56,4 +57,5 @@ from gui.builtinStatsViews import (  # noqa: E402, F401
     priceViewMinimal,
     outgoingViewFull,
     outgoingViewMinimal,
+    dronesViewFull,
 )

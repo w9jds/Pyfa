@@ -70,8 +70,6 @@ class PFStatViewPref(PreferenceView):
         self.rbFirepower.Bind(wx.EVT_RADIOBOX, self.OnFirepowerChange)
 
         self.rbCapacitor = wx.RadioBox(panel, -1, "Capacitor", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
-        # Disable minimal as we don't have a view for this yet
-        self.rbCapacitor.EnableItem(1, False)
         self.rbCapacitor.SetSelection(self.settings.get('capacitor'))
         rbSizerRow2.Add(self.rbCapacitor, 1, wx.ALL, 5)
         self.rbCapacitor.Bind(wx.EVT_RADIOBOX, self.OnCapacitorChange)
@@ -104,13 +102,13 @@ class PFStatViewPref(PreferenceView):
         self.rbMining.SetSelection(self.settings.get('miningyield'))
         rbSizerRow3.Add(self.rbMining, 1, wx.ALL, 5)
         self.rbMining.Bind(wx.EVT_RADIOBOX, self.OnMiningYieldChange)
+        '''
 
         self.rbDrones = wx.RadioBox(panel, -1, "Drones", wx.DefaultPosition, wx.DefaultSize,
                                     ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
         self.rbDrones.SetSelection(self.settings.get('drones'))
         rbSizerRow3.Add(self.rbDrones, 1, wx.ALL, 5)
         self.rbDrones.Bind(wx.EVT_RADIOBOX, self.OnDroneChange)
-        '''
 
         mainSizer.Add(rbSizerRow3, 1, wx.ALL | wx.EXPAND, 0)
 
