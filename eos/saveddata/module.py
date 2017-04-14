@@ -758,12 +758,12 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
     @property
     def capUse(self):
         capNeed = self.getModifiedItemAttr("capacitorNeed")
-        if capNeed and self.state >= State.ACTIVE:
-            cycleTime = self.cycleTime
-            capUsed = capNeed / (cycleTime / 1000.0)
-            return capUsed
+        if capNeed and self.cycleTime and self.state >= State.ACTIVE:
+            capUsed = capNeed / (self.cycleTime / 1000.0)
         else:
-            return 0
+            capUsed = 0
+
+        return capUsed
 
     def __deepcopy__(self, memo):
         item = self.item
