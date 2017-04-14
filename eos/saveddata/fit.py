@@ -675,9 +675,6 @@ class Fit(object):
 
         pyfalog.debug("Starting fit calculation.")
 
-        # Follow the chain, if we find any fits not calculated, recalc them all.
-        #self.clearFitChainCalculated()
-
         if withBoosters:
             # Recalc ships projecting onto this fit
             for projected_fit in self.projectedFits:
