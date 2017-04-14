@@ -121,6 +121,18 @@ class PFGeneralPref(PreferenceView):
 
         mainSizer.Add(searchLimitSizer, 0, wx.ALL | wx.EXPAND, 0)
 
+        # Font size
+        fontSizeSizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.stDefaultFontSize = wx.StaticText(panel, wx.ID_ANY, u"Default font size (requires restart):", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stDefaultFontSize.Wrap(-1)
+        fontSizeSizer.Add(self.stDefaultFontSize, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+
+        self.chFontSize = wx.Choice(panel, choices=['SMALL', 'NORMAL', 'LARGE'])
+        fontSizeSizer.Add(self.chFontSize, 1, wx.ALL | wx.EXPAND, 5)
+
+        mainSizer.Add(fontSizeSizer, 0, wx.ALL | wx.EXPAND, 0)
+
         self.cbGlobalChar.SetValue(self.sFit.serviceFittingOptions["useGlobalCharacter"])
         self.cbGlobalDmgPattern.SetValue(self.sFit.serviceFittingOptions["useGlobalDamagePattern"])
         self.cbFitColorSlots.SetValue(self.sFit.serviceFittingOptions["colorFitBySlot"] or False)
@@ -137,6 +149,7 @@ class PFGeneralPref(PreferenceView):
         self.cbShowShipBrowserTooltip.SetValue(self.sFit.serviceFittingOptions["showShipBrowserTooltip"])
         self.intDelay.SetValue(self.generalSettings.get("marketSearchDelay"))
         self.editSearchLimit.SetValue(int(self.generalSettings.get("itemSearchLimit")))
+        self.chFontSize.SetStringSelection(self.generalSettings.get("fontSize"))
 
         self.cbGlobalChar.Bind(wx.EVT_CHECKBOX, self.OnWindowLeave)
         self.cbGlobalDmgPattern.Bind(wx.EVT_CHECKBOX, self.OnWindowLeave)
@@ -155,6 +168,7 @@ class PFGeneralPref(PreferenceView):
         self.editSearchLimit.Bind(wx.EVT_LEAVE_WINDOW, self.OnWindowLeave)
         self.intDelay.Bind(wx.lib.intctrl.EVT_INT, self.OnWindowLeave)
         self.editSearchLimit.Bind(wx.lib.intctrl.EVT_INT, self.OnWindowLeave)
+        self.chFontSize.Bind(wx.lib.intctrl.EVT_INT, self.OnWindowLeave)
 
         self.cbRackLabels.Enable(self.sFit.serviceFittingOptions["rackSlots"] or False)
 
@@ -184,6 +198,7 @@ class PFGeneralPref(PreferenceView):
         # Item Search Limit
         self.generalSettings.set('itemSearchLimit', int(self.editSearchLimit.GetValue()))
         self.generalSettings.set('marketSearchDelay', int(self.intDelay.GetValue()))
+        self.generalSettings.set('fontSize', self.chFontSize.GetString(self.chFontSize.GetSelection()))
 
         fitID = self.mainFrame.getActiveFit()
         if fitID:
