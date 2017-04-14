@@ -123,8 +123,6 @@ class RechargeViewMinimal(StatsView):
             label = getattr(self, "labelTankReinforcedShieldPassive")
             value = fit.effectiveTank["passiveShield"] if self.effective else fit.tank["passiveShield"]
             label.SetLabel(formatAmount(value, 3, 0, 9))
-            unitlbl = getattr(self, "unitlabelTankReinforcedShieldPassive")
-            unitlbl.SetLabel(unit)
 
         else:
             value = 0

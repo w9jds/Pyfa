@@ -108,8 +108,10 @@ class CapacitorViewMinimal(StatsView):
         for labelName, value, prec, lowest, highest in stats:
             label = getattr(self, labelName % panel)
 
-            value = value() if fit is not None else 0
-            value = value if value is not None else 0
+            if fit is None:
+                value = 0
+            else:
+                value = fit.capRecharge['DeltaAmount'] + value()
 
             if labelName == "label%sCapacitorDischarge":
                 tooltip_value = "Capacitor delta from local and projected modules.\nNeut Resistance: {0:.0f}%".format(neut_resist)
