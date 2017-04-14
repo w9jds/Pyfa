@@ -99,11 +99,6 @@ class CapacitorViewMinimal(StatsView):
         else:
             neut_resist = 0
 
-        try:
-            peak_percentage = fit.capRecharge['Percent']
-        except AttributeError:
-            peak_percentage = 0
-
         panel = "Full"
         for labelName, value, prec, lowest, highest in stats:
             label = getattr(self, labelName % panel)
