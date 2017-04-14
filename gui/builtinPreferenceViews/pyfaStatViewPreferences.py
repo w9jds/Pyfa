@@ -46,8 +46,6 @@ class PFStatViewPref(PreferenceView):
         self.rbResources.Bind(wx.EVT_RADIOBOX, self.OnResourcesChange)
 
         self.rbResistances = wx.RadioBox(panel, -1, "Resistances", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
-        # Disable minimal as we don't have a view for this yet
-        self.rbResistances.EnableItem(1, False)
         self.rbResistances.SetSelection(self.settings.get('resistances'))
         rbSizerRow1.Add(self.rbResistances, 1, wx.ALL, 5)
         self.rbResistances.Bind(wx.EVT_RADIOBOX, self.OnResistancesChange)

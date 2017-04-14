@@ -46,6 +46,7 @@ class StatsView(object):
 from gui.builtinStatsViews import (  # noqa: E402, F401
     resourcesViewFull,
     resistancesViewFull,
+    resistancesViewMinimal,
     firepowerViewFull,
     miningyieldViewFull,
     capacitorViewFull,

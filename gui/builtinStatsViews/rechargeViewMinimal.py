@@ -23,7 +23,8 @@ from gui.statsView import StatsView
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 import gui.mainFrame
-from gui.builtinStatsViews.resistancesViewFull import EFFECTIVE_HP_TOGGLED
+from gui.builtinStatsViews.resistancesViewFull import EFFECTIVE_HP_TOGGLED as EHP_TOGGLE_FULL
+from gui.builtinStatsViews.resistancesViewMinimal import EFFECTIVE_HP_TOGGLED as EHP_TOGGLE_MINIMAL
 from service.fit import Fit
 
 
@@ -34,7 +35,8 @@ class RechargeViewMinimal(StatsView):
         StatsView.__init__(self)
         self.parent = parent
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
-        self.mainFrame.Bind(EFFECTIVE_HP_TOGGLED, self.toggleEffective)
+        self.mainFrame.Bind(EHP_TOGGLE_FULL, self.toggleEffective)
+        self.mainFrame.Bind(EHP_TOGGLE_MINIMAL, self.toggleEffective)
         self.effective = True
 
     def getHeaderText(self, fit):
@@ -100,7 +102,7 @@ class RechargeViewMinimal(StatsView):
     def refreshPanel(self, fit):
         # If we did anything interesting, we'd update our labels to reflect the new fit's stats here
 
-        unit = " EHP/s" if self.parent.nameViewMap['resistancesViewFull'].showEffective else " HP/s"
+        unit = " EHP/s" if self.parent.nameViewMap['resistancesViewMinimal'].showEffective else " HP/s"
 
         for stability in ("reinforced", "sustained"):
             if stability == "reinforced" and fit is not None:

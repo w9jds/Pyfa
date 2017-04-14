@@ -1,6 +1,7 @@
 __all__ = [
     "resourcesViewFull",
     "resistancesViewFull",
+    "resistancesViewMinimal",
     "rechargeViewFull",
     "rechargeViewMinimal",
     "firepowerViewFull",
