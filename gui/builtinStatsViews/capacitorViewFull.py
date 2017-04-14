@@ -129,8 +129,10 @@ class CapacitorViewFull(StatsView):
         for labelName, value, prec, lowest, highest in stats:
             label = getattr(self, labelName % panel)
 
-            value = value() if fit is not None else 0
-            value = value if value is not None else 0
+            if fit is None:
+                value = 0
+            else:
+                value = value()
 
             if labelName == "label%sCapacitorRecharge":
                 tooltip_value = "Peak recharge at: " + str(peak_percentage * 100) + "%"
