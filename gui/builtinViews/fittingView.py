@@ -544,7 +544,13 @@ class FittingView(d.Display):
         contexts.append(("fittingShip", "Ship" if not fit.isStructure else "Citadel"))
 
         menu = ContextMenu.getMenu(selection, *contexts)
-        self.PopupMenu(menu)
+        try:
+            self.PopupMenu(menu)
+        except Exception as e:
+            # We can destroy the context menu before it's fully spawned.  See:
+            # https://github.com/Pyfa-fit/Pyfa/issues/50
+            pyfalog.warning("Caught exception trying to spawn context menu.")
+            pyfalog.warning(e)
 
     def click(self, event):
         """
