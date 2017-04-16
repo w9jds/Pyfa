@@ -46,15 +46,11 @@ class PFStatViewPref(PreferenceView):
         self.rbResources.Bind(wx.EVT_RADIOBOX, self.OnResourcesChange)
 
         self.rbResistances = wx.RadioBox(panel, -1, "Resistances", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
-        # Disable minimal as we don't have a view for this yet
-        self.rbResistances.EnableItem(1, False)
         self.rbResistances.SetSelection(self.settings.get('resistances'))
         rbSizerRow1.Add(self.rbResistances, 1, wx.ALL, 5)
         self.rbResistances.Bind(wx.EVT_RADIOBOX, self.OnResistancesChange)
 
         self.rbRecharge = wx.RadioBox(panel, -1, "Shield/Armor Tank", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
-        # Disable minimal as we don't have a view for this yet
-        self.rbRecharge.EnableItem(1, False)
         self.rbRecharge.SetSelection(self.settings.get('recharge'))
         rbSizerRow1.Add(self.rbRecharge, 1, wx.ALL, 5)
         self.rbRecharge.Bind(wx.EVT_RADIOBOX, self.OnRechargeChange)
@@ -72,8 +68,6 @@ class PFStatViewPref(PreferenceView):
         self.rbFirepower.Bind(wx.EVT_RADIOBOX, self.OnFirepowerChange)
 
         self.rbCapacitor = wx.RadioBox(panel, -1, "Capacitor", wx.DefaultPosition, wx.DefaultSize, ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
-        # Disable minimal as we don't have a view for this yet
-        self.rbCapacitor.EnableItem(1, False)
         self.rbCapacitor.SetSelection(self.settings.get('capacitor'))
         rbSizerRow2.Add(self.rbCapacitor, 1, wx.ALL, 5)
         self.rbCapacitor.Bind(wx.EVT_RADIOBOX, self.OnCapacitorChange)
@@ -106,7 +100,9 @@ class PFStatViewPref(PreferenceView):
         self.rbMining.SetSelection(self.settings.get('miningyield'))
         rbSizerRow3.Add(self.rbMining, 1, wx.ALL, 5)
         self.rbMining.Bind(wx.EVT_RADIOBOX, self.OnMiningYieldChange)
+        '''
 
+        '''
         self.rbDrones = wx.RadioBox(panel, -1, "Drones", wx.DefaultPosition, wx.DefaultSize,
                                     ['None', 'Minimal', 'Full'], 1, wx.RA_SPECIFY_COLS)
         self.rbDrones.SetSelection(self.settings.get('drones'))

@@ -24,8 +24,8 @@ from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 
 
-class CapacitorViewFull(StatsView):
-    name = "capacitorViewFull"
+class CapacitorViewMinimal(StatsView):
+    name = "capacitorViewMinimal"
 
     def __init__(self, parent):
         StatsView.__init__(self)
@@ -50,35 +50,22 @@ class CapacitorViewFull(StatsView):
         # Capacitor capacity and time
         baseBox = wx.BoxSizer(wx.HORIZONTAL)
 
-        sizerCapacitor.Add(baseBox, 0, wx.ALIGN_LEFT)
+        sizerCapacitor.Add(baseBox, 0, wx.ALIGN_CENTER)
         bitmap = BitmapLoader.getStaticBitmap("capacitorInfo_big", parent, "gui")
         tooltip = wx.ToolTip("Capacitor stability")
         bitmap.SetToolTip(tooltip)
         baseBox.Add(bitmap, 0, wx.ALIGN_CENTER)
 
-        box = wx.BoxSizer(wx.VERTICAL)
-        baseBox.Add(box, 0, wx.ALIGN_LEFT)
-
-        hbox = wx.BoxSizer(wx.HORIZONTAL)
-        box.Add(hbox, 0, wx.ALIGN_LEFT)
-
-        hbox.Add(wx.StaticText(parent, wx.ID_ANY, "Total: "), 0, wx.ALIGN_LEFT | wx.LEFT, 3)
-        lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
-        setattr(self, "label%sCapacitorCapacity" % panel.capitalize(), lbl)
-        hbox.Add(lbl, 0, wx.ALIGN_LEFT)
-
-        hbox.Add(wx.StaticText(parent, wx.ID_ANY, " GJ"), 0, wx.ALIGN_LEFT)
-
-        hbox = wx.BoxSizer(wx.HORIZONTAL)
-        box.Add(hbox, 0, wx.ALIGN_LEFT)
+        box = wx.BoxSizer(wx.HORIZONTAL)
+        baseBox.Add(box, 0, wx.ALIGN_CENTER)
 
         lbl = wx.StaticText(parent, wx.ID_ANY, "Lasts ")
-        hbox.Add(lbl, 0, wx.ALIGN_LEFT | wx.LEFT, 3)
+        box.Add(lbl, 0, wx.ALIGN_CENTER_HORIZONTAL)
         setattr(self, "label%sCapacitorState" % panel.capitalize(), lbl)
 
         lbl = wx.StaticText(parent, wx.ID_ANY, "0s")
         setattr(self, "label%sCapacitorTime" % panel.capitalize(), lbl)
-        hbox.Add(lbl, 0, wx.ALIGN_LEFT)
+        box.Add(lbl, 0, wx.ALIGN_CENTER)
 
         # Capacitor balance
         baseBox = wx.BoxSizer(wx.HORIZONTAL)
@@ -94,12 +81,6 @@ class CapacitorViewFull(StatsView):
         chargeSizer = wx.FlexGridSizer(2, 3)
         baseBox.Add(chargeSizer, 0, wx.ALIGN_CENTER)
 
-        chargeSizer.Add(wx.StaticText(parent, wx.ID_ANY, "Peak: "), 0, wx.ALIGN_CENTER)
-        lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
-        setattr(self, "label%sCapacitorRecharge" % panel.capitalize(), lbl)
-        chargeSizer.Add(lbl, 0, wx.ALIGN_CENTER)
-        chargeSizer.Add(wx.StaticText(parent, wx.ID_ANY, " GJ/s"), 0, wx.ALIGN_CENTER)
-
         # Discharge
         chargeSizer.Add(wx.StaticText(parent, wx.ID_ANY, "Used: "), 0, wx.ALIGN_CENTER)
         lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
@@ -110,8 +91,6 @@ class CapacitorViewFull(StatsView):
     def refreshPanel(self, fit):
         # If we did anything intresting, we'd update our labels to reflect the new fit's stats here
         stats = (
-            ("label%sCapacitorCapacity", lambda: fit.ship.getModifiedItemAttr("capacitorCapacity"), 3, 0, 9),
-            ("label%sCapacitorRecharge", lambda: fit.capRecharge['DeltaAmount'], 3, 0, 0),
             ("label%sCapacitorDischarge", lambda: fit.capUsed, 3, 0, 0),
         )
 
@@ -120,11 +99,6 @@ class CapacitorViewFull(StatsView):
         else:
             neut_resist = 0
 
-        try:
-            peak_percentage = fit.capRecharge['Percent']
-        except AttributeError:
-            peak_percentage = 0
-
         panel = "Full"
         for labelName, value, prec, lowest, highest in stats:
             label = getattr(self, labelName % panel)
@@ -132,11 +106,9 @@ class CapacitorViewFull(StatsView):
             if fit is None:
                 value = 0
             else:
-                value = value()
+                value = fit.capRecharge['DeltaAmount'] + value()
 
-            if labelName == "label%sCapacitorRecharge":
-                tooltip_value = "Peak recharge at: " + str(peak_percentage * 100) + "%"
-            elif labelName == "label%sCapacitorDischarge":
+            if labelName == "label%sCapacitorDischarge":
                 tooltip_value = "Capacitor delta from local and projected modules.\nNeut Resistance: {0:.0f}%".format(neut_resist)
             else:
                 tooltip_value = str(value)
@@ -186,4 +158,4 @@ class CapacitorViewFull(StatsView):
         self.headerPanel.Layout()
 
 
-CapacitorViewFull.register()
+CapacitorViewMinimal.register()

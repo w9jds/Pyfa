@@ -1,7 +1,9 @@
 __all__ = [
     "resourcesViewFull",
     "resistancesViewFull",
+    "resistancesViewMinimal",
     "rechargeViewFull",
+    "rechargeViewMinimal",
     "firepowerViewFull",
     "capacitorViewFull",
     "outgoingViewFull",
@@ -9,4 +11,5 @@ __all__ = [
     "targetingMiscViewMinimal",
     "priceViewFull",
     "priceViewMinimal",
+    "dronesViewFull",
 ]

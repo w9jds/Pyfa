@@ -21,7 +21,7 @@
 import wx
 
 from service.fit import Fit
-from service.settings import StatViewSettings
+from service.settings import StatViewSettings, GeneralSettings
 import gui.mainFrame
 import gui.builtinStatsViews
 import gui.globalEvents as GE
@@ -44,6 +44,7 @@ class StatsPane(wx.Panel):
         "capacitor",
         "targetingMisc",
         "price",
+        "drone"
     ]
 
     # Don't have these....yet....
@@ -68,6 +69,8 @@ class StatsPane(wx.Panel):
         else:
             pyfalog.error("Unknown setting for view: {0}", aView)
 
+    test = True
+
     def fitChanged(self, event):
         sFit = Fit.getInstance()
         fit = sFit.getFit(event.fitID)
@@ -78,14 +81,10 @@ class StatsPane(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
 
-        # Use 25% smaller fonts if MAC or force font size to 8 for msw/linux
+        general_settings = GeneralSettings.getInstance()
 
-        if "__WXMAC__" in wx.PlatformInfo:
-            self.SetWindowVariant(wx.WINDOW_VARIANT_SMALL)
-        else:
-            standardFont = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
-            standardFont.SetPointSize(8)
-            self.SetFont(standardFont)
+        # Set the font size used on the stats pane
+        self.SetWindowVariant(getattr(wx, 'WINDOW_VARIANT_' + general_settings.get('fontSize'), wx.WINDOW_VARIANT_NORMAL))
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(mainSizer)

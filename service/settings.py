@@ -262,7 +262,7 @@ class HTMLExportSettings(object):
 
     def __init__(self):
         serviceHTMLExportDefaultSettings = {
-            "path"   : config.getPyfaPath(u'pyfaFits.html'),
+            "path"   : config.getSavePath(u'pyfaFits.html'),
             "minimal": False
         }
         self.serviceHTMLExportSettings = SettingsProvider.getInstance().getSettings(
@@ -360,6 +360,7 @@ class GeneralSettings(object):
         GeneralDefaultSettings = {
             "itemSearchLimit": 150,
             "marketSearchDelay": 250,
+            "fontSize": 'NORMAL',
         }
 
         self.serviceGeneralDefaultSettings = SettingsProvider.getInstance().getSettings("pyfaGeneralSettings", GeneralDefaultSettings)
@@ -398,12 +399,6 @@ class StatViewSettings(object):
             "drones"       : 2,
             "outgoing"     : 2,
         }
-
-        # We don't have these....yet
-        '''
-        "miningyield": 2,
-        "drones": 2
-        '''
 
         self.serviceStatViewDefaultSettings = SettingsProvider.getInstance().getSettings("pyfaServiceStatViewSettings", serviceStatViewDefaultSettings)
 

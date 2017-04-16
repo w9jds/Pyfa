@@ -25,7 +25,7 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "2017.04.13"
+version = "2017.04.16"
 if hasattr(sys, 'frozen'):
     tag = "(release)"
 else:
@@ -94,7 +94,9 @@ def defPaths(customSavePath):
     # The database where the static EVE data from the datadump is kept.
     # This is not the standard sqlite datadump but a modified version created by eos
     # maintenance script
-    gameDB = getPyfaPath(u"eve.db")
+    gameDB = getattr(configforced, "gameDB", gameDB)
+    if not gameDB:
+        gameDB = getPyfaPath(u"eve.db")
 
     # DON'T MODIFY ANYTHING BELOW
     import eos.config

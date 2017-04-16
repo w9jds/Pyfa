@@ -486,7 +486,14 @@ class Miscellanea(ViewColumn):
             fit = Fit.getInstance().getFit(self.mainFrame.getActiveFit())
             ehpTotal = fit.ehp
             hpTotal = fit.hp
-            useEhp = self.mainFrame.statsPane.nameViewMap["resistancesViewFull"].showEffective
+            try:
+                useEhp = self.mainFrame.statsPane.nameViewMap["resistancesViewFull"].showEffective
+            except:
+                try:
+                    # We can have a minimal pane.....
+                    useEhp = self.mainFrame.statsPane.nameViewMap["resistancesViewMinimal"].showEffective
+                except:
+                    useEhp = False
             tooltip = "{0} restored over duration using charges (plus reload)".format(boosted_attribute)
 
             if useEhp and boosted_attribute == "HP" and "Remote" not in itemGroup:
