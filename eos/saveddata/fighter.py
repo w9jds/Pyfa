@@ -26,6 +26,7 @@ from eos.effectHandlerHelpers import HandledItem, HandledCharge
 from eos.modifiedAttributeDict import ModifiedAttributeDict, ItemAttrShortcut, ChargeAttrShortcut
 from eos.saveddata.fighterAbility import FighterAbility
 from eos.saveddata.module import Slot
+from eos.config import settings as eos_settings
 
 pyfalog = Logger(__name__)
 
@@ -289,8 +290,11 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         return copy
 
     def fits(self, fit):
-        # If ships doesn't support this type of fighter, don't add it
-        if fit.getNumSlots(self.slot) == 0:
-            return False
-
-        return True
+        if eos_settings['strictFitting']:
+            # If ships doesn't support this type of fighter, don't add it
+            if fit.getNumSlots(self.slot) == 0:
+                return False
+            else:
+                return True
+        else:
+            return True
