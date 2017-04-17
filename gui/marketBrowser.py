@@ -34,7 +34,7 @@ pyfalog = Logger(__name__)
 ItemSelected, ITEM_SELECTED = wx.lib.newevent.NewEvent()
 
 RECENTLY_USED_MODULES = -2
-MAX_RECENTLY_USED_MODULES = 20
+MAX_RECENTLY_USED_MODULES = 50
 
 
 class MetaButton(wx.ToggleButton):
