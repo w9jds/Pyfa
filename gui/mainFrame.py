@@ -49,6 +49,7 @@ from gui.marketBrowser import MarketBrowser, ItemSelected
 from gui.multiSwitch import MultiSwitch
 from gui.statsPane import StatsPane
 from gui.shipBrowser import ShipBrowser, FitSelected, ImportSelected, Stage3Selected
+from gui.recentShipBrowser import RecentShipBrowser
 from gui.characterEditor import CharacterEditor, SaveCharacterAs
 from gui.characterSelection import CharacterSelection
 from gui.patternEditor import DmgPatternEditorDlg
@@ -186,6 +187,9 @@ class MainFrame(wx.Frame):
 
         self.shipBrowser = ShipBrowser(self.notebookBrowsers)
         self.notebookBrowsers.AddPage(self.shipBrowser, "Fittings", tabImage=shipBrowserImg, showClose=False)
+
+        self.recentShipBrowser = RecentShipBrowser(self.notebookBrowsers)
+        self.notebookBrowsers.AddPage(self.recentShipBrowser, "Recent Fits", tabImage=shipBrowserImg, showClose=False)
 
         self.notebookBrowsers.SetSelection(1)
 
