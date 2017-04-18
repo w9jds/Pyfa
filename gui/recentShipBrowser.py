@@ -525,7 +525,7 @@ class RecentShipBrowser(wx.Panel):
     def nameKey(info):
         return info[1]
 
-    def recentStage(self):
+    def recentStage(self, event=None):
 
         self.lpane.ShowLoading(False)
 
