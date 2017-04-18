@@ -26,6 +26,7 @@ import gui.marketBrowser
 import gui.display as d
 from gui.contextMenu import ContextMenu
 import gui.shipBrowser
+import gui.recentShipBrowser
 import gui.multiSwitch
 from eos.saveddata.mode import Mode
 from eos.saveddata.module import Module, Slot, Rack
@@ -49,6 +50,7 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
         self.multiSwitch = multiSwitch
         self.mainFrame = mainFrame = gui.mainFrame.MainFrame.getInstance()
         mainFrame.Bind(gui.shipBrowser.EVT_FIT_SELECTED, self.fitSelected)
+        mainFrame.Bind(gui.recentShipBrowser.EVT_RECENT_FIT_SELECTED, self.fitSelected)
         self.multiSwitch.tabsContainer.handleDrag = self.handleDrag
 
     def fitSelected(self, event):

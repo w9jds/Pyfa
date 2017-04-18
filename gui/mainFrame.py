@@ -186,10 +186,10 @@ class MainFrame(wx.Frame):
         self.marketBrowser.splitter.SetSashPosition(self.marketHeight)
 
         self.shipBrowser = ShipBrowser(self.notebookBrowsers)
-        self.notebookBrowsers.AddPage(self.shipBrowser, "Fittings", tabImage=shipBrowserImg, showClose=False)
+        self.notebookBrowsers.AddPage(self.shipBrowser, "Fits", tabImage=shipBrowserImg, showClose=False)
 
         self.recentShipBrowser = RecentShipBrowser(self.notebookBrowsers)
-        self.notebookBrowsers.AddPage(self.recentShipBrowser, "Recent Fits", tabImage=shipBrowserImg, showClose=False)
+        self.notebookBrowsers.AddPage(self.recentShipBrowser, "Recent", tabImage=shipBrowserImg, showClose=False)
 
         self.notebookBrowsers.SetSelection(1)
 
