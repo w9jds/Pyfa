@@ -155,8 +155,14 @@ class PFListPane(wx.ScrolledWindow):
         child.Destroy()
         self._wList.remove(child)
 
-    def RemoveAllChildren(self):
+    # TODO: Everything should remove, not destroy.  Destroying things can be bad.
+    def DestroyAllChildren(self):
         for widget in self._wList:
             widget.Destroy()
 
         self._wList = []
+
+    def RemoveAllChildren(self):
+        for widget in self._wList:
+            self._wList.remove(widget)
+            self._wCount -= 1

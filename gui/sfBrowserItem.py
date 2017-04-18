@@ -1,5 +1,6 @@
 # noinspection PyPackageRequirements
 import wx
+from wx._core import PyDeadObjectError
 import gui.utils.drawUtils as drawUtils
 
 SB_ITEM_NORMAL = 0
@@ -314,8 +315,12 @@ class SFBrowserItem(wx.Window):
         if btn is not None:
             if btn is not False:
                 if btn.GetState() & BTN_NORMAL:
-                    btn.DoCallback()
-                    self.Refresh()
+                    try:
+                        btn.DoCallback()
+                        self.Refresh()
+                    except PyDeadObjectError:
+                        # TODO: Add logging
+                        pass
             else:
                 self.Refresh()
             return

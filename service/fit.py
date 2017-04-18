@@ -149,6 +149,8 @@ class Fit(object):
         pyfalog.debug("Deleting fit for fit ID: {0}", fitID)
         fit = self.getFit(fitID, basic=True)
 
+        self.fit_pointer_list.remove(fit)
+
         eos.db.remove(fit)
 
         # refresh any fits this fit is projected onto. Otherwise, if we have
@@ -176,8 +178,9 @@ class Fit(object):
     @staticmethod
     def editNotes(fitID, notes):
         fit = eos.db.getFit(fitID)
-        fit.notes = notes
-        eos.db.commit()
+        if fit:
+            fit.notes = notes
+            eos.db.commit()
 
     def toggleFactorReload(self, fitID):
         pyfalog.debug("Toggling factor reload for fit ID: {0}", fitID)
