@@ -929,7 +929,6 @@ class FitItem(SFItem.SFBrowserItem):
 
         self.boosterBmp = BitmapLoader.getBitmap("fleet_fc_small", "gui")
         self.copyBmp = BitmapLoader.getBitmap("fit_add_small", "gui")
-        self.renameBmp = BitmapLoader.getBitmap("fit_rename_small", "gui")
         self.deleteBmp = BitmapLoader.getBitmap("fit_delete_small", "gui")
         self.acceptBmp = BitmapLoader.getBitmap("faccept_small", "gui")
         self.shipEffBk = BitmapLoader.getBitmap("fshipbk_big", "gui")
@@ -973,9 +972,7 @@ class FitItem(SFItem.SFBrowserItem):
             self.tcFitName.SetFocus()
             self.tcFitName.SelectAll()
             self.shipBrowser.fitIDMustEditName = -1
-            self.renameBtn.SetBitmap(self.acceptBmp)
 
-        self.tcFitName.Bind(wx.EVT_TEXT_ENTER, self.renameFit)
         self.tcFitName.Bind(wx.EVT_KILL_FOCUS, self.editLostFocus)
         self.tcFitName.Bind(wx.EVT_KEY_DOWN, self.editCheckEsc)
         self.Bind(wx.EVT_MOUSE_CAPTURE_LOST, self.OnMouseCaptureLost)
@@ -1127,30 +1124,19 @@ class FitItem(SFItem.SFBrowserItem):
         return -c * t * (t - 2) + b
 
     def editLostFocus(self, event):
-        self.RestoreEditButton()
         self.Refresh()
 
     def editCheckEsc(self, event):
-        if event.GetKeyCode() == wx.WXK_ESCAPE:
-            self.RestoreEditButton()
-        else:
-            event.Skip()
+        event.Skip()
 
     def copyBtnCB(self):
-        self.copyFit()
-        self.shipBrowser.recentStage()
-
-    def copyFit(self, event=None):
         sFit = Fit.getInstance()
         fitID = sFit.copyFit(self.fitID)
-        self.shipBrowser.fitIDMustEditName = fitID
         wx.PostEvent(self.mainFrame, FitSelected(fitID=fitID))
+        self.Refresh()
+        self.shipBrowser.recentStage()
 
     def deleteBtnCB(self):
-        if self.tcFitName.IsShown():
-            self.RestoreEditButton()
-            return
-
         # to prevent accidental deletion, give dialog confirmation unless shift is depressed
         if wx.GetMouseState().ShiftDown() or wx.GetMouseState().MiddleDown():
             self.deleteFit()
@@ -1204,12 +1190,9 @@ class FitItem(SFItem.SFBrowserItem):
         if self.dragging:
             self.dragging = False
 
-        if self.tcFitName.IsShown():
-            self.RestoreEditButton()
-        else:
-            activeFitID = self.mainFrame.getActiveFit()
-            if activeFitID != self.fitID:
-                self.selectFit()
+        activeFitID = self.mainFrame.getActiveFit()
+        if activeFitID != self.fitID:
+            self.selectFit()
 
     def MouseLeftDown(self, event):
         self.dragging = True
@@ -1238,11 +1221,6 @@ class FitItem(SFItem.SFBrowserItem):
             wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID, startup=2))
         else:
             wx.PostEvent(self.mainFrame, FitSelected(fitID=self.fitID))
-
-    def RestoreEditButton(self):
-        self.tcFitName.Show(False)
-        self.renameBtn.SetBitmap(self.renameBmp)
-        self.Refresh()
 
     def UpdateElementsPos(self, mdc):
         rect = self.GetRect()
