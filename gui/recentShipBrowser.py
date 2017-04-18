@@ -561,7 +561,7 @@ class RecentShipBrowser(wx.Panel):
 
         self.raceselect.RebuildRaces(self.RACE_ORDER)
 
-        self.raceselect.Show(False)
+        self.raceselect.Show(True)
         self.Layout()
 
 
