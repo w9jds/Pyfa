@@ -1202,11 +1202,11 @@ class Fit(object):
             else:
                 fueledMultiplier = 1
 
-            if isinstance(stuff, Module) and (stuff.isEmpty or stuff.state < State.ACTIVE):
-                continue
-            elif isinstance(stuff, Drone):
-                # drones don't have fueled charges, so siomply override modifier with the amount of drones active
-                modifier = stuff.amountActive
+            if isinstance(stuff, Drone):
+                # We only get one drone object, but may have multiple drones.  Add a multiplier so we get the correct total value.
+                count = stuff.amountActive
+            else:
+                count = 1
 
             # Covert cycleTime to seconds
             duration = stuff.cycleTime / 1000
@@ -1255,7 +1255,7 @@ class Fit(object):
                     hp = droneHull
                 else:
                     hp = 0
-            self.__remoteReps[remote_type] += (hp * fueledMultiplier) / duration
+            self.__remoteReps[remote_type] += (hp * fueledMultiplier * count) / duration
 
         return self.__remoteReps
 
