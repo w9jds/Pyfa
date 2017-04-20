@@ -212,4 +212,8 @@ class ImplantDisplay(d.Display):
             context = (("implantView",),)
             menu = ContextMenu.getMenu([], *context)
         if menu is not None:
-            self.PopupMenu(menu)
+            try:
+                self.PopupMenu(menu)
+            except:
+                # Sometimes the menu is destroyed before it's fully loaded, so don't throw an error when this happens.
+                pass
