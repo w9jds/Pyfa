@@ -126,6 +126,8 @@ class esiUpdate(object):
         esi_types_with_dogma_effects_list = [x.type_id for x in esi_universe_types_type_list if hasattr(x, 'dogma_effects')]
         self.clean_types_dogma(esi_types_with_dogma_attributes_list, esi_types_with_dogma_effects_list)
 
+        update_dogma_attributes_list = ""
+        update_dogma_effects_list = ""
         pyfalog.info("Updating database with items.")
         for esi_item in esi_universe_types_type_list:
 
@@ -145,6 +147,9 @@ class esiUpdate(object):
                     # Missing name, ID, or not published, skip.
                     continue
 
+                pyfalog.info("Updating item {0}", esi_item_id)
+                DatabaseCleanup.ExecuteSQLQuery(self.gamedata_engine, "BEGIN TRANSACTION")
+
                 setting_to_allow_published = True
                 if (setting_to_allow_published is True and esi_item_published is True) or setting_to_allow_published is False:
                     self.process_invItems(esi_item_id, esi_item)
@@ -152,6 +157,15 @@ class esiUpdate(object):
                 try:
                     if hasattr(esi_item, 'dogma_attributes'):
                         esi_item_attributes = getattr(esi_item, 'dogma_attributes', None)
+                        esi_item_attributes_list = [x['attribute_id'] for x in esi_item_attributes]
+                        update_query_list = ""
+                        for dogma_attribute in esi_item_attributes_list:
+                            update_query_list = self.add_query_list(update_query_list, dogma_attribute)
+
+                        if update_dogma_attributes_list.__len__() > 0:
+                            update_dogma_attributes_list = update_dogma_attributes_list + " or "
+
+                        update_dogma_attributes_list = update_dogma_attributes_list + "(typeID = '{0}' AND attributeID NOT IN ({1}))".format(esi_item_id, update_query_list)
                     else:
                         esi_item_attributes = None
                 except AttributeError:
@@ -160,6 +174,15 @@ class esiUpdate(object):
                 try:
                     if hasattr(esi_item, 'dogma_effects'):
                         esi_item_effects = getattr(esi_item, 'dogma_effects', None)
+                        esi_item_effects_list = [x['effect_id'] for x in esi_item_effects]
+                        update_query_list = ""
+                        for dogma_effect in esi_item_effects_list:
+                            update_query_list = self.add_query_list(update_query_list, dogma_effect)
+
+                        if update_dogma_effects_list.__len__() > 0:
+                            update_dogma_effects_list = update_dogma_effects_list + " or "
+
+                            update_dogma_effects_list = update_dogma_effects_list + "(typeID = '{0}' AND attributeID NOT IN ({1}))".format(esi_item_id, update_query_list)
                     else:
                         esi_item_effects = None
                 except AttributeError:
@@ -197,6 +220,9 @@ class esiUpdate(object):
                             DatabaseCleanup.ExecuteSQLQuery(self.gamedata_engine, query)
                             count_insert += 1
                     pyfalog.debug("For TypeID ({0}) added {1} effects.", esi_item_id, count_insert)
+
+                pyfalog.info("Committing transactions.")
+                DatabaseCleanup.ExecuteSQLQuery(self.gamedata_engine, "COMMIT TRANSACTION")
 
     @staticmethod
     def add_update_query_item(update_query, attribute, value):
@@ -364,24 +390,13 @@ class esiUpdate(object):
     def clean_item_dogma(self, esi_item_id, esi_item, esi_item_attributes, esi_item_effects):
         pyfalog.info("Cleaning dogma attributes and effects from items.")
         if esi_item_attributes and esi_item_id:
-            esi_item_attributes_list = [x['attribute_id'] for x in esi_item['dogma_attributes']]
-
-            update_query_list = ""
-            for dogma_attribute in esi_item_attributes_list:
-                update_query_list = self.add_query_list(update_query_list, dogma_attribute)
 
             query = "DELETE FROM dgmtypeattribs WHERE typeID = '{0}' AND attributeID NOT IN ({1})".format(esi_item_id, update_query_list)
             DatabaseCleanup.ExecuteSQLQuery(self.gamedata_engine, query)
             pyfalog.debug("Deleted records from dgmtypeattribs for item ({0}).", esi_item_id)
 
         if esi_item_effects and esi_item_id:
-            esi_item_effects_list = [x['effect_id'] for x in esi_item['dogma_effects']]
-
-            update_query_list = ""
-            for dogma_effect in esi_item_effects_list:
-                update_query_list = self.add_query_list(update_query_list, dogma_effect)
 
             query = "DELETE FROM dgmtypeeffects WHERE typeID = '{0}' AND effectID NOT IN ({1})".format(esi_item_id, update_query_list)
             DatabaseCleanup.ExecuteSQLQuery(self.gamedata_engine, query)
             pyfalog.debug("Deleted records from dgmtypeeffects for item ({0}).", esi_item_id)
-
