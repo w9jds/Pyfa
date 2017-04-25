@@ -31,7 +31,8 @@ class esiUpdate(object):
             retry_requests=True
         )
 
-        self.gamedata_engine = eos.db.gamedata_engine
+        gamedata_engine = eos.db.gamedata_engine
+        self.gamedata_connection = gamedata_engine.connect()
 
     def cleanMarketGroups(self, market_groups):
         pyfalog.info("Removing all invalid market IDs")
@@ -39,7 +40,7 @@ class esiUpdate(object):
         for market_group in market_groups:
             query_list = self.add_query_list(query_list, market_group)
         update_query = "UPDATE invtypes SET marketGroupID = NULL WHERE marketGroupID NOT IN ({0})".format(query_list)
-        query_results = DatabaseCleanup.ExecuteSQLQuery(self.gamedata_engine, update_query)
+        query_results = DatabaseCleanup.ExecuteSQLQuery(self.gamedata_connection, update_query)
         pyfalog.info("Removed incorrect Market Group ID from {0} items.", query_results.rowcount)
 
     def fetchEsiMarketID(self):
@@ -68,7 +69,7 @@ class esiUpdate(object):
                 for market_group_type in market_group['types']:
                     query_list = self.add_query_list(query_list, market_group_type)
                 update_query = "UPDATE invtypes SET marketGroupID = '{0}' WHERE typeID in ({1})".format(market_group['market_group_id'], query_list)
-                query_results = DatabaseCleanup.ExecuteSQLQuery(self.gamedata_engine, update_query)
+                query_results = DatabaseCleanup.ExecuteSQLQuery(self.gamedata_connection, update_query)
                 pyfalog.debug("Added Market Group ID ({0}) to {1} items.", market_group['market_group_id'], query_results.rowcount)
 
     def fetchEsiTypes(self):
@@ -91,6 +92,8 @@ class esiUpdate(object):
         Main loop.
         """
         pyfalog.info("Started updating items.")
+
+        trans = self.gamedata_connection.begin()
         setting_to_use_all_items = False
 
         esi_type_list = self.fetchEsiTypes()
@@ -111,6 +114,7 @@ class esiUpdate(object):
         self.updateTypesData(esi_type_list)
 
         self.updateTypesMarketGroup(esi_market_group_types_list)
+        trans.commit()
         pyfalog.info("Completed updating items.")
 
     def updateTypesData(self, esi_type_list):
@@ -148,7 +152,7 @@ class esiUpdate(object):
                     continue
 
                 pyfalog.info("Updating item {0}", esi_item_id)
-                DatabaseCleanup.ExecuteSQLQuery(self.gamedata_engine, "BEGIN TRANSACTION")
+                # DatabaseCleanup.ExecuteSQLQuery(self.gamedata_connection, "BEGIN TRANSACTION")
 
                 setting_to_allow_published = True
                 if (setting_to_allow_published is True and esi_item_published is True) or setting_to_allow_published is False:
@@ -157,15 +161,6 @@ class esiUpdate(object):
                 try:
                     if hasattr(esi_item, 'dogma_attributes'):
                         esi_item_attributes = getattr(esi_item, 'dogma_attributes', None)
-                        esi_item_attributes_list = [x['attribute_id'] for x in esi_item_attributes]
-                        update_query_list = ""
-                        for dogma_attribute in esi_item_attributes_list:
-                            update_query_list = self.add_query_list(update_query_list, dogma_attribute)
-
-                        if update_dogma_attributes_list.__len__() > 0:
-                            update_dogma_attributes_list = update_dogma_attributes_list + " or "
-
-                        update_dogma_attributes_list = update_dogma_attributes_list + "(typeID = '{0}' AND attributeID NOT IN ({1}))".format(esi_item_id, update_query_list)
                     else:
                         esi_item_attributes = None
                 except AttributeError:
@@ -174,37 +169,28 @@ class esiUpdate(object):
                 try:
                     if hasattr(esi_item, 'dogma_effects'):
                         esi_item_effects = getattr(esi_item, 'dogma_effects', None)
-                        esi_item_effects_list = [x['effect_id'] for x in esi_item_effects]
-                        update_query_list = ""
-                        for dogma_effect in esi_item_effects_list:
-                            update_query_list = self.add_query_list(update_query_list, dogma_effect)
-
-                        if update_dogma_effects_list.__len__() > 0:
-                            update_dogma_effects_list = update_dogma_effects_list + " or "
-
-                            update_dogma_effects_list = update_dogma_effects_list + "(typeID = '{0}' AND attributeID NOT IN ({1}))".format(esi_item_id, update_query_list)
                     else:
                         esi_item_effects = None
                 except AttributeError:
                     esi_item_effects = None
 
-                self.clean_item_dogma(esi_item_id, esi_item, esi_item_attributes, esi_item_effects)
+                self.clean_item_dogma(esi_item_id, esi_item_attributes, esi_item_effects)
 
                 if esi_item_attributes:
                     count_insert = 0
                     count_update = 0
                     for esi_attribute in esi_item_attributes:
                         query = "SELECT * FROM dgmtypeattribs WHERE typeID = '{0}' and attributeID = '{1}'".format(esi_item_id, esi_attribute['attribute_id'])
-                        results = DatabaseCleanup.ExecuteSQLQuery(self.gamedata_engine, query)
+                        results = DatabaseCleanup.ExecuteSQLQuery(self.gamedata_connection, query)
                         row = results.first()
 
                         if row is None:
                             query = "INSERT INTO dgmtypeattribs (typeID, attributeID, value) VALUES ({0}, {1}, {2})".format(esi_item_id, esi_attribute['attribute_id'], esi_attribute['value'])
-                            DatabaseCleanup.ExecuteSQLQuery(self.gamedata_engine, query)
+                            DatabaseCleanup.ExecuteSQLQuery(self.gamedata_connection, query)
                             count_insert += 1
                         else:
                             query = "UPDATE dgmtypeattribs SET value = '{0}' WHERE typeID = '{1}' and attributeID = '{2}'".format(esi_attribute['value'], esi_item_id, esi_attribute['attribute_id'])
-                            DatabaseCleanup.ExecuteSQLQuery(self.gamedata_engine, query)
+                            DatabaseCleanup.ExecuteSQLQuery(self.gamedata_connection, query)
                             count_update += 1
                     pyfalog.debug("For TypeID ({0}) updated {1} and added {2} attributes.", esi_item_id, count_update, count_insert)
 
@@ -212,17 +198,14 @@ class esiUpdate(object):
                     count_insert = 0
                     for esi_effect in esi_item_effects:
                         query = "SELECT * FROM dgmtypeeffects WHERE typeID = '{0}' and effectID = '{1}'".format(esi_item_id, esi_effect['effect_id'])
-                        results = DatabaseCleanup.ExecuteSQLQuery(self.gamedata_engine, query)
+                        results = DatabaseCleanup.ExecuteSQLQuery(self.gamedata_connection, query)
                         row = results.first()
 
                         if row is None:
                             query = "INSERT INTO dgmtypeeffects (typeID, effectID) VALUES ({0}, {1})".format(esi_item_id, esi_effect['effect_id'])
-                            DatabaseCleanup.ExecuteSQLQuery(self.gamedata_engine, query)
+                            DatabaseCleanup.ExecuteSQLQuery(self.gamedata_connection, query)
                             count_insert += 1
                     pyfalog.debug("For TypeID ({0}) added {1} effects.", esi_item_id, count_insert)
-
-                pyfalog.info("Committing transactions.")
-                DatabaseCleanup.ExecuteSQLQuery(self.gamedata_engine, "COMMIT TRANSACTION")
 
     @staticmethod
     def add_update_query_item(update_query, attribute, value):
@@ -306,7 +289,7 @@ class esiUpdate(object):
         }
 
         check_existance_query = "SELECT * FROM invTypes WHERE typeID = '%d'" % esi_type_id
-        check_existance_results = DatabaseCleanup.ExecuteSQLQuery(self.gamedata_engine, check_existance_query)
+        check_existance_results = DatabaseCleanup.ExecuteSQLQuery(self.gamedata_connection, check_existance_query)
         row = check_existance_results.first()
 
         if row is None:
@@ -325,7 +308,7 @@ class esiUpdate(object):
 
             if column_query.__len__() > 0 and values_query.__len__() > 0:
                 update_query = "INSERT INTO invtypes {0} VALUES {1}".format(column_query, values_query)
-                DatabaseCleanup.ExecuteSQLQuery(self.gamedata_engine, update_query)
+                DatabaseCleanup.ExecuteSQLQuery(self.gamedata_connection, update_query)
                 pyfalog.debug("Added TypeID ({0}) to the database.", esi_type_id)
         else:
             update_query = ""
@@ -341,7 +324,7 @@ class esiUpdate(object):
 
             if update_query.__len__() > 0:
                 update_query = "UPDATE invtypes SET {0} WHERE typeID = {1}".format(update_query, esi_type_id)
-                DatabaseCleanup.ExecuteSQLQuery(self.gamedata_engine, update_query)
+                DatabaseCleanup.ExecuteSQLQuery(self.gamedata_connection, update_query)
                 pyfalog.debug("Updated TypeID ({0}) in the database.", esi_type_id)
 
     def clean_types(self, esi_types, esi_market_types):
@@ -356,15 +339,15 @@ class esiUpdate(object):
             update_market_query = self.add_query_list(update_market_query, type)
 
         query = "SELECT typeID FROM invTypes"
-        results = DatabaseCleanup.ExecuteSQLQuery(self.gamedata_engine, query)
+        results = DatabaseCleanup.ExecuteSQLQuery(self.gamedata_connection, query)
         rows = results.fetchall()
 
         query = "DELETE FROM invTypes WHERE typeID NOT IN ({0})".format(update_query)
-        query_results = DatabaseCleanup.ExecuteSQLQuery(self.gamedata_engine, query)
+        query_results = DatabaseCleanup.ExecuteSQLQuery(self.gamedata_connection, query)
         pyfalog.debug("Deleted {0} records out of invTypes", query_results.rowcount)
 
         query = "UPDATE invTypes SET marketGroupID = NULL WHERE typeID NOT IN ({0})".format(update_market_query)
-        query_results = DatabaseCleanup.ExecuteSQLQuery(self.gamedata_engine, query)
+        query_results = DatabaseCleanup.ExecuteSQLQuery(self.gamedata_connection, query)
         pyfalog.debug("Set {0} records in invTypes to market group of null.", query_results.rowcount)
 
     def clean_types_dogma(self, dogma_attributes_list, dogma_effects_list):
@@ -375,7 +358,7 @@ class esiUpdate(object):
                 update_query_list = self.add_query_list(update_query_list, dogma_attribute)
 
             query = "DELETE FROM dgmtypeattribs WHERE typeID NOT IN ({0})".format(update_query_list)
-            DatabaseCleanup.ExecuteSQLQuery(self.gamedata_engine, query)
+            DatabaseCleanup.ExecuteSQLQuery(self.gamedata_connection, query)
             pyfalog.debug("Cleaned obsolete records from dgmtypeattribs.")
 
         if dogma_effects_list:
@@ -383,20 +366,28 @@ class esiUpdate(object):
             for dogma_effect in dogma_effects_list:
                 update_query_list = self.add_query_list(update_query_list, dogma_effect)
 
-            query = "DELETE FROM dgmtypeeffects WHERE typeID NOT IN ({0})".format(dogma_effects_list)
-            DatabaseCleanup.ExecuteSQLQuery(self.gamedata_engine, query)
+            query = "DELETE FROM dgmtypeeffects WHERE typeID NOT IN ({0})".format(update_query_list)
+            DatabaseCleanup.ExecuteSQLQuery(self.gamedata_connection, query)
             pyfalog.debug("vrecords from dgmtypeeffects.")
 
-    def clean_item_dogma(self, esi_item_id, esi_item, esi_item_attributes, esi_item_effects):
-        pyfalog.info("Cleaning dogma attributes and effects from items.")
+    def clean_item_dogma(self, esi_item_id, esi_item_attributes, esi_item_effects):
+        pyfalog.debug("Cleaning dogma attributes and effects from items.")
         if esi_item_attributes and esi_item_id:
+            esi_item_attributes_list = [x['attribute_id'] for x in esi_item_attributes]
+            update_query_list = ""
+            for dogma_attribute in esi_item_attributes_list:
+                update_query_list = self.add_query_list(update_query_list, dogma_attribute)
 
             query = "DELETE FROM dgmtypeattribs WHERE typeID = '{0}' AND attributeID NOT IN ({1})".format(esi_item_id, update_query_list)
-            DatabaseCleanup.ExecuteSQLQuery(self.gamedata_engine, query)
+            DatabaseCleanup.ExecuteSQLQuery(self.gamedata_connection, query)
             pyfalog.debug("Deleted records from dgmtypeattribs for item ({0}).", esi_item_id)
 
         if esi_item_effects and esi_item_id:
+            esi_item_effects_list = [x['effect_id'] for x in esi_item_effects]
+            update_query_list = ""
+            for dogma_effect in esi_item_effects_list:
+                update_query_list = self.add_query_list(update_query_list, dogma_effect)
 
             query = "DELETE FROM dgmtypeeffects WHERE typeID = '{0}' AND effectID NOT IN ({1})".format(esi_item_id, update_query_list)
-            DatabaseCleanup.ExecuteSQLQuery(self.gamedata_engine, query)
+            DatabaseCleanup.ExecuteSQLQuery(self.gamedata_connection, query)
             pyfalog.debug("Deleted records from dgmtypeeffects for item ({0}).", esi_item_id)
