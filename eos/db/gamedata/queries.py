@@ -213,6 +213,15 @@ def getMarketGroup(lookfor, eager=None):
     return marketGroup
 
 
+@cachedQuery(1, "lookfor")
+def getAllMarketGroups(eager=None):
+    if eager is None:
+        marketGroups = gamedata_session.query(MarketGroup).all()
+    else:
+        marketGroups = gamedata_session.query(MarketGroup).options(*processEager(eager)).first()
+    return marketGroups
+
+
 @cachedQuery(2, "where", "filter")
 def getItemsByCategory(filter, where=None, eager=None):
     if isinstance(filter, int):
