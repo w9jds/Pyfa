@@ -14,7 +14,7 @@ class esiConnection(object):
     @classmethod
     def getInstance(cls):
         if cls.instance is None:
-            cls.instance = esiMarket()
+            cls.instance = esiConnection()
 
         return cls.instance
 
@@ -41,7 +41,7 @@ class esiMarket(object):
 
     def __init__(self):
         self.sESIConnection = esiConnection.getInstance()
-        self.sESISQLHelpers = esiSQLHelpers.getInstance()
+        self.sESIHelpers = esiHelpers.getInstance()
 
     def fetchEsiMarketID(self):
         pyfalog.info("Fetching market group list from ESI")
@@ -65,41 +65,31 @@ class esiMarket(object):
         pyfalog.info("Removing all invalid market groups")
         query_list = ""
         for market_group in esi_market_groups:
-            query_list = self.sESISQLHelpers.add_query_list(query_list, market_group)
+            query_list = self.sESIHelpers.addQueryList(query_list, market_group)
         update_query = "DELETE FROM invmarketgroups WHERE marketGroupID NOT IN ({0})".format(query_list)
         DatabaseCleanup.ExecuteSQLQuery(self.sESIConnection.gamedata_connection, update_query)
 
     def cleanMarketGroups(self, esi_market_group_types):
         pyfalog.info("Updating and cleaning market groups")
         for esi_market_group in esi_market_group_types:
-            try:
-                esi_market_group_id = getattr(esi_market_group[1].data, "market_group_id", None)
-            except (AttributeError, KeyError):
+            esi_market_group_data = esi_market_group[1].data
+
+            esi_market_group_id = self.sESIHelpers.getAttribute(esi_market_group_data, "market_group_id")
+            if esi_market_group_id is None:
                 continue
 
             pyfalog.debug("Updating market group {0}.", esi_market_group_id)
 
-            try:
-                esi_market_group_name = getattr(esi_market_group[1].data, "name", None)
-                esi_market_group_name = esi_market_group_name.replace("'", "''")
-                if esi_market_group_name is None:
-                    esi_market_group_name = ""
-            except (AttributeError, KeyError):
+            esi_market_group_name = self.sESIHelpers.getAttribute(esi_market_group_data, "name")
+            if esi_market_group_name is None:
                 esi_market_group_name = ""
 
-            try:
-                esi_market_group_description = getattr(esi_market_group[1].data, "description", None)
-                esi_market_group_description = esi_market_group_description.replace("'", "''")
-                if esi_market_group_description is None:
-                    esi_market_group_description = ""
-            except (AttributeError, KeyError):
+            esi_market_group_description = self.sESIHelpers.getAttribute(esi_market_group_data, "description")
+            if esi_market_group_description is None:
                 esi_market_group_description = ""
 
-            try:
-                esi_market_group_parent_group_id = getattr(esi_market_group[1].data, "parent_group_id", None)
-                if esi_market_group_parent_group_id is None:
-                    esi_market_group_parent_group_id = "Null"
-            except (AttributeError, KeyError):
+            esi_market_group_parent_group_id = self.sESIHelpers.getAttribute(esi_market_group_data, "parent_group_id")
+            if esi_market_group_parent_group_id is None:
                 esi_market_group_parent_group_id = "Null"
 
             query = "SELECT * FROM invmarketgroups WHERE marketGroupID = '{0}'".format(esi_market_group_id)
@@ -139,13 +129,13 @@ class esiItems(object):
     def __init__(self):
         self.sesiMarket = esiMarket.getInstance()
         self.sESIConnection = esiConnection.getInstance()
-        self.sESISQLHelpers = esiSQLHelpers.getInstance()
+        self.sESIHelpers = esiHelpers.getInstance()
 
     def cleanMarketGroupsFromTypes(self, market_groups):
         pyfalog.info("Removing all invalid market IDs")
         query_list = ""
         for market_group in market_groups:
-            query_list = self.sESISQLHelpers.add_query_list(query_list, market_group)
+            query_list = self.sESIHelpers.addQueryList(query_list, market_group)
         update_query = "UPDATE invtypes SET marketGroupID = NULL WHERE marketGroupID NOT IN ({0})".format(query_list)
         query_results = DatabaseCleanup.ExecuteSQLQuery(self.sESIConnection.gamedata_connection, update_query)
         pyfalog.info("Removed incorrect Market Group ID from {0} items.", query_results.rowcount)
@@ -156,7 +146,7 @@ class esiItems(object):
             if market_group['types'].__len__() > 0:
                 query_list = ""
                 for market_group_type in market_group['types']:
-                    query_list = self.sESISQLHelpers.add_query_list(query_list, market_group_type)
+                    query_list = self.sESIHelpers.addQueryList(query_list, market_group_type)
                 update_query = "UPDATE invtypes SET marketGroupID = '{0}' WHERE typeID in ({1})".format(market_group['market_group_id'], query_list)
                 query_results = DatabaseCleanup.ExecuteSQLQuery(self.sESIConnection.gamedata_connection, update_query)
                 pyfalog.debug("Added Market Group ID ({0}) to {1} items.", market_group['market_group_id'], query_results.rowcount)
@@ -238,27 +228,13 @@ class esiItems(object):
                     continue
 
                 pyfalog.debug("Updating item {0}", esi_item_id)
-                # DatabaseCleanup.ExecuteSQLQuery(self.gamedata_connection, "BEGIN TRANSACTION")
 
                 setting_to_allow_published = True
                 if (setting_to_allow_published is True and esi_item_published is True) or setting_to_allow_published is False:
                     self.process_invItems(esi_item_id, esi_item)
 
-                try:
-                    if hasattr(esi_item, 'dogma_attributes'):
-                        esi_item_attributes = getattr(esi_item, 'dogma_attributes', None)
-                    else:
-                        esi_item_attributes = None
-                except AttributeError:
-                    esi_item_attributes = None
-
-                try:
-                    if hasattr(esi_item, 'dogma_effects'):
-                        esi_item_effects = getattr(esi_item, 'dogma_effects', None)
-                    else:
-                        esi_item_effects = None
-                except AttributeError:
-                    esi_item_effects = None
+                esi_item_attributes = self.sESIHelpers.getAttribute(esi_item, "dogma_attributes")
+                esi_item_effects = self.sESIHelpers.getAttribute(esi_item, "dogma_effects")
 
                 self.clean_item_dogma(esi_item_id, esi_item_attributes, esi_item_effects)
 
@@ -302,69 +278,65 @@ class esiItems(object):
                     pyfalog.debug("For TypeID ({0}) added {1} effects.", esi_item_id, count_insert)
 
     def process_invItems(self, esi_type_id, esi_item):
-        invtype_mapping = {
-            "capacity"     : "capacity",
-            "description"  : "description",
-            "factionID"    : None,
-            "groupID"      : "group_id",
-            "iconID"       : "icon_id",
-            "marketGroupID": None,
-            "mass"         : "mass",
-            "published"    : "published",
-            "raceID"       : None,
-            "typeName"     : "name",
-            "volume"       : "volume",
+        capacity = self.sESIHelpers.getAttribute(esi_item, "capacity")
+        if capacity is None:
+            capacity = ""
+
+        description = self.sESIHelpers.getAttribute(esi_item, "description")
+        if description is None:
+            description = ""
+
+        groupID = self.sESIHelpers.getAttribute(esi_item, "group_id")
+        if groupID is None:
+            groupID = ""
+
+        iconID = self.sESIHelpers.getAttribute(esi_item, "icon_id")
+        if iconID is None:
+            iconID = ""
+
+        mass = self.sESIHelpers.getAttribute(esi_item, "mass")
+        if mass is None:
+            mass = ""
+
+        published = self.sESIHelpers.getAttribute(esi_item, "published")
+        if published is None:
+            published = ""
+
+        typeName = self.sESIHelpers.getAttribute(esi_item, "name")
+        if typeName is None:
+            typeName = ""
+
+        volume = self.sESIHelpers.getAttribute(esi_item, "volume")
+        if volume is None:
+            volume = ""
+
+        columns = {
+            'capacity'   : capacity,
+            'description': description,
+            # 'factionID': None,
+            'groupID'    : groupID,
+            'iconID'     : iconID,
+            # 'marketGroupID': None,
+            'mass'       : mass,
+            'published'  : published,
+            # 'raceID': raceID,
+            'typeName'   : typeName,
+            'volume'     : volume,
         }
 
-        check_existance_query = "SELECT * FROM invTypes WHERE typeID = '%d'" % esi_type_id
-        check_existance_results = DatabaseCleanup.ExecuteSQLQuery(self.sESIConnection.gamedata_connection, check_existance_query)
-        row = check_existance_results.first()
-
-        if row is None:
-            # It doesn't exist, create it.
-            column_query = "(typeID)"
-            values_query = "({0})".format(esi_type_id)
-
-            for map_item in invtype_mapping:
-                if invtype_mapping[map_item]:
-                    try:
-                        esi_item_attribute_value = esi_item[invtype_mapping[map_item]]
-                        if esi_item_attribute_value:
-                            column_query, values_query = self.sESISQLHelpers.add_insert_query_item(column_query, values_query, map_item, esi_item_attribute_value)
-                    except Exception:
-                        pass
-
-            if column_query.__len__() > 0 and values_query.__len__() > 0:
-                update_query = "INSERT INTO invtypes {0} VALUES {1}".format(column_query, values_query)
-                DatabaseCleanup.ExecuteSQLQuery(self.sESIConnection.gamedata_connection, update_query)
-                pyfalog.debug("Added TypeID ({0}) to the database.", esi_type_id)
-        else:
-            update_query = ""
-
-            for map_item in invtype_mapping:
-                if invtype_mapping[map_item]:
-                    try:
-                        esi_item_attribute_value = esi_item[invtype_mapping[map_item]]
-                        if esi_item_attribute_value:
-                            update_query = self.sESISQLHelpers.add_update_query_item(update_query, map_item, esi_item_attribute_value)
-                    except Exception:
-                        pass
-
-            if update_query.__len__() > 0:
-                update_query = "UPDATE invtypes SET {0} WHERE typeID = {1}".format(update_query, esi_type_id)
-                DatabaseCleanup.ExecuteSQLQuery(self.sESIConnection.gamedata_connection, update_query)
-                pyfalog.debug("Updated TypeID ({0}) in the database.", esi_type_id)
+        identifier = "typeID = '{0}'".format(esi_type_id)
+        self.sESIHelpers.addRecord("dgmattribs", identifier, columns)
 
     def clean_types(self, esi_types, esi_market_types):
         pyfalog.debug("Purging items that don't exist, and cleaning market groups.")
 
         update_query = ""
         for type in esi_types:
-            update_query = self.sESISQLHelpers.add_query_list(update_query, type)
+            update_query = self.sESIHelpers.addQueryList(update_query, type)
 
         update_market_query = ""
         for type in esi_market_types:
-            update_market_query = self.sESISQLHelpers.add_query_list(update_market_query, type)
+            update_market_query = self.sESIHelpers.addQueryList(update_market_query, type)
 
         query = "DELETE FROM invTypes WHERE typeID NOT IN ({0})".format(update_query)
         query_results = DatabaseCleanup.ExecuteSQLQuery(self.sESIConnection.gamedata_connection, query)
@@ -379,7 +351,7 @@ class esiItems(object):
         if dogma_attributes_list:
             update_query_list = ""
             for dogma_attribute in dogma_attributes_list:
-                update_query_list = self.sESISQLHelpers.add_query_list(update_query_list, dogma_attribute)
+                update_query_list = self.sESIHelpers.addQueryList(update_query_list, dogma_attribute)
 
             query = "DELETE FROM dgmtypeattribs WHERE typeID NOT IN ({0})".format(update_query_list)
             DatabaseCleanup.ExecuteSQLQuery(self.sESIConnection.gamedata_connection, query)
@@ -388,7 +360,7 @@ class esiItems(object):
         if dogma_effects_list:
             update_query_list = ""
             for dogma_effect in dogma_effects_list:
-                update_query_list = self.sESISQLHelpers.add_query_list(update_query_list, dogma_effect)
+                update_query_list = self.sESIHelpers.addQueryList(update_query_list, dogma_effect)
 
             query = "DELETE FROM dgmtypeeffects WHERE typeID NOT IN ({0})".format(update_query_list)
             DatabaseCleanup.ExecuteSQLQuery(self.sESIConnection.gamedata_connection, query)
@@ -400,7 +372,7 @@ class esiItems(object):
             esi_item_attributes_list = [x['attribute_id'] for x in esi_item_attributes]
             update_query_list = ""
             for dogma_attribute in esi_item_attributes_list:
-                update_query_list = self.sESISQLHelpers.add_query_list(update_query_list, dogma_attribute)
+                update_query_list = self.sESIHelpers.addQueryList(update_query_list, dogma_attribute)
 
             query = "DELETE FROM dgmtypeattribs WHERE typeID = '{0}' AND attributeID NOT IN ({1})".format(esi_item_id, update_query_list)
             DatabaseCleanup.ExecuteSQLQuery(self.sESIConnection.gamedata_connection, query)
@@ -410,30 +382,204 @@ class esiItems(object):
             esi_item_effects_list = [x['effect_id'] for x in esi_item_effects]
             update_query_list = ""
             for dogma_effect in esi_item_effects_list:
-                update_query_list = self.sESISQLHelpers.add_query_list(update_query_list, dogma_effect)
+                update_query_list = self.sESIHelpers.addQueryList(update_query_list, dogma_effect)
 
             query = "DELETE FROM dgmtypeeffects WHERE typeID = '{0}' AND effectID NOT IN ({1})".format(esi_item_id, update_query_list)
             DatabaseCleanup.ExecuteSQLQuery(self.sESIConnection.gamedata_connection, query)
             pyfalog.debug("Deleted records from dgmtypeeffects for item ({0}).", esi_item_id)
 
 
-class esiSQLHelpers(object):
+class esiDogma(object):
     instance = None
 
     @classmethod
     def getInstance(cls):
         if cls.instance is None:
-            cls.instance = esiSQLHelpers()
+            cls.instance = esiDogma()
 
         return cls.instance
 
     def __init__(self):
-        pass
+        self.sESIConnection = esiConnection.getInstance()
+        self.sESIHelpers = esiHelpers.getInstance()
+
+    def updateAllDogmaTables(self):
+        trans = self.sESIConnection.gamedata_connection.begin()
+
+        self.updateDogmaAttributes()
+        self.updateDogmaEffects()
+
+        trans.commit()
+
+    def updateDogmaAttributes(self):
+        dogma_attribute_list = self.getDogmaAttributeIDs()
+        dogma_attribute_data = self.getDogmaAttributeData(dogma_attribute_list)
+
+        self.deleteBadDogmaAttributes(dogma_attribute_list)
+        self.updateDogmaAttributeData(dogma_attribute_data)
+
+    def getDogmaAttributeIDs(self):
+        pyfalog.info("Fetching dogma attribute list from ESI")
+        esi_request = self.sESIConnection.esi_app.op['get_dogma_attributes']()
+        esi_return = self.sESIConnection.esi_client.request(esi_request).data
+
+        return esi_return
+
+    def getDogmaAttributeData(self, dogma_attribute_list):
+        pyfalog.info("Fetching dogma attribute data from ESI")
+        dogma_return = self.sESIConnection.esi_client.multi_request(
+                [self.sESIConnection.esi_app.op["get_dogma_attributes_attribute_id"](attribute_id=x) for x in dogma_attribute_list],
+                threads=50,
+        )
+        return [x[1].data for x in dogma_return]
+
+    def deleteBadDogmaAttributes(self, dogma_attribute_list):
+        pyfalog.info("Purging dogma attributes that don't exist.")
+
+        update_query = ""
+        for _ in dogma_attribute_list:
+            update_query = self.sESIHelpers.addQueryList(update_query, _)
+
+        self.sESIHelpers.deleteBadRecords("dgmattribs", "attributeID", update_query)
+
+    def updateDogmaAttributeData(self, dogma_attribute_data):
+        for dogma_attribute in dogma_attribute_data:
+            attributeID = self.sESIHelpers.getAttribute(dogma_attribute, "attribute_id")
+            if attributeID is None:
+                continue
+
+            attributeName = self.sESIHelpers.getAttribute(dogma_attribute, "name")
+            if attributeName is None:
+                attributeName = ""
+
+            defaultValue = self.sESIHelpers.getAttribute(dogma_attribute, "default_value")
+            if defaultValue is None:
+                defaultValue = ""
+
+            description = self.sESIHelpers.getAttribute(dogma_attribute, "description")
+            if description is None:
+                description = ""
+
+            published = self.sESIHelpers.getAttribute(dogma_attribute, "published")
+            if published is None:
+                published = ""
+
+            displayName = self.sESIHelpers.getAttribute(dogma_attribute, "display_name")
+            if displayName is None:
+                displayName = ""
+
+            highIsGood = self.sESIHelpers.getAttribute(dogma_attribute, "high_is_good")
+            if highIsGood is None:
+                highIsGood = ""
+
+            columns = {
+                # 'attributeID': attributeID,
+                'attributeName': attributeName,
+                'defaultValue' : defaultValue,
+                # 'maxAttributeID': None,
+                'description'  : description,
+                'published'    : published,
+                'displayName'  : displayName,
+                'highIsGood'   : highIsGood,
+                # 'iconID': None,
+                # 'unitID': None,
+            }
+
+            identifier = "attributeID = '{0}'".format(attributeID)
+            self.sESIHelpers.addRecord("dgmattribs", identifier, columns)
+
+    def updateDogmaEffects(self):
+        dogma_effect_list = self.getDogmaEffectIDs()
+        dogma_effect_data = self.getDogmaEffectData(dogma_effect_list)
+
+        self.deleteBadDogmaEffects(dogma_effect_list)
+        self.updateDogmaEffectData(dogma_effect_data)
+
+    def getDogmaEffectIDs(self):
+        pyfalog.info("Fetching dogma effect list from ESI")
+        esi_request = self.sESIConnection.esi_app.op['get_dogma_effects']()
+        esi_return = self.sESIConnection.esi_client.request(esi_request).data
+
+        return esi_return
+
+    def getDogmaEffectData(self, dogma_effect_list):
+        pyfalog.info("Fetching dogma effect data from ESI")
+        dogma_return = self.sESIConnection.esi_client.multi_request(
+                [self.sESIConnection.esi_app.op["get_dogma_effects_effect_id"](effect_id=x) for x in dogma_effect_list],
+                threads=50,
+        )
+        return [x[1].data for x in dogma_return]
+
+    def deleteBadDogmaEffects(self, dogma_effect_list):
+        pyfalog.info("Purging dogma effects that don't exist.")
+
+        update_query = ""
+        for _ in dogma_effect_list:
+            update_query = self.sESIHelpers.addQueryList(update_query, _)
+
+        self.sESIHelpers.deleteBadRecords("dgmeffects", "effectID", update_query)
+
+    def updateDogmaEffectData(self, dogma_effect_data):
+        for dogma_effect in dogma_effect_data:
+            effectID = self.sESIHelpers.getAttribute(dogma_effect, "effect_id")
+            if effectID is None:
+                continue
+
+            effectName = self.sESIHelpers.getAttribute(dogma_effect, "name")
+            if effectName is None:
+                effectName = ""
+
+            description = self.sESIHelpers.getAttribute(dogma_effect, "description")
+            if description is None:
+                description = ""
+
+            published = self.sESIHelpers.getAttribute(dogma_effect, "published")
+            if published is None:
+                published = ""
+
+            isAssistance = self.sESIHelpers.getAttribute(dogma_effect, "is_assistance")
+            if isAssistance is None:
+                isAssistance = ""
+
+            isOffensive = self.sESIHelpers.getAttribute(dogma_effect, "is_offensive")
+            if isOffensive is None:
+                isOffensive = ""
+
+            # TODO: There are a lot more attributes we aren't getting here. :(
+
+            columns = {
+                # 'effectID': effectID,
+                'effectName'  : effectName,
+                'description' : description,
+                'published'   : published,
+                'isAssistance': isAssistance,
+                'isOffensive' : isOffensive,
+            }
+
+            identifier = "effectID = '{0}'".format(effectID)
+            self.sESIHelpers.addRecord("dgmeffects", identifier, columns)
+
+
+class esiHelpers(object):
+    instance = None
+
+    @classmethod
+    def getInstance(cls):
+        if cls.instance is None:
+            cls.instance = esiHelpers()
+
+        return cls.instance
+
+    def __init__(self):
+        self.sESIConnection = esiConnection.getInstance()
 
     @staticmethod
-    def add_update_query_item(update_query, attribute, value):
-        if attribute and value:
-            if attribute == 'published':
+    def getAttribute(source, attribute, default=None):
+        # We roll our own attribute getter because we need to handle special butterflies
+        try:
+            value = getattr(source, attribute, default)
+
+            if attribute in ('published', 'high_is_good', 'is_assistance', 'is_offensive'):
                 # SQLite doesn't understand true/false, so set to 1/0
                 if value == "True" or value is True:
                     value = 1
@@ -443,11 +589,92 @@ class esiSQLHelpers(object):
                     # Unexpected value, so set to 0
                     value = 0
 
-            # Set value to a string so we can perform string manipulations
-            value = str(value)
-            value = value.replace("'", "''")
+            value = str(value).replace("'", "''")
 
-            update_query = "{0}, {1}='{2}'".format(update_query, attribute, value)
+            if value is None:
+                return default
+            else:
+                return value
+
+        except (AttributeError, KeyError):
+            return default
+
+    def deleteBadRecords(self, table, attribute, value_list):
+        query = "DELETE FROM {0} WHERE {1} NOT IN ({2})".format(table, attribute, value_list)
+        query_results = DatabaseCleanup.ExecuteSQLQuery(self.sESIConnection.gamedata_connection, query)
+        pyfalog.info("Deleted {0} records from {1}.", query_results.rowcount, table)
+
+    def addRecord(self, table, identifier, columns):
+        """
+        :param table:
+        Name of the table
+
+        :param identifier:
+        the query used to identify the record
+        Example: attributeID = '1'
+
+        :param columns:
+        A named dict with column names and values.
+        Example:
+            columns = {
+                # 'attributeID': attributeID,
+                'attributeName': attributeName,
+                'defaultValue': defaultValue,
+                # 'maxAttributeID': None,
+                'description': description,
+                'published': published,
+                'displayName': displayName,
+                'highIsGood': highIsGood,
+                # 'iconID': None,
+                # 'unitID': None,
+            }
+
+        :return:
+        Returns nothing.
+        """
+
+        query = "SELECT * FROM {0} WHERE {1}".format(table, identifier)
+        results = DatabaseCleanup.ExecuteSQLQuery(self.sESIConnection.gamedata_connection, query)
+        row = results.first()
+
+        if row is None:
+            query_columns = ""
+            query_values = ""
+            for column in columns:
+                query_columns = self.addQueryList(query_columns, column, True)
+                query_values = self.addQueryList(query_values, columns[column])
+
+            query_columns = "{0}, {1}".format(query_columns, identifier.split("=")[0])
+            query_values = "{0}, {1}".format(query_values, identifier.split("=")[1])
+
+            query = "INSERT INTO {0} ({1}) VALUES ({2})".format(
+                    table,
+                    query_columns,
+                    query_values,
+            )
+            DatabaseCleanup.ExecuteSQLQuery(self.sESIConnection.gamedata_connection, query)
+            pyfalog.info("Insert new record for ID ({0}) into {1}.", identifier, table)
+        else:
+            query_values = ""
+            for column in columns:
+                query_values = self.addUpdateQueryItem(query_values, column, columns[column])
+
+            query = "UPDATE {0} SET {1} WHERE {2}".format(
+                    table,
+                    query_values,
+                    identifier,
+            )
+            DatabaseCleanup.ExecuteSQLQuery(self.sESIConnection.gamedata_connection, query)
+            pyfalog.debug("Updated existing record for ID ({0}) into {1}.", identifier, table)
+
+    @staticmethod
+    def addUpdateQueryItem(update_query, attribute, value, skipQuotes=False):
+        if attribute and value:
+            if skipQuotes:
+                update_query = "{0}, {1}={2}".format(update_query, attribute, value)
+            else:
+                update_query = "{0}, {1}='{2}'".format(update_query, attribute, value)
+
             # make sure that we dont' have any commas hanging out on either side of our statement where they aren't supposed to be
             update_query = update_query.lstrip(", ").rstrip(",")
             return update_query
@@ -455,43 +682,11 @@ class esiSQLHelpers(object):
             return update_query
 
     @staticmethod
-    def add_query_list(update_query, value):
-        # Set value to a string so we can perform string manipulations
-        value = str(value)
-        value = value.replace("'", "''")
-
-        update_query = "{0}, '{1}'".format(update_query, value)
+    def addQueryList(update_query, value, skipQuotes=False):
+        if skipQuotes:
+            update_query = "{0}, {1}".format(update_query, value)
+        else:
+            update_query = "{0}, '{1}'".format(update_query, value)
         # make sure that we dont' have any commas hanging out on either side of our statement where they aren't supposed to be
         update_query = update_query.lstrip(", ").rstrip(",")
         return update_query
-
-    @staticmethod
-    def add_insert_query_item(columns_query, values_query, attribute, value):
-        if attribute and value:
-            if attribute == 'published':
-                # SQLite doesn't understand true/false, so set to 1/0
-                if value == "True" or value is True:
-                    value = 1
-                elif value == "False" or value is False:
-                    value = 0
-                else:
-                    # Unexpected value, so set to 0
-                    value = 0
-
-            # Set value to a string so we can perform string manipulations
-            value = str(value)
-            value = value.replace("'", "''")
-
-            columns_query = columns_query.lstrip("(").rstrip(")")
-            columns_query = "{0}, {1}".format(columns_query, attribute)
-            columns_query = columns_query.lstrip(", ").rstrip(",")
-            columns_query = "({0})".format(columns_query)
-
-            values_query = values_query.lstrip("(").rstrip(")")
-            values_query = "{0}, '{1}'".format(values_query, value)
-            values_query = values_query.lstrip(", ").rstrip(",")
-            values_query = "({0})".format(values_query)
-
-            return columns_query, values_query
-        else:
-            return columns_query, values_query
