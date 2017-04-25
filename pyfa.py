@@ -383,18 +383,20 @@ if __name__ == "__main__":
         pyfalog.info("Starting threads")
         executeStartupThreads()
 
-        from service.esi import esiUpdate
-
-        sESI = esiUpdate.getInstance()
-        sESI.updateTypes()
+        # from service.esi import esiUpdate
 
         '''
+        sESI = esiUpdate.getInstance()
+        sESI.updateTypes()
+        '''
+
+        # '''
         from gui.mainFrame import MainFrame
 
         pyfa = wx.App(False)
         MainFrame(options.title)
         pyfa.MainLoop()
-        '''
+        # '''
 
         # TODO: Add some thread cleanup code here. Right now we bail, and that can lead to orphaned threads or threads not properly exiting.
         sys.exit()

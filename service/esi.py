@@ -2,16 +2,10 @@ from esipy import App
 from esipy import EsiClient
 import eos.db
 from eos.db.saveddata.databaseRepair import DatabaseCleanup
-from eos.gamedata import Item
-from eos.db.gamedata import queries
-import collections
 from logbook import Logger
 from itertools import chain
 
 pyfalog = Logger(__name__)
-
-# dogma_attributes = esi_app.op['get_dogma_attributes']()
-# attributes = esi_client.request(dogma_attributes)
 
 
 class esiUpdate(object):
@@ -34,7 +28,7 @@ class esiUpdate(object):
         gamedata_engine = eos.db.gamedata_engine
         self.gamedata_connection = gamedata_engine.connect()
 
-    def cleanMarketGroups(self, market_groups):
+    def cleanMarketGroupsFromTypes(self, market_groups):
         pyfalog.info("Removing all invalid market IDs")
         query_list = ""
         for market_group in market_groups:
@@ -49,7 +43,7 @@ class esiUpdate(object):
         esi_request = self.esi_app.op['get_markets_groups']()
         esi_market_groups = self.esi_client.request(esi_request).data
 
-        self.cleanMarketGroups(esi_market_groups)
+        self.cleanMarketGroupsFromTypes(esi_market_groups)
 
         pyfalog.info("Fetching market group items from ESI")
         esi_market_group_types = self.esi_client.multi_request(
@@ -57,13 +51,71 @@ class esiUpdate(object):
                 threads=50,
         )
 
+        self.cleanMarketGroups(esi_market_group_types)
+
         esi_market_group_types_list = [x.data for x in [x[1] for x in esi_market_group_types]]
 
         return esi_market_group_types_list
 
+    def cleanMarketGroups(self, esi_market_group_types):
+        pyfalog.info("Updating and cleaning market groups")
+        for esi_market_group in esi_market_group_types:
+            try:
+                esi_market_group_id = getattr(esi_market_group[1].data, "market_group_id", None)
+            except (AttributeError, KeyError):
+                continue
+
+            pyfalog.debug("Updating market group {0}.", esi_market_group_id)
+
+            try:
+                esi_market_group_name = getattr(esi_market_group[1].data, "name", None)
+                esi_market_group_name = esi_market_group_name.replace("'", "''")
+                if esi_market_group_name is None:
+                    esi_market_group_name = ""
+            except (AttributeError, KeyError):
+                esi_market_group_name = ""
+
+            try:
+                esi_market_group_description = getattr(esi_market_group[1].data, "description", None)
+                esi_market_group_description = esi_market_group_description.replace("'", "''")
+                if esi_market_group_description is None:
+                    esi_market_group_description = ""
+            except (AttributeError, KeyError):
+                esi_market_group_description = ""
+
+            try:
+                esi_market_group_parent_group_id = getattr(esi_market_group[1].data, "parent_group_id", None)
+                if esi_market_group_parent_group_id is None:
+                    esi_market_group_parent_group_id = "Null"
+            except (AttributeError, KeyError):
+                esi_market_group_parent_group_id = "Null"
+
+            query = "SELECT * FROM invmarketgroups WHERE marketGroupID = '{0}'".format(esi_market_group_id)
+            results = DatabaseCleanup.ExecuteSQLQuery(self.gamedata_connection, query)
+            row = results.first()
+
+            if row is None:
+                query = "INSERT INTO invmarketgroups (marketGroupID, marketGroupName, description, parentGroupID) VALUES ({0}, {1}, {2}, {3})".format(
+                    esi_market_group_id,
+                    esi_market_group_name,
+                    esi_market_group_description,
+                    esi_market_group_parent_group_id,
+                )
+                DatabaseCleanup.ExecuteSQLQuery(self.gamedata_connection, query)
+            else:
+                query = "UPDATE invmarketgroups SET marketGroupName = '{1}', description = '{2}', parentGroupID ='{3}' WHERE marketGroupID = '{0}'".format(
+                    esi_market_group_id,
+                    esi_market_group_name,
+                    esi_market_group_description,
+                    esi_market_group_parent_group_id,
+                )
+                DatabaseCleanup.ExecuteSQLQuery(self.gamedata_connection, query)
+
+        return
+
     def updateTypesMarketGroup(self, market_list):
         pyfalog.info("Updating items market group.")
-        for market_group in  market_list:
+        for market_group in market_list:
             if market_group['types'].__len__() > 0:
                 query_list = ""
                 for market_group_type in market_group['types']:
@@ -77,7 +129,7 @@ class esiUpdate(object):
         pyfalog.info("Fetching type_id list from ESI")
         for _ in range(5000):
             esi_universe_types_op = self.esi_app.op['get_universe_types'](
-                page=(_+1),
+                page=(_ + 1),
             )
             esi_universe_types = self.esi_client.request(esi_universe_types_op)
             if esi_universe_types.data.__len__() == 0:
@@ -106,15 +158,11 @@ class esiUpdate(object):
 
         self.clean_types(esi_type_list, esi_market_type_list)
 
-        esi_request = self.esi_app.op['get_markets_groups']()
-        esi_market_groups = self.esi_client.request(esi_request).data
-
-        self.cleanMarketGroups(esi_market_groups)
-
         self.updateTypesData(esi_type_list)
 
         self.updateTypesMarketGroup(esi_market_group_types_list)
         trans.commit()
+        DatabaseCleanup.ExecuteSQLQuery(self.gamedata_connection, "VACUUM")
         pyfalog.info("Completed updating items.")
 
     def updateTypesData(self, esi_type_list):
@@ -130,8 +178,6 @@ class esiUpdate(object):
         esi_types_with_dogma_effects_list = [x.type_id for x in esi_universe_types_type_list if hasattr(x, 'dogma_effects')]
         self.clean_types_dogma(esi_types_with_dogma_attributes_list, esi_types_with_dogma_effects_list)
 
-        update_dogma_attributes_list = ""
-        update_dogma_effects_list = ""
         pyfalog.info("Updating database with items.")
         for esi_item in esi_universe_types_type_list:
 
@@ -151,7 +197,7 @@ class esiUpdate(object):
                     # Missing name, ID, or not published, skip.
                     continue
 
-                pyfalog.info("Updating item {0}", esi_item_id)
+                pyfalog.debug("Updating item {0}", esi_item_id)
                 # DatabaseCleanup.ExecuteSQLQuery(self.gamedata_connection, "BEGIN TRANSACTION")
 
                 setting_to_allow_published = True
@@ -185,11 +231,19 @@ class esiUpdate(object):
                         row = results.first()
 
                         if row is None:
-                            query = "INSERT INTO dgmtypeattribs (typeID, attributeID, value) VALUES ({0}, {1}, {2})".format(esi_item_id, esi_attribute['attribute_id'], esi_attribute['value'])
+                            query = "INSERT INTO dgmtypeattribs (typeID, attributeID, value) VALUES ({0}, {1}, {2})".format(
+                                esi_item_id,
+                                esi_attribute['attribute_id'],
+                                esi_attribute['value']
+                            )
                             DatabaseCleanup.ExecuteSQLQuery(self.gamedata_connection, query)
                             count_insert += 1
                         else:
-                            query = "UPDATE dgmtypeattribs SET value = '{0}' WHERE typeID = '{1}' and attributeID = '{2}'".format(esi_attribute['value'], esi_item_id, esi_attribute['attribute_id'])
+                            query = "UPDATE dgmtypeattribs SET value = '{0}' WHERE typeID = '{1}' and attributeID = '{2}'".format(
+                                esi_attribute['value'],
+                                esi_item_id,
+                                esi_attribute['attribute_id']
+                            )
                             DatabaseCleanup.ExecuteSQLQuery(self.gamedata_connection, query)
                             count_update += 1
                     pyfalog.debug("For TypeID ({0}) updated {1} and added {2} attributes.", esi_item_id, count_update, count_insert)
@@ -303,7 +357,7 @@ class esiUpdate(object):
                         esi_item_attribute_value = esi_item[invtype_mapping[map_item]]
                         if esi_item_attribute_value:
                             column_query, values_query = self.add_insert_query_item(column_query, values_query, map_item, esi_item_attribute_value)
-                    except Exception as e:
+                    except Exception:
                         pass
 
             if column_query.__len__() > 0 and values_query.__len__() > 0:
@@ -319,7 +373,7 @@ class esiUpdate(object):
                         esi_item_attribute_value = esi_item[invtype_mapping[map_item]]
                         if esi_item_attribute_value:
                             update_query = self.add_update_query_item(update_query, map_item, esi_item_attribute_value)
-                    except Exception as e:
+                    except Exception:
                         pass
 
             if update_query.__len__() > 0:
@@ -337,10 +391,6 @@ class esiUpdate(object):
         update_market_query = ""
         for type in esi_market_types:
             update_market_query = self.add_query_list(update_market_query, type)
-
-        query = "SELECT typeID FROM invTypes"
-        results = DatabaseCleanup.ExecuteSQLQuery(self.gamedata_connection, query)
-        rows = results.fetchall()
 
         query = "DELETE FROM invTypes WHERE typeID NOT IN ({0})".format(update_query)
         query_results = DatabaseCleanup.ExecuteSQLQuery(self.gamedata_connection, query)

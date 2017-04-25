@@ -21,7 +21,7 @@ from sqlalchemy.orm import join, exc
 from sqlalchemy.sql import and_, or_, select
 
 import eos.config
-from eos.db import gamedata_session, sd_lock
+from eos.db import gamedata_session
 from eos.db.gamedata.metaGroup import metatypes_table, items_table
 from eos.db.gamedata.group import groups_table
 from eos.db.util import processEager, processWhere
@@ -324,17 +324,3 @@ def directAttributeRequest(itemIDs, attrIDs):
 
     result = gamedata_session.execute(q).fetchall()
     return result
-
-def add(stuff):
-    with sd_lock:
-        gamedata_session.add(stuff)
-
-
-def save(stuff):
-    add(stuff)
-    commit()
-
-def commit():
-    with sd_lock:
-        gamedata_session.commit()
-        gamedata_session.flush()
