@@ -96,6 +96,10 @@ class PFGeneralPref(PreferenceView):
 
         mainSizer.Add(priceSizer, 0, wx.ALL | wx.EXPAND, 0)
 
+        self.cbShowAllMarketGroups = wx.CheckBox(panel, wx.ID_ANY, u"Show all market groups (requires restart)",
+                                                    wx.DefaultPosition, wx.DefaultSize, 0)
+        mainSizer.Add(self.cbShowAllMarketGroups, 0, wx.ALL | wx.EXPAND, 5)
+
         delayTimer = wx.BoxSizer(wx.HORIZONTAL)
 
         self.stMarketDelay = wx.StaticText(panel, wx.ID_ANY, u"Market Search Delay (ms):", wx.DefaultPosition, wx.DefaultSize, 0)
@@ -149,6 +153,7 @@ class PFGeneralPref(PreferenceView):
         self.cbShowShipBrowserTooltip.SetValue(self.sFit.serviceFittingOptions["showShipBrowserTooltip"])
         self.intDelay.SetValue(self.generalSettings.get("marketSearchDelay"))
         self.editSearchLimit.SetValue(int(self.generalSettings.get("itemSearchLimit")))
+        self.cbShowAllMarketGroups.SetValue(self.generalSettings.get("showAllMarketGroups"))
         self.chFontSize.SetStringSelection(self.generalSettings.get("fontSize"))
 
         self.cbGlobalChar.Bind(wx.EVT_CHECKBOX, self.OnWindowLeave)
@@ -168,6 +173,7 @@ class PFGeneralPref(PreferenceView):
         self.editSearchLimit.Bind(wx.EVT_LEAVE_WINDOW, self.OnWindowLeave)
         self.intDelay.Bind(wx.lib.intctrl.EVT_INT, self.OnWindowLeave)
         self.editSearchLimit.Bind(wx.lib.intctrl.EVT_INT, self.OnWindowLeave)
+        self.cbShowAllMarketGroups.Bind(wx.EVT_CHECKBOX, self.OnWindowLeave)
         self.chFontSize.Bind(wx.lib.intctrl.EVT_INT, self.OnWindowLeave)
 
         self.cbRackLabels.Enable(self.sFit.serviceFittingOptions["rackSlots"] or False)
@@ -194,10 +200,11 @@ class PFGeneralPref(PreferenceView):
         self.sFit.serviceFittingOptions["enableGaugeAnimation"] = self.cbGaugeAnimation.GetValue()
         self.sFit.serviceFittingOptions["exportCharges"] = self.cbExportCharges.GetValue()
         self.sFit.serviceFittingOptions["openFitInNew"] = self.cbOpenFitInNew.GetValue()
-        self.sFit.serviceFittingOptions["showShipBrowserTooltip"] = self.cbShowShipBrowserTooltip.GetValue()
+        self.sFit.serviceFittingOptions["showShipBrowserTooltip"] = self.cbShowAllMarketGroups.GetValue()
         # Item Search Limit
         self.generalSettings.set('itemSearchLimit', int(self.editSearchLimit.GetValue()))
         self.generalSettings.set('marketSearchDelay', int(self.intDelay.GetValue()))
+        self.generalSettings.set("showAllMarketGroups", self.cbShowShipBrowserTooltip.GetValue())
         self.generalSettings.set('fontSize', self.chFontSize.GetString(self.chFontSize.GetSelection()))
 
         fitID = self.mainFrame.getActiveFit()

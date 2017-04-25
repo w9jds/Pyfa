@@ -364,16 +364,23 @@ class Market(object):
             "Structure Module",
         )
         self.SEARCH_GROUPS = ("Ice Product",)
-        self.ROOT_MARKET_GROUPS = (9,  # Modules
-                                   1111,  # Rigs
-                                   157,  # Drones
-                                   11,  # Ammo
-                                   1112,  # Subsystems
-                                   24,  # Implants & Boosters
-                                   404,  # Deployables
-                                   2202,  # Structure Equipment
-                                   2203  # Structure Modifications
-                                   )
+
+        if self.generalSettings.get("showAllMarketGroups"):
+            marketGroups = eos.db.getAllMarketGroups()
+            self.ROOT_MARKET_GROUPS = [x.marketGroupID for x in marketGroups if x.parentGroupID == 'Null' and x.name not in ('Ships', 'Structures')]
+            self.ROOT_MARKET_GROUPS.append([x.marketGroupID for x in marketGroups if x.name == 'Deployable Structures' and x.parentGroupID == 477][0])
+        else:
+            self.ROOT_MARKET_GROUPS = (9,  # Modules
+                                       1111,  # Rigs
+                                       157,  # Drones
+                                       11,  # Ammo
+                                       1112,  # Subsystems
+                                       24,  # Implants & Boosters
+                                       404,  # Deployables
+                                       2202,  # Structure Equipment
+                                       2203  # Structure Modifications
+                                       )
+
         # Tell other threads that Market is at their service
         mktRdy.set()
 
