@@ -27,7 +27,7 @@ class esiConnection(object):
                 pool_maxsize=100,
         )
 
-        self.esi_app = App.create('https://esi.tech.ccp.is/latest/swagger.json?datasource=tranquility')
+        self.esi_app = App.create(config.esiurl)
         self.esi_client = EsiClient(
             headers={"User-Agent": "pyfa.fit_<3_snowedin"},
             retry_requests=True,
@@ -107,7 +107,7 @@ class esiMarket(object):
             row = results.first()
 
             if row is None:
-                query = u"INSERT INTO invmarketgroups (marketGroupID, marketGroupName, description, parentGroupID) VALUES ({0}, {1}, {2}, {3})".format(
+                query = u"INSERT INTO invmarketgroups (marketGroupID, marketGroupName, description, parentGroupID) VALUES ('{0}', '{1}', '{2}', '{3}')".format(
                     esi_market_group_id,
                     esi_market_group_name,
                     esi_market_group_description,
