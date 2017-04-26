@@ -27,7 +27,7 @@ from eos.gamedata import Attribute, Effect, Group, Icon, Item, MetaType, Traits
 
 items_table = Table("invtypes", gamedata_meta,
                     Column("typeID", Integer, primary_key=True),
-                    Column("typeName", String, index=True),
+                    Column("typeName", String),
                     Column("description", String),
                     Column("raceID", Integer),
                     Column("factionID", Integer),

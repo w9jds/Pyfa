@@ -696,7 +696,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             """
             effective_reload_time = raw_reload_time
 
-        if numShots > 0 and self.charge:
+        if numShots and self.charge:
             speed = (speed * numShots + effective_reload_time) / numShots
 
         return speed

@@ -668,12 +668,13 @@ class Market(object):
         if vars_:
             parents = set()
             for item in baseitms:
-                # Add one of the base market group items to result
-                result.add(item)
-                parent = self.getParentItemByItem(item, selfparent=False)
-                # If item has no parent, it's base item (or at least should be)
-                if parent is None:
-                    parents.add(item)
+                if item:
+                    # Add one of the base market group items to result
+                    result.add(item)
+                    parent = self.getParentItemByItem(item, selfparent=False)
+                    # If item has no parent, it's base item (or at least should be)
+                    if parent is None:
+                        parents.add(item)
             # Fetch variations only for parent items
             variations = self.getVariationsByItems(parents, alreadyparent=True)
             for variation in variations:
