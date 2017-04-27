@@ -258,7 +258,7 @@ class esiItems(object):
                         esi_item_attributes = getattr(esi_item, "dogma_attributes", None)
                     else:
                         esi_item_attributes = None
-                except:
+                except (AttributeError, KeyError):
                     pyfalog.warning("Failed to look up item attributes for item {0}.", esi_item_id)
                     esi_item_attributes = None
 
@@ -267,7 +267,7 @@ class esiItems(object):
                         esi_item_effects = getattr(esi_item, "dogma_effects", None)
                     else:
                         esi_item_effects = None
-                except:
+                except (AttributeError, KeyError):
                     pyfalog.warning("Failed to look up item effects for item {0}.", esi_item_id)
                     esi_item_effects = None
 
@@ -366,12 +366,12 @@ class esiItems(object):
         pyfalog.debug("Purging items that don't exist, and cleaning market groups.")
 
         update_query = u""
-        for type in esi_types:
-            update_query = self.sESIHelpers.addQueryList(update_query, type)
+        for esi_type in esi_types:
+            update_query = self.sESIHelpers.addQueryList(update_query, esi_type)
 
         update_market_query = u""
-        for type in esi_market_types:
-            update_market_query = self.sESIHelpers.addQueryList(update_market_query, type)
+        for esi_type in esi_market_types:
+            update_market_query = self.sESIHelpers.addQueryList(update_market_query, esi_type)
 
         query = u"DELETE FROM invTypes WHERE typeID NOT IN ({0})".format(update_query)
         query_results = DatabaseCleanup.ExecuteSQLQuery(self.sESIConnection.gamedata_connection, query)

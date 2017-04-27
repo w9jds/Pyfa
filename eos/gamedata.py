@@ -278,7 +278,7 @@ class Item(EqBase):
 
             self.attributes[key].value = value
             return True
-        except:
+        except (AttributeError, KeyError):
             return False
 
     def isType(self, type):
