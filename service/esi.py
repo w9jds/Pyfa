@@ -184,7 +184,6 @@ class esiItems(object):
         pyfalog.info("Started updating items.")
 
         trans = self.sESIConnection.gamedata_connection.begin()
-        setting_to_use_all_items = False
 
         esi_type_list = self.fetchEsiTypes()
 
