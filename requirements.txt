@@ -9,4 +9,4 @@ multiprocess >= 0.70.5
 pyswagger
 six
 pytz
-esipy
+esipy >= 0.1.5
