@@ -251,6 +251,8 @@ class Display(wx.ListCtrl):
 
                 newImageId = col.getImageId(st)
 
+                if newText is None:
+                    newText = ''
                 colItem.SetText(newText)
                 colItem.SetImage(newImageId)
 

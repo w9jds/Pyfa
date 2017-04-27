@@ -176,6 +176,9 @@ parser.add_option("-d", "--debug", action="store_true", dest="debug", help="Set 
 parser.add_option("-t", "--title", action="store", dest="title", help="Set Window Title", default=None)
 parser.add_option("-s", "--savepath", action="store", dest="savepath", help="Set the folder for savedata", default=None)
 parser.add_option("-l", "--logginglevel", action="store", dest="logginglevel", help="Set desired logging level [Critical|Error|Warning|Info|Debug]", default="Error")
+parser.add_option("-e", "--esiurl", action="store", dest="esiurl", help="Path to use for ESI.",
+                  default="https://esi.tech.ccp.is/latest/swagger.json?datasource=tranquility")
+parser.add_option("-g", "--gamedatabasename", action="store", dest="gamedatabasename", help="Name to use for the gamedata database", default="eve.db")
 
 (options, args) = parser.parse_args()
 
@@ -197,6 +200,9 @@ if __name__ == "__main__":
     # Configure paths
     if options.rootsavedata is True:
         config.saveInRoot = True
+
+    config.esiurl = options.esiurl
+    config.gamedatabasename = options.gamedatabasename
 
     # set title if it wasn't supplied by argument
     if options.title is None:

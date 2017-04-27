@@ -18,6 +18,10 @@ def handler(fit, module, context):
 
     if (damagePattern.emAmount == damagePattern.thermalAmount == damagePattern.kineticAmount == damagePattern.explosiveAmount) and static_adaptive_behavior:
         pyfalog.debug("Setting adaptivearmorhardener resists to uniform profile.")
+        for i, attr in enumerate((
+                'armorEmDamageResonance', 'armorThermalDamageResonance', 'armorKineticDamageResonance',
+                'armorExplosiveDamageResonance')):
+            fit.ship.multiplyItemAttr(attr, module.getModifiedItemAttr(attr), stackingPenalties=True, penaltyGroup="preMul")
         return
 
     # Skip if there is no damage pattern. Example: projected ships or fleet boosters

@@ -685,7 +685,7 @@ class ShipBrowser(wx.Panel):
         self.lpane.ShowLoading(False)
 
         self.lpane.Freeze()
-        self.lpane.RemoveAllChildren()
+        self.lpane.DestroyAllChildren()
 
         pyfalog.debug("Populate ship category list.")
         if len(self.categoryList) == 0:
@@ -797,7 +797,7 @@ class ShipBrowser(wx.Panel):
 
         self.lpane.ShowLoading()
 
-        self.lpane.RemoveAllChildren()
+        self.lpane.DestroyAllChildren()
 
         sMkt = Market.getInstance()
         sMkt.getShipListDelayed(categoryID, self.stage2Callback)
@@ -837,7 +837,7 @@ class ShipBrowser(wx.Panel):
         categoryID = ship.group.ID
 
         self.lpane.Freeze()
-        self.lpane.RemoveAllChildren()
+        self.lpane.DestroyAllChildren()
         fitList = sFit.getFitsWithShip(shipID)
 
         if len(fitList) == 0:
@@ -892,7 +892,7 @@ class ShipBrowser(wx.Panel):
 
         self.lpane.Freeze()
 
-        self.lpane.RemoveAllChildren()
+        self.lpane.DestroyAllChildren()
         if query:
             ships = sMkt.searchShips(query)
             fitList = sFit.searchFits(query)
@@ -939,7 +939,7 @@ class ShipBrowser(wx.Panel):
 
         self.lastdata = fits
         self.lpane.Freeze()
-        self.lpane.RemoveAllChildren()
+        self.lpane.DestroyAllChildren()
 
         if fits:
             for fit in fits:

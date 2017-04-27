@@ -49,6 +49,7 @@ from gui.marketBrowser import MarketBrowser, ItemSelected
 from gui.multiSwitch import MultiSwitch
 from gui.statsPane import StatsPane
 from gui.shipBrowser import ShipBrowser, FitSelected, ImportSelected, Stage3Selected
+from gui.recentShipBrowser import RecentShipBrowser
 from gui.characterEditor import CharacterEditor, SaveCharacterAs
 from gui.characterSelection import CharacterSelection
 from gui.patternEditor import DmgPatternEditorDlg
@@ -185,7 +186,10 @@ class MainFrame(wx.Frame):
         self.marketBrowser.splitter.SetSashPosition(self.marketHeight)
 
         self.shipBrowser = ShipBrowser(self.notebookBrowsers)
-        self.notebookBrowsers.AddPage(self.shipBrowser, "Fittings", tabImage=shipBrowserImg, showClose=False)
+        self.notebookBrowsers.AddPage(self.shipBrowser, "Fits", tabImage=shipBrowserImg, showClose=False)
+
+        self.recentShipBrowser = RecentShipBrowser(self.notebookBrowsers)
+        self.notebookBrowsers.AddPage(self.recentShipBrowser, "Recent", tabImage=shipBrowserImg, showClose=False)
 
         self.notebookBrowsers.SetSelection(1)
 
@@ -255,7 +259,9 @@ class MainFrame(wx.Frame):
         # Remove any fits that cause exception when fetching (non-existent fits)
         for id in fits[:]:
             try:
-                sFit.getFit(id, basic=True)
+                fit = sFit.getFit(id, basic=True)
+                if fit is None:
+                    fits.remove(id)
             except:
                 fits.remove(id)
 

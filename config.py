@@ -25,7 +25,7 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "2017.04.17"
+version = "2017.04.26"
 if hasattr(sys, 'frozen'):
     tag = "(release)"
 else:
@@ -39,6 +39,8 @@ savePath = None
 saveDB = None
 gameDB = None
 logPath = None
+gamedatabasename = None
+esiurl = None
 
 
 def isFrozen():
@@ -60,6 +62,7 @@ def defPaths(customSavePath):
     global saveDB
     global gameDB
     global saveInRoot
+    global gamedatabasename
 
     pyfalog.debug("Configuring Pyfa")
 
@@ -96,7 +99,7 @@ def defPaths(customSavePath):
     # maintenance script
     gameDB = getattr(configforced, "gameDB", gameDB)
     if not gameDB:
-        gameDB = getPyfaPath(u"eve.db")
+        gameDB = getPyfaPath(unicode(gamedatabasename))
 
     # DON'T MODIFY ANYTHING BELOW
     import eos.config

@@ -24,6 +24,7 @@ from sqlalchemy.orm import reconstructor
 import eos.db
 from eqBase import EqBase
 from eos.saveddata.price import Price as types_Price
+from eos.staticData import Slot
 
 try:
     from collections import OrderedDict
@@ -269,6 +270,17 @@ class Item(EqBase):
         else:
             return default
 
+    def setAttribute(self, key, value):
+        try:
+            if key not in self.attributes:
+                # TODO: Add values in if missing
+                self.attributes.append(key)
+
+            self.attributes[key].value = value
+            return True
+        except (AttributeError, KeyError):
+            return False
+
     def isType(self, type):
         for effect in self.effects.itervalues():
             if effect.isType(type):
@@ -466,6 +478,24 @@ class Item(EqBase):
             self.__price.failed = True
 
         return self.__price
+
+    @property
+    def slot(self):
+        effectSlotMap = {
+            "rigSlot"    : Slot.RIG,
+            "loPower"    : Slot.LOW,
+            "medPower"   : Slot.MED,
+            "hiPower"    : Slot.HIGH,
+            "subSystem"  : Slot.SUBSYSTEM,
+            "serviceSlot": Slot.SERVICE
+        }
+        if self is None:
+            return None
+        for effectName, slot in effectSlotMap.iteritems():
+            if effectName in self.effects:
+                return slot
+        if self.group.name == "Effect Beacon":
+            return Slot.SYSTEM
 
     def __repr__(self):
         return "Item(ID={}, name={}) at {}".format(
