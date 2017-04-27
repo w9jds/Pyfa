@@ -149,7 +149,7 @@ class esiItems(object):
             query_list = self.sESIHelpers.addQueryList(query_list, market_group)
         update_query = u"UPDATE invtypes SET marketGroupID = NULL WHERE marketGroupID NOT IN ({0})".format(query_list)
         query_results = DatabaseCleanup.ExecuteSQLQuery(self.sESIConnection.gamedata_connection, update_query)
-        pyfalog.info("Removed incorrect Market Group ID from {0} items.", query_results.rowcount)
+        pyfalog.debug("Removed incorrect Market Group ID from {0} items.", query_results.rowcount)
 
     def updateTypesMarketGroup(self, market_list):
         pyfalog.info("Updating items market group.")
@@ -654,7 +654,7 @@ class esiHelpers(object):
     def deleteBadRecords(self, table, attribute, value_list):
         query = u"DELETE FROM {0} WHERE {1} NOT IN ({2})".format(table, attribute, value_list)
         query_results = DatabaseCleanup.ExecuteSQLQuery(self.sESIConnection.gamedata_connection, query)
-        pyfalog.info("Deleted {0} records from {1}.", query_results.rowcount, table)
+        pyfalog.debug("Deleted {0} records from {1}.", query_results.rowcount, table)
 
     def addRecord(self, table, identifier, columns):
         """
@@ -709,7 +709,7 @@ class esiHelpers(object):
                         query_values,
                 )
                 DatabaseCleanup.ExecuteSQLQuery(self.sESIConnection.gamedata_connection, query)
-                pyfalog.info("Insert new record for ID ({0}) into {1}.", identifier, table)
+                pyfalog.debug("Insert new record for ID ({0}) into {1}.", identifier, table)
             else:
                 query_values = u""
                 for column in columns:
