@@ -139,6 +139,7 @@ class esiItems(object):
     def __init__(self):
         self.sesiMarket = esiMarket.getInstance()
         self.sESIConnection = esiConnection.getInstance()
+        self.sGroups = esiGroups.getInstance()
         self.sESIHelpers = esiHelpers.getInstance()
         self.databaseSettings = DatabaseSettings.getInstance()
 
@@ -185,6 +186,14 @@ class esiItems(object):
 
         trans = self.sESIConnection.gamedata_connection.begin()
 
+        group_override = {
+            1306,
+        }
+        include_types = []
+
+        for _ in group_override:
+            include_types.extend(self.sGroups.getGroupByID(_).types)
+
         esi_type_list = self.fetchEsiTypes()
 
         esi_market_groups, esi_market_group_types_list = self.sesiMarket.fetchEsiMarketID()
@@ -200,16 +209,19 @@ class esiItems(object):
         else:
             pyfalog.info("Importing all items.")
 
+        esi_type_list.extend(include_types)
+        esi_type_list = [i for i in set(esi_type_list)]
+
         self.clean_types(esi_type_list, esi_market_type_list)
 
-        self.updateTypesData(esi_type_list)
+        self.updateTypesData(esi_type_list, include_types)
 
         self.updateTypesMarketGroup(esi_market_group_types_list)
         trans.commit()
         DatabaseCleanup.ExecuteSQLQuery(self.sESIConnection.gamedata_connection, "VACUUM")
         pyfalog.info("Completed updating items.")
 
-    def updateTypesData(self, esi_type_list):
+    def updateTypesData(self, esi_type_list, include_types):
         pyfalog.info("Fetching types from ESI.")
         esi_universe_types_type_list = self.sESIConnection.esi_client.multi_request(
                 [self.sESIConnection.esi_app.op["get_universe_types_type_id"](type_id=x) for x in esi_type_list],
@@ -227,9 +239,20 @@ class esiItems(object):
 
             if esi_item:
                 try:
-                    esi_item_published = getattr(esi_item, "published", False)
-                    esi_item_name = getattr(esi_item, "name", None)
-                    esi_item_id = getattr(esi_item, "type_id", None)
+                    if hasattr(esi_item, "published"):
+                        esi_item_published = getattr(esi_item, "published", False)
+                    else:
+                        esi_item_published = False
+
+                    if hasattr(esi_item, "name"):
+                        esi_item_name = getattr(esi_item, "name", False)
+                    else:
+                        esi_item_name = None
+
+                    if hasattr(esi_item, "type_id"):
+                        esi_item_id = getattr(esi_item, "type_id", False)
+                    else:
+                        esi_item_id = None
                 except AttributeError:
                     pyfalog.warning("Failed to get item ID, name , or published status.")
                     # Missing name, ID, or not published, skip.
@@ -244,7 +267,7 @@ class esiItems(object):
 
                 pyfalog.debug("Updating item {0}", esi_item_id)
 
-                if self.databaseSettings.get("ImportItemsNotPublished") is False and esi_item_published is False:
+                if self.databaseSettings.get("ImportItemsNotPublished") is False and esi_item_published is False and esi_item_id not in include_types:
                     # We don't allow unpublished items, and item is not published, delete if it exists and skip.
                     query = u"DELETE FROM invTypes WHERE typeID = '{0}'".format(esi_item_id)
                     query_results = DatabaseCleanup.ExecuteSQLQuery(self.sESIConnection.gamedata_connection, query)
@@ -599,6 +622,65 @@ class esiDogma(object):
 
             identifier = u"effectID = '{0}'".format(effectID)
             self.sESIHelpers.addRecord("dgmeffects", identifier, columns)
+
+
+class esiGroups(object):
+    instance = None
+
+    @classmethod
+    def getInstance(cls):
+        if cls.instance is None:
+            cls.instance = esiGroups()
+
+        return cls.instance
+
+    def __init__(self):
+        self.sESIConnection = esiConnection.getInstance()
+        self.sESIHelpers = esiHelpers.getInstance()
+
+    def updateAllGroupTables(self):
+
+        pyfalog.info("Started updating groups")
+        trans = self.sESIConnection.gamedata_connection.begin()
+
+        group_list = self.getGroups()
+        self.cleanGroups(group_list)
+        # self.updateGroups(group_list)
+
+        trans.commit()
+        pyfalog.info("Completed updating groups")
+
+    def getGroups(self):
+        group_list = []
+        pyfalog.info("Fetching group list from ESI")
+        for _ in range(5000):
+            esi_universe_groups_op = self.sESIConnection.esi_app.op['get_universe_groups'](
+                page=(_ + 1),
+            )
+            esi_universe_groups = self.sESIConnection.esi_client.request(esi_universe_groups_op)
+            if not esi_universe_groups.data:
+                break
+
+            group_list.extend(esi_universe_groups.data)
+
+        return group_list
+
+    def getGroupByID(self, group_id):
+        pyfalog.info("Fetching group from ESI")
+        esi_universe_groups_op = self.sESIConnection.esi_app.op['get_universe_groups_group_id'](
+                group_id=group_id,
+        )
+        esi_group = self.sESIConnection.esi_client.request(esi_universe_groups_op)
+        return esi_group.data
+
+    def cleanGroups(self, group_list):
+        pyfalog.info("Purging groups that don't exist.")
+
+        update_query = u""
+        for _ in group_list:
+            update_query = self.sESIHelpers.addQueryList(update_query, _)
+
+        self.sESIHelpers.deleteBadRecords("invgroups", "groupID", update_query)
 
 
 class esiHelpers(object):
