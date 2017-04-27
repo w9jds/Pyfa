@@ -179,11 +179,14 @@ class PFDatabasePref(PreferenceView):
         question = u"This will take a significant amount of time.  Once the update is complete, Pyfa will restart.\n" \
                    u"Pyfa will become unresponsive until the update is complete.  Would you like to proceed?"
         if wxHelpers.YesNoDialog(question, u"Confirm"):
+            loadDlg = wxHelpers.PopupDialog(None, ("Updating..."), ("Updating database.\n\nPlease wait...."))
+
             sESI = esiItems.getInstance()
             sESI.updateTypes()
             sDogma = esiDogma.getInstance()
             sDogma.updateAllDogmaTables()
 
+            loadDlg.Destroy()
             wxHelpers.OKDialog(u"Database upgrade completed successfully.\nPlease restart Pyfa.", u"Database Upgrade")
             sys.exit()
 
