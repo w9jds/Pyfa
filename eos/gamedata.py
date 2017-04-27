@@ -270,6 +270,17 @@ class Item(EqBase):
         else:
             return default
 
+    def setAttribute(self, key, value):
+        try:
+            if key not in self.attributes:
+                # TODO: Add values in if missing
+                self.attributes.append(key)
+
+            self.attributes[key].value = value
+            return True
+        except (AttributeError, KeyError):
+            return False
+
     def isType(self, type):
         for effect in self.effects.itervalues():
             if effect.isType(type):

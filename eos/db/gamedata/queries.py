@@ -92,7 +92,8 @@ def getItem(lookfor, eager=None):
         else:
             # Item names are unique, so we can use first() instead of one()
             item = gamedata_session.query(Item).options(*processEager(eager)).filter(Item.name == lookfor).first()
-            itemNameMap[lookfor] = item.ID
+            if item:
+                itemNameMap[lookfor] = item.ID
     else:
         raise TypeError("Need integer or string as argument")
     return item
@@ -211,6 +212,15 @@ def getMarketGroup(lookfor, eager=None):
     else:
         raise TypeError("Need integer as argument")
     return marketGroup
+
+
+@cachedQuery(1, "lookfor")
+def getAllMarketGroups(eager=None):
+    if eager is None:
+        marketGroups = gamedata_session.query(MarketGroup).all()
+    else:
+        marketGroups = gamedata_session.query(MarketGroup).options(*processEager(eager)).first()
+    return marketGroups
 
 
 @cachedQuery(2, "where", "filter")

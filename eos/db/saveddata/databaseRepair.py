@@ -32,8 +32,8 @@ class DatabaseCleanup(object):
         try:
             results = saveddata_engine.execute(query)
             return results
-        except DatabaseError:
-            pyfalog.error("Failed to connect to database or error executing query:\n{0}", query)
+        except DatabaseError as e:
+            pyfalog.error("Failed to connect to database or error executing query:\n{0}\n{1}", query, e)
             return None
 
     @staticmethod

@@ -361,6 +361,7 @@ class GeneralSettings(object):
             "itemSearchLimit": 150,
             "marketSearchDelay": 250,
             "fontSize": 'NORMAL',
+            "showAllMarketGroups": False,
         }
 
         self.serviceGeneralDefaultSettings = SettingsProvider.getInstance().getSettings("pyfaGeneralSettings", GeneralDefaultSettings)
@@ -370,6 +371,36 @@ class GeneralSettings(object):
 
     def set(self, type, value):
         self.serviceGeneralDefaultSettings[type] = value
+
+
+class DatabaseSettings(object):
+    _instance = None
+
+    @classmethod
+    def getInstance(cls):
+        if cls._instance is None:
+            cls._instance = DatabaseSettings()
+
+        return cls._instance
+
+    def __init__(self):
+        # mode
+        # 0 - Do not show
+        # 1 - Minimal/Text Only View
+        # 2 - Full View
+        DatabaseDefaultSettings = {
+            "ImportItemsNotInMarketGroups": False,
+            "ImportItemsNotPublished": False,
+            "UpdateThreads": 25,
+        }
+
+        self.serviceDatabaseDefaultSettings = SettingsProvider.getInstance().getSettings("pyfaDatabaseSettings", DatabaseDefaultSettings)
+
+    def get(self, type):
+        return self.serviceDatabaseDefaultSettings[type]
+
+    def set(self, type, value):
+        self.serviceDatabaseDefaultSettings[type] = value
 
 
 class StatViewSettings(object):
