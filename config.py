@@ -25,7 +25,7 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "2017.04.17"
+version = "2017.04.26"
 if hasattr(sys, 'frozen'):
     tag = "(release)"
 else:
