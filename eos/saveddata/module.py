@@ -364,6 +364,10 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         else:
             moduleReloadTime = 0
 
+        if moduleReloadTime is None and getattr(self.item.group, 'name', None) == 'Capacitor Booster':
+            # Cap boosters don't have reload times, so manually set one
+            moduleReloadTime = 10
+
         return moduleReloadTime
 
     @reloadTime.setter
