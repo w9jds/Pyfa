@@ -490,8 +490,13 @@ class Miscellanea(ViewColumn):
                 return "", None
 
             fit = Fit.getInstance().getFit(self.mainFrame.getActiveFit())
-            ehpTotal = fit.ehp
-            hpTotal = fit.hp
+            if fit:
+                ehpTotal = fit.ehp
+                hpTotal = fit.hp
+            else:
+                ehpTotal = 0
+                hpTotal = 0
+
             try:
                 useEhp = self.mainFrame.statsPane.nameViewMap["resistancesViewFull"].showEffective
             except:

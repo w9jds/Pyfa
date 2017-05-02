@@ -277,9 +277,10 @@ class FittingView(d.Display):
             # Sometimes there is no active page after deletion, hence the try block
             sFit = Fit.getInstance()
             fit = sFit.getFit(active_fit_id)
-            if fit.ID != event.fitID:
-                sFit.recalc(fit)
-                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
+            if fit is not None:
+                if fit.ID != event.fitID:
+                    sFit.recalc(fit)
+                    wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
         except wx._core.PyDeadObjectError:
             pyfalog.error("Caught dead object on fit removed")
             pass
@@ -312,12 +313,13 @@ class FittingView(d.Display):
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.getActiveFit(), basic=True)
 
-        bitmap = BitmapLoader.getImage("race_%s_small" % fit.ship.item.race, "gui")
-        text = "%s: %s" % (fit.ship.item.name, fit.name)
+        if fit is not None:
+            bitmap = BitmapLoader.getImage("race_%s_small" % fit.ship.item.race, "gui")
+            text = "%s: %s" % (fit.ship.item.name, fit.name)
 
-        pageIndex = self.parent.GetPageIndex(self)
-        if pageIndex is not None:
-            self.parent.SetPageTextIcon(pageIndex, text, bitmap)
+            pageIndex = self.parent.GetPageIndex(self)
+            if pageIndex is not None:
+                self.parent.SetPageTextIcon(pageIndex, text, bitmap)
 
     def appendItem(self, event):
         if self.parent.IsActive(self):
