@@ -1255,7 +1255,10 @@ class Fit(object):
                     hp = droneHull
                 else:
                     hp = 0
-            self.__remoteReps[remote_type] += (hp * fueledMultiplier * count) / duration
+
+            if duration >= 0:
+                # Occsaionally we get modules with no duration. Catch these so we don't stack trace with div by 0.
+                self.__remoteReps[remote_type] += (hp * fueledMultiplier * count) / duration
 
         return self.__remoteReps
 
