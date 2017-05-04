@@ -1254,7 +1254,8 @@ class Fit(object):
                     remote_type = "Hull"
                     hp = droneHull
                 else:
-                    hp = 0
+                    # Doesn't project anything remotely, skip
+                    continue
 
             if duration >= 0:
                 # Occsaionally we get modules with no duration. Catch these so we don't stack trace with div by 0.
