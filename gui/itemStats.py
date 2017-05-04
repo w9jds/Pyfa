@@ -48,6 +48,7 @@ import gui.mainFrame
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from gui.contextMenu import ContextMenu
+from service.settings import GeneralSettings
 
 
 class ItemStatsDialog(wx.Dialog):
@@ -71,6 +72,17 @@ class ItemStatsDialog(wx.Dialog):
                 size=size,
                 style=wx.CAPTION | wx.CLOSE_BOX | wx.MINIMIZE_BOX | wx.MAXIMIZE_BOX | wx.RESIZE_BORDER | wx.SYSTEM_MENU
         )
+
+        general_settings = GeneralSettings.getInstance()
+
+        # Set the font size used on the stats pane
+        font = wx.Font(
+                general_settings.get('fontSize'),
+                getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
+                getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
+                getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
+        )
+        self.SetFont(font)
 
         empty = getattr(victim, "isEmpty", False)
 
@@ -166,6 +178,17 @@ class ItemStatsDialog(wx.Dialog):
 class ItemStatsContainer(wx.Panel):
     def __init__(self, parent, stuff, item, context=None):
         wx.Panel.__init__(self, parent)
+        general_settings = GeneralSettings.getInstance()
+
+        # Set the font size used on the stats pane
+        font = wx.Font(
+                general_settings.get('fontSize'),
+                getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
+                getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
+                getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
+        )
+        self.SetFont(font)
+
         sMkt = Market.getInstance()
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
@@ -231,6 +254,18 @@ class AutoListCtrlNoHighlight(wx.ListCtrl, listmix.ListCtrlAutoWidthMixin, listm
 class ItemTraits(wx.Panel):
     def __init__(self, parent, stuff, item):
         wx.Panel.__init__(self, parent)
+
+        general_settings = GeneralSettings.getInstance()
+
+        # Set the font size used on the stats pane
+        font = wx.Font(
+                general_settings.get('fontSize'),
+                getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
+                getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
+                getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
+        )
+        self.SetFont(font)
+
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(mainSizer)
 
@@ -244,9 +279,18 @@ class ItemTraits(wx.Panel):
 class ItemDescription(wx.Panel):
     def __init__(self, parent, stuff, item):
         wx.Panel.__init__(self, parent)
+        general_settings = GeneralSettings.getInstance()
+
+        # Set the font size used on the stats pane
+        font = wx.Font(
+                general_settings.get('fontSize'),
+                getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
+                getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
+                getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
+        )
+        self.SetFont(font)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(mainSizer)
-
         bgcolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
         fgcolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)
 
@@ -272,6 +316,17 @@ class ItemDescription(wx.Panel):
 class ItemParams(wx.Panel):
     def __init__(self, parent, stuff, item, context=None):
         wx.Panel.__init__(self, parent)
+        general_settings = GeneralSettings.getInstance()
+
+        # Set the font size used on the stats pane
+        font = wx.Font(
+                general_settings.get('fontSize'),
+                getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
+                getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
+                getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
+        )
+        self.SetFont(font)
+
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.paramList = AutoListCtrl(self, wx.ID_ANY,

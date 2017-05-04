@@ -27,6 +27,7 @@ import gui.utils.fonts as fonts
 from gui.bitmapLoader import BitmapLoader
 from logbook import Logger
 from service.fit import Fit
+from service.settings import GeneralSettings
 
 pyfalog = Logger(__name__)
 
@@ -409,7 +410,16 @@ class PFTabRenderer(object):
         self.tabBackBitmap = None
         self.cbSize = 5
         self.padding = 4
-        self.font = wx.Font(fonts.NORMAL, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+        self.font2 = wx.Font(fonts.NORMAL, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
+
+        general_settings = GeneralSettings.getInstance()
+        self.font = wx.Font(
+                general_settings.get('fontSize'),
+                getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
+                getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
+                getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
+                False,
+        )
 
         self.tabImg = img
         self.position = (0, 0)  # Not used internally for rendering - helper for tab container
@@ -1386,8 +1396,15 @@ class PFNotebookPagePreview(wx.Frame):
         self.padding = 15
         self.transp = 0
 
-        hfont = wx.Font(fonts.NORMAL, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
-        self.SetFont(hfont)
+        general_settings = GeneralSettings.getInstance()
+        self.hfont = wx.Font(
+                general_settings.get('fontSize'),
+                getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
+                getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
+                getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
+                False
+        )
+        self.SetFont(self.hfont)
 
         tx, ty = self.GetTextExtent(self.title)
         tx += self.padding * 2
@@ -1448,8 +1465,7 @@ class PFNotebookPagePreview(wx.Frame):
         mdc.SetBackground(wx.Brush(color))
         mdc.Clear()
 
-        font = wx.Font(fonts.NORMAL, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
-        mdc.SetFont(font)
+        mdc.SetFont(self.hfont)
 
         x, y = mdc.GetTextExtent(self.title)
 
