@@ -353,18 +353,22 @@ class GeneralSettings(object):
         return cls._instance
 
     def __init__(self):
-        # mode
-        # 0 - Do not show
-        # 1 - Minimal/Text Only View
-        # 2 - Full View
+        # standardFont = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
         GeneralDefaultSettings = {
             "itemSearchLimit": 150,
             "marketSearchDelay": 250,
-            "fontSize": 'NORMAL',
+            "fontSize": 9,
+            "fontType": 'DEFAULT',
+            "fontStyle": 'NORMAL',
+            "fontWeight": 'NORMAL',
             "showAllMarketGroups": False,
         }
 
         self.serviceGeneralDefaultSettings = SettingsProvider.getInstance().getSettings("pyfaGeneralSettings", GeneralDefaultSettings)
+
+        # We're changing the way we're handling font sizes, so switch to the new method
+        if not isinstance(self.serviceGeneralDefaultSettings['fontSize'], int):
+            self.serviceGeneralDefaultSettings['fontSize'] = 9
 
     def get(self, type):
         return self.serviceGeneralDefaultSettings[type]

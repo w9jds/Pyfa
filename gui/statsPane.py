@@ -25,7 +25,6 @@ from service.settings import StatViewSettings, GeneralSettings
 import gui.mainFrame
 import gui.builtinStatsViews
 import gui.globalEvents as GE
-# import gui.builtinViews.fittingView as fv
 from gui.statsView import StatsView
 from gui.contextMenu import ContextMenu
 from gui.pyfatogglepanel import TogglePanel
@@ -84,7 +83,13 @@ class StatsPane(wx.Panel):
         general_settings = GeneralSettings.getInstance()
 
         # Set the font size used on the stats pane
-        self.SetWindowVariant(getattr(wx, 'WINDOW_VARIANT_' + general_settings.get('fontSize'), wx.WINDOW_VARIANT_NORMAL))
+        font = wx.Font(
+                general_settings.get('fontSize'),
+                getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
+                getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
+                getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
+        )
+        self.SetFont(font)
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(mainSizer)

@@ -11,7 +11,6 @@ from wx.lib.buttons import GenBitmapButton
 from service.fit import Fit
 from service.market import Market
 import gui.mainFrame
-import gui.utils.fonts as fonts
 import gui.globalEvents as GE
 import gui.sfBrowserItem as SFItem
 import gui.utils.colorUtils as colorUtils
@@ -22,6 +21,7 @@ from gui.PFListPane import PFListPane
 from gui.contextMenu import ContextMenu
 from gui.bitmapLoader import BitmapLoader
 from logbook import Logger
+from service.settings import GeneralSettings
 
 pyfalog = Logger(__name__)
 
@@ -367,7 +367,13 @@ class NavigationPanel(SFItem.SFBrowserItem):
         self.recentSearches = []  # not used?
         self.inSearch = False
 
-        self.fontSmall = wx.Font(fonts.SMALL, wx.SWISS, wx.NORMAL, wx.NORMAL)
+        general_settings = GeneralSettings.getInstance()
+        self.fontSmall = wx.Font(
+                general_settings.get('fontSize') - 1,
+                getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
+                getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
+                getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
+        )
         w, h = size
         self.BrowserSearchBox = wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition,
                                             (-1, h - 2 if 'wxGTK' in wx.PlatformInfo else -1),
@@ -971,6 +977,7 @@ class ShipBrowser(wx.Panel):
 class PFStaticText(wx.Panel):
     def __init__(self, parent, label=wx.EmptyString):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=parent.GetSize())
+
         self.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
@@ -1014,7 +1021,13 @@ class CategoryItem(SFItem.SFBrowserItem):
 
         self.padding = 4
 
-        self.fontBig = wx.Font(fonts.BIG, wx.SWISS, wx.NORMAL, wx.NORMAL)
+        general_settings = GeneralSettings.getInstance()
+        self.fontBig = wx.Font(
+                general_settings.get('fontSize') + 1,
+                getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
+                getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
+                getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
+        )
 
         self.animTimerId = wx.NewId()
 
@@ -1127,9 +1140,25 @@ class ShipItem(SFItem.SFBrowserItem):
 
         self.shipID = shipID
 
-        self.fontBig = wx.Font(fonts.BIG, wx.SWISS, wx.NORMAL, wx.BOLD)
-        self.fontNormal = wx.Font(fonts.NORMAL, wx.SWISS, wx.NORMAL, wx.NORMAL)
-        self.fontSmall = wx.Font(fonts.SMALL, wx.SWISS, wx.NORMAL, wx.NORMAL)
+        general_settings = GeneralSettings.getInstance()
+        self.fontSmall = wx.Font(
+                general_settings.get('fontSize') - 1,
+                getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
+                getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
+                getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
+        )
+        self.fontNormal = wx.Font(
+                general_settings.get('fontSize'),
+                getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
+                getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
+                getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
+        )
+        self.fontBig = wx.Font(
+                general_settings.get('fontSize') + 1,
+                getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
+                getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
+                getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
+        )
 
         self.shipBmp = None
         if shipID:
@@ -1508,9 +1537,25 @@ class FitItem(SFItem.SFBrowserItem):
         self.dragMotionTrigger = self.dragMotionTrail
         self.dragWindow = None
 
-        self.fontBig = wx.Font(fonts.BIG, wx.SWISS, wx.NORMAL, wx.BOLD)
-        self.fontNormal = wx.Font(fonts.NORMAL, wx.SWISS, wx.NORMAL, wx.NORMAL)
-        self.fontSmall = wx.Font(fonts.SMALL, wx.SWISS, wx.NORMAL, wx.NORMAL)
+        general_settings = GeneralSettings.getInstance()
+        self.fontSmall = wx.Font(
+                general_settings.get('fontSize') - 1,
+                getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
+                getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
+                getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
+        )
+        self.fontNormal = wx.Font(
+                general_settings.get('fontSize'),
+                getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
+                getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
+                getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
+        )
+        self.fontBig = wx.Font(
+                general_settings.get('fontSize') + 1,
+                getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
+                getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
+                getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
+        )
 
         self.SetDraggable()
 
