@@ -11,7 +11,6 @@ from wx.lib.buttons import GenBitmapButton
 from service.fit import Fit
 from service.market import Market
 import gui.mainFrame
-import gui.utils.fonts as fonts
 import gui.globalEvents as GE
 import gui.sfBrowserItem as SFItem
 import gui.utils.colorUtils as colorUtils
@@ -328,14 +327,14 @@ class NavigationPanel(SFItem.SFBrowserItem):
 
         general_settings = GeneralSettings.getInstance()
         self.fontSmall = wx.Font(
-                general_settings.get('fontSize')-1,
+                general_settings.get('fontSize') - 1,
                 getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
                 getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
                 getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
         )
         w, h = size
         self.BrowserSearchBox = wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition,
-                                            (-1, h - 2 if 'wxGTK' in wx.PlatformInfo else -1),
+                                            (-1, h - 2 if 'wxGTK' in wx.PlatformInfo else - 1),
                                             wx.TE_PROCESS_ENTER | (wx.BORDER_NONE if 'wxGTK' in wx.PlatformInfo else 0))
         self.BrowserSearchBox.Show(False)
 
@@ -609,7 +608,7 @@ class ShipItem(SFItem.SFBrowserItem):
 
         general_settings = GeneralSettings.getInstance()
         self.fontSmall = wx.Font(
-                general_settings.get('fontSize')-1,
+                general_settings.get('fontSize') - 1,
                 getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
                 getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
                 getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
@@ -621,7 +620,7 @@ class ShipItem(SFItem.SFBrowserItem):
                 getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
         )
         self.fontBig = wx.Font(
-                general_settings.get('fontSize')+1,
+                general_settings.get('fontSize') + 1,
                 getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
                 getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
                 getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
@@ -970,7 +969,7 @@ class FitItem(SFItem.SFBrowserItem):
 
         general_settings = GeneralSettings.getInstance()
         self.fontSmall = wx.Font(
-                general_settings.get('fontSize')-1,
+                general_settings.get('fontSize') - 1,
                 getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
                 getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
                 getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
@@ -982,7 +981,7 @@ class FitItem(SFItem.SFBrowserItem):
                 getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
         )
         self.fontBig = wx.Font(
-                general_settings.get('fontSize')+1,
+                general_settings.get('fontSize') + 1,
                 getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
                 getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
                 getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),

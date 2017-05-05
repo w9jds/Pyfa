@@ -20,7 +20,6 @@
 import cPickle
 import os.path
 import urllib2
-import wx
 
 import config
 import eos.config as eos_config

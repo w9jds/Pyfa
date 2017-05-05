@@ -88,7 +88,6 @@ class PyGauge(wx.PyWindow):
                 getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
         )
 
-
         self.SetBarGradient((wx.Colour(119, 119, 119), wx.Colour(153, 153, 153)))
         self.SetBackgroundColour(wx.Colour(51, 51, 51))
         self._tooltip = wx.ToolTip("")

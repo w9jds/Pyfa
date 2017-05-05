@@ -11,7 +11,6 @@ from wx.lib.buttons import GenBitmapButton
 from service.fit import Fit
 from service.market import Market
 import gui.mainFrame
-import gui.utils.fonts as fonts
 import gui.globalEvents as GE
 import gui.sfBrowserItem as SFItem
 import gui.utils.colorUtils as colorUtils
@@ -370,7 +369,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
 
         general_settings = GeneralSettings.getInstance()
         self.fontSmall = wx.Font(
-                general_settings.get('fontSize')-1,
+                general_settings.get('fontSize') - 1,
                 getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
                 getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
                 getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
@@ -979,7 +978,6 @@ class PFStaticText(wx.Panel):
     def __init__(self, parent, label=wx.EmptyString):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=parent.GetSize())
 
-
         self.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
@@ -1025,7 +1023,7 @@ class CategoryItem(SFItem.SFBrowserItem):
 
         general_settings = GeneralSettings.getInstance()
         self.fontBig = wx.Font(
-                general_settings.get('fontSize')+1,
+                general_settings.get('fontSize') + 1,
                 getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
                 getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
                 getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
@@ -1144,7 +1142,7 @@ class ShipItem(SFItem.SFBrowserItem):
 
         general_settings = GeneralSettings.getInstance()
         self.fontSmall = wx.Font(
-                general_settings.get('fontSize')-1,
+                general_settings.get('fontSize') - 1,
                 getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
                 getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
                 getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
@@ -1156,7 +1154,7 @@ class ShipItem(SFItem.SFBrowserItem):
                 getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
         )
         self.fontBig = wx.Font(
-                general_settings.get('fontSize')+1,
+                general_settings.get('fontSize') + 1,
                 getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
                 getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
                 getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
@@ -1541,7 +1539,7 @@ class FitItem(SFItem.SFBrowserItem):
 
         general_settings = GeneralSettings.getInstance()
         self.fontSmall = wx.Font(
-                general_settings.get('fontSize')-1,
+                general_settings.get('fontSize') - 1,
                 getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
                 getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
                 getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
@@ -1553,7 +1551,7 @@ class FitItem(SFItem.SFBrowserItem):
                 getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
         )
         self.fontBig = wx.Font(
-                general_settings.get('fontSize')+1,
+                general_settings.get('fontSize') + 1,
                 getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
                 getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
                 getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
