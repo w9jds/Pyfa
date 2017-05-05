@@ -23,7 +23,6 @@ import wx
 import wx.lib.newevent
 import gui.utils.colorUtils as colorUtils
 import gui.utils.drawUtils as drawUtils
-import gui.utils.fonts as fonts
 from gui.bitmapLoader import BitmapLoader
 from logbook import Logger
 from service.fit import Fit
@@ -410,7 +409,6 @@ class PFTabRenderer(object):
         self.tabBackBitmap = None
         self.cbSize = 5
         self.padding = 4
-        self.font2 = wx.Font(fonts.NORMAL, wx.SWISS, wx.NORMAL, wx.NORMAL, False)
 
         general_settings = GeneralSettings.getInstance()
         self.font = wx.Font(
