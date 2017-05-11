@@ -77,30 +77,6 @@ class PFFittingEnginePref(PreferenceView):
 
         mainSizer.Add(sizerFireAtPercentCapacitor, 0, wx.ALL | wx.EXPAND, 0)
 
-        # Future code once new cap sim is implemented
-        '''
-        self.cbGlobalForceReactivationTimer = wx.CheckBox( panel, wx.ID_ANY, u"Factor in reactivation timer", wx.DefaultPosition, wx.DefaultSize, 0 )
-        mainSizer.Add( self.cbGlobalForceReactivationTimer, 0, wx.ALL|wx.EXPAND, 5 )
-
-        text =  u"   Ignores reactivation timer when calculating capacitor usage,\n   damage, and tank."
-        self.cbGlobalForceReactivationTimerText = wx.StaticText( panel, wx.ID_ANY, text, wx.DefaultPosition, wx.DefaultSize, 0 )
-        self.cbGlobalForceReactivationTimerText.Wrap( -1 )
-        self.cbGlobalForceReactivationTimerText.SetFont( wx.Font( 10, 70, 90, 90, False, wx.EmptyString ) )
-        mainSizer.Add( self.cbGlobalForceReactivationTimerText, 0, wx.ALL, 5 )
-        '''
-
-        # Future code for mining laser crystal
-        '''
-        self.cbGlobalMiningSpecialtyCrystal = wx.CheckBox( panel, wx.ID_ANY, u"Factor in reactivation timer", wx.DefaultPosition, wx.DefaultSize, 0 )
-        mainSizer.Add( self.cbGlobalMiningSpecialtyCrystal, 0, wx.ALL|wx.EXPAND, 5 )
-
-        text = u"   If enabled, displays the Specialty Crystal mining amount.\n   This is the amount mined when using crystals and mining the matching asteroid."
-        self.cbGlobalMiningSpecialtyCrystalText = wx.StaticText( panel, wx.ID_ANY, text, wx.DefaultPosition, wx.DefaultSize, 0 )
-        self.cbGlobalMiningSpecialtyCrystalText.Wrap( -1 )
-        self.cbGlobalMiningSpecialtyCrystalText.SetFont( wx.Font( 10, 70, 90, 90, False, wx.EmptyString ) )
-        mainSizer.Add( self.cbGlobalMiningSpecialtyCrystalText, 0, wx.ALL, 5 )
-        '''
-
         self.sFit = Fit.getInstance()
 
         self.cbGlobalForceReload.SetValue(self.sFit.serviceFittingOptions["useGlobalForceReload"])
