@@ -1599,14 +1599,6 @@ class FitItem(SFItem.SFBrowserItem):
         #    self.animCount = 0
         # =====================================================================
 
-        """
-        # Remove this bit as the time stuff is non-functional (works... but not exactly sure what it's meant to do)
-        self.selTimerID = wx.NewId()
-
-        self.selTimer = wx.Timer(self, self.selTimerID)
-        self.selTimer.Start(100)
-        """
-
         self.Bind(wx.EVT_RIGHT_UP, self.OnContextMenu)
         self.Bind(wx.EVT_MIDDLE_UP, self.OpenNewTab)
 

@@ -109,11 +109,11 @@ def getItems(lookfor, eager=None):
     toGet = []
     results = []
 
-    for id in lookfor:
-        if (id, None) in cache:
-            results.append(cache.get((id, None)))
+    for _id in lookfor:
+        if (_id, None) in cache:
+            results.append(cache.get((_id, None)))
         else:
-            toGet.append(id)
+            toGet.append(_id)
 
     if len(toGet) > 0:
         # Get items that aren't currently cached, and store them in the cache

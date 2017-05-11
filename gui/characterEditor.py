@@ -350,9 +350,9 @@ class SkillTreeView(wx.Panel):
         self.levelChangeMenu.Append(idUnlearned, "Unlearn")
 
         for level in xrange(6):
-            id = wx.NewId()
-            self.levelIds[id] = level
-            self.levelChangeMenu.Append(id, "Level %d" % level)
+            _id = wx.NewId()
+            self.levelIds[_id] = level
+            self.levelChangeMenu.Append(_id, "Level %d" % level)
 
         self.levelChangeMenu.AppendSeparator()
         self.revertID = wx.NewId()
@@ -410,10 +410,10 @@ class SkillTreeView(wx.Panel):
         tree = self.skillTreeListCtrl
         tree.DeleteChildren(root)
 
-        for id, name in sChar.getSkillsByName(search):
+        for _id, name in sChar.getSkillsByName(search):
             iconId = self.skillBookImageId
-            childId = tree.AppendItem(root, name, iconId, data=wx.TreeItemData(('skill', id)))
-            level, dirty = sChar.getSkillLevel(char.ID, id)
+            childId = tree.AppendItem(root, name, iconId, data=wx.TreeItemData(('skill', _id)))
+            level, dirty = sChar.getSkillLevel(char.ID, _id)
             tree.SetItemText(childId, "Level %d" % int(level) if isinstance(level, float) else level, 1)
             if dirty:
                 tree.SetItemTextColour(childId, wx.BLUE)
@@ -436,11 +436,11 @@ class SkillTreeView(wx.Panel):
         tree = self.skillTreeListCtrl
         tree.DeleteChildren(root)
 
-        for id, name in groups:
+        for _id, name in groups:
             childId = tree.AppendItem(root, name, imageId)
-            tree.SetPyData(childId, ('group', id))
+            tree.SetPyData(childId, ('group', _id))
             tree.AppendItem(childId, "dummy")
-            if id in dirtyGroups:
+            if _id in dirtyGroups:
                 tree.SetItemTextColour(childId, wx.BLUE)
 
         tree.SortChildren(root)
@@ -459,10 +459,10 @@ class SkillTreeView(wx.Panel):
             sChar = Character.getInstance()
             char = self.charEditor.entityEditor.getActiveEntity()
             data = tree.GetPyData(root)
-            for id, name in sChar.getSkills(data[1]):
+            for _id, name in sChar.getSkills(data[1]):
                 iconId = self.skillBookImageId
-                childId = tree.AppendItem(root, name, iconId, data=wx.TreeItemData(('skill', id)))
-                level, dirty = sChar.getSkillLevel(char.ID, id)
+                childId = tree.AppendItem(root, name, iconId, data=wx.TreeItemData(('skill', _id)))
+                level, dirty = sChar.getSkillLevel(char.ID, _id)
                 tree.SetItemText(childId, "Level %d" % int(level) if isinstance(level, float) else level, 1)
                 if dirty:
                     tree.SetItemTextColour(childId, wx.BLUE)
@@ -480,12 +480,12 @@ class SkillTreeView(wx.Panel):
 
         char = self.charEditor.entityEditor.getActiveEntity()
         sMkt = Market.getInstance()
-        id = self.skillTreeListCtrl.GetPyData(item)[1]
+        _id = self.skillTreeListCtrl.GetPyData(item)[1]
         if char.name not in ("All 0", "All 5"):
-            self.levelChangeMenu.selection = sMkt.getItem(id)
+            self.levelChangeMenu.selection = sMkt.getItem(_id)
             self.PopupMenu(self.levelChangeMenu)
         else:
-            self.statsMenu.selection = sMkt.getItem(id)
+            self.statsMenu.selection = sMkt.getItem(_id)
             self.PopupMenu(self.statsMenu)
 
     def changeLevel(self, event):
@@ -519,9 +519,9 @@ class SkillTreeView(wx.Panel):
 
         while child.IsOk():
             # child = Skill category
-            dataType, id = self.skillTreeListCtrl.GetPyData(child)
+            dataType, _id = self.skillTreeListCtrl.GetPyData(child)
             if dataType == 'skill':
-                _setTreeSkillLevel(child, id)
+                _setTreeSkillLevel(child, _id)
             else:
                 grand, cookie2 = self.skillTreeListCtrl.GetFirstChild(child)
 

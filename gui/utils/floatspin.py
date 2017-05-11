@@ -730,8 +730,6 @@ class FloatSpin(wx.PyControl):
 
         self._textctrl.SetPosition((self._text_left, self._text_top))
 
-        text_width, text_height = self._textctrl.GetSizeTuple()
-
         spin_width, _ = self._spinbutton.GetSizeTuple()
 
         text_width = event_width - (spin_width + self._gap + self._text_left)
@@ -925,14 +923,14 @@ class FloatSpin(wx.PyControl):
 
          ====== =================================
          Format Description
-         ====== =================================         
+         ====== =================================
          'e'    Floating point exponential format (lowercase)
          'E'    Floating point exponential format (uppercase)
          'f'    Floating point decimal format
          'F'    Floating point decimal format
          'g'    Floating point format. Uses lowercase exponential format if exponent is less than -4 or not less than precision, decimal format otherwise
          'G'    Floating point format. Uses uppercase exponential format if exponent is less than -4 or not less than precision, decimal format otherwise
-         ====== =================================         
+         ====== =================================
 
         """
 
@@ -1044,7 +1042,6 @@ class FloatSpin(wx.PyControl):
 
         if curr:
             try:
-                curro = float(curr)
                 curr = FixedPoint(curr, 20)
             except:
                 self.SetValue(self._value)
@@ -1194,7 +1191,7 @@ class FixedPoint(object):
     Note that if the precision of a FixedPoint is reduced via :meth:`FixedPoint.set_precision() <FixedPoint.set_precision>`,
     information may be lost to rounding.
 
-    Example::    
+    Example::
 
         >>> x = FixedPoint("5.55")  # precision defaults to 2
         >>> print x
@@ -1416,7 +1413,7 @@ class FixedPoint(object):
 
         if (other == None):
             return 1
-        xn, yn, p = _norm(self, other)
+        xn, yn, _ = _norm(self, other)
         return cmp(xn, yn)
 
     def __hash__(self):

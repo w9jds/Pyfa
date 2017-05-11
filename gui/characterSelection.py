@@ -105,7 +105,7 @@ class CharacterSelection(wx.Panel):
         sChar = Character.getInstance()
 
         skillsMap = {}
-        for item, stuff in self.reqs.iteritems():
+        for _, stuff in self.reqs.iteritems():
             for things in stuff.values():
                 if things[1] not in skillsMap:
                     skillsMap[things[1]] = things[0]

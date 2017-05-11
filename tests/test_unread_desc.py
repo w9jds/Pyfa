@@ -84,5 +84,6 @@ def test_import_xml(print_db_info):
         #stpw.reset()
         #with stpw:
         fits = Port.importXml(srcString, usr)
+        fit_length = len(fits)
 
-        assert fits is not None and len(fits) is fit_count
+        assert fits is not None and fit_length is fit_count

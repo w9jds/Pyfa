@@ -203,7 +203,7 @@ class IPortUser:
                 other: Close dialog and handle based on :action (-1 open fits, -2 display error)
         """
 
-        """return: True is continue process, False is cancel."""
+        # return: True is continue process, False is cancel.
         pass
 
     def on_port_process_start(self):

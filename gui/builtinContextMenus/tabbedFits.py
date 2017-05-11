@@ -42,10 +42,10 @@ class TabbedFits(ContextMenu):
             if isinstance(page, BlankPage):
                 continue
             fit = sFit.getFit(page.activeFitID, basic=True)
-            id = ContextMenu.nextID()
-            mitem = wx.MenuItem(rootMenu, id, '{}: {}'.format(fit.ship.item.name, fit.name))
+            _id = ContextMenu.nextID()
+            mitem = wx.MenuItem(rootMenu, _id, '{}: {}'.format(fit.ship.item.name, fit.name))
             bindmenu.Bind(wx.EVT_MENU, self.handleSelection, mitem)
-            self.fitLookup[id] = fit
+            self.fitLookup[_id] = fit
             m.AppendItem(mitem)
 
         return m
