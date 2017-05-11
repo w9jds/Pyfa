@@ -34,8 +34,6 @@ except ImportError:
 from logbook import Logger
 
 pyfalog = Logger(__name__)
-# Keep a list of handlers that fail to import so we don't keep trying repeatedly.
-badHandlers = []
 
 
 class Effect(EqBase):
@@ -163,51 +161,41 @@ class Effect(EqBase):
         Grab the handler, type and runTime from the effect code if it exists,
         if it doesn't, set dummy values and add a dummy handler
         """
-        global badHandlers
 
-        # Skip if we've tried to import before and failed
-        if self.handlerName not in badHandlers:
-            try:
-                self.__effectModule = effectModule = __import__('eos.effects.' + self.handlerName, fromlist=True)
-                self.__handler = getattr(effectModule, "handler", effectDummy)
-                self.__runTime = getattr(effectModule, "runTime", "normal")
-                self.__activeByDefault = getattr(effectModule, "activeByDefault", True)
-                t = getattr(effectModule, "type", None)
+        pyfalog.debug("Generate effect handler for {}".format(self.name))
 
-                t = t if isinstance(t, tuple) or t is None else (t,)
-                self.__type = t
-            except (ImportError) as e:
-                # Effect probably doesn't exist, so create a dummy effect and flag it with a warning.
-                self.__handler = effectDummy
-                self.__runTime = "normal"
-                self.__activeByDefault = True
-                self.__type = None
-                pyfalog.debug("ImportError generating handler: {0}", e)
-                badHandlers.append(self.handlerName)
-            except (AttributeError) as e:
-                # Effect probably exists but there is an issue with it.  Turn it into a dummy effect so we can continue, but flag it with an error.
-                self.__handler = effectDummy
-                self.__runTime = "normal"
-                self.__activeByDefault = True
-                self.__type = None
-                pyfalog.error("AttributeError generating handler: {0}", e)
-                badHandlers.append(self.handlerName)
-            except Exception as e:
-                self.__handler = effectDummy
-                self.__runTime = "normal"
-                self.__activeByDefault = True
-                self.__type = None
-                pyfalog.critical("Exception generating handler:")
-                pyfalog.critical(e)
-                badHandlers.append(self.handlerName)
+        try:
+            self.__effectModule = effectModule = __import__('eos.effects.' + self.handlerName, fromlist=True)
+            self.__handler = getattr(effectModule, "handler", effectDummy)
+            self.__runTime = getattr(effectModule, "runTime", "normal")
+            self.__activeByDefault = getattr(effectModule, "activeByDefault", True)
+            t = getattr(effectModule, "type", None)
 
-            self.__generated = True
-        else:
-            # We've already failed on this one, just pass a dummy effect back
+            t = t if isinstance(t, tuple) or t is None else (t,)
+            self.__type = t
+        except (ImportError) as e:
+            # Effect probably doesn't exist, so create a dummy effect and flag it with a warning.
             self.__handler = effectDummy
             self.__runTime = "normal"
             self.__activeByDefault = True
             self.__type = None
+            pyfalog.debug("ImportError generating handler: {0}", e)
+        except (AttributeError) as e:
+            # Effect probably exists but there is an issue with it.  Turn it into a dummy effect so we can continue, but flag it with an error.
+            self.__handler = effectDummy
+            self.__runTime = "normal"
+            self.__activeByDefault = True
+            self.__type = None
+            pyfalog.error("AttributeError generating handler: {0}", e)
+        except Exception as e:
+            self.__handler = effectDummy
+            self.__runTime = "normal"
+            self.__activeByDefault = True
+            self.__type = None
+            pyfalog.critical("Exception generating handler:")
+            pyfalog.critical(e)
+
+        self.__generated = True
 
     def getattr(self, key):
         if not self.__generated:
@@ -251,6 +239,7 @@ class Item(EqBase):
     def init(self):
         self.__race = None
         self.__requiredSkills = None
+        self.__requiredFor = None
         self.__moved = False
         self.__offensive = None
         self.__assistive = None
@@ -314,6 +303,8 @@ class Item(EqBase):
         eos.db.saveddata_session.delete(override)
         eos.db.commit()
 
+    srqIDMap = {182: 277, 183: 278, 184: 279, 1285: 1286, 1289: 1287, 1290: 1288}
+
     @property
     def requiredSkills(self):
         if self.__requiredSkills is None:
@@ -321,8 +312,7 @@ class Item(EqBase):
             self.__requiredSkills = requiredSkills
             # Map containing attribute IDs we may need for required skills
             # { requiredSkillX : requiredSkillXLevel }
-            srqIDMap = {182: 277, 183: 278, 184: 279, 1285: 1286, 1289: 1287, 1290: 1288}
-            combinedAttrIDs = set(srqIDMap.iterkeys()).union(set(srqIDMap.itervalues()))
+            combinedAttrIDs = set(self.srqIDMap.iterkeys()).union(set(self.srqIDMap.itervalues()))
             # Map containing result of the request
             # { attributeID : attributeValue }
             skillAttrs = {}
@@ -332,7 +322,7 @@ class Item(EqBase):
                 attrVal = attrInfo[2]
                 skillAttrs[attrID] = attrVal
             # Go through all attributeID pairs
-            for srqIDAtrr, srqLvlAttr in srqIDMap.iteritems():
+            for srqIDAtrr, srqLvlAttr in self.srqIDMap.iteritems():
                 # Check if we have both in returned result
                 if srqIDAtrr in skillAttrs and srqLvlAttr in skillAttrs:
                     skillID = int(skillAttrs[srqIDAtrr])
@@ -341,6 +331,23 @@ class Item(EqBase):
                     item = eos.db.getItem(skillID)
                     requiredSkills[item] = skillLvl
         return self.__requiredSkills
+
+    @property
+    def requiredFor(self):
+        if self.__requiredFor is None:
+            self.__requiredFor = dict()
+
+            # Map containing attribute IDs we may need for required skills
+
+            # Get relevant attribute values from db (required skill IDs and levels) for our item
+            q = eos.db.getRequiredFor(self.ID, self.srqIDMap)
+
+            for itemID, lvl in q:
+                # Fetch item from database and fill map
+                item = eos.db.getItem(itemID)
+                self.__requiredFor[item] = lvl
+
+        return self.__requiredFor
 
     factionMap = {
         500001: "caldari",
@@ -412,7 +419,7 @@ class Item(EqBase):
             assistive = False
             # Go through all effects and find first assistive
             for effect in self.effects.itervalues():
-                if effect.info.isAssistance is True:
+                if effect.isAssistance is True:
                     # If we find one, stop and mark item as assistive
                     assistive = True
                     break
@@ -427,7 +434,7 @@ class Item(EqBase):
             offensive = False
             # Go through all effects and find first offensive
             for effect in self.effects.itervalues():
-                if effect.info.isOffensive is True:
+                if effect.isOffensive is True:
                     # If we find one, stop and mark item as offensive
                     offensive = True
                     break
@@ -498,7 +505,7 @@ class Item(EqBase):
             return Slot.SYSTEM
 
     def __repr__(self):
-        return "Item(ID={}, name={}) at {}".format(
+        return u"Item(ID={}, name={}) at {}".format(
                 self.ID, self.name, hex(id(self))
         )
 
@@ -507,7 +514,7 @@ class MetaData(EqBase):
     pass
 
 
-class EffectInfo(EqBase):
+class ItemEffect(EqBase):
     pass
 
 

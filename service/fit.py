@@ -20,6 +20,7 @@
 import copy
 from logbook import Logger
 from time import time
+import datetime
 
 import eos.db
 from eos.saveddata.booster import Booster as es_Booster
@@ -92,9 +93,23 @@ class Fit(object):
         fits = eos.db.getFitsWithShip(shipID)
         names = []
         for fit in fits:
-            names.append((fit.ID, fit.name, fit.booster, fit.timestamp))
+            names.append((fit.ID, fit.name, fit.booster, fit.modified or fit.created or datetime.datetime.fromtimestamp(fit.timestamp), fit.notes))
 
         return names
+
+    @staticmethod
+    def getRecentFits():
+        """ Fetches recently modified fits, used with shipBrowser """
+        pyfalog.debug("Fetching recent fits")
+        fits = eos.db.getRecentFits()
+        returnInfo = []
+
+        for fit in fits:
+            item = eos.db.getItem(fit[1])
+            returnInfo.append((fit[0], fit[2], fit[3] or fit[4] or datetime.datetime.fromtimestamp(fit[5]), item, fit[6]))
+            #                  ID      name    timestamps                                                   item  notes
+
+        return returnInfo
 
     @staticmethod
     def getFitsWithModules(typeIDs):
@@ -244,6 +259,12 @@ class Fit(object):
                 self.recalc(fit, withBoosters=True)
                 fit.fill()
 
+                # this will loop through modules and set their restriction flag (set in m.fit())
+                if fit.ignoreRestrictions:
+                    for mod in fit.modules:
+                        if not mod.isEmpty:
+                            mod.fits(fit)
+
             # Check that the states of all modules are valid
             self.checkStates(fit, None)
 
@@ -256,10 +277,16 @@ class Fit(object):
         pyfalog.debug("Searching for fit: {0}", name)
         results = eos.db.searchFits(name)
         fits = []
+
         for fit in results:
             fits.append((
-                fit.ID, fit.name, fit.ship.item.ID, fit.ship.item.name, fit.booster,
-                fit.timestamp))
+                fit.ID,
+                fit.name,
+                fit.ship.item.ID,
+                fit.ship.item.name,
+                fit.booster,
+                fit.modifiedCoalesce,
+                fit.notes))
         return fits
 
     def addImplant(self, fitID, itemID, recalc=True):
@@ -863,6 +890,21 @@ class Fit(object):
         fit.implantSource = source
 
         self.recalc(fit, withBoosters=False)
+        return True
+
+    def toggleRestrictionIgnore(self, fitID):
+        pyfalog.debug("Toggling restriction ignore for fit ID: {0}", fitID)
+        fit = eos.db.getFit(fitID)
+        fit.ignoreRestrictions = not fit.ignoreRestrictions
+
+        # remove invalid modules when switching back to enabled fitting restrictions
+        if not fit.ignoreRestrictions:
+            for m in fit.modules:
+                if not m.isEmpty and not m.fits(fit):
+                    self.removeModule(fit.ID, m.modPosition)
+
+        eos.db.commit()
+        self.recalc(fit)
         return True
 
     def toggleBooster(self, fitID, i):

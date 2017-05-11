@@ -17,7 +17,7 @@
 # along with eos.  If not, see <http://www.gnu.org/licenses/>.
 # ===============================================================================
 
-from sqlalchemy.orm import join, exc
+from sqlalchemy.orm import join, exc, aliased
 from sqlalchemy.sql import and_, or_, select
 
 import eos.config
@@ -27,12 +27,11 @@ from eos.db.gamedata.group import groups_table
 from eos.db.util import processEager, processWhere
 from eos.gamedata import AlphaClone, Attribute, Category, Group, Item, MarketGroup, MetaGroup, AttributeInfo, MetaData
 
+cache = {}
 configVal = getattr(eos.config, "gamedataCache", None)
 if configVal is True:
     def cachedQuery(amount, *keywords):
         def deco(function):
-            cache = {}
-
             def checkAndReturn(*args, **kwargs):
                 useCache = kwargs.pop("useCache", True)
                 cacheKey = []
@@ -97,6 +96,35 @@ def getItem(lookfor, eager=None):
     else:
         raise TypeError("Need integer or string as argument")
     return item
+
+
+@cachedQuery(1, "lookfor")
+def getItems(lookfor, eager=None):
+    """
+    Gets a list of items. Does a bit of cache hackery to get working properly -- cache
+    is usually based on function calls with the parameters, needed to extract data directly.
+    Works well enough. Not currently used, but it's here for possible future inclusion
+    """
+
+    toGet = []
+    results = []
+
+    for id in lookfor:
+        if (id, None) in cache:
+            results.append(cache.get((id, None)))
+        else:
+            toGet.append(id)
+
+    if len(toGet) > 0:
+        # Get items that aren't currently cached, and store them in the cache
+        items = gamedata_session.query(Item).filter(Item.ID.in_(toGet)).all()
+        for item in items:
+            cache[(item.ID, None)] = item
+        results += items
+
+    # sort the results based on the original indexing
+    results.sort(key=lambda x: lookfor.index(x.ID))
+    return results
 
 
 @cachedQuery(1, "lookfor")
@@ -259,6 +287,22 @@ def searchItems(nameLike, where=None, join=None, eager=None, result_limit=150):
     return items
 
 
+@cachedQuery(3, "where", "nameLike", "join")
+def searchSkills(nameLike, where=None, eager=None):
+    if not isinstance(nameLike, basestring):
+        raise TypeError("Need string as argument")
+
+    items = gamedata_session.query(Item).options(*processEager(eager)).join(Item.group, Group.category)
+    for token in nameLike.split(' '):
+        token_safe = u"%{0}%".format(sqlizeString(token))
+        if where is not None:
+            items = items.filter(and_(Item.name.like(token_safe, escape="\\"), Category.ID == 16, where))
+        else:
+            items = items.filter(and_(Item.name.like(token_safe, escape="\\"), Category.ID == 16))
+    items = items.limit(100).all()
+    return items
+
+
 @cachedQuery(2, "where", "itemids")
 def getVariations(itemids, groupIDs=None, where=None, eager=None):
     for itemid in itemids:
@@ -324,4 +368,26 @@ def directAttributeRequest(itemIDs, attrIDs):
                from_obj=[join(Attribute, Item)])
 
     result = gamedata_session.execute(q).fetchall()
+    return result
+
+
+def getRequiredFor(itemID, attrMapping):
+    Attribute1 = aliased(Attribute)
+    Attribute2 = aliased(Attribute)
+
+    skillToLevelClauses = []
+
+    for attrSkill, attrLevel in attrMapping.iteritems():
+        skillToLevelClauses.append(and_(Attribute1.attributeID == attrSkill, Attribute2.attributeID == attrLevel))
+
+    queryOr = or_(*skillToLevelClauses)
+
+    q = select((Attribute2.typeID, Attribute2.value),
+               and_(Attribute1.value == itemID, queryOr),
+               from_obj=[
+                   join(Attribute1, Attribute2, Attribute1.typeID == Attribute2.typeID)
+               ])
+
+    result = gamedata_session.execute(q).fetchall()
+
     return result

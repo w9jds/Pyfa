@@ -25,6 +25,8 @@ class PFFittingEnginePref(PreferenceView):
     def populatePanel(self, panel):
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
+        helpCursor = wx.StockCursor(wx.CURSOR_QUESTION_ARROW)
+
         self.stTitle = wx.StaticText(panel, wx.ID_ANY, self.title, wx.DefaultPosition, wx.DefaultSize, 0)
         self.stTitle.Wrap(-1)
         self.stTitle.SetFont(wx.Font(12, 70, 90, 90, False, wx.EmptyString))
@@ -35,7 +37,19 @@ class PFFittingEnginePref(PreferenceView):
 
         self.cbGlobalForceReload = wx.CheckBox(panel, wx.ID_ANY, u"Factor in reload time when calculating capacitor usage, damage, and tank.",
                                                wx.DefaultPosition, wx.DefaultSize, 0)
+
         mainSizer.Add(self.cbGlobalForceReload, 0, wx.ALL | wx.EXPAND, 5)
+
+        self.cbStrictSkillLevels = wx.CheckBox(panel, wx.ID_ANY,
+                                               u"Enforce strict skill level requirements",
+                                               wx.DefaultPosition, wx.DefaultSize, 0)
+        self.cbStrictSkillLevels.SetCursor(helpCursor)
+        self.cbStrictSkillLevels.SetToolTip(wx.ToolTip(
+            u'When enabled, skills will check their dependencies\' requirements when their levels change and reset ' +
+            u'skills that no longer meet the requirement.\neg: Setting Drones from level V to IV will reset the Heavy ' +
+            u'Drone Operation skill, as that requires Drones V'))
+
+        mainSizer.Add(self.cbStrictSkillLevels, 0, wx.ALL | wx.EXPAND, 5)
 
         self.cbUniversalAdaptiveArmorHardener = wx.CheckBox(panel, wx.ID_ANY,
                                                             u"When damage profile is Uniform, set Reactive Armor Hardener to match (old behavior).",
@@ -92,6 +106,9 @@ class PFFittingEnginePref(PreferenceView):
         self.cbGlobalForceReload.SetValue(self.sFit.serviceFittingOptions["useGlobalForceReload"])
         self.cbGlobalForceReload.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalForceReloadStateChange)
 
+        self.cbStrictSkillLevels.SetValue(self.engine_settings.get("strictSkillLevels"))
+        self.cbStrictSkillLevels.Bind(wx.EVT_CHECKBOX, self.OnCBStrictSkillLevelsChange)
+
         self.cbUniversalAdaptiveArmorHardener.SetValue(self.engine_settings.get("useStaticAdaptiveArmorHardener"))
         self.cbUniversalAdaptiveArmorHardener.Bind(wx.EVT_CHECKBOX, self.OnCBUniversalAdaptiveArmorHardenerChange)
 
@@ -106,6 +123,9 @@ class PFFittingEnginePref(PreferenceView):
 
     def OnCBGlobalForceReloadStateChange(self, event):
         self.sFit.serviceFittingOptions["useGlobalForceReload"] = self.cbGlobalForceReload.GetValue()
+
+    def OnCBStrictSkillLevelsChange(self, event):
+        self.engine_settings.set("strictSkillLevels", self.cbStrictSkillLevels.GetValue())
 
     def OnCBUniversalAdaptiveArmorHardenerChange(self, event):
         self.engine_settings.set("useStaticAdaptiveArmorHardener", self.cbUniversalAdaptiveArmorHardener.GetValue())
