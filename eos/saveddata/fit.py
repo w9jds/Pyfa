@@ -469,7 +469,7 @@ class Fit(object):
             self.commandBonuses[warfareBuffID] = (runTime, value, module, effect)
 
     def __runCommandBoosts(self, runTime="normal"):
-        pyfalog.debug("Applying gang boosts for {0}", self.ID)
+        pyfalog.debug("Applying gang boosts for {0}", repr(self))
         for warfareBuffID in self.commandBonuses.keys():
             # Unpack all data required to run effect properly
             effect_runTime, value, thing, effect = self.commandBonuses[warfareBuffID]
@@ -750,6 +750,7 @@ class Fit(object):
             pyfalog.debug("Fit has already been calculated and is not projected, returning: {0}", self)
             return
 
+        # Loop through our run times here. These determine which effects are run in which order.
         for runTime in ("early", "normal", "late"):
             pyfalog.debug("Run time: {0}", runTime)
             u = [
