@@ -25,14 +25,14 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "2017.04.26"
+version = "2017.05.11"
 if hasattr(sys, 'frozen'):
     tag = "(release)"
 else:
     tag = "(live)"
-expansionName = "YC119.3"
+expansionName = "YC119.5"
 expansionVersion = "1.0"
-evemonMinVersion = "4081"
+evemonMinVersion = "2"
 
 pyfaPath = None
 savePath = None
