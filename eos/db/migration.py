@@ -27,6 +27,8 @@ from eos.db.migrations import (  # noqa: E402, F401
     upgrade20,
     upgrade21,
     upgrade22,
+    upgrade23,
+    upgrade24,
 )
 
 pyfalog = Logger(__name__)
@@ -41,7 +43,7 @@ def update(saveddata_engine):
     pyfalog.info("Database upgrade in progress.")
     dbVersion = True
 
-    while dbVersion is True:
+    while dbVersion:
         dbVersion = getVersion(saveddata_engine)
 
         current_upgrade = "upgrade" + str(dbVersion + 1)

@@ -21,6 +21,7 @@ import time
 from copy import deepcopy
 from itertools import chain
 from math import log, asinh
+import datetime
 
 from sqlalchemy.orm import validates, reconstructor
 from sqlalchemy.exc import InvalidRequestError
@@ -72,6 +73,8 @@ class Fit(object):
         self.projected = False
         self.name = name
         self.timestamp = time.time()
+        self.created = None
+        self.modified = None
         self.modeID = None
 
         self.build()
@@ -174,6 +177,14 @@ class Fit(object):
     def mode(self, mode):
         self.__mode = mode
         self.modeID = mode.item.ID if mode is not None else None
+
+    @property
+    def modifiedCoalesce(self):
+        """
+        This is a property that should get whichever date is available for the fit. @todo: migrate old timestamp data
+        and ensure created / modified are set in database to get rid of this
+        """
+        return self.modified or self.created or datetime.datetime.fromtimestamp(self.timestamp)
 
     @property
     def character(self):
@@ -469,7 +480,7 @@ class Fit(object):
             self.commandBonuses[warfareBuffID] = (runTime, value, module, effect)
 
     def __runCommandBoosts(self, runTime="normal"):
-        pyfalog.debug("Applying gang boosts for {0}", self.ID)
+        pyfalog.debug("Applying gang boosts for {0}", repr(self))
         for warfareBuffID in self.commandBonuses.keys():
             # Unpack all data required to run effect properly
             effect_runTime, value, thing, effect = self.commandBonuses[warfareBuffID]
@@ -750,6 +761,7 @@ class Fit(object):
             pyfalog.debug("Fit has already been calculated and is not projected, returning: {0}", self)
             return
 
+        # Loop through our run times here. These determine which effects are run in which order.
         for runTime in ("early", "normal", "late"):
             pyfalog.debug("Run time: {0}", runTime)
             u = [
@@ -829,6 +841,19 @@ class Fit(object):
             del shadow
 
         pyfalog.debug('Done with fit calculation')
+
+    def __runProjectionEffects(self, runTime, targetFit, projectionInfo):
+        """
+        To support a simpler way of doing self projections (so that we don't have to make a copy of the fit and
+        recalculate), this function was developed to be a common source of projected effect application.
+        """
+        c = chain(self.drones, self.fighters, self.modules)
+        for item in c:
+            if item is not None:
+                # apply effects onto target fit x amount of times
+                for _ in xrange(projectionInfo.amount):
+                    targetFit.register(item, origin=self)
+                    item.calculateModifiedAttributes(targetFit, runTime, True)
 
     def fill(self):
         """
@@ -1191,18 +1216,23 @@ class Fit(object):
         if force_recalc is False:
             return self.__remoteReps
 
-        # We are rerunning the recalcs. Explicitly set to 0 to make sure we don't duplicate anything and correctly set all values to 0.
+        # We are rerunning the recalcs. Explicitly set to 0 to make sure we don't duplicate anything and correctly set
+        # all values to 0.
         for remote_type in self.__remoteReps:
             self.__remoteReps[remote_type] = 0
 
         for stuff in chain(self.modules, self.drones):
             remote_type = None
+
+            # Only apply the charged multiplier if we have a charge in our ancil reppers (#1135)
             if stuff.charge:
                 fueledMultiplier = stuff.getModifiedItemAttr("chargedArmorDamageMultiplier", 1)
             else:
                 fueledMultiplier = 1
 
-            if isinstance(stuff, Drone):
+            if isinstance(stuff, Module) and (stuff.isEmpty or stuff.state < State.ACTIVE):
+                continue
+            elif isinstance(stuff, Drone):
                 # We only get one drone object, but may have multiple drones.  Add a multiplier so we get the correct total value.
                 count = stuff.amountActive
             else:
@@ -1254,8 +1284,12 @@ class Fit(object):
                     remote_type = "Hull"
                     hp = droneHull
                 else:
-                    hp = 0
-            self.__remoteReps[remote_type] += (hp * fueledMultiplier * count) / duration
+                    # Doesn't project anything remotely, skip
+                    continue
+
+            if hp > 0 and duration >= 0:
+                # Occsaionally we get modules with no duration. Catch these so we don't stack trace with div by 0.
+                self.__remoteReps[remote_type] += (hp * fueledMultiplier * count) / duration
 
         return self.__remoteReps
 
@@ -1361,7 +1395,7 @@ class Fit(object):
     @property
     def fits(self):
         for mod in self.modules:
-            if not mod.fits(self):
+            if not mod.isEmpty and not mod.fits(self):
                 return False
 
         return True

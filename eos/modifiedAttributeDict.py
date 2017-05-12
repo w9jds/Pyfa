@@ -306,10 +306,13 @@ class ModifiedAttributeDict(collections.MutableMapping):
         self.__placehold(attributeName)
         self.__afflict(attributeName, "=", value, value != self.getOriginal(attributeName))
 
-    def increase(self, attributeName, increase, position="pre", skill=None):
+    def increase(self, attributeName, increase, position="pre", skill=None, **kwargs):
         """Increase value of given attribute by given number"""
         if skill:
             increase *= self.__handleSkill(skill)
+
+        if 'effect' in kwargs:
+            increase *= ModifiedAttributeDict.getResistance(self.fit, kwargs['effect']) or 1
 
         # Increases applied before multiplications and after them are
         # written in separate maps
@@ -325,7 +328,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
         self.__placehold(attributeName)
         self.__afflict(attributeName, "+", increase, increase != 0)
 
-    def multiply(self, attributeName, multiplier, stackingPenalties=False, penaltyGroup="default", skill=None):
+    def multiply(self, attributeName, multiplier, stackingPenalties=False, penaltyGroup="default", skill=None, resist=True, *args, **kwargs):
         """Multiply value of given attribute by given factor"""
         if multiplier is None:  # See GH issue 397
             return
@@ -349,33 +352,54 @@ class ModifiedAttributeDict(collections.MutableMapping):
             self.__multipliers[attributeName] *= multiplier
 
         self.__placehold(attributeName)
-        self.__afflict(attributeName, "%s*" % ("s" if stackingPenalties else ""), multiplier, multiplier != 1)
 
-    def boost(self, attributeName, boostFactor, skill=None, remoteResists=False, *args, **kwargs):
+        afflictPenal = ""
+        if stackingPenalties:
+            afflictPenal += "s"
+        if resist:
+            afflictPenal += "r"
+
+        self.__afflict(attributeName, "%s*" % (afflictPenal), multiplier, multiplier != 1)
+
+    def boost(self, attributeName, boostFactor, skill=None, *args, **kwargs):
         """Boost value by some percentage"""
         if skill:
             boostFactor *= self.__handleSkill(skill)
 
-        if remoteResists and self.fit:
-            # @todo: this is such a disgusting hack. Look into sending these checks to the module class before the
-            # effect is applied.
-            mod = self.fit.getModifier()
-            remoteResistID = mod.getModifiedItemAttr("remoteResistanceID") or None
+        resist = None
 
-            # We really don't have a way of getting a ships attribute by ID. Fail.
-            resist = next((x for x in self.fit.ship.item.attributes.values() if x.ID == remoteResistID), None)
-
-            if remoteResistID and resist:
-                boostFactor *= resist.value
+        # Goddammit CCP, make up your mind where you want this information >.< See #1139
+        if 'effect' in kwargs:
+            resist = ModifiedAttributeDict.getResistance(self.fit, kwargs['effect']) or 1
+            boostFactor *= resist
 
         # We just transform percentage boost into multiplication factor
-        self.multiply(attributeName, 1 + boostFactor / 100.0, *args, **kwargs)
+        self.multiply(attributeName, 1 + boostFactor / 100.0, resist=(True if resist else False), *args, **kwargs)
 
     def force(self, attributeName, value):
         """Force value to attribute and prohibit any changes to it"""
         self.__forced[attributeName] = value
         self.__placehold(attributeName)
         self.__afflict(attributeName, u"\u2263", value)
+
+    @staticmethod
+    def getResistance(fit, effect):
+        remoteResistID = effect.resistanceID
+
+        # If it doesn't exist on the effect, check the modifying modules attributes. If it's there, set it on the
+        # effect for this session so that we don't have to look here again (won't always work when it's None, but
+        # will catch most)
+        if not remoteResistID:
+            mod = fit.getModifier()
+            effect.resistanceID = int(mod.getModifiedItemAttr("remoteResistanceID")) or None
+            remoteResistID = effect.resistanceID
+
+        attrInfo = getAttributeInfo(remoteResistID)
+
+        # Get the attribute of the resist
+        resist = fit.ship.itemModifiedAttributes[attrInfo.attributeName] or None
+
+        return resist or 1.0
 
 
 class Affliction(object):

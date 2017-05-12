@@ -24,6 +24,8 @@ class PFGeneralPref(PreferenceView):
         self.sFit = Fit.getInstance()
         self.generalSettings = GeneralSettings.getInstance()
 
+        helpCursor = wx.StockCursor(wx.CURSOR_QUESTION_ARROW)
+
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.stTitle = wx.StaticText(panel, wx.ID_ANY, self.title, wx.DefaultPosition, wx.DefaultSize, 0)
@@ -104,6 +106,7 @@ class PFGeneralPref(PreferenceView):
 
         self.stMarketDelay = wx.StaticText(panel, wx.ID_ANY, u"Market Search Delay (ms):", wx.DefaultPosition, wx.DefaultSize, 0)
         self.stMarketDelay.Wrap(-1)
+        self.stMarketDelay.SetCursor(helpCursor)
         self.stMarketDelay.SetToolTip(
             wx.ToolTip('The delay between a keystroke and the market search. Can help reduce lag when typing fast in the market search box.'))
 
@@ -125,17 +128,57 @@ class PFGeneralPref(PreferenceView):
 
         mainSizer.Add(searchLimitSizer, 0, wx.ALL | wx.EXPAND, 0)
 
+        self.m_staticline = wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
+        mainSizer.Add(self.m_staticline, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
+
+        self.stDefaultFont = wx.StaticText(panel, wx.ID_ANY, u"Font (requires restart)", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stDefaultFont.Wrap(-1)
+        mainSizer.Add(self.stDefaultFont, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+
         # Font size
         fontSizeSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.stDefaultFontSize = wx.StaticText(panel, wx.ID_ANY, u"Default font size (requires restart):", wx.DefaultPosition, wx.DefaultSize, 0)
-        self.stDefaultFontSize.Wrap(-1)
-        fontSizeSizer.Add(self.stDefaultFontSize, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+        self.stFontText = wx.StaticText(panel, wx.ID_ANY, u"Size:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stFontText.Wrap(-1)
+        fontSizeSizer.Add(self.stFontText, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.chFontSize = wx.Choice(panel, choices=['SMALL', 'NORMAL', 'LARGE'])
+        self.chFontSize = wx.Choice(panel, choices=['6', '7', '8', '9', '10', '11', '12'])
         fontSizeSizer.Add(self.chFontSize, 1, wx.ALL | wx.EXPAND, 5)
 
+        self.stFontText = wx.StaticText(panel, wx.ID_ANY, u"Type:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stFontText.Wrap(-1)
+        fontSizeSizer.Add(self.stFontText, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+
+        self.chFontType = wx.Choice(panel, choices=['DEFAULT', 'DECORATIVE', 'MODERN', 'ROMAN', 'SCRIPT', 'SWISS', 'TELETYPE'])
+        fontSizeSizer.Add(self.chFontType, 1, wx.ALL | wx.EXPAND, 5)
+
+        self.stFontText = wx.StaticText(panel, wx.ID_ANY, u"Style:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stFontText.Wrap(-1)
+        fontSizeSizer.Add(self.stFontText, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+
+        self.chFontStyle = wx.Choice(panel, choices=['NORMAL', 'ITALIC', 'SLANT'])
+        fontSizeSizer.Add(self.chFontStyle, 1, wx.ALL | wx.EXPAND, 5)
+
+        self.stFontText = wx.StaticText(panel, wx.ID_ANY, u"Weight:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stFontText.Wrap(-1)
+        fontSizeSizer.Add(self.stFontText, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+
+        self.chFontWeight = wx.Choice(panel, choices=['NORMAL', 'BOLD', 'LIGHT'])
+        fontSizeSizer.Add(self.chFontWeight, 1, wx.ALL | wx.EXPAND, 5)
+
         mainSizer.Add(fontSizeSizer, 0, wx.ALL | wx.EXPAND, 0)
+
+        self.m_staticline = wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
+        mainSizer.Add(self.m_staticline, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
+
+        btnSizer = wx.BoxSizer(wx.HORIZONTAL)
+        btnSizer.AddSpacer((0, 0), 1, wx.EXPAND, 5)
+
+        self.btnApply = wx.Button(panel, wx.ID_ANY, u"Apply Settings", wx.DefaultPosition, wx.DefaultSize, 0)
+
+        btnSizer.Add(self.btnApply, 0, wx.ALL, 5)
+
+        mainSizer.Add(btnSizer, 0, wx.EXPAND, 5)
 
         self.cbGlobalChar.SetValue(self.sFit.serviceFittingOptions["useGlobalCharacter"])
         self.cbGlobalDmgPattern.SetValue(self.sFit.serviceFittingOptions["useGlobalDamagePattern"])
@@ -154,7 +197,10 @@ class PFGeneralPref(PreferenceView):
         self.intDelay.SetValue(self.generalSettings.get("marketSearchDelay"))
         self.editSearchLimit.SetValue(int(self.generalSettings.get("itemSearchLimit")))
         self.cbShowAllMarketGroups.SetValue(self.generalSettings.get("showAllMarketGroups"))
-        self.chFontSize.SetStringSelection(self.generalSettings.get("fontSize"))
+        self.chFontSize.SetStringSelection(unicode(self.generalSettings.get("fontSize")))
+        self.chFontType.SetStringSelection(self.generalSettings.get("fontType"))
+        self.chFontStyle.SetStringSelection(self.generalSettings.get("fontStyle"))
+        self.chFontWeight.SetStringSelection(self.generalSettings.get("fontWeight"))
 
         self.cbGlobalChar.Bind(wx.EVT_CHECKBOX, self.OnWindowLeave)
         self.cbGlobalDmgPattern.Bind(wx.EVT_CHECKBOX, self.OnWindowLeave)
@@ -175,6 +221,10 @@ class PFGeneralPref(PreferenceView):
         self.editSearchLimit.Bind(wx.lib.intctrl.EVT_INT, self.OnWindowLeave)
         self.cbShowAllMarketGroups.Bind(wx.EVT_CHECKBOX, self.OnWindowLeave)
         self.chFontSize.Bind(wx.lib.intctrl.EVT_INT, self.OnWindowLeave)
+        self.chFontType.Bind(wx.lib.intctrl.EVT_INT, self.OnWindowLeave)
+        self.chFontStyle.Bind(wx.lib.intctrl.EVT_INT, self.OnWindowLeave)
+        self.chFontWeight.Bind(wx.lib.intctrl.EVT_INT, self.OnWindowLeave)
+        self.btnApply.Bind(wx.EVT_BUTTON, self.OnWindowLeave)
 
         self.cbRackLabels.Enable(self.sFit.serviceFittingOptions["rackSlots"] or False)
 
@@ -205,7 +255,12 @@ class PFGeneralPref(PreferenceView):
         self.generalSettings.set('itemSearchLimit', int(self.editSearchLimit.GetValue()))
         self.generalSettings.set('marketSearchDelay', int(self.intDelay.GetValue()))
         self.generalSettings.set("showAllMarketGroups", self.cbShowShipBrowserTooltip.GetValue())
-        self.generalSettings.set('fontSize', self.chFontSize.GetString(self.chFontSize.GetSelection()))
+
+        # Font settings
+        self.generalSettings.set('fontSize', int(self.chFontSize.GetString(self.chFontSize.GetSelection())))
+        self.generalSettings.set('fontType', self.chFontType.GetString(self.chFontType.GetSelection()))
+        self.generalSettings.set('fontStyle', self.chFontStyle.GetString(self.chFontStyle.GetSelection()))
+        self.generalSettings.set('fontWeight', self.chFontWeight.GetString(self.chFontWeight.GetSelection()))
 
         fitID = self.mainFrame.getActiveFit()
         if fitID:

@@ -48,6 +48,7 @@ import gui.mainFrame
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from gui.contextMenu import ContextMenu
+from service.settings import GeneralSettings
 
 
 class ItemStatsDialog(wx.Dialog):
@@ -71,6 +72,17 @@ class ItemStatsDialog(wx.Dialog):
                 size=size,
                 style=wx.CAPTION | wx.CLOSE_BOX | wx.MINIMIZE_BOX | wx.MAXIMIZE_BOX | wx.RESIZE_BORDER | wx.SYSTEM_MENU
         )
+
+        general_settings = GeneralSettings.getInstance()
+
+        # Set the font size used on the stats pane
+        font = wx.Font(
+                general_settings.get('fontSize'),
+                getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
+                getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
+                getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
+        )
+        self.SetFont(font)
 
         empty = getattr(victim, "isEmpty", False)
 
@@ -166,6 +178,17 @@ class ItemStatsDialog(wx.Dialog):
 class ItemStatsContainer(wx.Panel):
     def __init__(self, parent, stuff, item, context=None):
         wx.Panel.__init__(self, parent)
+        general_settings = GeneralSettings.getInstance()
+
+        # Set the font size used on the stats pane
+        font = wx.Font(
+                general_settings.get('fontSize'),
+                getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
+                getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
+                getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
+        )
+        self.SetFont(font)
+
         sMkt = Market.getInstance()
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
@@ -190,6 +213,10 @@ class ItemStatsContainer(wx.Panel):
 
         self.reqs = ItemRequirements(self.nbContainer, stuff, item)
         self.nbContainer.AddPage(self.reqs, "Requirements")
+
+        if context == "Skill":
+            self.dependents = ItemDependents(self.nbContainer, stuff, item)
+            self.nbContainer.AddPage(self.dependents, "Dependents")
 
         self.effects = ItemEffects(self.nbContainer, stuff, item)
         self.nbContainer.AddPage(self.effects, "Effects")
@@ -231,6 +258,18 @@ class AutoListCtrlNoHighlight(wx.ListCtrl, listmix.ListCtrlAutoWidthMixin, listm
 class ItemTraits(wx.Panel):
     def __init__(self, parent, stuff, item):
         wx.Panel.__init__(self, parent)
+
+        general_settings = GeneralSettings.getInstance()
+
+        # Set the font size used on the stats pane
+        font = wx.Font(
+                general_settings.get('fontSize'),
+                getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
+                getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
+                getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
+        )
+        self.SetFont(font)
+
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(mainSizer)
 
@@ -244,9 +283,18 @@ class ItemTraits(wx.Panel):
 class ItemDescription(wx.Panel):
     def __init__(self, parent, stuff, item):
         wx.Panel.__init__(self, parent)
+        general_settings = GeneralSettings.getInstance()
+
+        # Set the font size used on the stats pane
+        font = wx.Font(
+                general_settings.get('fontSize'),
+                getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
+                getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
+                getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
+        )
+        self.SetFont(font)
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(mainSizer)
-
         bgcolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
         fgcolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)
 
@@ -272,6 +320,17 @@ class ItemDescription(wx.Panel):
 class ItemParams(wx.Panel):
     def __init__(self, parent, stuff, item, context=None):
         wx.Panel.__init__(self, parent)
+        general_settings = GeneralSettings.getInstance()
+
+        # Set the font size used on the stats pane
+        font = wx.Font(
+                general_settings.get('fontSize'),
+                getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
+                getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
+                getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
+        )
+        self.SetFont(font)
+
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.paramList = AutoListCtrl(self, wx.ID_ANY,
@@ -762,6 +821,55 @@ class ItemRequirements(wx.Panel):
                 self.skillIdHistory.append(skill.ID)
 
 
+class ItemDependents(wx.Panel):
+    def __init__(self, parent, stuff, item):
+        wx.Panel.__init__(self, parent, style=wx.TAB_TRAVERSAL)
+
+        # itemId is set by the parent.
+        self.romanNb = ["0", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"]
+        self.skillIdHistory = []
+        mainSizer = wx.BoxSizer(wx.VERTICAL)
+
+        self.reqTree = wx.TreeCtrl(self, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT | wx.NO_BORDER)
+
+        mainSizer.Add(self.reqTree, 1, wx.ALL | wx.EXPAND, 0)
+
+        self.SetSizer(mainSizer)
+        self.root = self.reqTree.AddRoot("WINRARZOR")
+        self.reqTree.SetPyData(self.root, None)
+
+        self.imageList = wx.ImageList(16, 16)
+        self.reqTree.SetImageList(self.imageList)
+        skillBookId = self.imageList.Add(BitmapLoader.getBitmap("skill_small", "gui"))
+
+        self.getFullSkillTree(item, self.root, skillBookId)
+
+        self.Layout()
+
+    def getFullSkillTree(self, parentSkill, parent, sbIconId):
+        levelToItems = {}
+
+        for item, level in parentSkill.requiredFor.iteritems():
+            if level not in levelToItems:
+                levelToItems[level] = []
+            levelToItems[level].append(item)
+
+        for x in sorted(levelToItems.keys()):
+            items = levelToItems[x]
+            items.sort(key=lambda x: x.name)
+
+            child = self.reqTree.AppendItem(parent, "Level {}".format(self.romanNb[int(x)]), sbIconId)
+            for item in items:
+
+                if item.icon:
+                    bitmap = BitmapLoader.getBitmap(item.icon.iconFile, "icons")
+                    itemIcon = self.imageList.Add(bitmap) if bitmap else -1
+                else:
+                    itemIcon = -1
+
+                self.reqTree.AppendItem(child, "{}".format(item.name), itemIcon)
+
+
 class ItemEffects(wx.Panel):
     def __init__(self, parent, stuff, item):
         wx.Panel.__init__(self, parent)
@@ -1145,11 +1253,13 @@ class ItemAffectedBy(wx.Panel):
                     if projected:
                         displayStr += " (projected)"
 
-                    if attrModifier == "s*":
-                        attrModifier = "*"
-                        penalized = "(penalized)"
-                    else:
-                        penalized = ""
+                    penalized = ""
+                    if '*' in attrModifier:
+                        if 's' in attrModifier:
+                            penalized += "(penalized)"
+                        if 'r' in attrModifier:
+                            penalized += "(resisted)"
+                    attrModifier = "*"
 
                     # this is the Module node, the attribute will be attached to this
                     display = "%s %s %.2f %s" % (displayStr, attrModifier, attrAmount, penalized)
@@ -1275,11 +1385,13 @@ class ItemAffectedBy(wx.Panel):
                         else:
                             attrIcon = self.imageList.Add(BitmapLoader.getBitmap("7_15", "icons"))
 
-                        if attrModifier == "s*":
-                            attrModifier = "*"
-                            penalized = "(penalized)"
-                        else:
-                            penalized = ""
+                        penalized = ""
+                        if '*' in attrModifier:
+                            if 's' in attrModifier:
+                                penalized += "(penalized)"
+                            if 'r' in attrModifier:
+                                penalized += "(resisted)"
+                        attrModifier = "*"
 
                         attributes.append((attrName, (displayName if displayName != "" else attrName), attrModifier,
                                            attrAmount, penalized, attrIcon))
@@ -1382,21 +1494,21 @@ class ItemProperties(wx.Panel):
                 else:
                     attrName = name.title()
                     value = getattr(self.item, name)
+
+                index = self.paramList.InsertStringItem(sys.maxint, attrName)
+                # index = self.paramList.InsertImageStringItem(sys.maxint, attrName)
+                idNameMap[idCount] = attrName
+                self.paramList.SetItemData(index, idCount)
+                idCount += 1
+
+                valueUnit = str(value)
+
+                self.paramList.SetStringItem(index, 1, valueUnit)
             except:
                 # TODO: Add logging to this.
                 # We couldn't get a property for some reason. Skip it for now.
                 # print(e)
                 continue
-
-            index = self.paramList.InsertStringItem(sys.maxint, attrName)
-            # index = self.paramList.InsertImageStringItem(sys.maxint, attrName)
-            idNameMap[idCount] = attrName
-            self.paramList.SetItemData(index, idCount)
-            idCount += 1
-
-            valueUnit = str(value)
-
-            self.paramList.SetStringItem(index, 1, valueUnit)
 
         self.paramList.SortItems(lambda id1, id2: cmp(idNameMap[id1], idNameMap[id2]))
         self.paramList.RefreshRows()

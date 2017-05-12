@@ -6,10 +6,10 @@ runTime = "late"
 type = "projected", "active"
 
 
-def handler(fit, module, context):
+def handler(fit, module, context, **kwargs):
     if "projected" not in context:
         return
 
     amount = module.getModifiedItemAttr("armorDamageAmount") * module.fueledMultiplier
     speed = module.cycleTime / 1000.0
-    fit.extraAttributes.increase("armorRepair", amount / speed)
+    fit.extraAttributes.increase("armorRepair", amount / speed, **kwargs)

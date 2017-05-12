@@ -60,6 +60,16 @@ class MetaButton(wx.ToggleButton):
 class MarketBrowser(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
+        general_settings = GeneralSettings.getInstance()
+
+        # Set the font size used on the stats pane
+        font = wx.Font(
+                general_settings.get('fontSize'),
+                getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
+                getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
+                getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
+        )
+        self.SetFont(font)
         pyfalog.debug("Initialize marketBrowser")
         vbox = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(vbox)
@@ -285,8 +295,10 @@ class ItemView(Display):
 
         if row != -1:
             data = wx.PyTextDataObject()
-            data.SetText("market:" + str(self.active[row].ID))
+            dataStr = "market:" + str(self.active[row].ID)
+            pyfalog.debug("Dragging from market: " + dataStr)
 
+            data.SetText(dataStr)
             dropSource = wx.DropSource(self)
             dropSource.SetData(data)
             dropSource.DoDragDrop()
@@ -304,7 +316,7 @@ class ItemView(Display):
             for itemID in self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]:
                 self.recentlyUsedModules.add(self.sMkt.getItem(itemID))
 
-        wx.PostEvent(self.mainFrame, ItemSelected(itemID=self.active[sel].ID))
+            wx.PostEvent(self.mainFrame, ItemSelected(itemID=self.active[sel].ID))
 
     def storeRecentlyUsedMarketItem(self, itemID):
         if len(self.sMkt.serviceMarketRecentlyUsedModules["pyfaMarketRecentlyUsedModules"]) > MAX_RECENTLY_USED_MODULES:

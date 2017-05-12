@@ -35,6 +35,7 @@ from gui.bitmapLoader import BitmapLoader
 import gui.builtinViews.emptyView
 from logbook import Logger
 from gui.chromeTabs import EVT_NOTEBOOK_PAGE_CHANGED
+from service.settings import GeneralSettings
 
 from service.fit import Fit
 from service.market import Market
@@ -112,6 +113,7 @@ class FittingViewDrop(wx.PyDropTarget):
 
     def OnData(self, x, y, t):
         if self.GetData():
+            pyfalog.debug("fittingView: recieved drag: " + self.dropData.GetText())
             data = self.dropData.GetText().split(':')
             self.dropFn(x, y, data)
         return t
@@ -133,6 +135,15 @@ class FittingView(d.Display):
 
     def __init__(self, parent):
         d.Display.__init__(self, parent, size=(0, 0), style=wx.BORDER_NONE)
+
+        general_settings = GeneralSettings.getInstance()
+        self.font = wx.Font(
+                general_settings.get('fontSize'),
+                getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
+                getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
+                getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
+        )
+
         self.Show(False)
         self.parent = parent
         self.mainFrame.Bind(GE.FIT_CHANGED, self.fitChanged)
@@ -277,9 +288,10 @@ class FittingView(d.Display):
             # Sometimes there is no active page after deletion, hence the try block
             sFit = Fit.getInstance()
             fit = sFit.getFit(active_fit_id)
-            if fit.ID != event.fitID:
-                sFit.recalc(fit)
-                wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
+            if fit is not None:
+                if fit.ID != event.fitID:
+                    sFit.recalc(fit)
+                    wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
         except wx._core.PyDeadObjectError:
             pyfalog.error("Caught dead object on fit removed")
             pass
@@ -312,12 +324,13 @@ class FittingView(d.Display):
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.getActiveFit(), basic=True)
 
-        bitmap = BitmapLoader.getImage("race_%s_small" % fit.ship.item.race, "gui")
-        text = "%s: %s" % (fit.ship.item.name, fit.name)
+        if fit is not None:
+            bitmap = BitmapLoader.getImage("race_%s_small" % fit.ship.item.race, "gui")
+            text = "%s: %s" % (fit.ship.item.name, fit.name)
 
-        pageIndex = self.parent.GetPageIndex(self)
-        if pageIndex is not None:
-            self.parent.SetPageTextIcon(pageIndex, text, bitmap)
+            pageIndex = self.parent.GetPageIndex(self)
+            if pageIndex is not None:
+                self.parent.SetPageTextIcon(pageIndex, text, bitmap)
 
     def appendItem(self, event):
         if self.parent.IsActive(self):
@@ -623,7 +636,6 @@ class FittingView(d.Display):
             slot = Slot.getValue(slotType)
             slotMap[slot] = fit.getSlotsFree(slot) < 0
 
-        font = (self.GetClassDefaultAttributes()).font
         for i, mod in enumerate(self.mods):
             self.SetItemBackgroundColour(i, self.GetBackgroundColour())
 
@@ -638,11 +650,11 @@ class FittingView(d.Display):
             if isinstance(mod, Rack) and \
                     sFit.serviceFittingOptions["rackSlots"] and \
                     sFit.serviceFittingOptions["rackLabels"]:
-                font.SetWeight(wx.FONTWEIGHT_BOLD)
-                self.SetItemFont(i, font)
+                self.font.SetWeight(wx.FONTWEIGHT_BOLD)
+                self.SetItemFont(i, self.font)
             else:
-                font.SetWeight(wx.FONTWEIGHT_NORMAL)
-                self.SetItemFont(i, font)
+                self.font.SetWeight(wx.FONTWEIGHT_NORMAL)
+                self.SetItemFont(i, self.font)
 
         self.Thaw()
         self.itemCount = self.GetItemCount()
@@ -675,8 +687,7 @@ class FittingView(d.Display):
         tbmp = wx.EmptyBitmap(16, 16)
         tdc = wx.MemoryDC()
         tdc.SelectObject(tbmp)
-        font = wx.SystemSettings_GetFont(wx.SYS_DEFAULT_GUI_FONT)
-        tdc.SetFont(font)
+        tdc.SetFont(self.font)
 
         columnsWidths = []
         for i in range(len(self.DEFAULT_COLS)):
@@ -771,7 +782,7 @@ class FittingView(d.Display):
         mdc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)))
         mdc.Clear()
 
-        mdc.SetFont(font)
+        mdc.SetFont(self.font)
         mdc.SetTextForeground(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT))
 
         cx = padding
