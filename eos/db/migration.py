@@ -27,6 +27,8 @@ from eos.db.migrations import (  # noqa: E402, F401
     upgrade20,
     upgrade21,
     upgrade22,
+    upgrade23,
+    upgrade24,
 )
 
 pyfalog = Logger(__name__)

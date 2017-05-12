@@ -869,8 +869,8 @@ class ShipBrowser(wx.Panel):
 
         shipTrait = ship.traits.traitText if (ship.traits is not None) else ""  # empty string if no traits
 
-        for ID, name, booster, timestamp in fitList:
-            self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, shipTrait, name, booster, timestamp), shipID))
+        for ID, name, booster, timestamp, notes in fitList:
+            self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, shipTrait, name, booster, timestamp, notes), shipID))
 
         self.lpane.RefreshList()
         self.lpane.Thaw()
@@ -910,11 +910,11 @@ class ShipBrowser(wx.Panel):
                         ShipItem(self.lpane, ship.ID, (ship.name, shipTrait, len(sFit.getFitsWithShip(ship.ID))),
                                  ship.race))
 
-            for ID, name, shipID, shipName, booster, timestamp in fitList:
+            for ID, name, shipID, shipName, booster, timestamp, notes in fitList:
                 ship = sMkt.getItem(shipID)
                 shipTrait = ship.traits.traitText if (ship.traits is not None) else ""  # empty string if no traits
 
-                self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, shipTrait, name, booster, timestamp), shipID))
+                self.lpane.AddWidget(FitItem(self.lpane, ID, (shipName, shipTrait, name, booster, timestamp, notes), shipID))
             if len(ships) == 0 and len(fitList) == 0:
                 self.lpane.AddWidget(PFStaticText(self.lpane, label=u"No matching results."))
             self.lpane.RefreshList(doFocus=False)
@@ -1502,7 +1502,8 @@ class FitItem(SFItem.SFBrowserItem):
             self.shipBmp = BitmapLoader.getBitmap("ship_no_image_big", "gui")
 
         self.shipFittingInfo = shipFittingInfo
-        self.shipName, self.shipTrait, self.fitName, self.fitBooster, self.timestamp = shipFittingInfo
+        self.shipName, self.shipTrait, self.fitName, self.fitBooster, self.timestamp, self.notes = shipFittingInfo
+
         self.shipTrait = re.sub("<.*?>", " ", self.shipTrait)
         # see GH issue #62
 
@@ -1524,10 +1525,9 @@ class FitItem(SFItem.SFBrowserItem):
         self.dragTLFBmp = None
 
         self.bkBitmap = None
-        sFit = Fit.getInstance()
-        # show no tooltip if no trait available or setting is disabled
-        if self.shipTrait and sFit.serviceFittingOptions["showShipBrowserTooltip"]:
-            self.SetToolTip(wx.ToolTip(u'{}\n{}\n{}'.format(self.shipName, u'─' * 20, self.shipTrait)))
+
+        self.__setToolTip()
+
         self.padding = 4
         self.editWidth = 150
 
@@ -1599,13 +1599,18 @@ class FitItem(SFItem.SFBrowserItem):
         #    self.animCount = 0
         # =====================================================================
 
-        self.selTimerID = wx.NewId()
-
-        self.selTimer = wx.Timer(self, self.selTimerID)
-        self.selTimer.Start(100)
-
         self.Bind(wx.EVT_RIGHT_UP, self.OnContextMenu)
         self.Bind(wx.EVT_MIDDLE_UP, self.OpenNewTab)
+
+    def __setToolTip(self):
+        sFit = Fit.getInstance()
+        # show no tooltip if no trait available or setting is disabled
+        if self.shipTrait and sFit.serviceFittingOptions["showShipBrowserTooltip"]:
+            notes = ""
+            if self.notes:
+                notes = u'─' * 20 + u"\nNotes: {}\n".format(
+                    self.notes[:197] + '...' if len(self.notes) > 200 else self.notes)
+            self.SetToolTip(wx.ToolTip(u'{}\n{}{}\n{}'.format(self.shipName, notes, u'─' * 20, self.shipTrait)))
 
     def OpenNewTab(self, evt):
         self.selectFit(newTab=True)
@@ -1691,6 +1696,7 @@ class FitItem(SFItem.SFBrowserItem):
 
     def OnTimer(self, event):
 
+        # @todo: figure out what exactly this is supposed to accomplish
         if self.selTimerID == event.GetId():
             ctimestamp = time.time()
             interval = 5
@@ -1772,7 +1778,6 @@ class FitItem(SFItem.SFBrowserItem):
             self.fitName = fitName
             sFit.renameFit(self.fitID, self.fitName)
             wx.PostEvent(self.mainFrame, FitRenamed(fitID=self.fitID))
-            self.Refresh()
         else:
             self.tcFitName.SetValue(self.fitName)
 
@@ -1939,8 +1944,8 @@ class FitItem(SFItem.SFBrowserItem):
 
         mdc.SetFont(self.fontNormal)
 
-        fitDate = time.localtime(self.timestamp)
-        fitLocalDate = "%d/%02d/%02d %02d:%02d" % (fitDate[0], fitDate[1], fitDate[2], fitDate[3], fitDate[4])
+        fitDate = self.timestamp.strftime("%m/%d/%Y %H:%M")
+        fitLocalDate = fitDate  # "%d/%02d/%02d %02d:%02d" % (fitDate[0], fitDate[1], fitDate[2], fitDate[3], fitDate[4])
         pfdate = drawUtils.GetPartialText(mdc, fitLocalDate,
                                           self.toolbarx - self.textStartx - self.padding * 2 - self.thoverw)
 
@@ -1992,6 +1997,17 @@ class FitItem(SFItem.SFBrowserItem):
             else:
                 state = SFItem.SB_ITEM_NORMAL
         return state
+
+    def Refresh(self):
+        activeFit = self.mainFrame.getActiveFit()
+        if activeFit == self.fitID and not self.deleted:
+            sFit = Fit.getInstance()
+            fit = sFit.getFit(activeFit)
+            self.timestamp = fit.modifiedCoalesce
+            self.notes = fit.notes
+            self.__setToolTip()
+
+        SFItem.SFBrowserItem.Refresh(self)
 
     def RenderBackground(self):
         rect = self.GetRect()

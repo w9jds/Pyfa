@@ -21,6 +21,7 @@ import time
 from copy import deepcopy
 from itertools import chain
 from math import log, asinh
+import datetime
 
 from sqlalchemy.orm import validates, reconstructor
 from sqlalchemy.exc import InvalidRequestError
@@ -72,6 +73,8 @@ class Fit(object):
         self.projected = False
         self.name = name
         self.timestamp = time.time()
+        self.created = None
+        self.modified = None
         self.modeID = None
 
         self.build()
@@ -174,6 +177,14 @@ class Fit(object):
     def mode(self, mode):
         self.__mode = mode
         self.modeID = mode.item.ID if mode is not None else None
+
+    @property
+    def modifiedCoalesce(self):
+        """
+        This is a property that should get whichever date is available for the fit. @todo: migrate old timestamp data
+        and ensure created / modified are set in database to get rid of this
+        """
+        return self.modified or self.created or datetime.datetime.fromtimestamp(self.timestamp)
 
     @property
     def character(self):
@@ -831,6 +842,19 @@ class Fit(object):
 
         pyfalog.debug('Done with fit calculation')
 
+    def __runProjectionEffects(self, runTime, targetFit, projectionInfo):
+        """
+        To support a simpler way of doing self projections (so that we don't have to make a copy of the fit and
+        recalculate), this function was developed to be a common source of projected effect application.
+        """
+        c = chain(self.drones, self.fighters, self.modules)
+        for item in c:
+            if item is not None:
+                # apply effects onto target fit x amount of times
+                for _ in xrange(projectionInfo.amount):
+                    targetFit.register(item, origin=self)
+                    item.calculateModifiedAttributes(targetFit, runTime, True)
+
     def fill(self):
         """
         Fill this fit's module slots with enough dummy slots so that all slots are used.
@@ -1192,18 +1216,23 @@ class Fit(object):
         if force_recalc is False:
             return self.__remoteReps
 
-        # We are rerunning the recalcs. Explicitly set to 0 to make sure we don't duplicate anything and correctly set all values to 0.
+        # We are rerunning the recalcs. Explicitly set to 0 to make sure we don't duplicate anything and correctly set
+        # all values to 0.
         for remote_type in self.__remoteReps:
             self.__remoteReps[remote_type] = 0
 
         for stuff in chain(self.modules, self.drones):
             remote_type = None
+
+            # Only apply the charged multiplier if we have a charge in our ancil reppers (#1135)
             if stuff.charge:
                 fueledMultiplier = stuff.getModifiedItemAttr("chargedArmorDamageMultiplier", 1)
             else:
                 fueledMultiplier = 1
 
-            if isinstance(stuff, Drone):
+            if isinstance(stuff, Module) and (stuff.isEmpty or stuff.state < State.ACTIVE):
+                continue
+            elif isinstance(stuff, Drone):
                 # We only get one drone object, but may have multiple drones.  Add a multiplier so we get the correct total value.
                 count = stuff.amountActive
             else:
@@ -1258,7 +1287,7 @@ class Fit(object):
                     # Doesn't project anything remotely, skip
                     continue
 
-            if duration >= 0:
+            if hp > 0 and duration >= 0:
                 # Occsaionally we get modules with no duration. Catch these so we don't stack trace with div by 0.
                 self.__remoteReps[remote_type] += (hp * fueledMultiplier * count) / duration
 
@@ -1366,7 +1395,7 @@ class Fit(object):
     @property
     def fits(self):
         for mod in self.modules:
-            if not mod.fits(self):
+            if not mod.isEmpty and not mod.fits(self):
                 return False
 
         return True

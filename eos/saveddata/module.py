@@ -375,10 +375,23 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.__reloadTime = milliseconds
 
     def fits(self, fit, hardpointLimit=True):
+        """
+        Function that determines if a module can be fit to the ship. We always apply slot restrictions no matter what
+        (too many assumptions made on this), however all other fitting restrictions are optional
+        """
+
         slot = self.slot
         if fit.getSlotsFree(slot) <= (0 if self.owner != fit else -1):
             return False
 
+        if eos_settings['strictFitting'] is True:
+            fits = self.__fitRestrictions(fit, hardpointLimit)
+        else:
+            fits = True
+
+        return fits
+
+    def __fitRestrictions(self, fit, hardpointLimit=True):
         # Check ship type restrictions
         fitsOnType = set()
         fitsOnGroup = set()
@@ -399,8 +412,9 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 if shipGroup is not None:
                     fitsOnGroup.add(shipGroup)
 
-        if (len(fitsOnGroup) > 0 or len(fitsOnType) > 0) and \
-                        fit.ship.item.group.ID not in fitsOnGroup and fit.ship.item.ID not in fitsOnType and eos_settings['strictFitting'] is True:
+        if (len(fitsOnGroup) > 0 or len(fitsOnType) > 0) \
+                and fit.ship.item.group.ID not in fitsOnGroup \
+                and fit.ship.item.ID not in fitsOnType:
             return False
 
         # AFAIK Citadel modules will always be restricted based on canFitShipType/Group. If we are fitting to a Citadel
@@ -410,7 +424,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
         # EVE doesn't let capital modules be fit onto subcapital hulls. Confirmed by CCP Larrikin that this is dictated
         # by the modules volume. See GH issue #1096
-        if (fit.ship.getModifiedItemAttr("isCapitalSize", 0) != 1 and self.isCapitalSize):
+        if not isinstance(fit.ship, Citadel) and (fit.ship.getModifiedItemAttr("isCapitalSize", 0) != 1 and self.isCapitalSize):
             return False
 
         # If the mod is a subsystem, don't let two subs in the same slot fit
@@ -748,7 +762,7 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     def __repr__(self):
         if self.item:
-            return "Module(ID={}, name={}) at {}".format(
+            return u"Module(ID={}, name={}) at {}".format(
                     self.item.ID, self.item.name, hex(id(self))
             )
         else:

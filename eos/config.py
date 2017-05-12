@@ -30,6 +30,7 @@ settings = {
     "useStaticAdaptiveArmorHardener": False,
     "strictFitting"                 : True,
     "fireAtPercentCapacitor"        : 25,
+    "strictSkillLevels"             : True,
 }
 
 # Autodetect path, only change if the autodetection bugs out.

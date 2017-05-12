@@ -142,6 +142,26 @@ es_Fit._Fit__commandFits = association_proxy(
         "booster_fit",  # .. and return the booster fit
         creator=lambda boosterID, booster_fit: CommandFit(boosterID, booster_fit)
 )
+
+
+# These relationships are broken out so that we can easily access it in the events stuff
+# We sometimes don't want particular relationships to cause a fit modified update (eg: projecting
+# a fit onto another would 'modify' both fits unless the following relationship is ignored)
+projectedFitSourceRel = relationship(
+   ProjectedFit,
+   primaryjoin=projectedFits_table.c.sourceID == fits_table.c.ID,
+   backref='source_fit',
+   collection_class=attribute_mapped_collection('victimID'),
+   cascade='all, delete, delete-orphan')
+
+
+boostedOntoRel = relationship(
+   CommandFit,
+   primaryjoin=commandFits_table.c.boosterID == fits_table.c.ID,
+   backref='booster_fit',
+   collection_class=attribute_mapped_collection('boostedID'),
+   cascade='all, delete, delete-orphan')
+
 mapper(es_Fit, fits_table,
        properties={
            "_Fit__modules"          : relation(
@@ -165,6 +185,7 @@ mapper(es_Fit, fits_table,
                    Booster,
                    collection_class=HandledImplantBoosterList,
                    cascade='all, delete-orphan',
+                   backref='owner',
                    single_parent=True),
            "_Fit__drones"           : relation(
                    Drone,
@@ -200,7 +221,7 @@ mapper(es_Fit, fits_table,
                    Implant,
                    collection_class=HandledImplantBoosterList,
                    cascade='all, delete-orphan',
-                   backref='fit',
+                   backref='owner',
                    single_parent=True,
                    primaryjoin=fitImplants_table.c.fitID == fits_table.c.ID,
                    secondaryjoin=fitImplants_table.c.implantID == Implant.ID,
@@ -216,31 +237,26 @@ mapper(es_Fit, fits_table,
                    backref='source_fit',
                    collection_class=attribute_mapped_collection('victimID'),
                    cascade='all, delete-orphan'),
-           "victimOf"               : relationship(
+           "victimOf": relationship(
                    ProjectedFit,
                    primaryjoin=fits_table.c.ID == projectedFits_table.c.victimID,
                    backref='victim_fit',
                    collection_class=attribute_mapped_collection('sourceID'),
                    cascade='all, delete-orphan'),
-           "boostedOnto"            : relationship(
-                   CommandFit,
-                   primaryjoin=commandFits_table.c.boosterID == fits_table.c.ID,
-                   backref='booster_fit',
-                   collection_class=attribute_mapped_collection('boostedID'),
-                   cascade='all, delete-orphan'),
-           "boostedOf"              : relationship(
+           "boostedOnto": boostedOntoRel,
+           "boostedOf": relationship(
                    CommandFit,
                    primaryjoin=fits_table.c.ID == commandFits_table.c.boostedID,
                    backref='boosted_fit',
                    collection_class=attribute_mapped_collection('boosterID'),
                    cascade='all, delete-orphan'),
        }
-       )
+)
 
 mapper(ProjectedFit, projectedFits_table,
-       properties={
-           "_ProjectedFit__amount": projectedFits_table.c.amount,
-       }
-       )
+   properties={
+       "_ProjectedFit__amount": projectedFits_table.c.amount,
+   }
+)
 
 mapper(CommandFit, commandFits_table)

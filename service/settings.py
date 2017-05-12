@@ -41,9 +41,14 @@ class SettingsProvider(object):
         return cls._instance
 
     def __init__(self):
-        if hasattr(self, 'BASE_PATH'):
-            if not os.path.exists(self.BASE_PATH):
-                os.mkdir(self.BASE_PATH)
+        try:
+            if hasattr(self, 'BASE_PATH'):
+                if not os.path.exists(self.BASE_PATH):
+                    os.mkdir(self.BASE_PATH)
+        except OSError:
+            pyfalog.warning("Could not create settings path.")
+            self.BASE_PATH = False
+        self.BASE_PATH = ""
 
     def getSettings(self, area, defaults=None):
 
@@ -58,8 +63,8 @@ class SettingsProvider(object):
             if os.path.exists(p):
                 # noinspection PyBroadException
                 try:
-                    f = open(p, "rb")
-                    info = cPickle.load(f)
+                    with open(p, "rb") as f:
+                        info = cPickle.load(f)
                 except:
                     info = {}
                     # TODO: Add logging message that we failed to open the file
@@ -87,8 +92,12 @@ class Settings(object):
         self.info = info
 
     def save(self):
-        f = open(self.location, "wb")
-        cPickle.dump(self.info, f, cPickle.HIGHEST_PROTOCOL)
+        # NOTE: needed to change for tests
+        if self.location is None or not self.location:
+            return
+        # NOTE: with + open -> file handle auto close
+        with open(self.location, "wb") as f:
+            cPickle.dump(self.info, f, cPickle.HIGHEST_PROTOCOL)
 
     def __getitem__(self, k):
         try:
