@@ -6,7 +6,7 @@ import sys
 sys.path.append(os.path.realpath(os.getcwd()))
 
 # noinspection PyPackageRequirements
-from _development.helpers import DBInMemory as DB  # noqa: E402, E401
+from _development.helpers import DBInMemory as DB, Gamedata, Saveddata  # noqa: E402, E401
 from _development.helpers_fits import RifterFit, KeepstarFit  # noqa: E402, E401
 
 
