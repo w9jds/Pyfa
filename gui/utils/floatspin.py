@@ -1570,10 +1570,12 @@ def _tento(n, cache=None):
 #
 # Note that this is called a lot, so default-arg tricks are helpful.
 
-def _norm(x, y, isinstance=isinstance, _FixedPoint=FixedPoint,
+def _norm(x, y, _isinstance=isinstance, _FixedPoint=FixedPoint,
           __tento=_tento):
-    assert isinstance(x, _FixedPoint)
-    if not isinstance(y, _FixedPoint):
+    if not _isinstance(x, _FixedPoint):
+        raise AssertionError()
+
+    if not _isinstance(y, _FixedPoint):
         y = _FixedPoint(y, x.p)
     xn, yn = x.n, y.n
     xp, yp = x.p, y.p
@@ -1607,6 +1609,7 @@ def _roundquotient(x, y):
     if c > 0 or (c == 0 and (n & 1) == 1):
         n = n + 1
     return n
+
 
 # There's an optional sign at the start, and an optional exponent
 # at the end.  The exponent has an optional sign and at least one

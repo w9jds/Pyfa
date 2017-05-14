@@ -153,16 +153,16 @@ class CharacterSelection(wx.Panel):
     def refreshApi(self, event):
         self.btnRefresh.Enable(False)
         sChar = Character.getInstance()
-        __, key, charName, chars = sChar.getApiDetails(self.getActiveCharacter())
+        __, __, charName, __ = sChar.getApiDetails(self.getActiveCharacter())
         if charName:
             sChar.apiFetch(self.getActiveCharacter(), charName, self.refreshAPICallback)
 
-    def refreshAPICallback(self, e=None):
+    def refreshAPICallback(self,  e=None):
         self.btnRefresh.Enable(True)
         if e is None:
             self.refreshCharacterList()
         else:
-            __, exc_obj, exc_trace = e
+            __, exc_obj, __ = e
             pyfalog.warn("Error fetching API information for character")
             pyfalog.warn(exc_obj)
 

@@ -57,7 +57,7 @@ class ChangeAffectingSkills(ContextMenu):
                 continue
 
             for fit, afflictors in cont.getAfflictions(attrName).iteritems():
-                for afflictor, __, amount, used in afflictors:
+                for afflictor, __, __, used in afflictors:
                     # only add Skills
                     if not isinstance(afflictor, Skill):
                         continue
@@ -76,9 +76,9 @@ class ChangeAffectingSkills(ContextMenu):
         else:
             label = "Level %s" % i
 
-        id = ContextMenu.nextID()
-        self.skillIds[id] = (skill, i)
-        menuItem = wx.MenuItem(rootMenu, id, label, kind=wx.ITEM_RADIO)
+        _id = ContextMenu.nextID()
+        self.skillIds[_id] = (skill, i)
+        menuItem = wx.MenuItem(rootMenu, _id, label, kind=wx.ITEM_RADIO)
         rootMenu.Bind(wx.EVT_MENU, self.handleSkillChange, menuItem)
         return menuItem
 
