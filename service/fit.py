@@ -139,7 +139,7 @@ class Fit(object):
         except ValueError:
             ship = es_Citadel(eos.db.getItem(shipID))
         fit = FitType(ship)
-        fit.name = name if name is not None else "New %s" % fit.ship.item.name
+        fit.name = name if name is not None else u"New %s" % fit.ship.item.name
         fit.damagePattern = self.pattern
         fit.targetResists = self.targetResists
         fit.character = self.character
@@ -1095,7 +1095,7 @@ class Fit(object):
 
     def recalc(self, fit, withBoosters=True, skipClear=False):
         start_time = time()
-        pyfalog.info("=" * 10 + "recalc: {0}" + "=" * 10, fit.name)
+        pyfalog.info(u"=" * 10 + u"recalc: {0}" + u"=" * 10, fit.name)
 
         if not skipClear:
             # Commit any changes before we recalc

@@ -326,7 +326,7 @@ class FittingView(d.Display):
 
         if fit is not None:
             bitmap = BitmapLoader.getImage("race_%s_small" % fit.ship.item.race, "gui")
-            text = "%s: %s" % (fit.ship.item.name, fit.name)
+            text = u"%s: %s" % (fit.ship.item.name, fit.name)
 
             pageIndex = self.parent.GetPageIndex(self)
             if pageIndex is not None:
