@@ -322,7 +322,7 @@ class Skill(HandledItem):
             self.character.dirtySkills.remove(self)
 
     def revert(self):
-        self.level = self.__level_old
+        self.activeLevel = self.__level_old
 
     @property
     def isDirty(self):
