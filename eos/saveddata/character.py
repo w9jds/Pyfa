@@ -315,13 +315,14 @@ class Skill(HandledItem):
         self.activeLevel = self.__level
 
     def saveLevel(self):
+        self.__level_old = self.__level
         self.__level = self.activeLevel
 
         if self in self.character.dirtySkills:
             self.character.dirtySkills.remove(self)
 
     def revert(self):
-        self.level = self.__level
+        self.level = self.__level_old
 
     @property
     def isDirty(self):
@@ -342,6 +343,16 @@ class Skill(HandledItem):
             return min(self.activeLevel, self.character.alphaClone.getSkillLevel(self)) or 0
 
         return self.activeLevel or 0
+
+    @level.setter
+    def level(self, value):
+        # Ensure that All 5/0 character have proper skill levels (in case database gets corrupted)
+        if self.character.name == "All 5":
+            self.activeLevel = self.__level = 5
+        elif self.character.name == "All 0":
+            self.activeLevel = self.__level = 0
+        else:
+            self.activeLevel = value
 
     def setLevel(self, level, persist=False):
 
