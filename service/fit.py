@@ -258,6 +258,9 @@ class Fit(object):
         if fit and fit not in self.fit_pointer_list:
             self.fit_pointer_list.append(fit)
 
+        if fit is None:
+            return None
+
         if basic:
             return fit
         elif fit is None:
