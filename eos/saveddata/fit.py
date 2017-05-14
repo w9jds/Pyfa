@@ -731,7 +731,7 @@ class Fit(object):
         shadow = None
         projectionInfo = None
         if targetFit:
-            pyfalog.info("Calculating projections from {0} to target {1}", self.name, targetFit.name)
+            pyfalog.info(u"Calculating projections from {0} to target {1}", self.name, targetFit.name)
             projectionInfo = self.getProjectionInfo(targetFit.ID)
             pyfalog.debug("ProjectionInfo: {0}", projectionInfo)
             if self is targetFit:
