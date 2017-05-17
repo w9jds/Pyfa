@@ -45,4 +45,4 @@ before_deploy:
   - pyinstaller --clean --noconfirm --windowed pyfa.spec
 addons:
   artifacts: true
-  s3_region: "us-west-2
+  s3_region: "us-west-2"
