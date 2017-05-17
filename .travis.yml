@@ -5,19 +5,22 @@ matrix:
       sudo: required
       language: python
       python: 2.7
-      env: "TOXENV=pep8 ARTIFACTS_KEY=AKIAIY2SORQ5BF6SJ6UQ ARTIFACTS_SECRET=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 ARTIFACTS_BUCKET=builds.pyfa.fit ARTIFACTS_PATHS=\"./pyfa.zip:./build/pyfa/warnpyfa.txt\""
+      env: "TOXENV=pep8 ARTIFACTS_KEY=AKIAIY2SORQ5BF6SJ6UQ ARTIFACTS_SECRET=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 ARTIFACTS_BUCKET=builds.pyfa.fit ARTIFACTS_PATHS=\"./pyfa.zip:./pyfa_debug.zip:./build/pyfa/warnpyfa.txt\""
     - os: osx
       language: generic
       python: 2.7
-      env: "TOXENV=pep8 ARTIFACTS_KEY=AKIAIY2SORQ5BF6SJ6UQ ARTIFACTS_SECRET=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 ARTIFACTS_BUCKET=builds.pyfa.fit ARTIFACTS_PATHS=\"./pyfa.zip:./build/pyfa/warnpyfa.txt\""
+      env: "TOXENV=pep8 ARTIFACTS_KEY=AKIAIY2SORQ5BF6SJ6UQ ARTIFACTS_SECRET=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 ARTIFACTS_BUCKET=builds.pyfa.fit ARTIFACTS_PATHS=\"./pyfa.zip:./pyfa_debug.zip:./build/pyfa/warnpyfa.txt\""
 addons:
   apt:
     packages:
 before_install:
-  - sudo apt-get update && sudo apt-get --reinstall install -qq language-pack-en language-pack-ru language-pack-he language-pack-zh-hans
   - pip install tox
   # We're not actually installing Tox, but have to run it before we install wxPython via Conda. This is fugly but vOv
   - tox
+  # Update the environment
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update && sudo apt-get --reinstall install -qq language-pack-en language-pack-ru language-pack-he language-pack-zh-hans          ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update          ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install graphviz; fi
   # get Conda
   - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
       wget https://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh;
@@ -43,13 +46,13 @@ after_success:
   - bash <(curl -s https://codecov.io/bash)
   - pip install -r requirements_build_linux.txt
   - sudo apt-get install libfreetype6-dev
+  - cp /home/travis/build/Pyfa-fit/Pyfa-fit/dist_assets/linux/pyfa.spec /home/travis/build/Pyfa-fit/Pyfa-fit/pyfa.spec
   - cp /home/travis/build/Pyfa-fit/Pyfa-fit/dist_assets/linux/pyfa_debug.spec /home/travis/build/Pyfa-fit/Pyfa-fit/pyfa_debug.spec
-  - ls /home/travis/build/Pyfa-fit/Pyfa-fit/
   - pyinstaller --clean --noconfirm --windowed pyfa.spec
-  - ls /home/travis/build/
-  - ls /home/travis/build/Pyfa-fit/
+  - zip -r /home/travis/build/Pyfa-fit/Pyfa-fit/pyfa.zip . -i /home/travis/build/Pyfa-fit/Pyfa-fit/dist/pyfa
+  - pyinstaller --clean --noconfirm --windowed pyfa_debug.spec
+  - zip -r /home/travis/build/Pyfa-fit/Pyfa-fit/pyfa_debug.zip . -i /home/travis/build/Pyfa-fit/Pyfa-fit/dist/pyfa
   - ls /home/travis/build/Pyfa-fit/Pyfa-fit/
-  - zip -r /home/travis/build/Pyfa-fit/Pyfa-fit/pyfa.zip /home/travis/build/Pyfa-fit/Pyfa-fit/dist/pyfa
 addons:
   artifacts: true
   s3_region: "us-west-2"
