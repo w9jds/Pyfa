@@ -165,7 +165,7 @@ class CapacitorViewFull(StatsView):
             else:
                 t = ""
         else:
-            s = "Stable: " + str(capStable) + "% "
+            s = "Unstable: " + str(capStable) + "% "
 
             if capState:
                 capState /= 1000
