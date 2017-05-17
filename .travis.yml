@@ -4,6 +4,9 @@ python:
   - '2.7'
 env:
   - TOXENV=pep8
+  - ARTIFACTS_KEY=AKIAIY2SORQ5BF6SJ6UQ
+  - ARTIFACTS_SECRET=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
+  - ARTIFACTS_BUCKET=builds.pyfa.fit
 addons:
   apt:
     packages:
@@ -37,3 +40,9 @@ after_success:
   - bash <(curl -s https://codecov.io/bash)
 before_deploy:
   - pip install -r requirements_build_linux.txt
+  - sudo apt-get install libfreetype6-dev
+  - cp ./dist_assets/linux/pyfa_debug.spec .\pyfa_debug.spec
+  - pyinstaller --clean --noconfirm --windowed pyfa.spec
+addons:
+  artifacts: true
+  s3_region: "us-west-2
