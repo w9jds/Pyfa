@@ -595,7 +595,7 @@ class Fit(object):
         sanity checks as opposed to the GUI View. This is different than how the
         normal .swapModules() does things, which is mostly a blind swap.
         """
-        pyfalog.debug("Moving cargo item to module for fit ID: {1}", fitID)
+        pyfalog.debug("Moving cargo item to module for fit ID: {0}", fitID)
         fit = self.getFit(fitID, basic=True)
 
         module = fit.modules[moduleIdx]

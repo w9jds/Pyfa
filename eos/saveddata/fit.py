@@ -796,7 +796,7 @@ class Fit(object):
                     else:
                         item_name = getattr(item, 'name', getattr(item, 'ID', "Unknown"))
 
-                    pyfalog.debug("Processing item: {0}", str(item_name))
+                    pyfalog.debug(u"Processing item: {0}", item_name)
                     # print("Processing item: " + str(item_name))
 
                     if targetFit:
