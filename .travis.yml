@@ -41,7 +41,6 @@ script:
   - py.test --cov=./
 after_success:
   - bash <(curl -s https://codecov.io/bash)
-before_deploy:
   - pip install -r requirements_build_linux.txt
   - sudo apt-get install libfreetype6-dev
   - cp ./dist_assets/linux/pyfa_debug.spec .\pyfa_debug.spec
