@@ -5,11 +5,11 @@ matrix:
       sudo: required
       language: python
       python: 2.7
-      env: "TOXENV=pep8 ARTIFACTS_KEY=AKIAIY2SORQ5BF6SJ6UQ ARTIFACTS_SECRET=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 ARTIFACTS_BUCKET=builds.pyfa.fit ARTIFACTS_PATHS=\"./dist/pyfa/pyfa.zip:./build/pyfa/warnpyfa.txt\""
+      env: "TOXENV=pep8 ARTIFACTS_KEY=AKIAIY2SORQ5BF6SJ6UQ ARTIFACTS_SECRET=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 ARTIFACTS_BUCKET=builds.pyfa.fit ARTIFACTS_PATHS=\"./pyfa.zip:./build/pyfa/warnpyfa.txt\""
     - os: osx
       language: generic
       python: 2.7
-      env: "TOXENV=pep8 ARTIFACTS_KEY=AKIAIY2SORQ5BF6SJ6UQ ARTIFACTS_SECRET=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 ARTIFACTS_BUCKET=builds.pyfa.fit ARTIFACTS_PATHS=\"./dist/pyfa/pyfa.zip:./build/pyfa/warnpyfa.txt\""
+      env: "TOXENV=pep8 ARTIFACTS_KEY=AKIAIY2SORQ5BF6SJ6UQ ARTIFACTS_SECRET=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 ARTIFACTS_BUCKET=builds.pyfa.fit ARTIFACTS_PATHS=\"./pyfa.zip:./build/pyfa/warnpyfa.txt\""
 addons:
   apt:
     packages:
@@ -41,13 +41,15 @@ script:
   - py.test --cov=./
 after_success:
   - bash <(curl -s https://codecov.io/bash)
-  - ls
   - pip install -r requirements_build_linux.txt
   - sudo apt-get install libfreetype6-dev
   - cp /home/travis/build/Pyfa-fit/Pyfa-fit/dist_assets/linux/pyfa_debug.spec /home/travis/build/Pyfa-fit/Pyfa-fit/pyfa_debug.spec
+  - ls /home/travis/build/Pyfa-fit/Pyfa-fit/
   - pyinstaller --clean --noconfirm --windowed pyfa.spec
-  - cd /home/travis/build/Pyfa-fit/Pyfa-fit/dist/pyfa
-  - zip pyfa.zip
+  - ls /home/travis/build/
+  - ls /home/travis/build/Pyfa-fit/
+  - ls /home/travis/build/Pyfa-fit/Pyfa-fit/
+  - zip -r /home/travis/build/Pyfa-fit/Pyfa-fit/pyfa.zip /home/travis/build/Pyfa-fit/Pyfa-fit/dist/pyfa
 addons:
   artifacts: true
   s3_region: "us-west-2"
