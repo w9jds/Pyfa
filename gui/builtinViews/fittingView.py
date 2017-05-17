@@ -209,12 +209,18 @@ class FittingView(d.Display):
             data[1] is typeID or index of data we want to manipulate
         """
 
-        if data[0] == "fitting":
-            self.swapItems(x, y, int(data[1]))
-        elif data[0] == "cargo":
-            self.swapCargo(x, y, int(data[1]))
-        elif data[0] == "market":
-            self.addModule(x, y, int(data[1]))
+        try:
+            if data[0] == u"fitting":
+                self.swapItems(x, y, int(data[1]))
+            elif data[0] == u"cargo":
+                self.swapCargo(x, y, int(data[1]))
+            elif data[0] == u"market":
+                self.addModule(x, y, int(data[1]))
+            else:
+                pyfalog.error(u"Error matching data ({0}:{1}) to valid category", data[0], data[1])
+        except UnicodeError as e:
+            pyfalog.error(u"Error matching data ({0}:{1}) to valid category", data[0], data[1])
+            pyfalog.exception(e)
 
     def handleDrag(self, type, fitID):
         # Those are drags coming from pyfa sources, NOT builtin wx drags
