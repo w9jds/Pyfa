@@ -41,11 +41,12 @@ script:
   - py.test --cov=./
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+  - ls
   - pip install -r requirements_build_linux.txt
   - sudo apt-get install libfreetype6-dev
-  - cp ./dist_assets/linux/pyfa_debug.spec .\pyfa_debug.spec
+  - cp /home/travis/build/Pyfa-fit/Pyfa-fit/dist_assets/linux/pyfa_debug.spec /home/travis/build/Pyfa-fit/Pyfa-fit/pyfa_debug.spec
   - pyinstaller --clean --noconfirm --windowed pyfa.spec
-  - cd ./dist/pyfa
+  - cd /home/travis/build/Pyfa-fit/Pyfa-fit/dist/pyfa
   - zip pyfa.zip
 addons:
   artifacts: true
