@@ -1,13 +1,15 @@
 cache: pip
-python: 2.7
 matrix:
   include:
     - os: linux
       sudo: required
       language: python
+      python: 2.7
+      env: "TOXENV=pep8 ARTIFACTS_KEY=AKIAIY2SORQ5BF6SJ6UQ ARTIFACTS_SECRET=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 ARTIFACTS_BUCKET=builds.pyfa.fit ARTIFACTS_PATHS=\"./dist/pyfa/pyfa.zip:./build/pyfa/warnpyfa.txt\""
     - os: osx
       language: generic
-env: "TOXENV=pep8 ARTIFACTS_KEY=AKIAIY2SORQ5BF6SJ6UQ ARTIFACTS_SECRET=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 ARTIFACTS_BUCKET=builds.pyfa.fit ARTIFACTS_PATHS=\"./dist/pyfa/pyfa.zip:./build/pyfa/warnpyfa.txt\""
+      python: 2.7
+      env: "TOXENV=pep8 ARTIFACTS_KEY=AKIAIY2SORQ5BF6SJ6UQ ARTIFACTS_SECRET=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 ARTIFACTS_BUCKET=builds.pyfa.fit ARTIFACTS_PATHS=\"./dist/pyfa/pyfa.zip:./build/pyfa/warnpyfa.txt\""
 addons:
   apt:
     packages:
