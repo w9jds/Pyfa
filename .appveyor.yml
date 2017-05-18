@@ -150,7 +150,7 @@ install:
   - ECHO "Install pip requirements:"
   - "pip install -r requirements.txt"
   - "pip install -r requirements_test.txt"
-  - "pip install -r requirements_build_windows.txt"
+  - "pip install -r requirements_build.txt"
 
 build_script:
   # Build the compiled extension
