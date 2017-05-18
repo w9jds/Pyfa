@@ -24,6 +24,8 @@ before_install:
       sudo apt-get install gtk2-engines;
       sudo apt-get install gtk2-engines-*;
       sudo apt-get install libfreetype6-dev;
+      sudo apt-get install fonts-cantarell lmodern ttf-aenigma ttf-georgewilliams ttf-bitstream-vera ttf-sjfonts ttf-tuffy tv-fonts;
+      sudo apt-get install ubuntustudio-font-meta;
       sudo apt-get update && sudo apt-get --reinstall install -qq language-pack-en language-pack-ru language-pack-he language-pack-zh-hans;
       wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh;
       ln -s /usr/X11R6/share/fonts /usr/share;
