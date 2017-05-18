@@ -5,11 +5,11 @@ matrix:
       sudo: required
       language: python
       python: 2.7
-      env: "TOXENV=pep8 ARTIFACTS_BUCKET=pyfalinuxbuilds ARTIFACTS_PATHS=\"/home/travis/build/pyfa_linux.zip:/home/travis/build/pyfa_mac_debug.zip:./build/pyfa/warnpyfa.txt\""
+      env: "TOXENV=pep8 ARTIFACTS_BUCKET=pyfalinuxbuilds ARTIFACTS_PATHS=\"$TRAVIS_BUILD_DIR/pyfa_linux.zip:/$TRAVIS_BUILD_DIR/pyfa_linux_debug.zip:$TRAVIS_BUILD_DIR/build/pyfa/warnpyfa.txt\""
     - os: osx
       language: generic
       python: 2.7
-      env: "TOXENV=pep8 ARTIFACTS_BUCKET=pyfaosxbuilds ARTIFACTS_PATHS=\"./pyfa_mac.zip:./pyfa_mac_debug.zip:./build/pyfa/warnpyfa.txt\""
+      env: "TOXENV=pep8 ARTIFACTS_BUCKET=pyfaosxbuilds ARTIFACTS_PATHS=\"$TRAVIS_BUILD_DIR/pyfa_mac.zip:$TRAVIS_BUILD_DIR/pyfa_mac_debug.zip:$TRAVIS_BUILD_DIR/build/pyfa/warnpyfa.txt\""
 addons:
   apt:
     packages:
@@ -29,9 +29,8 @@ before_install:
       sudo apt-get update && sudo apt-get --reinstall install -qq language-pack-en language-pack-ru language-pack-he language-pack-zh-hans;
       wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh;
     fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      ln -s /usr/X11R6/share/fonts /usr/share;
-    fi
+  - ls usr/share/fonts
+  - ls /usr/X11R6/share/fonts
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       brew update;
       brew install graphviz;
@@ -63,36 +62,38 @@ after_success:
 
   # copy pyinstaller build files into place
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      cp /home/travis/build/Pyfa-fit/Pyfa-fit/dist_assets/linux/pyfa.spec /home/travis/build/Pyfa-fit/Pyfa-fit/pyfa.spec;
-      cp /home/travis/build/Pyfa-fit/Pyfa-fit/dist_assets/linux/pyfa_debug.spec /home/travis/build/Pyfa-fit/Pyfa-fit/pyfa_debug.spec;
+      cp $TRAVIS_BUILD_DIR/dist_assets/linux/pyfa.spec $TRAVIS_BUILD_DIR/pyfa.spec;
+      cp $TRAVIS_BUILD_DIR/dist_assets/linux/pyfa_debug.spec $TRAVIS_BUILD_DIR/pyfa_debug.spec;
     fi
   - if [[ "$TRAVIS_OS_NAME" == "mac" ]]; then
-      cp ./dist_assets/mac/pyfa.spec ./pyfa.spec;
-      cp ./dist_assets/mac/pyfa_debug.spec ./pyfa_debug.spec;
+      cp $TRAVIS_BUILD_DIR/dist_assets/mac/pyfa.spec $TRAVIS_BUILD_DIR/pyfa.spec;
+      cp $TRAVIS_BUILD_DIR/dist_assets/mac/pyfa_debug.spec $TRAVIS_BUILD_DIR/pyfa_debug.spec;
     fi
 
   # Run build
-  - pyinstaller --clean --noconfirm --windowed ./pyfa.spec
+  - cd $TRAVIS_BUILD_DIR
+  - pyinstaller --clean --noconfirm --windowed $TRAVIS_BUILD_DIR/pyfa.spec
 
   # zip builds
+  - cd $TRAVIS_BUILD_DIR/dist/;
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      cd /home/travis/build/Pyfa-fit/Pyfa-fit/dist/;
-      zip -r /home/travis/build/pyfa_linux.zip /home/travis/build/Pyfa-fit/Pyfa-fit/dist/pyfa;
+      zip -r $TRAVIS_BUILD_DIR/pyfa_linux.zip /home/travis/build/Pyfa-fit/Pyfa-fit/dist/pyfa;
     fi
   - if [[ "$TRAVIS_OS_NAME" == "mac" ]]; then
-      zip -r ./pyfa_mac.zip ./dist/pyfa;
+      zip -r $TRAVIS_BUILD_DIR/pyfa_mac.zip $TRAVIS_BUILD_DIR/dist/pyfa;
     fi
 
   # Run build (debug)
-  - pyinstaller --clean --noconfirm --windowed pyfa_debug.spec
+  - cd $TRAVIS_BUILD_DIR
+  - pyinstaller --clean --noconfirm --windowed $TRAVIS_BUILD_DIR/pyfa_debug.spec
 
   # zip build (debug)
+  - cd $TRAVIS_BUILD_DIR/dist/
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      cd /home/travis/build/Pyfa-fit/Pyfa-fit/dist/;
-      zip -r /home/travis/build/pyfa_linux_debug.zip /home/travis/build/Pyfa-fit/Pyfa-fit/dist/pyfa;
+      zip -r $TRAVIS_BUILD_DIR/build/pyfa_linux_debug.zip $TRAVIS_BUILD_DIR/dist/pyfa;
     fi
   - if [[ "$TRAVIS_OS_NAME" == "mac" ]]; then
-      zip -r ./pyfa_mac_debug.zip ./dist/pyfa;
+      zip -r $TRAVIS_BUILD_DIR/pyfa_mac_debug.zip $TRAVIS_BUILD_DIR/dist/pyfa;
     fi
 
   # Debugging
@@ -100,12 +101,7 @@ after_success:
       ls /home/travis/build/Pyfa-fit/Pyfa-fit/;
     fi
 
-  - ls
-  - ls /usr/share/fonts
-
-  # Old build
-  # $ ls /usr/share/fonts
-  # truetype  type1  X11
+  - ls $TRAVIS_BUILD_DIR
 
 addons:
     artifacts:
