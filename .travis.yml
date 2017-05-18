@@ -18,6 +18,7 @@ before_install:
   # We're not actually installing Tox, but have to run it before we install wxPython via Conda. This is fugly but vOv
   - tox
   # Update the environment
+  # ln -s /usr/X11R6/share/fonts /usr/share
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       sudo apt-get install libatk-adaptor libgail-common;
       sudo apt-get install libatk-adaptor:i386 libgail-common:i386;
@@ -64,6 +65,7 @@ after_success:
   - ls /home/
   - ls /home/travis/build/
   - ls /home/travis/build/Pyfa-fit/
+  - ls /usr/share/fonts
 addons:
     artifacts:
         s3_region: "us-west-2"
