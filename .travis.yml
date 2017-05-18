@@ -67,6 +67,13 @@ after_success:
       cp $TRAVIS_BUILD_DIR/dist_assets/mac/pyfa.spec $TRAVIS_BUILD_DIR/pyfa.spec;
       cp $TRAVIS_BUILD_DIR/dist_assets/mac/pyfa_debug.spec $TRAVIS_BUILD_DIR/pyfa_debug.spec;
     fi
+  - ls $TRAVIS_BUILD_DIR
+  - if [[ "$TRAVIS_OS_NAME" == "mac" ]]; then
+      cp ~/dist_assets/mac/pyfa.spec ~/pyfa.spec;
+      cp ~/dist_assets/mac/pyfa_debug.spec ~/pyfa_debug.spec;
+    fi
+  - ls $TRAVIS_BUILD_DIR
+  - ls $TRAVIS_BUILD_DIR/dist_assets/mac/
 
   # Run build
   - cd $TRAVIS_BUILD_DIR
@@ -85,10 +92,6 @@ after_success:
     fi
 
   # Debugging
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      ls /home/travis/build/Pyfa-fit/Pyfa-fit/;
-    fi
-
   - ls $TRAVIS_BUILD_DIR
 
 addons:
