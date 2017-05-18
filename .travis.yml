@@ -60,6 +60,10 @@ after_success:
   - zip -r /home/travis/build/Pyfa-fit/Pyfa-fit/pyfa_debug.zip /home/travis/build/Pyfa-fit/Pyfa-fit/dist/pyfa
   - ls /home/travis/build/Pyfa-fit/Pyfa-fit/
   - ls /home/travis/build/Pyfa-fit/Pyfa-fit/dist/pyfa
+  - ls
+  - ls /home/
+  - ls /home/travis/build/
+  - ls /home/travis/build/Pyfa-fit/
 addons:
     artifacts:
         s3_region: "us-west-2"
