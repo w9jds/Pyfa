@@ -7,6 +7,6 @@ sqlalchemy >= 1.0.5
 EVE_Gnosis
 multiprocess >= 0.70.5
 pyswagger
-six
-pytz
+six >= 1.10.0
+pytz >= 2016.10
 esipy >= 0.1.5

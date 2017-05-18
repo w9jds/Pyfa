@@ -1,9 +1,11 @@
+# Applies to all operating systems
 PyInstaller	>= 3.2.1
 cycler >= 0.10.0
 functools32 >= 3.2.3
 future >= 0.16.0
 numpy >= 1.12
 pyparsing >= 2.1.10
-pypiwin32 >= 219
-pytz >= 2016.10
-six >= 1.10.0
+tornado
+
+# Windows specific
+pypiwin32 >= 219; sys_platform == 'win'
