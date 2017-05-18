@@ -19,6 +19,11 @@ before_install:
   - tox
   # Update the environment
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      sudo apt-get install libatk-adaptor libgail-common;
+      sudo apt-get install libatk-adaptor:i386 libgail-common:i386;
+      sudo apt-get install gtk2-engines;
+      sudo apt-get install gtk2-engines-*;
+      sudo apt-get install libfreetype6-dev;
       sudo apt-get update && sudo apt-get --reinstall install -qq language-pack-en language-pack-ru language-pack-he language-pack-zh-hans;
       wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh;
     fi
@@ -46,8 +51,7 @@ script:
   - py.test --cov=./
 after_success:
   - bash <(curl -s https://codecov.io/bash)
-  - pip install -r requirements_build_linux.txt
-  - sudo apt-get install libfreetype6-dev
+  - pip install -r requirements_build.txt
   - cp /home/travis/build/Pyfa-fit/Pyfa-fit/dist_assets/linux/pyfa.spec /home/travis/build/Pyfa-fit/Pyfa-fit/pyfa.spec
   - cp /home/travis/build/Pyfa-fit/Pyfa-fit/dist_assets/linux/pyfa_debug.spec /home/travis/build/Pyfa-fit/Pyfa-fit/pyfa_debug.spec
   - pyinstaller --clean --noconfirm --windowed pyfa.spec
