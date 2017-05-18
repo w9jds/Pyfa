@@ -71,27 +71,17 @@ after_success:
   # Run build
   - cd $TRAVIS_BUILD_DIR
   - pyinstaller --clean --noconfirm --windowed $TRAVIS_BUILD_DIR/pyfa.spec
+  - pyinstaller --clean --noconfirm --windowed $TRAVIS_BUILD_DIR/pyfa_debug.spec
 
   # zip builds
   - cd $TRAVIS_BUILD_DIR/dist/;
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      zip -r $TRAVIS_BUILD_DIR/pyfa_linux.zip /home/travis/build/Pyfa-fit/Pyfa-fit/dist/pyfa;
+      zip -r $TRAVIS_BUILD_DIR/pyfa_linux.zip $TRAVIS_BUILD_DIR/dist/pyfa;
+      zip -r $TRAVIS_BUILD_DIR/pyfa_linux_debug.zip $TRAVIS_BUILD_DIR/dist/pyfa_debug;
     fi
   - if [[ "$TRAVIS_OS_NAME" == "mac" ]]; then
       zip -r $TRAVIS_BUILD_DIR/pyfa_mac.zip $TRAVIS_BUILD_DIR/dist/pyfa;
-    fi
-
-  # Run build (debug)
-  - cd $TRAVIS_BUILD_DIR
-  - pyinstaller --clean --noconfirm --windowed $TRAVIS_BUILD_DIR/pyfa_debug.spec
-
-  # zip build (debug)
-  - cd $TRAVIS_BUILD_DIR/dist/
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      zip -r $TRAVIS_BUILD_DIR/build/pyfa_linux_debug.zip $TRAVIS_BUILD_DIR/dist/pyfa;
-    fi
-  - if [[ "$TRAVIS_OS_NAME" == "mac" ]]; then
-      zip -r $TRAVIS_BUILD_DIR/pyfa_mac_debug.zip $TRAVIS_BUILD_DIR/dist/pyfa;
+      zip -r $TRAVIS_BUILD_DIR/pyfa_mac_debug.zip $TRAVIS_BUILD_DIR/dist/pyfa_debug;
     fi
 
   # Debugging
