@@ -10,11 +10,9 @@ init:
   - ECHO " "
   - ECHO "------------------------"
   - ECHO " "
-  - ECHO "JOB NAME:"
-  - ECHO %APPVEYOR_JOB_NAME%
+  - ECHO "JOB NAME:" %APPVEYOR_JOB_NAME%
   - ECHO " "
-  - ECHO "BUILD VERSION"
-  - ECHO %AppveyorBuild%
+  - ECHO "BUILD VERSION" %AppveyorBuild%
   - ECHO " "
   - ECHO "------------------------"
   - ECHO " "
