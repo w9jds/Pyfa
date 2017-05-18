@@ -5,7 +5,7 @@ matrix:
       sudo: required
       language: python
       python: 2.7
-      env: "TOXENV=pep8 ARTIFACTS_BUCKET=pyfalinuxbuilds ARTIFACTS_PATHS=\"./pyfa.zip:./pyfa_debug.zip:./build/pyfa/warnpyfa.txt\""
+      env: "TOXENV=pep8 ARTIFACTS_BUCKET=pyfalinuxbuilds ARTIFACTS_PATHS=\"/home/travis/build/pyfa.zip:/home/travis/build/pyfa_debug.zip:./build/pyfa/warnpyfa.txt\""
     - os: osx
       language: generic
       python: 2.7
@@ -51,20 +51,54 @@ before_script:
 script:
   - py.test --cov=./
 after_success:
+  # Upload coverage data
   - bash <(curl -s https://codecov.io/bash)
+
+  # Install requirements to build the package
   - pip install -r requirements_build.txt
-  - cp /home/travis/build/Pyfa-fit/Pyfa-fit/dist_assets/linux/pyfa.spec /home/travis/build/Pyfa-fit/Pyfa-fit/pyfa.spec
-  - cp /home/travis/build/Pyfa-fit/Pyfa-fit/dist_assets/linux/pyfa_debug.spec /home/travis/build/Pyfa-fit/Pyfa-fit/pyfa_debug.spec
+
+  # copy pyinstaller build files into place
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      cp /home/travis/build/Pyfa-fit/Pyfa-fit/dist_assets/linux/pyfa.spec /home/travis/build/Pyfa-fit/Pyfa-fit/pyfa.spec;
+      cp /home/travis/build/Pyfa-fit/Pyfa-fit/dist_assets/linux/pyfa_debug.spec /home/travis/build/Pyfa-fit/Pyfa-fit/pyfa_debug.spec;
+    fi
+  - if [[ "$TRAVIS_OS_NAME" == "mac" ]]; then
+      cp ./dist_assets/mac/pyfa.spec ./pyfa.spec;
+      cp ./dist_assets/mac/pyfa_debug.spec ./pyfa_debug.spec;
+    fi
+
+  # Run build
   - pyinstaller --clean --noconfirm --windowed pyfa.spec
-  - zip -r /home/travis/build/Pyfa-fit/Pyfa-fit/pyfa.zip /home/travis/build/Pyfa-fit/Pyfa-fit/dist/pyfa
+
+  # zip builds
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      cd /home/travis/build/Pyfa-fit/Pyfa-fit/dist/;
+      zip -r /home/travis/build/pyfa.zip /home/travis/build/Pyfa-fit/Pyfa-fit/dist/pyfa;
+    fi
+  - if [[ "$TRAVIS_OS_NAME" == "mac" ]]; then
+      zip -r ./pyfa.zip ./dist/pyfa;
+    fi
+
+  # Run build (debug)
   - pyinstaller --clean --noconfirm --windowed pyfa_debug.spec
-  - zip -r /home/travis/build/Pyfa-fit/Pyfa-fit/pyfa_debug.zip /home/travis/build/Pyfa-fit/Pyfa-fit/dist/pyfa
-  - ls /home/travis/build/Pyfa-fit/Pyfa-fit/
-  - ls /home/travis/build/Pyfa-fit/Pyfa-fit/dist/pyfa
-  - ls
-  - ls /home/
-  - ls /home/travis/build/
-  - ls /home/travis/build/Pyfa-fit/
+
+  # zip build (debug)
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      cd /home/travis/build/Pyfa-fit/Pyfa-fit/dist/;
+      zip -r /home/travis/build/pyfa_debug.zip /home/travis/build/Pyfa-fit/Pyfa-fit/dist/pyfa;
+    fi
+  - if [[ "$TRAVIS_OS_NAME" == "mac" ]]; then
+      zip -r ./pyfa_debug.zip ./dist/pyfa;
+    fi
+
+  # Debugging
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      ls /home/travis/build/Pyfa-fit/Pyfa-fit/;
+    fi
+  - if [[ "$TRAVIS_OS_NAME" == "mac" ]]; then
+      ls
+    fi
+
   - ls /usr/share/fonts
 addons:
     artifacts:
