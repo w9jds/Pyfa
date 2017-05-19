@@ -165,7 +165,7 @@ build_script:
   - ECHO "Build pyfa (Debug):"
   - copy .\dist_assets\win\pyfa_debug.spec .\pyfa_debug.spec
   - if [%PYTHON_ARCH%]==[32] (
-    "pyinstaller.exe --clean --noconfirm --windowed --upx-dir=.\\scripts\\upx.exe .\\pyfa_debug.spec")
+    pyinstaller.exe --clean --noconfirm --windowed --upx-dir=.\\scripts\\upx.exe .\\pyfa_debug.spec)
 
 build: on
 
