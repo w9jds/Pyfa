@@ -114,9 +114,9 @@ install:
 
   - 'ECHO Install wxPython'
   - if [%PYTHON_ARCH%]==[32] (
-    "C:\\wxpython.exe /SP- /VERYSILENT /NORESTART")
+    "C:\wxpython.exe /SP- /VERYSILENT /NORESTART")
   - if [%PYTHON_ARCH%]==[64] (
-    "C:\\wxpython64.exe /SP- /VERYSILENT /NORESTART")
+    "C:\wxpython64.exe /SP- /VERYSILENT /NORESTART")
 
   # - ECHO "Filesystem root:"
   # - ps: "ls \"C:/\""
