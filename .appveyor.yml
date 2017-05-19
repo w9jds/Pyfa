@@ -110,13 +110,13 @@ install:
   # Install wxPython
   - 'ECHO Downloading wxPython.'
   - "appveyor DownloadFile https://goo.gl/yvO8PB -FileName C:\\wxpython.exe"
-  - "appveyor DownloadFile https://goo.gl/Uj0jV3 -FileName C:\\wxpython.exe"
+  - "appveyor DownloadFile https://goo.gl/Uj0jV3 -FileName C:\\wxpython64.exe"
 
   - 'ECHO Install wxPython'
   - if [%PYTHON_ARCH%]==[32] (
-    "C:\wxpython.exe /SP- /VERYSILENT /NORESTART")
+    C:\wxpython.exe /SP- /VERYSILENT /NORESTART)
   - if [%PYTHON_ARCH%]==[64] (
-    "C:\wxpython64.exe /SP- /VERYSILENT /NORESTART")
+    C:\wxpython64.exe /SP- /VERYSILENT /NORESTART)
 
   # - ECHO "Filesystem root:"
   # - ps: "ls \"C:/\""
