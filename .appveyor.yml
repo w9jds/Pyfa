@@ -109,10 +109,8 @@ install:
 
   # Install wxPython
   - 'ECHO Downloading wxPython.'
-  - if [%PYTHON_ARCH%]==[32] (
-    "appveyor DownloadFile https://goo.gl/yvO8PB -FileName C:\\wxpython.exe")
-  - if [%PYTHON_ARCH%]==[32] (
-    "appveyor DownloadFile https://goo.gl/Uj0jV3 -FileName C:\\wxpython.exe")
+  - "appveyor DownloadFile https://goo.gl/yvO8PB -FileName C:\\wxpython.exe"
+  - "appveyor DownloadFile https://goo.gl/Uj0jV3 -FileName C:\\wxpython.exe"
 
   - 'ECHO Install wxPython'
   - if [%PYTHON_ARCH%]==[32] (
