@@ -185,12 +185,12 @@ after_build:
     7z a pyfa_windows_debug.zip -r .\dist\pyfa_debug\*.*)
 
   - if [%PYTHON_ARCH%]==[32] (
-    ps: Push-AppveyorArtifact Pyfa_Windows.zip)
+    ps: 'Push-AppveyorArtifact Pyfa_Windows.zip')
   - if [%PYTHON_ARCH%]==[64] (
-    ps: Push-AppveyorArtifact Pyfa_Windows_x64.zip)
+    ps: 'Push-AppveyorArtifact Pyfa_Windows_x64.zip')
 
   - if [%PYTHON_ARCH%]==[32] (
-    ps: Push-AppveyorArtifact Pyfa_Windows_debug.zip)
+    ps: 'Push-AppveyorArtifact Pyfa_Windows_debug.zip')
 on_success:
   # Do nothing right now
 
