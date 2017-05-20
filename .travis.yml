@@ -5,11 +5,11 @@ matrix:
       sudo: required
       language: python
       python: 2.7
-      env: "TOXENV=pep8 ARTIFACTS_BUCKET=pyfalinuxbuilds ARTIFACTS_PATHS=\"./pyfa.zip:./pyfa_debug.zip:./build/pyfa/warnpyfa.txt\""
+      env: "TOXENV=pep8 ARTIFACTS_BUCKET=pyfalinuxbuilds ARTIFACTS_PATHS=\"$TRAVIS_BUILD_DIR/pyfa_linux.zip:/$TRAVIS_BUILD_DIR/pyfa_linux_debug.zip:$TRAVIS_BUILD_DIR/build/pyfa/warnpyfa.txt\""
     - os: osx
       language: generic
       python: 2.7
-      env: "TOXENV=pep8 ARTIFACTS_BUCKET=pyfaosxbuilds ARTIFACTS_PATHS=\"./pyfa.zip:./pyfa_debug.zip:./build/pyfa/warnpyfa.txt\""
+      env: "TOXENV=pep8 ARTIFACTS_BUCKET=pyfaosxbuilds ARTIFACTS_PATHS=\"$TRAVIS_BUILD_DIR/pyfa_mac.zip:$TRAVIS_BUILD_DIR/pyfa_mac_debug.zip:$TRAVIS_BUILD_DIR/build/pyfa/warnpyfa.txt\""
 addons:
   apt:
     packages:
@@ -24,6 +24,8 @@ before_install:
       sudo apt-get install gtk2-engines;
       sudo apt-get install gtk2-engines-*;
       sudo apt-get install libfreetype6-dev;
+      sudo apt-get install fonts-cantarell lmodern ttf-aenigma ttf-georgewilliams ttf-bitstream-vera ttf-sjfonts ttf-tuffy tv-fonts;
+      sudo apt-get install ubuntustudio-font-meta;
       sudo apt-get update && sudo apt-get --reinstall install -qq language-pack-en language-pack-ru language-pack-he language-pack-zh-hans;
       wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh;
     fi
@@ -50,16 +52,48 @@ before_script:
 script:
   - py.test --cov=./
 after_success:
+  # Upload coverage data
   - bash <(curl -s https://codecov.io/bash)
+
+  # Install requirements to build the package
   - pip install -r requirements_build.txt
-  - cp /home/travis/build/Pyfa-fit/Pyfa-fit/dist_assets/linux/pyfa.spec /home/travis/build/Pyfa-fit/Pyfa-fit/pyfa.spec
-  - cp /home/travis/build/Pyfa-fit/Pyfa-fit/dist_assets/linux/pyfa_debug.spec /home/travis/build/Pyfa-fit/Pyfa-fit/pyfa_debug.spec
-  - pyinstaller --clean --noconfirm --windowed pyfa.spec
-  - zip -r /home/travis/build/Pyfa-fit/Pyfa-fit/pyfa.zip /home/travis/build/Pyfa-fit/Pyfa-fit/dist/pyfa
-  - pyinstaller --clean --noconfirm --windowed pyfa_debug.spec
-  - zip -r /home/travis/build/Pyfa-fit/Pyfa-fit/pyfa_debug.zip /home/travis/build/Pyfa-fit/Pyfa-fit/dist/pyfa
-  - ls /home/travis/build/Pyfa-fit/Pyfa-fit/
-  - ls /home/travis/build/Pyfa-fit/Pyfa-fit/dist/pyfa
+
+  # copy pyinstaller build files into place
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      cp $TRAVIS_BUILD_DIR/dist_assets/linux/pyfa.spec $TRAVIS_BUILD_DIR/pyfa.spec;
+      cp $TRAVIS_BUILD_DIR/dist_assets/linux/pyfa_debug.spec $TRAVIS_BUILD_DIR/pyfa_debug.spec;
+    fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      cp $TRAVIS_BUILD_DIR/dist_assets/mac/pyfa.spec $TRAVIS_BUILD_DIR/pyfa.spec;
+      cp $TRAVIS_BUILD_DIR/dist_assets/mac/pyfa_debug.spec $TRAVIS_BUILD_DIR/pyfa_debug.spec;
+    fi
+  - ls $TRAVIS_BUILD_DIR
+  - if [[ "$TRAVIS_OS_NAME" == "mac" ]]; then
+      cp ~/dist_assets/mac/pyfa.spec ~/pyfa.spec;
+      cp ~/dist_assets/mac/pyfa_debug.spec ~/pyfa_debug.spec;
+    fi
+  - ls $TRAVIS_BUILD_DIR
+  - ls $TRAVIS_BUILD_DIR/dist_assets/mac/
+
+  # Run build
+  - cd $TRAVIS_BUILD_DIR
+  - pyinstaller --clean --noconfirm --windowed $TRAVIS_BUILD_DIR/pyfa.spec
+  - pyinstaller --clean --noconfirm --windowed $TRAVIS_BUILD_DIR/pyfa_debug.spec
+
+  # zip builds
+  - cd $TRAVIS_BUILD_DIR/dist/;
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      zip -r $TRAVIS_BUILD_DIR/pyfa_linux.zip $TRAVIS_BUILD_DIR/dist/pyfa;
+      zip -r $TRAVIS_BUILD_DIR/pyfa_linux_debug.zip $TRAVIS_BUILD_DIR/dist/pyfa_debug;
+    fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      zip -r $TRAVIS_BUILD_DIR/pyfa_mac.zip $TRAVIS_BUILD_DIR/dist/pyfa;
+      zip -r $TRAVIS_BUILD_DIR/pyfa_mac_debug.zip $TRAVIS_BUILD_DIR/dist/pyfa_debug;
+    fi
+
+  # Debugging
+  - ls $TRAVIS_BUILD_DIR
+
 addons:
     artifacts:
         s3_region: "us-west-2"

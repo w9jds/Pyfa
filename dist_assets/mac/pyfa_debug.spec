@@ -11,8 +11,6 @@
 #  pathex=['C:\\Users\\Ebag333\\Documents\\GitHub\\Ebag333\\Pyfa'],
 
 import os
-import sys
-sys.modules['FixTk'] = None
 
 block_cipher = None
 
@@ -42,13 +40,13 @@ for root, folders, files in os.walk("eos/effects"):
 
 a = Analysis(
              ['pyfa.py'],
-             pathex=['C:\\projects\\pyfa\\'],
+             pathex=['$TRAVIS_BUILD_DIR'],
              binaries=[],
              datas=added_files,
              hiddenimports=import_these,
              hookspath=[],
              runtime_hooks=[],
-             excludes=['FixTk', 'tcl', 'tk', '_tkinter', 'tkinter', 'Tkinter', 'pytz', 'numpy', 'numpy-atlas'],
+             excludes=[],
              win_no_prefer_redirects=False,
              win_private_assemblies=False,
              cipher=block_cipher,
@@ -63,12 +61,12 @@ pyz = PYZ(
 exe = EXE(pyz,
           a.scripts,
           exclude_binaries=True,
-          debug=False,
-          console=False,
+          debug=True,
+          console=True,
           strip=False,
           upx=True,
-          name='pyfa',
-          icon='dist_assets/win/pyfa.ico',
+          name='pyfa_debug',
+          icon='dist_assets/mac/pyfa.icns',
           onefile=False,
           )
 
@@ -80,6 +78,6 @@ coll = COLLECT(
                strip=False,
                upx=True,
                onefile=False,
-               name='pyfa',
-               icon='dist_assets/win/pyfa.ico',
+               name='pyfa_debug',
+               icon='dist_assets/mac/pyfa.icns',
                )

@@ -8,5 +8,4 @@ EVE_Gnosis
 multiprocess >= 0.70.5
 pyswagger
 six >= 1.10.0
-pytz >= 2016.10
 esipy >= 0.1.5
