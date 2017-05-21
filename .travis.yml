@@ -5,11 +5,11 @@ matrix:
       sudo: required
       language: python
       python: 2.7
-      env: "TOXENV=pep8 ARTIFACTS_BUCKET=pyfalinuxbuilds ARTIFACTS_PATHS=\"$TRAVIS_BUILD_DIR/pyfa_linux.zip:/$TRAVIS_BUILD_DIR/pyfa_linux_debug.zip:$TRAVIS_BUILD_DIR/build/pyfa/warnpyfa.txt\""
+      env: "TOXENV=pep8 ARTIFACTS_BUCKET=pyfa.builds ARTIFACTS_PATHS=\"$TRAVIS_BUILD_DIR/pyfa_linux.zip:/$TRAVIS_BUILD_DIR/pyfa_linux_debug.zip:$TRAVIS_BUILD_DIR/build/pyfa/warnpyfa.txt\""
     - os: osx
       language: generic
       python: 2.7
-      env: "TOXENV=pep8 ARTIFACTS_BUCKET=pyfaosxbuilds ARTIFACTS_PATHS=\"$TRAVIS_BUILD_DIR/pyfa_mac.zip:$TRAVIS_BUILD_DIR/pyfa_mac_debug.zip:$TRAVIS_BUILD_DIR/build/pyfa/warnpyfa.txt\""
+      env: "TOXENV=pep8 ARTIFACTS_BUCKET=pyfa.builds ARTIFACTS_PATHS=\"$TRAVIS_BUILD_DIR/pyfa_mac.zip:$TRAVIS_BUILD_DIR/pyfa_mac_debug.zip:$TRAVIS_BUILD_DIR/build/pyfa/warnpyfa.txt\""
 addons:
   apt:
     packages:
