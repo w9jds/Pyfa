@@ -14,6 +14,10 @@ from eos.saveddata.cargo import Cargo
 from eos.saveddata.implant import Implant
 from eos.saveddata.booster import Booster
 
+from logbook import Logger
+
+pyfalog = Logger(__name__)
+
 ignored_rels = [
     projectedFitSourceRel,
     boostedOntoRel
@@ -58,7 +62,7 @@ def rel_listener(target, value, initiator):
     if not target or (isinstance(value, Module) and value.isEmpty):
         return
 
-    print "{} has had a relationship change :D".format(target)
+    pyfalog.debug('{0} changed the relationship with {1}', repr(value), repr(target))
     target.modified = datetime.datetime.now()
 
 

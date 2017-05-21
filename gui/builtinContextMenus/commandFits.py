@@ -7,6 +7,9 @@ import gui.mainFrame
 import gui.globalEvents as GE
 from gui.contextMenu import ContextMenu
 from service.settings import ContextMenuSettings
+from logbook import Logger
+
+pyfalog = Logger(__name__)
 
 
 class CommandFits(ContextMenu):
@@ -62,7 +65,7 @@ class CommandFits(ContextMenu):
 
         if len(self.__class__.commandFits) < 15:
             for fit in sorted(self.__class__.commandFits, key=lambda x: x.name):
-                print fit
+                pyfalog.debug(repr(fit))
                 menuItem = self.addFit(rootMenu if msw else sub, fit, True)
                 sub.AppendItem(menuItem)
         else:

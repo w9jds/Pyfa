@@ -181,7 +181,7 @@ class MarketTree(wx.TreeCtrl):
         return self.imageList.GetImageIndex(iconFile, location)
 
     def expandLookup(self, event):
-        """Process market tree expands"""
+        pyfalog.debug('Process market tree expands')
         root = event.Item
         child = self.GetFirstChild(root)[0]
         # If child of given market group is a dummy
@@ -208,7 +208,7 @@ class MarketTree(wx.TreeCtrl):
             self.SortChildren(root)
 
     def jump(self, item):
-        """Open market group and meta tab of given item"""
+        pyfalog.debug("Open market group and meta tab for item: {0}", repr(item))
         self.marketBrowser.searchMode = False
         sMkt = self.sMkt
         mg = sMkt.getMarketGroupByItem(item)
@@ -432,7 +432,7 @@ class ItemView(Display):
             mktgrpid = sMkt.getMarketGroupByItem(item).ID
         except AttributeError:
             mktgrpid = None
-            print("unable to find market group for", item.name)
+            pyfalog.warning("unable to find market group for {0}", item.name)
         parentname = sMkt.getParentItemByItem(item).name
         # Get position of market group
         metagrpid = sMkt.getMetaGroupIdByItem(item)
