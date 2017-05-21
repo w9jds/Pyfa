@@ -85,11 +85,6 @@ class PriceViewMinimal(StatsView):
 
         ship_price = 0
         module_price = 0
-        drone_price = 0
-        fighter_price = 0
-        cargo_price = 0
-        booster_price = 0
-        implant_price = 0
 
         if fit:
             ship_price = fit.ship.item.price.price
@@ -99,27 +94,9 @@ class PriceViewMinimal(StatsView):
                     if not module.isEmpty:
                         module_price += module.item.price.price
 
-            if fit.drones:
-                for drone in fit.drones:
-                    drone_price += drone.item.price.price * drone.amount
-
-            if fit.fighters:
-                for fighter in fit.fighters:
-                    fighter_price += fighter.item.price.price * fighter.amountActive
-
-            if fit.cargo:
-                for cargo in fit.cargo:
-                    cargo_price += cargo.item.price.price * cargo.amount
-
-            if fit.boosters:
-                for booster in fit.boosters:
-                    booster_price += booster.item.price.price
-
-            if fit.implants:
-                for implant in fit.implants:
-                    implant_price += implant.item.price.price
-
-        fitting_price = module_price + drone_price + fighter_price + cargo_price + booster_price + implant_price
+        # Due to popular request, removing all "below the line" items from pricing, as it's mildly confusing sincce they get lumped into a single value.
+        # Many people consider below the line items to be "sunk cost" or reusable items, and thus not worth counting.
+        fitting_price = module_price
         total_price = ship_price + fitting_price
 
         self.labelPriceShip.SetLabel("%s ISK" % formatAmount(ship_price, 3, 3, 9, currency=True))
