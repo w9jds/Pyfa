@@ -797,7 +797,6 @@ class Fit(object):
                         item_name = getattr(item, 'name', getattr(item, 'ID', "Unknown"))
 
                     pyfalog.debug(u"Processing item: {0}", item_name)
-                    # print("Processing item: " + str(item_name))
 
                     if targetFit:
                         # Apply to projected fit
