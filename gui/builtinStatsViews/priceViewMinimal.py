@@ -85,11 +85,6 @@ class PriceViewMinimal(StatsView):
 
         ship_price = 0
         module_price = 0
-        drone_price = 0
-        fighter_price = 0
-        cargo_price = 0
-        booster_price = 0
-        implant_price = 0
 
         if fit:
             ship_price = fit.ship.item.price.price
