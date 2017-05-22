@@ -19,7 +19,7 @@
 
 import platform
 import sys
-from gui.utils.fonts import font_title_plus_two, font_console, font_standard
+from gui.utils.fonts import Fonts
 
 # noinspection PyPackageRequirements
 import wx
@@ -63,7 +63,7 @@ class ErrorFrame(wx.Frame):
         headSizer = wx.BoxSizer(wx.HORIZONTAL)
 
         headingText = wx.StaticText(self, wx.ID_ANY, error_title, wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_CENTRE)
-        headingText.SetFont(font_title_plus_two)
+        headingText.SetFont(Fonts.getFont("font_title_plus_two"))
 
         headSizer.Add(headingText, 1, wx.ALL, 5)
         mainSizer.Add(headSizer, 0, wx.EXPAND, 5)
@@ -83,7 +83,7 @@ class ErrorFrame(wx.Frame):
         # mainSizer.AddSpacer((0, 5), 0, wx.EXPAND, 5)
 
         errorTextCtrl = wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition, (-1, 400), wx.TE_MULTILINE | wx.TE_READONLY | wx.TE_RICH2 | wx.TE_DONTWRAP)
-        errorTextCtrl.SetFont(font_console)
+        errorTextCtrl.SetFont(Fonts.getFont("font_console"))
         mainSizer.Add(errorTextCtrl, 0, wx.EXPAND | wx.ALL | wx.ALIGN_CENTER, 5)
 
         try:
@@ -125,7 +125,6 @@ class ErrorFrame(wx.Frame):
 
         errorTextCtrl.AppendText("EXCEPTION: " + str(exception or "Unknown"))
         errorTextCtrl.AppendText('\n\n')
-
 
         if tb:
             for line in tb:

@@ -35,7 +35,6 @@ from service.character import Character
 from service.network import AuthenticationError, TimeoutError
 from service.market import Market
 from logbook import Logger
-from service.settings import GeneralSettings
 from gui.utils.fonts import Fonts
 
 pyfalog = Logger(__name__)

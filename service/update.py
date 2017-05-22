@@ -98,6 +98,7 @@ class CheckUpdateThread(threading.Thread):
             pyfalog.error("Error parsing version into a tuple.")
             raise
 
+
 class Update(object):
     instance = None
 

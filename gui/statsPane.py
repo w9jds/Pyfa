@@ -21,7 +21,7 @@
 import wx
 
 from service.fit import Fit
-from service.settings import StatViewSettings, GeneralSettings
+from service.settings import StatViewSettings
 import gui.mainFrame
 import gui.builtinStatsViews
 import gui.globalEvents as GE

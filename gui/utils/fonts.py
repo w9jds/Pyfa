@@ -15,6 +15,7 @@ else:
 
 SMALL, NORMAL, BIG = sizes
 
+
 class Fonts(object):
     @staticmethod
     def getFont(FontType):

@@ -656,6 +656,7 @@ class FittingView(d.Display):
                     self.SetItemBackgroundColour(i, self.slotColour(mod.slot))
 
             # Set rack face to bold
+            font_standard = Fonts.getFont("font_standard")
             if isinstance(mod, Rack) and \
                     sFit.serviceFittingOptions["rackSlots"] and \
                     sFit.serviceFittingOptions["rackLabels"]:
