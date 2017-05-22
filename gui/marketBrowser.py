@@ -242,6 +242,9 @@ class ItemView(Display):
         Display.__init__(self, parent)
         pyfalog.debug("Initialize ItemView")
 
+        # Instances
+        self.generalSettings = GeneralSettings.getInstance()
+
         marketBrowser.Bind(wx.EVT_TREE_SEL_CHANGED, self.selectionMade)
 
         self.unfilteredStore = set()
