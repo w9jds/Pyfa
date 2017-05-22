@@ -26,7 +26,7 @@ import gui.utils.drawUtils as drawUtils
 from gui.bitmapLoader import BitmapLoader
 from logbook import Logger
 from service.fit import Fit
-from gui.utils.fonts import font_standard
+from gui.utils.fonts import Fonts
 
 pyfalog = Logger(__name__)
 
@@ -463,7 +463,7 @@ class PFTabRenderer(object):
         ebmp = wx.EmptyBitmap(1, 1)
         mdc = wx.MemoryDC()
         mdc.SelectObject(ebmp)
-        mdc.SetFont(font_standard)
+        mdc.SetFont(Fonts.getFont("font_title_plus_two"))
         textSizeX, textSizeY = mdc.GetTextExtent(self.text)
         totalSize = self.leftWidth + self.rightWidth + textSizeX + self.closeBtnWidth / 2 + 16 + self.padding * 2
         mdc.SelectObject(wx.NullBitmap)
@@ -606,7 +606,7 @@ class PFTabRenderer(object):
         else:
             textStart = self.leftWidth
 
-        mdc.SetFont(font_standard)
+        mdc.SetFont(Fonts.getFont("font_standard"))
 
         maxsize = self.tabWidth - textStart - self.rightWidth - self.padding * 4
         color = self.selectedColor if self.selected else self.inactiveColor
@@ -1385,7 +1385,7 @@ class PFNotebookPagePreview(wx.Frame):
         self.padding = 15
         self.transp = 0
 
-        self.SetFont(font_standard)
+        self.SetFont(Fonts.getFont("font_standard"))
 
         tx, __ = self.GetTextExtent(self.title)
         tx += self.padding * 2
@@ -1446,7 +1446,7 @@ class PFNotebookPagePreview(wx.Frame):
         mdc.SetBackground(wx.Brush(color))
         mdc.Clear()
 
-        mdc.SetFont(font_standard)
+        mdc.SetFont(Fonts.getFont("font_standard"))
 
         x, y = mdc.GetTextExtent(self.title)
 

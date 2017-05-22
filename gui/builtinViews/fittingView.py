@@ -35,7 +35,7 @@ from gui.bitmapLoader import BitmapLoader
 import gui.builtinViews.emptyView
 from logbook import Logger
 from gui.chromeTabs import EVT_NOTEBOOK_PAGE_CHANGED
-from gui.utils.fonts import font_standard
+from gui.utils.fonts import Fonts
 
 from service.fit import Fit
 from service.market import Market
@@ -572,7 +572,7 @@ class FittingView(d.Display):
             self.PopupMenu(menu)
         except Exception as e:
             # We can destroy the context menu before it's fully spawned.  See:
-            # https://github.com/Pyfa-fit/Pyfa/issues/50
+            # https://github.com/Pyfa-fit/Pyfa-fit/issues/50
             pyfalog.warning("Caught exception trying to spawn context menu.")
             pyfalog.warning(e)
 
@@ -696,7 +696,7 @@ class FittingView(d.Display):
         tbmp = wx.EmptyBitmap(16, 16)
         tdc = wx.MemoryDC()
         tdc.SelectObject(tbmp)
-        tdc.SetFont(font_standard)
+        tdc.SetFont(Fonts.getFont("font_standard"))
 
         columnsWidths = []
         for i in range(len(self.DEFAULT_COLS)):
@@ -791,7 +791,7 @@ class FittingView(d.Display):
         mdc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)))
         mdc.Clear()
 
-        mdc.SetFont(font_standard)
+        mdc.SetFont(Fonts.getFont("font_standard"))
         mdc.SetTextForeground(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT))
 
         cx = padding

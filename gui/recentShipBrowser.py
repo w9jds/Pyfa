@@ -21,7 +21,7 @@ from gui.PFListPane import PFListPane
 from gui.contextMenu import ContextMenu
 from gui.bitmapLoader import BitmapLoader
 from logbook import Logger
-from gui.utils.fonts import font_standard, font_plus_one, font_minus_one
+from gui.utils.fonts import Fonts
 
 pyfalog = Logger(__name__)
 
@@ -358,7 +358,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
         self.toolbarx = self.padding
         self.toolbary = (rect.height - self.toolbar.GetHeight()) / 2
 
-        mdc.SetFont(font_minus_one)
+        mdc.SetFont(Fonts.getFont("font_minus_one"))
 
         wlabel, hlabel = mdc.GetTextExtent(self.toolbar.hoverLabel)
 
@@ -386,7 +386,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
         self.BrowserSearchBox.SetSize(wx.Size(self.bEditBoxWidth, -1))
 
         self.toolbar.SetPosition((self.toolbarx, self.toolbary))
-        mdc.SetFont(font_minus_one)
+        mdc.SetFont(Fonts.getFont("font_minus_one"))
         mdc.DrawText(self.toolbar.hoverLabel, self.thoverx, self.thovery)
         mdc.SetPen(wx.Pen(sepColor, 1))
         mdc.DrawLine(0, rect.height - 1, rect.width, rect.height - 1)
@@ -737,12 +737,12 @@ class ShipItem(SFItem.SFBrowserItem):
 
         shipName, shipTrait, fittings = self.shipFittingInfo
 
-        mdc.SetFont(font_plus_one)
+        mdc.SetFont(Fonts.getFont("font_plus_one"))
         wtext, htext = mdc.GetTextExtent(shipName)
 
         self.fittingsy = self.shipNamey + htext
 
-        mdc.SetFont(font_minus_one)
+        mdc.SetFont(Fonts.getFont("font_minus_one"))
 
         wlabel, hlabel = mdc.GetTextExtent(self.toolbar.hoverLabel)
 
@@ -783,13 +783,13 @@ class ShipItem(SFItem.SFBrowserItem):
         else:
             fformat = "%d fits"
 
-        mdc.SetFont(font_standard)
+        mdc.SetFont(Fonts.getFont("font_standard"))
         mdc.DrawText(fformat % fittings if fittings > 0 else fformat, self.textStartx, self.fittingsy)
 
-        mdc.SetFont(font_minus_one)
+        mdc.SetFont(Fonts.getFont("font_minus_one"))
         mdc.DrawText(self.toolbar.hoverLabel, self.thoverx, self.thovery)
 
-        mdc.SetFont(font_plus_one)
+        mdc.SetFont(Fonts.getFont("font_plus_one"))
 
         psname = drawUtils.GetPartialText(mdc, shipName,
                                           self.toolbarx - self.textStartx - self.padding * 2 - self.thoverw)
@@ -1227,12 +1227,12 @@ class FitItem(SFItem.SFBrowserItem):
 
         self.fitNamey = (rect.height - self.shipBmp.GetHeight()) / 2
 
-        mdc.SetFont(font_plus_one)
+        mdc.SetFont(Fonts.getFont("font_plus_one"))
         wtext, htext = mdc.GetTextExtent(self.fitName)
 
         self.timestampy = self.fitNamey + htext
 
-        mdc.SetFont(font_plus_one)
+        mdc.SetFont(Fonts.getFont("font_plus_one"))
 
         wlabel, hlabel = mdc.GetTextExtent(self.toolbar.hoverLabel)
 
@@ -1261,7 +1261,7 @@ class FitItem(SFItem.SFBrowserItem):
 
         mdc.DrawBitmap(self.shipBmp, self.shipBmpx, self.shipBmpy, 0)
 
-        mdc.SetFont(font_standard)
+        mdc.SetFont(Fonts.getFont("font_standard"))
 
         fitDate = time.localtime(self.timestamp)
         fitLocalDate = "%d/%02d/%02d %02d:%02d" % (fitDate[0], fitDate[1], fitDate[2], fitDate[3], fitDate[4])
@@ -1270,10 +1270,10 @@ class FitItem(SFItem.SFBrowserItem):
 
         mdc.DrawText(pfdate, self.textStartx, self.timestampy)
 
-        mdc.SetFont(font_minus_one)
+        mdc.SetFont(Fonts.getFont("font_minus_one"))
         mdc.DrawText(self.toolbar.hoverLabel, self.thoverx, self.thovery)
 
-        mdc.SetFont(font_plus_one)
+        mdc.SetFont(Fonts.getFont("font_plus_one"))
 
         psname = drawUtils.GetPartialText(mdc, self.fitName,
                                           self.toolbarx - self.textStartx - self.padding * 2 - self.thoverw)

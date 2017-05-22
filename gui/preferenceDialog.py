@@ -23,7 +23,7 @@ from gui.preferenceView import PreferenceView
 from gui.bitmapLoader import BitmapLoader
 from service.settings import SettingsProvider
 from logbook import Logger
-from gui.utils.fonts import font_standard
+from gui.utils.fonts import Fonts
 
 pyfalog = Logger(__name__)
 
@@ -34,14 +34,7 @@ class PreferenceDialog(wx.Dialog):
         self.SetTitle("Pyfa.fit - Preferences")
         i = wx.IconFromBitmap(BitmapLoader.getBitmap("preferences_small", "gui"))
         self.SetIcon(i)
-        general_settings = GeneralSettings.getInstance()
-        self.font = wx.Font(
-                general_settings.get('fontSize'),
-                getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
-                getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
-                getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
-        )
-        self.SetFont(self.font)
+        self.SetFont(Fonts.getFont("font_standard"))
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.listbook = wx.Listbook(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LB_DEFAULT)

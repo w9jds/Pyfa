@@ -48,7 +48,7 @@ import gui.mainFrame
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from gui.contextMenu import ContextMenu
-from gui.utils.fonts import font_standard
+from gui.utils.fonts import Fonts
 
 
 class ItemStatsDialog(wx.Dialog):
@@ -74,7 +74,7 @@ class ItemStatsDialog(wx.Dialog):
         )
 
         # Set the font size used on the stats pane
-        self.SetFont(font_standard)
+        self.SetFont(Fonts.getFont("font_standard"))
 
         empty = getattr(victim, "isEmpty", False)
 
@@ -170,7 +170,7 @@ class ItemStatsDialog(wx.Dialog):
 class ItemStatsContainer(wx.Panel):
     def __init__(self, parent, stuff, item, context=None):
         wx.Panel.__init__(self, parent)
-        self.SetFont(font_standard)
+        self.SetFont(Fonts.getFont("font_standard"))
 
         sMkt = Market.getInstance()
 
@@ -242,7 +242,7 @@ class ItemTraits(wx.Panel):
     def __init__(self, parent, stuff, item):
         wx.Panel.__init__(self, parent)
 
-        self.SetFont(font_standard)
+        self.SetFont(Fonts.getFont("font_standard"))
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(mainSizer)
@@ -257,7 +257,7 @@ class ItemTraits(wx.Panel):
 class ItemDescription(wx.Panel):
     def __init__(self, parent, stuff, item):
         wx.Panel.__init__(self, parent)
-        self.SetFont(font_standard)
+        self.SetFont(Fonts.getFont("font_standard"))
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(mainSizer)
         bgcolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
@@ -285,7 +285,7 @@ class ItemDescription(wx.Panel):
 class ItemParams(wx.Panel):
     def __init__(self, parent, stuff, item, context=None):
         wx.Panel.__init__(self, parent)
-        self.SetFont(font_standard)
+        self.SetFont(Fonts.getFont("font_standard"))
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 

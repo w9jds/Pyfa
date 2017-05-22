@@ -27,7 +27,7 @@ from gui.cachingImageList import CachingImageList
 from gui.contextMenu import ContextMenu
 from gui.bitmapLoader import BitmapLoader
 from logbook import Logger
-from gui.utils.fonts import font_standard
+from gui.utils.fonts import Fonts
 
 pyfalog = Logger(__name__)
 
@@ -61,7 +61,7 @@ class MarketBrowser(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
 
-        self.SetFont(font_standard)
+        self.SetFont(Fonts.getFont("font_standard"))
         pyfalog.debug("Initialize marketBrowser")
         vbox = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(vbox)
@@ -240,9 +240,6 @@ class ItemView(Display):
     def __init__(self, parent, marketBrowser):
         Display.__init__(self, parent)
         pyfalog.debug("Initialize ItemView")
-
-        # Instances
-        self.generalSettings = GeneralSettings.getInstance()
 
         marketBrowser.Bind(wx.EVT_TREE_SEL_CHANGED, self.selectionMade)
 

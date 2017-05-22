@@ -26,7 +26,7 @@ from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
 from service.damagePattern import DamagePattern, ImportError
 from logbook import Logger
-from gui.utils.fonts import font_standard
+from gui.utils.fonts import Fonts
 
 pyfalog = Logger(__name__)
 
@@ -97,7 +97,7 @@ class DmgPatternEditorDlg(wx.Dialog):
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.SetFont(font_standard)
+        self.SetFont(Fonts.getFont("font_standard"))
 
         self.entityEditor = DmgPatternEntityEditor(self)
         mainSizer.Add(self.entityEditor, 0, wx.ALL | wx.EXPAND, 2)

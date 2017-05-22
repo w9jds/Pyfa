@@ -30,7 +30,7 @@ import gui.globalEvents as GE
 from gui.graph import Graph
 from gui.bitmapLoader import BitmapLoader
 import traceback
-from gui.utils.fonts import font_standard
+from gui.utils.fonts import Fonts
 
 pyfalog = Logger(__name__)
 
@@ -104,7 +104,7 @@ class GraphFrame(wx.Frame):
 
         i = wx.IconFromBitmap(BitmapLoader.getBitmap("graphs_small", "gui"))
         self.SetIcon(i)
-        self.SetFont(font_standard)
+        self.SetFont(Fonts.getFont("font_standard"))
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.CreateStatusBar()
 

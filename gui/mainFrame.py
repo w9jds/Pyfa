@@ -383,10 +383,7 @@ class MainFrame(wx.Frame, IPortUser):
                                     "\nSQLAlchemy: \t" + sqlalchemy.__version__ +
                                     "\nmatplotlib: \t {}".format(matplotlib_version if matplotlib_version else "Not Installed"),
                                     500, wx.ClientDC(self))
-        if "__WXGTK__" in wx.PlatformInfo:
-            forumUrl = "https://github.com/Pyfa-fit/Pyfa"
-        else:
-            forumUrl = "https://github.com/Pyfa-fit/Pyfa"
+        forumUrl = "https://github.com/Pyfa-fit/Pyfa-fit"
         info.WebSite = (forumUrl, "Pyfa.fit Github Repository")
         wx.AboutBox(info)
 
@@ -452,7 +449,7 @@ class MainFrame(wx.Frame, IPortUser):
 
     @staticmethod
     def goWiki(event):
-        webbrowser.open('https://github.com/Pyfa-fit/Pyfa/wiki')
+        webbrowser.open('https://github.com/Pyfa-fit/Pyfa-fit/wiki')
 
     @staticmethod
     def goForums(event):

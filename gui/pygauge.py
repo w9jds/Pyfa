@@ -18,7 +18,7 @@ import copy
 from gui.utils import colorUtils
 import gui.utils.drawUtils as drawUtils
 import gui.utils.animEffects as animEffects
-from gui.utils.fonts import font_standard, font_minus_one, font_plus_one
+from gui.utils.fonts import Fonts
 
 from service.fit import Fit
 
@@ -371,7 +371,7 @@ class PyGauge(wx.PyWindow):
             r.width = w
             dc.DrawRectangleRect(r)
 
-        dc.SetFont(font_standard)
+        dc.SetFont(Fonts.getFont("font_standard"))
 
         r = copy.copy(rect)
         r.left += 1

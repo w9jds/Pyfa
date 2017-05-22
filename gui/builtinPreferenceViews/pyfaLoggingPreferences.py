@@ -4,6 +4,7 @@ from gui.preferenceView import PreferenceView
 from gui.bitmapLoader import BitmapLoader
 import config
 from logbook import Logger
+from gui.utils.fonts import Fonts
 
 pyfalog = Logger(__name__)
 
@@ -22,7 +23,7 @@ class PFGeneralPref(PreferenceView):
 
         self.stTitle = wx.StaticText(panel, wx.ID_ANY, self.title, wx.DefaultPosition, wx.DefaultSize, 0)
         self.stTitle.Wrap(-1)
-        self.stTitle.SetFont(wx.Font(12, 70, 90, 90, False, wx.EmptyString))
+        self.stTitle.SetFont(Fonts.getFont("font_title_plus_one"))
         mainSizer.Add(self.stTitle, 0, wx.ALL, 5)
 
         self.stSubTitle = wx.StaticText(panel, wx.ID_ANY, u"(Cannot be changed while pyfa is running. Set via command line switches.)",

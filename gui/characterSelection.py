@@ -26,7 +26,7 @@ from service.character import Character
 from service.fit import Fit
 from logbook import Logger
 from eos.config import settings as eos_settings
-from gui.utils.fonts import font_standard
+from gui.utils.fonts import Fonts
 
 pyfalog = Logger(__name__)
 
@@ -35,7 +35,7 @@ class CharacterSelection(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
 
-        self.SetFont(font_standard)
+        self.SetFont(Fonts.getFont("font_standard"))
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         mainSizer = wx.BoxSizer(wx.HORIZONTAL)

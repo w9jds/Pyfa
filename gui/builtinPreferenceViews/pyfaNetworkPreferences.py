@@ -7,6 +7,7 @@ from gui.bitmapLoader import BitmapLoader
 import gui.mainFrame
 from service.settings import NetworkSettings
 from service.network import Network
+from gui.utils.fonts import Fonts
 
 
 class PFNetworkPref(PreferenceView):
@@ -23,7 +24,7 @@ class PFNetworkPref(PreferenceView):
 
         self.stTitle = wx.StaticText(panel, wx.ID_ANY, self.title, wx.DefaultPosition, wx.DefaultSize, 0)
         self.stTitle.Wrap(-1)
-        self.stTitle.SetFont(wx.Font(12, 70, 90, 90, False, wx.EmptyString))
+        self.stTitle.SetFont(Fonts.getFont("font_title_plus_one"))
 
         mainSizer.Add(self.stTitle, 0, wx.ALL, 5)
 
@@ -48,7 +49,7 @@ class PFNetworkPref(PreferenceView):
 
         proxyTitle = wx.StaticText(panel, wx.ID_ANY, "Proxy settings", wx.DefaultPosition, wx.DefaultSize, 0)
         proxyTitle.Wrap(-1)
-        proxyTitle.SetFont(wx.Font(12, 70, 90, 90, False, wx.EmptyString))
+        proxyTitle.SetFont(Fonts.getFont("font_standard"))
 
         mainSizer.Add(proxyTitle, 0, wx.ALL, 5)
         mainSizer.Add(wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0,

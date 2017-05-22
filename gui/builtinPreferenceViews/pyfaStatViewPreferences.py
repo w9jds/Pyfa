@@ -4,6 +4,7 @@ import wx
 from gui.preferenceView import PreferenceView
 from gui.bitmapLoader import BitmapLoader
 from service.settings import StatViewSettings
+from gui.utils.fonts import Fonts
 
 
 class PFStatViewPref(PreferenceView):
@@ -22,7 +23,7 @@ class PFStatViewPref(PreferenceView):
 
         self.stTitle = wx.StaticText(panel, wx.ID_ANY, self.title, wx.DefaultPosition, wx.DefaultSize, 0)
         self.stTitle.Wrap(-1)
-        self.stTitle.SetFont(wx.Font(12, 70, 90, 90, False, wx.EmptyString))
+        self.stTitle.SetFont(Fonts.getFont("font_title_plus_one"))
 
         mainSizer.Add(self.stTitle, 0, wx.ALL, 5)
 

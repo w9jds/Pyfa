@@ -53,7 +53,7 @@ class ErrorFrame(wx.Frame):
                "information about how this was triggered. Please contact the developers with the\n" \
                "information provided through the EVE Online forums or file a GitHub issue."
 
-        self.SetFont(font_standard)
+        self.SetFont(Fonts.getFont("font_standard"))
         self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
 
         if 'wxMSW' in wx.PlatformInfo:
