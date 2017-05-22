@@ -243,7 +243,7 @@ class FittingView(d.Display):
     def startDrag(self, event):
         row = event.GetIndex()
 
-        if row != -1 and row not in self.blanks:
+        if row != -1 and row not in self.blanks and isinstance(self.mods[row], Module) and not self.mods[row].isEmpty:
             data = wx.PyTextDataObject()
             data.SetText("fitting:" + str(self.mods[row].modPosition))
 
@@ -345,11 +345,14 @@ class FittingView(d.Display):
                     modules = []
                     sel = self.GetFirstSelected()
                     while sel != -1 and sel not in self.blanks:
-                        modules.append(self.mods[self.GetItemData(sel)])
+                        mod = self.mods[self.GetItemData(sel)]
+                        if isinstance(mod, Module) and not mod.isEmpty:
+                            modules.append(self.mods[self.GetItemData(sel)])
                         sel = self.GetNextSelected(sel)
 
-                    sFit.setAmmo(fitID, itemID, modules)
-                    wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+                    if len(modules) > 0:
+                        sFit.setAmmo(fitID, itemID, modules)
+                        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
                 else:
                     populate = sFit.appendModule(fitID, itemID)
                     if populate is not None:
@@ -359,6 +362,8 @@ class FittingView(d.Display):
         event.Skip()
 
     def removeItem(self, event):
+        if event.CmdDown():
+            return
         row, _ = self.HitTest(event.Position)
         if row != -1 and row not in self.blanks and isinstance(self.mods[row], Module):
             col = self.getColumn(event.Position)
@@ -390,6 +395,10 @@ class FittingView(d.Display):
         if dstRow != -1 and dstRow not in self.blanks:
             sFit = Fit.getInstance()
             fitID = self.mainFrame.getActiveFit()
+            mod = self.mods[dstRow]
+            if not isinstance(mod, Module):  # make sure we're not adding something to a T3D Mode
+                return
+
             moduleChanged = sFit.changeModule(fitID, self.mods[dstRow].modPosition, srcIdx)
             if moduleChanged is None:
                 # the new module doesn't fit in specified slot, try to simply append it
@@ -404,6 +413,9 @@ class FittingView(d.Display):
         dstRow, _ = self.HitTest((x, y))
         if dstRow != -1 and dstRow not in self.blanks:
             module = self.mods[dstRow]
+
+            if not isinstance(module, Module):
+                return
 
             sFit = Fit.getInstance()
             fit = sFit.getFit(self.activeFitID)
@@ -431,6 +443,9 @@ class FittingView(d.Display):
 
             mod1 = fit.modules[srcIdx]
             mod2 = self.mods[dstRow]
+
+            if not isinstance(mod2, Module):
+                return
 
             # can't swap modules to different racks
             if mod1.slot != mod2.slot:
