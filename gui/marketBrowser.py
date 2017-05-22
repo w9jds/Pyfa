@@ -28,6 +28,7 @@ from gui.contextMenu import ContextMenu
 from gui.bitmapLoader import BitmapLoader
 from logbook import Logger
 from gui.utils.fonts import Fonts
+from service.settings import GeneralSettings
 
 pyfalog = Logger(__name__)
 
