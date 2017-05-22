@@ -20,6 +20,7 @@ import gui.globalEvents as GE
 import gui.PFSearchBox as SBox
 from gui.marketBrowser import SearchBox
 from gui.bitmapLoader import BitmapLoader
+from gui.utils.fonts import Fonts
 
 pyfalog = Logger(__name__)
 
@@ -50,6 +51,7 @@ class AttributeEditor(wx.Frame):
 
         i = wx.IconFromBitmap(BitmapLoader.getBitmap("fit_rename_small", "gui"))
         self.SetIcon(i)
+        self.SetFont(Fonts.getFont("font_standard"))
 
         self.mainFrame = parent
         self.panel = panel = wx.Panel(self, wx.ID_ANY)
@@ -164,6 +166,7 @@ class ItemView(d.Display):
 
         self.things = sMkt.getItemsWithOverrides()
         self.items = self.things
+        self.SetFont(Fonts.getFont("font_standard"))
 
         self.searchBox = parent.Parent.Parent.searchBox
         # Bind search actions
@@ -210,6 +213,7 @@ class AttributeGrid(wxpg.PropertyGrid):
         wxpg.PropertyGrid.__init__(self, parent,
                                    style=wxpg.PG_HIDE_MARGIN | wxpg.PG_HIDE_CATEGORIES | wxpg.PG_BOLD_MODIFIED | wxpg.PG_TOOLTIPS)
         self.SetExtraStyle(wxpg.PG_EX_HELP_AS_TOOLTIPS)
+        self.SetFont(Fonts.getFont("font_standard"))
 
         self.item = None
 

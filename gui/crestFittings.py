@@ -15,6 +15,7 @@ from gui.display import Display
 import gui.globalEvents as GE
 
 from logbook import Logger
+from gui.utils.fonts import Fonts
 
 pyfalog = Logger(__name__)
 
@@ -39,6 +40,7 @@ class CrestFittings(wx.Frame):
             self.stLogged = wx.StaticText(self, wx.ID_ANY, "Currently logged in as %s" % sCrest.implicitCharacter.name,
                                           wx.DefaultPosition, wx.DefaultSize)
             self.stLogged.Wrap(-1)
+            self.stLogged.SetFont(Fonts.getFont("font_standard"))
 
             characterSelectSizer.Add(self.stLogged, 1, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
         else:
@@ -47,6 +49,7 @@ class CrestFittings(wx.Frame):
             self.updateCharList()
 
         self.fetchBtn = wx.Button(self, wx.ID_ANY, u"Fetch Fits", wx.DefaultPosition, wx.DefaultSize, 5)
+        self.fetchBtn.SetFont(Fonts.getFont("font_standard"))
         characterSelectSizer.Add(self.fetchBtn, 0, wx.ALL, 5)
         mainSizer.Add(characterSelectSizer, 0, wx.EXPAND, 5)
 
@@ -66,7 +69,9 @@ class CrestFittings(wx.Frame):
 
         btnSizer = wx.BoxSizer(wx.HORIZONTAL)
         self.importBtn = wx.Button(self, wx.ID_ANY, u"Import to pyfa", wx.DefaultPosition, wx.DefaultSize, 5)
+        self.importBtn.SetFont(Fonts.getFont("font_standard"))
         self.deleteBtn = wx.Button(self, wx.ID_ANY, u"Delete from EVE", wx.DefaultPosition, wx.DefaultSize, 5)
+        self.deleteBtn.SetFont(Fonts.getFont("font_standard"))
         btnSizer.Add(self.importBtn, 1, wx.ALL, 5)
         btnSizer.Add(self.deleteBtn, 1, wx.ALL, 5)
         fitSizer.Add(btnSizer, 0, wx.EXPAND)
@@ -200,6 +205,7 @@ class ExportToEve(wx.Frame):
             self.stLogged = wx.StaticText(self, wx.ID_ANY, "Currently logged in as %s" % sCrest.implicitCharacter.name,
                                           wx.DefaultPosition, wx.DefaultSize)
             self.stLogged.Wrap(-1)
+            self.stLogged.SetFont(Fonts.getFont("font_standard"))
 
             hSizer.Add(self.stLogged, 1, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
         else:
@@ -209,6 +215,7 @@ class ExportToEve(wx.Frame):
             self.charChoice.SetSelection(0)
 
         self.exportBtn = wx.Button(self, wx.ID_ANY, u"Export Fit", wx.DefaultPosition, wx.DefaultSize, 5)
+        self.exportBtn.SetFont(Fonts.getFont("font_standard"))
         hSizer.Add(self.exportBtn, 0, wx.ALL, 5)
 
         mainSizer.Add(hSizer, 0, wx.EXPAND, 5)

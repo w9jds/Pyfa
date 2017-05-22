@@ -24,6 +24,7 @@ from gui.bitmapLoader import BitmapLoader
 from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
 from logbook import Logger
+from gui.utils.fonts import Fonts
 
 pyfalog = Logger(__name__)
 
@@ -93,6 +94,7 @@ class ResistsEditorDlg(wx.Dialog):
         self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
+        self.SetFont(Fonts.getFont("font_standard"))
 
         self.entityEditor = TargetResistsEntityEditor(self)
         mainSizer.Add(self.entityEditor, 0, wx.ALL | wx.EXPAND, 2)

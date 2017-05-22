@@ -24,6 +24,7 @@
 # noinspection PyPackageRequirements
 import wx
 from gui.bitmapLoader import BitmapLoader
+from gui.utils.fonts import Fonts
 
 
 class TogglePanel(wx.Panel):
@@ -82,10 +83,7 @@ class TogglePanel(wx.Panel):
         headerSizer.Add(self.hcntSizer, 0, wx.RIGHT, 5)
 
         # Set the static text font weight to BOLD
-
-        headerFont = parent.GetFont()
-        headerFont.SetWeight(wx.BOLD)
-        self.headerLabel.SetFont(headerFont)
+        self.headerLabel.SetFont(Fonts.getFont("font_standard_bold"))
 
         # Create the content panel and its main sizer
 

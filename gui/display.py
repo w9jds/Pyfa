@@ -23,7 +23,7 @@ import wx
 import gui.mainFrame
 from gui.viewColumn import ViewColumn
 from gui.cachingImageList import CachingImageList
-from service.settings import GeneralSettings
+from gui.utils.fonts import Fonts
 
 
 class Display(wx.ListCtrl):
@@ -33,15 +33,7 @@ class Display(wx.ListCtrl):
 
         wx.ListCtrl.__init__(self, parent, size=size, style=wx.LC_REPORT | style)
 
-        general_settings = GeneralSettings.getInstance()
-        font = wx.Font(
-                general_settings.get('fontSize'),
-                getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
-                getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
-                getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
-                False,
-        )
-        self.SetFont(font)
+        self.SetFont(Fonts.getFont("font_standard"))
 
         self.imageList = CachingImageList(16, 16)
         self.SetImageList(self.imageList, wx.IMAGE_LIST_SMALL)

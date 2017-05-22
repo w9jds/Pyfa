@@ -35,6 +35,7 @@ from service.character import Character
 from service.network import AuthenticationError, TimeoutError
 from service.market import Market
 from logbook import Logger
+from gui.utils.fonts import Fonts
 
 pyfalog = Logger(__name__)
 
@@ -134,6 +135,7 @@ class CharacterEditor(wx.Frame):
 
         i = wx.IconFromBitmap(BitmapLoader.getBitmap("character_small", "gui"))
         self.SetIcon(i)
+        self.SetFont(Fonts.getFont("font_standard"))
 
         self.mainFrame = parent
         # self.disableWin = wx.WindowDisabler(self)
@@ -273,6 +275,7 @@ class SkillTreeView(wx.Panel):
                           style=wx.TAB_TRAVERSAL)
         self.charEditor = self.Parent.Parent  # first parent is Notebook, second is Character Editor
         self.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
+        self.SetFont(Fonts.getFont("font_standard"))
 
         pmainSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -305,6 +308,7 @@ class SkillTreeView(wx.Panel):
         self.Bind(wx.EVT_TIMER, self.populateSkillTreeSkillSearch, self.searchTimer)
 
         tree = self.skillTreeListCtrl = wx.gizmos.TreeListCtrl(self, wx.ID_ANY, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT)
+        tree.SetFont(Fonts.getFont("font_standard"))
         pmainSizer.Add(tree, 1, wx.EXPAND | wx.ALL, 5)
 
         self.imageList = wx.ImageList(16, 16)

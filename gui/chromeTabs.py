@@ -26,7 +26,7 @@ import gui.utils.drawUtils as drawUtils
 from gui.bitmapLoader import BitmapLoader
 from logbook import Logger
 from service.fit import Fit
-from service.settings import GeneralSettings
+from gui.utils.fonts import Fonts
 
 pyfalog = Logger(__name__)
 
@@ -410,15 +410,6 @@ class PFTabRenderer(object):
         self.cbSize = 5
         self.padding = 4
 
-        general_settings = GeneralSettings.getInstance()
-        self.font = wx.Font(
-                general_settings.get('fontSize'),
-                getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
-                getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
-                getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
-                False,
-        )
-
         self.tabImg = img
         self.position = (0, 0)  # Not used internally for rendering - helper for tab container
         self.InitTab()
@@ -472,7 +463,7 @@ class PFTabRenderer(object):
         ebmp = wx.EmptyBitmap(1, 1)
         mdc = wx.MemoryDC()
         mdc.SelectObject(ebmp)
-        mdc.SetFont(self.font)
+        mdc.SetFont(Fonts.getFont("font_title_plus_two"))
         textSizeX, textSizeY = mdc.GetTextExtent(self.text)
         totalSize = self.leftWidth + self.rightWidth + textSizeX + self.closeBtnWidth / 2 + 16 + self.padding * 2
         mdc.SelectObject(wx.NullBitmap)
@@ -615,7 +606,7 @@ class PFTabRenderer(object):
         else:
             textStart = self.leftWidth
 
-        mdc.SetFont(self.font)
+        mdc.SetFont(Fonts.getFont("font_standard"))
 
         maxsize = self.tabWidth - textStart - self.rightWidth - self.padding * 4
         color = self.selectedColor if self.selected else self.inactiveColor
@@ -1394,15 +1385,7 @@ class PFNotebookPagePreview(wx.Frame):
         self.padding = 15
         self.transp = 0
 
-        general_settings = GeneralSettings.getInstance()
-        self.hfont = wx.Font(
-                general_settings.get('fontSize'),
-                getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
-                getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
-                getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
-                False
-        )
-        self.SetFont(self.hfont)
+        self.SetFont(Fonts.getFont("font_standard"))
 
         tx, __ = self.GetTextExtent(self.title)
         tx += self.padding * 2
@@ -1463,7 +1446,7 @@ class PFNotebookPagePreview(wx.Frame):
         mdc.SetBackground(wx.Brush(color))
         mdc.Clear()
 
-        mdc.SetFont(self.hfont)
+        mdc.SetFont(Fonts.getFont("font_standard"))
 
         x, y = mdc.GetTextExtent(self.title)
 

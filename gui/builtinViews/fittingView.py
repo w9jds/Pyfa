@@ -35,7 +35,7 @@ from gui.bitmapLoader import BitmapLoader
 import gui.builtinViews.emptyView
 from logbook import Logger
 from gui.chromeTabs import EVT_NOTEBOOK_PAGE_CHANGED
-from service.settings import GeneralSettings
+from gui.utils.fonts import Fonts
 
 from service.fit import Fit
 from service.market import Market
@@ -135,14 +135,6 @@ class FittingView(d.Display):
 
     def __init__(self, parent):
         d.Display.__init__(self, parent, size=(0, 0), style=wx.BORDER_NONE)
-
-        general_settings = GeneralSettings.getInstance()
-        self.font = wx.Font(
-                general_settings.get('fontSize'),
-                getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
-                getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
-                getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
-        )
 
         self.Show(False)
         self.parent = parent
@@ -580,7 +572,7 @@ class FittingView(d.Display):
             self.PopupMenu(menu)
         except Exception as e:
             # We can destroy the context menu before it's fully spawned.  See:
-            # https://github.com/Pyfa-fit/Pyfa/issues/50
+            # https://github.com/Pyfa-fit/Pyfa-fit/issues/50
             pyfalog.warning("Caught exception trying to spawn context menu.")
             pyfalog.warning(e)
 
@@ -664,14 +656,15 @@ class FittingView(d.Display):
                     self.SetItemBackgroundColour(i, self.slotColour(mod.slot))
 
             # Set rack face to bold
+            font_standard = Fonts.getFont("font_standard")
             if isinstance(mod, Rack) and \
                     sFit.serviceFittingOptions["rackSlots"] and \
                     sFit.serviceFittingOptions["rackLabels"]:
-                self.font.SetWeight(wx.FONTWEIGHT_BOLD)
-                self.SetItemFont(i, self.font)
+                font_standard.SetWeight(wx.FONTWEIGHT_BOLD)
+                self.SetItemFont(i, font_standard)
             else:
-                self.font.SetWeight(wx.FONTWEIGHT_NORMAL)
-                self.SetItemFont(i, self.font)
+                font_standard.SetWeight(wx.FONTWEIGHT_NORMAL)
+                self.SetItemFont(i, font_standard)
 
         self.Thaw()
         self.itemCount = self.GetItemCount()
@@ -704,7 +697,7 @@ class FittingView(d.Display):
         tbmp = wx.EmptyBitmap(16, 16)
         tdc = wx.MemoryDC()
         tdc.SelectObject(tbmp)
-        tdc.SetFont(self.font)
+        tdc.SetFont(Fonts.getFont("font_standard"))
 
         columnsWidths = []
         for i in range(len(self.DEFAULT_COLS)):
@@ -799,7 +792,7 @@ class FittingView(d.Display):
         mdc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)))
         mdc.Clear()
 
-        mdc.SetFont(self.font)
+        mdc.SetFont(Fonts.getFont("font_standard"))
         mdc.SetTextForeground(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT))
 
         cx = padding

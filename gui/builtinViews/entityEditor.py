@@ -1,6 +1,8 @@
 # noinspection PyPackageRequirements
 import wx
 from gui.bitmapLoader import BitmapLoader
+# TODO: Add font sizing to this
+# from gui.utils.fonts import Fonts
 
 
 class BaseValidator(wx.PyValidator):
@@ -36,6 +38,7 @@ class EntityEditor(wx.Panel):
 
     def __init__(self, parent, entityName):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY, style=wx.TAB_TRAVERSAL)
+
         self.entityName = entityName
         self.validator = None
         self.navSizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -54,6 +57,7 @@ class EntityEditor(wx.Panel):
         for name, art, func in buttons:
             bitmap = wx.ArtProvider.GetBitmap(art, wx.ART_BUTTON) if name != "rename" else art
             btn = wx.BitmapButton(self, wx.ID_ANY, bitmap)
+
             if size is None:
                 size = btn.GetSize()
 

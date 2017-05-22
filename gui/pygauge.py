@@ -18,7 +18,7 @@ import copy
 from gui.utils import colorUtils
 import gui.utils.drawUtils as drawUtils
 import gui.utils.animEffects as animEffects
-from service.settings import GeneralSettings
+from gui.utils.fonts import Fonts
 
 from service.fit import Fit
 
@@ -77,16 +77,6 @@ class PyGauge(wx.PyWindow):
         self._percentage = 0
         self._oldPercentage = 0
         self._showRemaining = False
-
-        general_settings = GeneralSettings.getInstance()
-
-        # Set the font size used on the stats pane
-        self.font = wx.Font(
-                general_settings.get('fontSize'),
-                getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
-                getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
-                getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
-        )
 
         self.SetBarGradient((wx.Colour(119, 119, 119), wx.Colour(153, 153, 153)))
         self.SetBackgroundColour(wx.Colour(51, 51, 51))
@@ -381,7 +371,7 @@ class PyGauge(wx.PyWindow):
             r.width = w
             dc.DrawRectangleRect(r)
 
-        dc.SetFont(self.font)
+        dc.SetFont(Fonts.getFont("font_standard"))
 
         r = copy.copy(rect)
         r.left += 1
