@@ -25,9 +25,9 @@ debug = False
 saveInRoot = False
 
 # Version data
-version = "2017.05.11"
+version = "2017.05.21"
 if hasattr(sys, 'frozen'):
-    tag = "(release)"
+    tag = ""
 else:
     tag = "(live)"
 expansionName = "YC119.5"

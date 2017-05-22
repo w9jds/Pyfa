@@ -642,7 +642,7 @@ class Port(object):
                     c.amount = int(amount)
                     f.cargo.append(c)
                 else:
-                    for i in xrange(int(amount)):
+                    for __ in xrange(int(amount)):
                         try:
                             m = Module(item)
                         except:
@@ -1114,7 +1114,7 @@ class Port(object):
             also, it's OK to arrange modules randomly?
         """
         offineSuffix = " /OFFLINE"
-        export = "[%s, %s]\n" % (fit.ship.item.name, fit.name)
+        export = u"[%s, %s]\n" % (fit.ship.item.name, fit.name)
         stuff = {}
         sFit = svcFit.getInstance()
         for module in fit.modules:

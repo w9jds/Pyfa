@@ -1,8 +1,8 @@
 # pyfa.fit
 
-_Master_: [![Build Status](https://travis-ci.org/Pyfa-fit/Pyfa.svg?branch=master)](https://travis-ci.org/pyfa-fit/Pyfa) [![Build Status](https://ci.appveyor.com/api/projects/status/6o0qe49yajcg7hyy/branch/master?svg=true)](https://ci.appveyor.com/project/Ebag333/pyfa-nr5qw/branch/master) [![codecov](https://codecov.io/gh/Pyfa-fit/Pyfa/branch/master/graph/badge.svg)](https://codecov.io/gh/Pyfa-fit/Pyfa) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/99b3b8298c534ebab103435cc6471554)](https://www.codacy.com/app/Ebag333/Pyfa?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Pyfa-fit/Pyfa&amp;utm_campaign=Badge_Grade)
+_Master_: [![Build Status](https://travis-ci.org/Pyfa-fit/Pyfa.svg?branch=master)](https://travis-ci.org/pyfa-fit/Pyfa) [![Build Status](https://ci.appveyor.com/api/projects/status/6o0qe49yajcg7hyy/branch/master?svg=true)](https://ci.appveyor.com/project/Ebag333/pyfa-nr5qw/branch/master) [![codecov](https://codecov.io/gh/Pyfa-fit/Pyfa-fit/branch/master/graph/badge.svg)](https://codecov.io/gh/Pyfa-fit/Pyfa) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/86ace8fc05c24ae59b61e0223f7d161b)](https://www.codacy.com/app/Ebag333/Pyfa-fit?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Pyfa-fit/Pyfa-fit&amp;utm_campaign=Badge_Grade)
 
-_Development_: [![Build Status](https://travis-ci.org/Pyfa-fit/Pyfa.svg?branch=development)](https://travis-ci.org/pyfa-fit/Pyfa) [![Build Status](https://ci.appveyor.com/api/projects/status/6o0qe49yajcg7hyy/branch/development?svg=true)](https://ci.appveyor.com/project/Ebag333/pyfa-nr5qw/branch/development) [![codecov](https://codecov.io/gh/Pyfa-fit/Pyfa/branch/development/graph/badge.svg)](https://codecov.io/gh/Pyfa-fit/Pyfa)
+_Development_: [![Build Status](https://travis-ci.org/Pyfa-fit/Pyfa.svg?branch=development)](https://travis-ci.org/pyfa-fit/Pyfa) [![Build Status](https://ci.appveyor.com/api/projects/status/6o0qe49yajcg7hyy/branch/development?svg=true)](https://ci.appveyor.com/project/Ebag333/pyfa-nr5qw/branch/development) [![codecov](https://codecov.io/gh/Pyfa-fit/Pyfa-fit/branch/development/graph/badge.svg)](https://codecov.io/gh/Pyfa-fit/Pyfa)
 
 ![pyfa](/imgs/mainframe.png "Pyfa")
 ## What is it?
@@ -18,37 +18,36 @@ Development releases will have newer features, and may not function correctly. U
 _*Release Downloads*_:
 [Current Release](https://github.com/Pyfa-fit/Pyfa/releases)
 
-### Windows
+### Development Downloads
 
-_*Development Downloads*_:
-[x86](https://ci.appveyor.com/api/projects/Ebag333/pyfa-nr5qw/artifacts/pyfa.zip?branch=development&job=Environment%3A%20PYTHON%3DC%3A%5CPython27%2C%20PYTHON_VERSION%3D2.7.x%2C%20PYTHON_ARCH%3D32)
+_*Windows*_:
+[x86](https://ci.appveyor.com/api/projects/Ebag333/pyfa-nr5qw/artifacts/Pyfa_Windows.zip?branch=development&job=Environment%3A%20PYTHON%3DC%3A%5CPython27%2C%20PYTHON_VERSION%3D2.7.x%2C%20PYTHON_ARCH%3D32)
  | 
-[x64](https://ci.appveyor.com/api/projects/Ebag333/pyfa-nr5qw/artifacts/pyfa.zip?branch=development&job=Environment%3A%20PYTHON%3DC%3A%5CPython27-x64%2C%20PYTHON_VERSION%3D2.7.x%2C%20PYTHON_ARCH%3D64)
+[x64](https://ci.appveyor.com/api/projects/Ebag333/pyfa-nr5qw/artifacts/Pyfa_Windows_x64.zip?branch=development&job=Environment%3A%20PYTHON%3DC%3A%5CPython27-x64%2C%20PYTHON_VERSION%3D2.7.x%2C%20PYTHON_ARCH%3D64)
 
-### Linux/OS X
-
-_*Development Downloads*_:
-Can be fetched by download the current repository
+_*Linux/OS X*_:
+Can be fetched by downloading the current repository
 
 ## Installation
 
 ### Windows
-Windows users are supplied self-contained builds of pyfa on the [latest releases](https://github.com/Pyfa-fit/Pyfa/releases/latest) page. An `.exe` installer is also available for Windows builds.
+Windows users are supplied self-contained builds of pyfa on the [latest releases](https://github.com/Pyfa-fit/Pyfa-fit/releases/latest) page. Simply download the zip file, extract, and run `pyfa.exe`.
 
 #### Linux/OS X
- Linux and Mac users can run pyfa using their distribution's Python interpreter. There is no official self-contained package for Linux or Mac (a feature currently in progress).
+ Linux and Mac users can run pyfa using their distribution's Python interpreter. There is no official self-contained package for Linux or Mac (a feature currently in progress).  Download the latest zip file from the [latest releases](https://github.com/Pyfa-fit/Pyfa-fit/releases/latest) page, extract, and run `python ./pyfa.py`.
 
 ### Dependencies
-If you wish to help with development or simply need to run pyfa through a Python interpreter, all requirements are listed in `requirements.txt`.
+If you wish to run pyfa through a Python interpreter, all requirements are listed in `requirements.txt`.
+For development, it is recommended also using `requirements_build.txt` and `requirements_test.txt`.
 
 ## Bug Reporting
-The preferred method of reporting bugs is through the project's [GitHub Issues interface](https://github.com/pyfa-fit/Pyfa/issues).
+The preferred method of reporting bugs is through the project's [GitHub Issues interface](https://github.com/pyfa-fit/Pyfa-fit/issues).
 
 ## License
 pyfa is licensed under the GNU GPL v3.0, see LICENSE
 
 ## Resources
-* Development repository: [https://github.com/pyfa-fit/Pyfa](https://github.com/pyfa-fit/Pyfa)
+* Development repository: [https://github.com/Pyfa-fit/Pyfa-fit](https://github.com/Pyfa-fit/Pyfa-fit)
 * [EVE University guide using pyfa](http://wiki.eveuniversity.org/Guide_to_using_PYFA)
 * [EVE Online website](http://www.eveonline.com/)
 

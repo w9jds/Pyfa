@@ -45,10 +45,13 @@ class SettingsProvider(object):
             if hasattr(self, 'BASE_PATH'):
                 if not os.path.exists(self.BASE_PATH):
                     os.mkdir(self.BASE_PATH)
+            else:
+                # Store settings at root
+                self.BASE_PATH = ""
         except OSError:
             pyfalog.warning("Could not create settings path.")
-            self.BASE_PATH = False
-        self.BASE_PATH = ""
+            # Store settings at root
+            self.BASE_PATH = ""
 
     def getSettings(self, area, defaults=None):
 

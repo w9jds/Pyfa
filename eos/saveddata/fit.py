@@ -731,7 +731,7 @@ class Fit(object):
         shadow = None
         projectionInfo = None
         if targetFit:
-            pyfalog.info("Calculating projections from {0} to target {1}", self.name, targetFit.name)
+            pyfalog.info(u"Calculating projections from {0} to target {1}", self.name, targetFit.name)
             projectionInfo = self.getProjectionInfo(targetFit.ID)
             pyfalog.debug("ProjectionInfo: {0}", projectionInfo)
             if self is targetFit:
@@ -796,8 +796,7 @@ class Fit(object):
                     else:
                         item_name = getattr(item, 'name', getattr(item, 'ID', "Unknown"))
 
-                    pyfalog.debug("Processing item: {0}", str(item_name))
-                    # print("Processing item: " + str(item_name))
+                    pyfalog.debug(u"Processing item: {0}", item_name)
 
                     if targetFit:
                         # Apply to projected fit

@@ -6,14 +6,14 @@ import sys
 
 sys.path.append(os.path.realpath(os.getcwd()))
 
-from _development.helpers_locale import GetPath
+from _development.helpers_locale import GetPath  # noqa: E402
 
 
 def test_codec_russian():
     use_codec = {
         "Windows": "cp1251",
         "Linux"  : "utf8",
-        "Darwin" : "mac_cyrillic",
+        "Darwin" : "utf8",
     }
 
     os_name = platform.system()

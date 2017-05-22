@@ -27,7 +27,7 @@ import wx
 
 from logbook import Logger
 
-logging = Logger(__name__)
+pyfalog = Logger(__name__)
 
 try:
     from collections import OrderedDict
@@ -38,9 +38,9 @@ except ImportError:
 class BitmapLoader(object):
     try:
         archive = zipfile.ZipFile(getPyfaPath(u'imgs.zip'), 'r')
-        logging.info("Using zipped image files.")
+        pyfalog.info("Using zipped image files.")
     except IOError:
-        logging.info("Using local image files.")
+        pyfalog.info("Using local image files.")
         archive = None
 
     cachedBitmaps = OrderedDict()
@@ -91,11 +91,11 @@ class BitmapLoader(object):
                 sbuf = cStringIO.StringIO(img_data)
                 return wx.ImageFromStream(sbuf)
             except KeyError:
-                print("Missing icon file from zip: {0}".format(path))
+                pyfalog.warning("Missing icon file from zip: {0}", path)
         else:
             path = getPyfaPath(u'imgs' + os.sep + location + os.sep + filename)
 
             if os.path.exists(path):
                 return wx.Image(path)
             else:
-                print("Missing icon file: {0}".format(path))
+                pyfalog.warning("Missing icon file: {0}", path)

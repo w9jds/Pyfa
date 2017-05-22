@@ -87,15 +87,14 @@ if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION 
     from gui.crestFittings import CrestFittings, ExportToEve, CrestMgmt
 
 disableOverrideEditor = False
+pyfalog = Logger(__name__)
 
 try:
     from gui.propertyEditor import AttributeEditor
 except ImportError as e:
     AttributeEditor = None
-    print("Error loading Attribute Editor: %s.\nAccess to Attribute Editor is disabled." % e.message)
+    pyfalog.warning("Error loading Attribute Editor: {0}.\nAccess to Attribute Editor is disabled.", e.message)
     disableOverrideEditor = True
-
-pyfalog = Logger(__name__)
 
 
 # dummy panel(no paint no erasebk)
@@ -417,7 +416,7 @@ class MainFrame(wx.Frame, IPortUser):
         """ Export active fit """
         sFit = Fit.getInstance()
         fit = sFit.getFit(self.getActiveFit())
-        defaultFile = "%s - %s.xml" % (fit.ship.item.name, fit.name) if fit else None
+        defaultFile = u"%s - %s.xml" % (fit.ship.item.name, fit.name) if fit else None
 
         dlg = wx.FileDialog(self, "Save Fitting As...",
                             wildcard="EVE XML fitting files (*.xml)|*.xml",
@@ -431,7 +430,7 @@ class MainFrame(wx.Frame, IPortUser):
                 if '.' not in os.path.basename(path):
                     path += ".xml"
             else:
-                print("oops, invalid fit format %d" % format_)
+                pyfalog.warning("Invalid fit format {0}", format_)
                 try:
                     dlg.Destroy()
                 except PyDeadObjectError:
@@ -690,7 +689,8 @@ class MainFrame(wx.Frame, IPortUser):
     def ItemSelect(self, event):
         selItem = self.itemSelect.index(event.GetId())
 
-        if selItem < len(self.marketBrowser.itemView.active):
+        activeListing = getattr(self.marketBrowser.itemView, 'active', None)
+        if activeListing and selItem < len(activeListing):
             wx.PostEvent(self, ItemSelected(itemID=self.marketBrowser.itemView.active[selItem].ID))
 
     def CTabNext(self, event):

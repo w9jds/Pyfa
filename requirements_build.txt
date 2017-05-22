@@ -1,0 +1,10 @@
+# Applies to all operating systems
+PyInstaller	>= 3.2.1
+cycler >= 0.10.0
+functools32 >= 3.2.3
+future >= 0.16.0
+pyparsing >= 2.1.10
+tornado
+
+# Windows specific
+pypiwin32 >= 219; sys_platform == 'win'

@@ -11,6 +11,8 @@
 #  pathex=['C:\\Users\\Ebag333\\Documents\\GitHub\\Ebag333\\Pyfa'],
 
 import os
+import sys
+sys.modules['FixTk'] = None
 
 block_cipher = None
 
@@ -46,7 +48,7 @@ a = Analysis(
              hiddenimports=import_these,
              hookspath=[],
              runtime_hooks=[],
-             excludes=[],
+             excludes=['FixTk', 'tcl', 'tk', '_tkinter', 'tkinter', 'Tkinter', 'pytz', 'numpy', 'numpy-atlas'],
              win_no_prefer_redirects=False,
              win_private_assemblies=False,
              cipher=block_cipher,

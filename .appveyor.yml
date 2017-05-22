@@ -5,16 +5,14 @@ skip_branch_with_pr: true
 
 # scripts that are called at very beginning, before repo cloning
 init:
-  - ps: Update-AppveyorBuild -Version "$env:APPVEYOR_REPO_BRANCH.$(Get-Date -format yyyy.mm.dd).$env:appveyor_build_number"
+  - ps: Update-AppveyorBuild -Version "$env:APPVEYOR_REPO_BRANCH.$(Get-Date -format yyyy.MM.dd).$env:appveyor_build_number"
 
   - ECHO " "
   - ECHO "------------------------"
   - ECHO " "
-  - ECHO "JOB NAME:"
-  - ECHO %APPVEYOR_JOB_NAME%
+  - ECHO "JOB NAME:" %APPVEYOR_JOB_NAME%
   - ECHO " "
-  - ECHO "BUILD VERSION"
-  - ECHO %AppveyorBuild%
+  - ECHO "BUILD VERSION" %AppveyorBuild%
   - ECHO " "
   - ECHO "------------------------"
   - ECHO " "
@@ -115,14 +113,16 @@ install:
   - "appveyor DownloadFile https://goo.gl/Uj0jV3 -FileName C:\\wxpython64.exe"
 
   - 'ECHO Install wxPython'
-  - "C:\\wxpython.exe /SP- /VERYSILENT /NORESTART"
-  - "C:\\wxpython64.exe /SP- /VERYSILENT /NORESTART"
+  - if [%PYTHON_ARCH%]==[32] (
+    C:\wxpython.exe /SP- /VERYSILENT /NORESTART)
+  - if [%PYTHON_ARCH%]==[64] (
+    C:\wxpython64.exe /SP- /VERYSILENT /NORESTART)
 
-  - ECHO "Filesystem root:"
-  - ps: "ls \"C:/\""
+  # - ECHO "Filesystem root:"
+  # - ps: "ls \"C:/\""
 
-  - ECHO "Filesystem pyfa root:"
-  - ps: "ls"
+  # - ECHO "Filesystem pyfa root:"
+  # - ps: "ls"
 
   - ECHO "Installed SDKs:"
   - ps: "ls \"C:/Program Files/Microsoft SDKs/Windows\""
@@ -152,7 +152,7 @@ install:
   - ECHO "Install pip requirements:"
   - "pip install -r requirements.txt"
   - "pip install -r requirements_test.txt"
-  - "pip install -r requirements_build_windows.txt"
+  - "pip install -r requirements_build.txt"
 
 build_script:
   # Build the compiled extension
@@ -161,46 +161,42 @@ build_script:
   - copy .\dist_assets\win\pyfa.spec .\pyfa.spec
   - "pyinstaller.exe --clean --noconfirm --windowed --upx-dir=.\\scripts\\upx.exe .\\pyfa.spec"
 
+
   - ECHO "Build pyfa (Debug):"
   - copy .\dist_assets\win\pyfa_debug.spec .\pyfa_debug.spec
-  - "pyinstaller.exe --clean --noconfirm --windowed --upx-dir=.\\scripts\\upx.exe .\\pyfa_debug.spec"
+  - if [%PYTHON_ARCH%]==[32] (
+    pyinstaller.exe --clean --noconfirm --windowed --upx-dir=.\\scripts\\upx.exe .\\pyfa_debug.spec)
 
 build: on
 
 after_build:
-  - ps: "ls \"./\""
-  #- ps: "ls \"C:\\projects\\pyfa\\build\\pyfa\\\""
-  - ps: "ls \".\\dist\\\""
   - ps: "ls \".\\dist\\pyfa\\\""
   # Zip
   # APPVEYOR_PULL_REQUEST_NUMBER -and $env:APPVEYOR_BUILD_NUMBER
   #- 7z a build.zip -r C:\projects\pyfa\build\pyfa\*.*
-  - 7z a pyfa.zip -r .\dist\pyfa\*.*
-  - 7z a pyfa_debug.zip -r .\dist\pyfa_debug\*.*
+  - if [%PYTHON_ARCH%]==[32] (
+    7z a Pyfa_Windows.zip -r .\dist\pyfa\*.*)
+  - if [%PYTHON_ARCH%]==[64] (
+    7z a Pyfa_Windows_x64.zip -r .\dist\pyfa\*.*)
 
-on_success:
-  # Do nothing right now
+  - if [%PYTHON_ARCH%]==[32] (
+    7z a pyfa_windows_debug.zip -r .\dist\pyfa_debug\*.*)
+
+
+  - ps: if ($env:APPVEYOR_PULL_REQUEST_NUMBER -and $env:APPVEYOR_BUILD_NUMBER -ne ((Invoke-RestMethod `
+        https://ci.appveyor.com/api/projects/$env:APPVEYOR_ACCOUNT_NAME/$env:APPVEYOR_PROJECT_SLUG/history?recordsNumber=50).builds | `
+        Where-Object pullRequestId -eq $env:APPVEYOR_PULL_REQUEST_NUMBER)[0].buildNumber) { `
+          throw "There are newer queued builds for this pull request, failing early." }
+
+  - ps: if ($env:PYTHON_ARCH -eq 32){
+          Push-AppveyorArtifact Pyfa_Windows.zip;
+          Push-AppveyorArtifact Pyfa_Windows_debug.zip
+        }
+
+  - ps: if ($env:PYTHON_ARCH -eq 64){
+          Push-AppveyorArtifact Pyfa_Windows_x64.zip
+        }
 
 test_script:
   - tox
   - "py.test --cov=./"
-  # Run the project tests
-  # - "%CMD_IN_ENV% python C:/projects/eve-gnosis/setup.py nosetests"
-
-after_test:
-  # If tests are successful, create binary packages for the project.
-  # - "%CMD_IN_ENV% python setup.py bdist_wheel"
-  # - "%CMD_IN_ENV% python setup.py bdist_wininst"
-  # - "%CMD_IN_ENV% python setup.py bdist_msi"
-  # - ps: "ls dist"
-
-artifacts:
-  # Archive the generated packages in the ci.appveyor.com build report.
-  - path: pyfa.zip
-    name: Pyfa
-  - path: pyfa_debug.zip
-    name: Pyfa_debug
-
-#on_success:
-#  - TODO: upload the content of dist/*.whl to a public wheelhouse
-#

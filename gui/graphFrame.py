@@ -93,8 +93,8 @@ class GraphFrame(wx.Frame):
 
         graphFrame_enabled = True
         if int(mpl.__version__[0]) < 1:
-            print("pyfa: Found matplotlib version ", mpl.__version__, " - activating OVER9000 workarounds")
-            print("pyfa: Recommended minimum matplotlib version is 1.0.0")
+            pyfalog.warning("pyfa: Found matplotlib version {0} - activating OVER9000 workarounds", mpl.__version__)
+            pyfalog.warning("pyfa: Recommended minimum matplotlib version is 1.0.0")
             self.legendFix = True
 
         mplImported = True
@@ -248,8 +248,8 @@ class GraphFrame(wx.Frame):
                 self.subplot.plot(x, y)
                 legend.append(fit.name)
             except:
-                pyfalog.warning("Invalid values in '{0}'", fit.name)
-                self.SetStatusText("Invalid values in '%s'" % fit.name)
+                pyfalog.warning(u"Invalid values in '{0}'", fit.name)
+                self.SetStatusText(u"Invalid values in '%s'" % fit.name)
                 self.canvas.draw()
                 return
 

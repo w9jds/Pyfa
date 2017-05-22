@@ -1,22 +1,40 @@
-language: python
 cache: pip
-python:
-  - '2.7'
-env:
-  - TOXENV=pep8
+matrix:
+  include:
+    - os: linux
+      sudo: required
+      language: python
+      python: 2.7
+      env: "TOXENV=pep8 ARTIFACTS_BUCKET=pyfa.builds ARTIFACTS_PATHS=\"$TRAVIS_BUILD_DIR/pyfa_linux.zip:/$TRAVIS_BUILD_DIR/pyfa_linux_debug.zip:$TRAVIS_BUILD_DIR/build/pyfa/warnpyfa.txt\""
+    - os: osx
+      language: generic
+      python: 2.7
+      env: "TOXENV=pep8 ARTIFACTS_BUCKET=pyfa.builds ARTIFACTS_PATHS=\"$TRAVIS_BUILD_DIR/pyfa_mac.zip:$TRAVIS_BUILD_DIR/pyfa_mac_debug.zip:$TRAVIS_BUILD_DIR/build/pyfa/warnpyfa.txt\""
 addons:
   apt:
     packages:
 before_install:
-  - sudo apt-get update && sudo apt-get --reinstall install -qq language-pack-en language-pack-ru language-pack-he language-pack-zh-hans
   - pip install tox
   # We're not actually installing Tox, but have to run it before we install wxPython via Conda. This is fugly but vOv
   - tox
-  # get Conda
-  - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
-      wget https://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh;
-    else
-      wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+  # Update the environment
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      sudo apt-get install libatk-adaptor libgail-common;
+      sudo apt-get install libatk-adaptor:i386 libgail-common:i386;
+      sudo apt-get install gtk2-engines;
+      sudo apt-get install gtk2-engines-*;
+      sudo apt-get install libfreetype6-dev;
+      sudo apt-get install fonts-cantarell lmodern ttf-aenigma ttf-georgewilliams ttf-bitstream-vera ttf-sjfonts ttf-tuffy tv-fonts;
+      sudo apt-get install ubuntustudio-font-meta;
+      sudo apt-get update && sudo apt-get --reinstall install -qq language-pack-en language-pack-ru language-pack-he language-pack-zh-hans;
+      wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh;
+    fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      brew update;
+      brew install graphviz;
+    fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      wget https://repo.continuum.io/miniconda/Miniconda2-latest-MacOSX-x86_64.sh -O miniconda.sh;
     fi
   - bash miniconda.sh -b -p $HOME/miniconda
   - export PATH="$HOME/miniconda/bin:$PATH"
@@ -34,6 +52,48 @@ before_script:
 script:
   - py.test --cov=./
 after_success:
+  # Upload coverage data
   - bash <(curl -s https://codecov.io/bash)
-before_deploy:
-  - pip install -r requirements_build_linux.txt
+
+  # Install requirements to build the package
+  - pip install -r requirements_build.txt
+
+  # copy pyinstaller build files into place
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      cp $TRAVIS_BUILD_DIR/dist_assets/linux/pyfa.spec $TRAVIS_BUILD_DIR/pyfa.spec;
+      cp $TRAVIS_BUILD_DIR/dist_assets/linux/pyfa_debug.spec $TRAVIS_BUILD_DIR/pyfa_debug.spec;
+    fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      cp $TRAVIS_BUILD_DIR/dist_assets/mac/pyfa.spec $TRAVIS_BUILD_DIR/pyfa.spec;
+      cp $TRAVIS_BUILD_DIR/dist_assets/mac/pyfa_debug.spec $TRAVIS_BUILD_DIR/pyfa_debug.spec;
+    fi
+  - ls $TRAVIS_BUILD_DIR
+  - if [[ "$TRAVIS_OS_NAME" == "mac" ]]; then
+      cp ~/dist_assets/mac/pyfa.spec ~/pyfa.spec;
+      cp ~/dist_assets/mac/pyfa_debug.spec ~/pyfa_debug.spec;
+    fi
+  - ls $TRAVIS_BUILD_DIR
+  - ls $TRAVIS_BUILD_DIR/dist_assets/mac/
+
+  # Run build
+  - cd $TRAVIS_BUILD_DIR
+  - pyinstaller --clean --noconfirm --windowed $TRAVIS_BUILD_DIR/pyfa.spec
+  - pyinstaller --clean --noconfirm --windowed $TRAVIS_BUILD_DIR/pyfa_debug.spec
+
+  # zip builds
+  - cd $TRAVIS_BUILD_DIR/dist/;
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      zip -r $TRAVIS_BUILD_DIR/pyfa_linux.zip $TRAVIS_BUILD_DIR/dist/pyfa;
+      zip -r $TRAVIS_BUILD_DIR/pyfa_linux_debug.zip $TRAVIS_BUILD_DIR/dist/pyfa_debug;
+    fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      zip -r $TRAVIS_BUILD_DIR/pyfa_mac.zip $TRAVIS_BUILD_DIR/dist/pyfa;
+      zip -r $TRAVIS_BUILD_DIR/pyfa_mac_debug.zip $TRAVIS_BUILD_DIR/dist/pyfa_debug;
+    fi
+
+  # Debugging
+  - ls $TRAVIS_BUILD_DIR
+
+addons:
+    artifacts:
+        s3_region: "us-west-2"

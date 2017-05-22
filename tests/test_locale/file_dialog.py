@@ -1,6 +1,5 @@
 # noinspection PyPackageRequirements
 import wx
-import sys
 import os
 import sys
 
@@ -8,7 +7,7 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 # Add root to python paths, this allows us to import submodules
 sys.path.append(os.path.realpath(os.path.join(script_dir, u'..', u'..')))
 
-from _development.helpers_locale import GetPath, GetUnicodePath
+from _development.helpers_locale import GetPath, GetUnicodePath  # noqa: E402
 
 
 class MyForm(wx.Frame):
@@ -17,7 +16,7 @@ class MyForm(wx.Frame):
         wx.Frame.__init__(self, None, wx.ID_ANY, "CTRL-O to open, CTRL-S to save", size=(500, 500))
 
         # Add a panel so it looks the correct on all platforms
-        panel = wx.Panel(self, wx.ID_ANY)
+        # panel = wx.Panel(self, wx.ID_ANY)
 
         SAVE_FILE_ID = wx.NewId()
         self.Bind(wx.EVT_MENU, self.saveFile, id=SAVE_FILE_ID)

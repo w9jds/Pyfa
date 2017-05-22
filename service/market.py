@@ -533,6 +533,7 @@ class Market(object):
     def getMarketGroupByItem(self, item, parentcheck=True):
         """Get market group by item, its ID or name"""
         # Check if we force market group for given item
+        pyfalog.debug("Getting market group for item: {0}", repr(item))
         if item.name in self.ITEMS_FORCEDMARKETGROUP:
             mgid = self.ITEMS_FORCEDMARKETGROUP[item.name]
             return self.getMarketGroup(mgid)
@@ -821,7 +822,7 @@ class Market(object):
         except TypeError:
             attrIDs = (attribs.ID,)
         info = {}
-        for itemID, typeID, val in eos.db.directAttributeRequest(itemIDs, attrIDs):
+        for itemID, __, val in eos.db.directAttributeRequest(itemIDs, attrIDs):
             info[itemID] = val
 
         return info
