@@ -29,6 +29,7 @@ from gui.statsView import StatsView
 from gui.contextMenu import ContextMenu
 from gui.pyfatogglepanel import TogglePanel
 from logbook import Logger
+from gui.utils.fonts import font_standard
 
 pyfalog = Logger(__name__)
 
@@ -80,16 +81,7 @@ class StatsPane(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
 
-        general_settings = GeneralSettings.getInstance()
-
-        # Set the font size used on the stats pane
-        font = wx.Font(
-                general_settings.get('fontSize'),
-                getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
-                getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
-                getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
-        )
-        self.SetFont(font)
+        self.SetFont(font_standard)
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(mainSizer)

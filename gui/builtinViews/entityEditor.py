@@ -1,6 +1,7 @@
 # noinspection PyPackageRequirements
 import wx
 from gui.bitmapLoader import BitmapLoader
+from gui.utils.fonts import font_standard
 
 
 class BaseValidator(wx.PyValidator):
@@ -36,6 +37,8 @@ class EntityEditor(wx.Panel):
 
     def __init__(self, parent, entityName):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY, style=wx.TAB_TRAVERSAL)
+        self.SetFont(font_standard)
+
         self.entityName = entityName
         self.validator = None
         self.navSizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -99,6 +102,7 @@ class EntityEditor(wx.Panel):
                                        u"Enter a name for your new {}:".format(self.entityName),
                                        u"New {}".format(self.entityName))
         dlg.CenterOnParent()
+        dlg.SetFont(font_standard)
 
         if dlg.ShowModal() == wx.ID_OK:
             # using dlg.textctrl.GetValue instead of simply dlg.GetValue because the proper way does not work in wxPython 2.8
@@ -112,6 +116,7 @@ class EntityEditor(wx.Panel):
         dlg = TextEntryValidatedDialog(self, self.validator,
                                        u"Enter a name for your {} copy:".format(self.entityName),
                                        u"Copy {}".format(self.entityName))
+        dlg.SetFont(font_standard)
         active = self.getActiveEntity()
         dlg.SetValue(u"{} Copy".format(active.name))
         dlg.txtctrl.SetInsertionPointEnd()
@@ -126,6 +131,7 @@ class EntityEditor(wx.Panel):
         dlg = TextEntryValidatedDialog(self, self.validator,
                                        u"Enter a new name for your {}:".format(self.entityName),
                                        u"Rename {}".format(self.entityName))
+        dlg.SetFont(font_standard)
         active = self.getActiveEntity()
         dlg.SetValue(active.name)
         dlg.txtctrl.SetInsertionPointEnd()
@@ -142,6 +148,7 @@ class EntityEditor(wx.Panel):
                                                                                 self.entityName),
                                u"Confirm Delete", wx.YES | wx.NO | wx.ICON_QUESTION)
         dlg.CenterOnParent()
+        dlg.SetFont(font_standard)
 
         if dlg.ShowModal() == wx.ID_YES:
             self.DoDelete(self.getActiveEntity())
