@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules from group: Sensor Booster (16 of 16)
-type = "active"
+effectType = "active"
 
 
 def handler(fit, module, context):

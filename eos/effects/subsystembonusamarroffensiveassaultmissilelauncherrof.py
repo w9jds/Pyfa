@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystem: Legion Offensive - Assault Optimization
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

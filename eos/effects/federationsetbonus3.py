@@ -2,7 +2,7 @@
 #
 # Used by:
 # Implants named like: High grade Spur (6 of 6)
-type = "passive"
+effectType = "passive"
 runTime = "early"
 
 

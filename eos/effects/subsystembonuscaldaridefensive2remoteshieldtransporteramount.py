@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystem: Tengu Defensive - Adaptive Shielding
-type = "passive"
+effectType = "passive"
 runTime = "early"
 
 

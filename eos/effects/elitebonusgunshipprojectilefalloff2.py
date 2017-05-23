@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ship: Wolf
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

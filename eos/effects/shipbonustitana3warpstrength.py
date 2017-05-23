@@ -3,7 +3,7 @@
 # Used by:
 # Ship: Avatar
 # Ship: Molok
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

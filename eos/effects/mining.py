@@ -3,7 +3,7 @@
 # Used by:
 # Drones from group: Mining Drone (10 of 10)
 
-type = "passive"
+effectType = "passive"
 grouped = True
 
 

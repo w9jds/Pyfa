@@ -3,7 +3,7 @@
 # Used by:
 # Modules named like: Signal Focusing Kit (8 of 8)
 # Skill: Survey
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

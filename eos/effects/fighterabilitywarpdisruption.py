@@ -7,7 +7,7 @@ effects, and thus this effect file contains some custom information useful only 
 # User-friendly name for the ability
 displayName = "Warp Disruption"
 prefix = "fighterAbilityWarpDisruption"
-type = "active", "projected"
+effectType = "active", "projected"
 
 
 def handler(fit, src, context):

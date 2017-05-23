@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ship: Kitsune
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

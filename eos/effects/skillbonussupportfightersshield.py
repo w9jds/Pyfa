@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Support Fighters
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

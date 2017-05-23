@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules from group: Heat Sink (18 of 18)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

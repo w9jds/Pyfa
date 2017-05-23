@@ -2,7 +2,7 @@
 #
 # Used by:
 # Implant: Poteque 'Prospector' Environmental Analysis EY-1005
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, implant, context):

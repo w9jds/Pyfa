@@ -5,7 +5,7 @@
 # Ship: Enforcer
 # Ship: Maller
 # Ship: Omen Navy Issue
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystem: Legion Defensive - Augmented Plating
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

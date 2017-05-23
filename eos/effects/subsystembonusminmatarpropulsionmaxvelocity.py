@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystem: Loki Propulsion - Chassis Optimization
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

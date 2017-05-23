@@ -8,7 +8,7 @@ import eos.config
 pyfalog = Logger(__name__)
 
 runTime = "late"
-type = "active"
+effectType = "active"
 
 
 def handler(fit, module, context):

@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Capital Shield Emission Systems
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

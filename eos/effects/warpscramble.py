@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules named like: Warp Disruptor (27 of 27)
-type = "projected", "active"
+effectType = "projected", "active"
 
 
 def handler(fit, module, context):

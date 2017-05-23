@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ship: Hel
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

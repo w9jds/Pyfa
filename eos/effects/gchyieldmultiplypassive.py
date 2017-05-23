@@ -3,7 +3,7 @@
 # Used by:
 # Ship: Prospect
 # Ship: Venture
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

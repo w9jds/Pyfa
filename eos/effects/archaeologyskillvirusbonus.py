@@ -5,7 +5,7 @@
 # Implant: Poteque 'Prospector' Archaeology AC-905
 # Implant: Poteque 'Prospector' Environmental Analysis EY-1005
 # Skill: Archaeology
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

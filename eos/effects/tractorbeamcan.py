@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules from group: Tractor Beam (4 of 4)
-type = "active"
+effectType = "active"
 
 
 def handler(fit, module, context):

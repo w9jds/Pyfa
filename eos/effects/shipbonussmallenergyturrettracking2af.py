@@ -3,7 +3,7 @@
 # Used by:
 # Ship: Imp
 # Ship: Succubus
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

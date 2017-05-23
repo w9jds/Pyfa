@@ -6,7 +6,7 @@
 # Ship: Enforcer
 # Ship: Pacifier
 # Ship: Victorieux Luxury Yacht
-type = "passive"
+effectType = "passive"
 runTime = "early"
 
 

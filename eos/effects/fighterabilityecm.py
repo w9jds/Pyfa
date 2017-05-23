@@ -10,7 +10,7 @@ displayName = "ECM"
 
 prefix = "fighterAbilityECM"
 
-type = "projected", "active"
+effectType = "projected", "active"
 
 
 def handler(fit, module, context, **kwargs):

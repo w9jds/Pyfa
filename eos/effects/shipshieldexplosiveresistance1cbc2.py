@@ -3,7 +3,7 @@
 # Used by:
 # Variations of ship: Drake (3 of 3)
 # Ship: Vulture
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

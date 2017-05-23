@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ship: Augoror
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

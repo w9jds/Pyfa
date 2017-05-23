@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules from group: Propulsion Module (127 of 127)
-type = "overheat"
+effectType = "overheat"
 
 
 def handler(fit, module, context):

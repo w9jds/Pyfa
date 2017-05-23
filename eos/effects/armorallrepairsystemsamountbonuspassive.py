@@ -3,7 +3,7 @@
 # Used by:
 # Implants named like: Exile Booster (4 of 4)
 # Implant: Antipharmakon Kosybo
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, booster, context):

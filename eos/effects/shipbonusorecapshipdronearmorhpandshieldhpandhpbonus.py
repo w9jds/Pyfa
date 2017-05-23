@@ -1,9 +1,9 @@
 # Not used by any item
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):
-    for type in ("shieldCapacity", "armorHP", "hp"):
+    for hp_type in ("shieldCapacity", "armorHP", "hp"):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill("Drones"),
-                                     type, ship.getModifiedItemAttr("shipBonusORECapital4"),
+                                     hp_type, ship.getModifiedItemAttr("shipBonusORECapital4"),
                                      skill="Capital Industrial Ships")

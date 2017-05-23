@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ship: Enforcer
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

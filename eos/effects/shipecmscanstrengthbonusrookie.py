@@ -2,11 +2,11 @@
 #
 # Used by:
 # Ship: Ibis
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):
-    for type in ("Gravimetric", "Ladar", "Radar", "Magnetometric"):
+    for sensor_type in ("Gravimetric", "Ladar", "Radar", "Magnetometric"):
         fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "ECM",
-                                      "scan{0}StrengthBonus".format(type),
+                                      "scan{0}StrengthBonus".format(sensor_type),
                                       ship.getModifiedItemAttr("rookieECMStrengthBonus"))

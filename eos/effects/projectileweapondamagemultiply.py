@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules from group: Gyrostabilizer (13 of 13)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

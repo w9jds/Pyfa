@@ -4,7 +4,7 @@
 # Modules from group: ECM (39 of 39)
 from eos.modifiedAttributeDict import ModifiedAttributeDict
 
-type = "projected", "active"
+effectType = "projected", "active"
 
 
 def handler(fit, module, context, **kwargs):

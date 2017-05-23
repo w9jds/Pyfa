@@ -2,12 +2,12 @@
 #
 # Used by:
 # Implants named like: High grade (20 of 66)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, implant, context):
-    for type in ("Gravimetric", "Magnetometric", "Radar", "Ladar"):
-        sensorType = "scan{0}Strength".format(type)
-        sensorBoost = "scan{0}StrengthPercent".format(type)
+    for sensor_type in ("Gravimetric", "Magnetometric", "Radar", "Ladar"):
+        sensoreffectType = "scan{0}Strength".format(sensor_type)
+        sensorBoost = "scan{0}StrengthPercent".format(sensor_type)
         if sensorBoost in implant.item.attributes:
-            fit.ship.boostItemAttr(sensorType, implant.getModifiedItemAttr(sensorBoost))
+            fit.ship.boostItemAttr(sensoreffectType, implant.getModifiedItemAttr(sensorBoost))

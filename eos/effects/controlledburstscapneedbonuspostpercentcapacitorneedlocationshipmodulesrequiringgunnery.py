@@ -3,7 +3,7 @@
 # Used by:
 # Implants named like: Inherent Implants 'Lancer' Controlled Bursts CB (6 of 6)
 # Skill: Controlled Bursts
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Spatial Phenomena Generation
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

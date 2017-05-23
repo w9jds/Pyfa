@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystem: Loki Electronics - Tactical Targeting Network
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

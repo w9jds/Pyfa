@@ -3,7 +3,7 @@
 # Used by:
 # Ship: Fiend
 runTime = "early"
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

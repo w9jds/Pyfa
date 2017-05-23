@@ -4,7 +4,7 @@
 # Implants named like: Zainou 'Gypsy' Electronics Upgrades EU (6 of 6)
 # Modules named like: Liquid Cooled Electronics (8 of 8)
 # Skill: Electronics Upgrades
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

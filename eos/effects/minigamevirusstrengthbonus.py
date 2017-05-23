@@ -10,7 +10,7 @@
 # Ship: Magnate
 # Ship: Nestor
 # Ship: Probe
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

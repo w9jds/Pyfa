@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Small Pulse Laser Specialization
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, skill, context):

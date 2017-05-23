@@ -3,7 +3,7 @@
 # Used by:
 # Modules named like: Drone Repair Augmentor (8 of 8)
 # Skill: Repair Drone Operation
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

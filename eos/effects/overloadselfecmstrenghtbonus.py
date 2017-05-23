@@ -3,7 +3,7 @@
 # Used by:
 # Modules from group: Burst Jammer (11 of 11)
 # Modules from group: ECM (39 of 39)
-type = "overheat"
+effectType = "overheat"
 
 
 def handler(fit, module, context):

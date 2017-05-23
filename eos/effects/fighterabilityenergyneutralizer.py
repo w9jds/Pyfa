@@ -8,7 +8,7 @@ from eos.modifiedAttributeDict import ModifiedAttributeDict
 
 displayName = "Energy Neutralizer"
 prefix = "fighterAbilityEnergyNeutralizer"
-type = "active", "projected"
+effectType = "active", "projected"
 
 
 def handler(fit, src, context, **kwargs):

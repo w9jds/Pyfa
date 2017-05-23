@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystem: Legion Defensive - Adaptive Augmenter
-type = "passive"
+effectType = "passive"
 runTime = "early"
 
 

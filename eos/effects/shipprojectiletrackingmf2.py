@@ -5,7 +5,7 @@
 # Ship: Jaguar
 # Ship: Republic Fleet Firetail
 # Ship: Wolf
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

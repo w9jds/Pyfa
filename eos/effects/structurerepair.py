@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules from group: Hull Repair Unit (25 of 25)
-type = "active"
+effectType = "active"
 runTime = "late"
 
 

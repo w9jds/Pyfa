@@ -9,7 +9,7 @@ displayName = "Turret Attack"
 # Attribute prefix that this ability targets
 prefix = "fighterAbilityAttackMissile"
 
-type = "active"
+effectType = "active"
 
 
 def handler(fit, src, context):

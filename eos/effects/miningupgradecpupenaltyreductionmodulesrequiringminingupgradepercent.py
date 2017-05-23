@@ -3,7 +3,7 @@
 # Used by:
 # Implants named like: Inherent Implants 'Highwall' Mining Upgrades MU (3 of 3)
 # Skill: Mining Upgrades
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

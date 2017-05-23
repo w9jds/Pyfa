@@ -2,7 +2,7 @@
 #
 # Used by:
 # Variations of module: Capital Drone Speed Augmentor I (2 of 2)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

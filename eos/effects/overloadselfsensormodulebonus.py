@@ -4,7 +4,7 @@
 # Modules from group: Remote Sensor Booster (8 of 8)
 # Modules from group: Sensor Booster (16 of 16)
 # Modules from group: Sensor Dampener (6 of 6)
-type = "overheat"
+effectType = "overheat"
 
 
 def handler(fit, module, context):

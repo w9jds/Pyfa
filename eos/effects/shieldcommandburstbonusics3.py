@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ship: Orca
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

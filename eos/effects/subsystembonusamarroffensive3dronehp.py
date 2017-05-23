@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystem: Legion Offensive - Drone Synthesis Projector
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

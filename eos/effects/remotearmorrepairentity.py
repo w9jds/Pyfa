@@ -2,7 +2,7 @@
 #
 # Used by:
 # Drones named like: Armor Maintenance Bot (6 of 6)
-type = "projected", "active"
+effectType = "projected", "active"
 
 
 def handler(fit, container, context):

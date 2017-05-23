@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules from group: Target Painter (8 of 8)
-type = "projected", "active"
+effectType = "projected", "active"
 
 
 def handler(fit, container, context, *args, **kwargs):

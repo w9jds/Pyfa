@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules from group: Drone Tracking Modules (10 of 10)
-type = "overheat"
+effectType = "overheat"
 
 
 def handler(fit, module, context):

@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules from group: Cloaking Device (10 of 14)
-type = "active"
+effectType = "active"
 runTime = "early"
 
 

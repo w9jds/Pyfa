@@ -3,7 +3,7 @@
 # Used by:
 # Modules from group: Shield Extender (33 of 33)
 # Modules from group: Shield Resistance Amplifier (88 of 88)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

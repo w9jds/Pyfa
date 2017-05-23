@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ship: Endurance
-type = "passive"
+effectType = "passive"
 runTime = "early"
 
 

@@ -6,7 +6,7 @@
 # Ship: Iteron Mark V
 # Ship: Kryos
 # Ship: Viator
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

@@ -3,7 +3,7 @@
 # Used by:
 # Charges from group: Mining Crystal (30 of 30)
 # Charges named like: Mining Crystal (32 of 32)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

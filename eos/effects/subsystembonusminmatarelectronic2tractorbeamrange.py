@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystem: Loki Electronics - Emergent Locus Analyzer
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystem: Proteus Offensive - Drone Synthesis Projector
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

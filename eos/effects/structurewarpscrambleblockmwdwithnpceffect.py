@@ -3,7 +3,7 @@ from eos.saveddata.module import State
 
 # Not used by any item
 runTime = "early"
-type = "projected", "active"
+effectType = "projected", "active"
 
 
 def handler(fit, module, context):

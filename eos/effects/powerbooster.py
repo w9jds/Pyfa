@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules from group: Capacitor Booster (59 of 59)
-type = "active"
+effectType = "active"
 
 
 def handler(fit, module, context):

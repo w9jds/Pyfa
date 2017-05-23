@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystems named like: Propulsion Interdiction Nullifier (4 of 4)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

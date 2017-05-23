@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystem: Loki Electronics - Immobility Drivers
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

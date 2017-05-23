@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ship: Prospect
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

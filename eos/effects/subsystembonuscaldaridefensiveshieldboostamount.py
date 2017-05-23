@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystem: Tengu Defensive - Amplification Node
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

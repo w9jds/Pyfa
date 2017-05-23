@@ -4,7 +4,7 @@
 # Implants named like: Poteque 'Prospector' Astrometric Acquisition AQ (3 of 3)
 # Skill: Astrometric Acquisition
 # Skill: Astrometrics
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

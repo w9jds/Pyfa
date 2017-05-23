@@ -4,7 +4,7 @@
 # Ships from group: Logistics (5 of 6)
 # Ship: Exequror
 # Ship: Scythe
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

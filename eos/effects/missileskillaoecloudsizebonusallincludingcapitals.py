@@ -2,7 +2,7 @@
 #
 # Used by:
 # Implants named like: Crash Booster (4 of 4)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, implant, context):

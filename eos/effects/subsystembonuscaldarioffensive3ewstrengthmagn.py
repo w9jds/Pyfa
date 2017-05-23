@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystem: Tengu Offensive - Rifling Launcher Pattern
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Launcher Rigging
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

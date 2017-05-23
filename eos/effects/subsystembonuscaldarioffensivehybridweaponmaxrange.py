@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystem: Tengu Offensive - Magnetic Infusion Basin
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

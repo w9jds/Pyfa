@@ -3,7 +3,7 @@
 # Used by:
 # Ship: Caldari Navy Hookbill
 
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

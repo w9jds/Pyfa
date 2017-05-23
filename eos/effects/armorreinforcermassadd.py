@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules from group: Armor Reinforcer (48 of 48)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

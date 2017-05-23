@@ -5,7 +5,7 @@
 # Modules named like: Capacitor Control Circuit (8 of 8)
 # Implant: Genolution Core Augmentation CA-2
 # Skill: Capacitor Systems Operation
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

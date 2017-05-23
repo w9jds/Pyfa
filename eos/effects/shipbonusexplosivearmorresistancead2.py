@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ship: Pontifex
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

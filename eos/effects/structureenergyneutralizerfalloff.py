@@ -1,7 +1,7 @@
 # Not used by any item
 from eos.saveddata.module import State
 
-type = "active", "projected"
+effectType = "active", "projected"
 
 
 def handler(fit, container, context):

@@ -3,7 +3,7 @@
 # Used by:
 # Drones from group: Combat Drone (74 of 74)
 # Modules from group: Energy Weapon (208 of 209)
-type = 'active'
+effectType = 'active'
 
 
 def handler(fit, module, context):

@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules named like: Polarized (12 of 18)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

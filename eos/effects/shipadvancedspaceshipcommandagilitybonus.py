@@ -2,7 +2,7 @@
 #
 # Used by:
 # Items from market group: Ships > Capital Ships (37 of 37)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

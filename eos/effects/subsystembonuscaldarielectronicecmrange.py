@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystem: Tengu Electronics - Obfuscation Manifold
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

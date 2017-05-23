@@ -4,7 +4,7 @@
 # Skill: Fleet Command
 # Skill: Leadership
 # Skill: Wing Command
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

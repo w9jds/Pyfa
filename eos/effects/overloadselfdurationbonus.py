@@ -13,7 +13,7 @@
 # Modules named like: Ancillary Remote (8 of 8)
 # Module: Reactive Armor Hardener
 # Module: Target Spectrum Breaker
-type = "overheat"
+effectType = "overheat"
 
 
 def handler(fit, module, context):

@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ship: Utu
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

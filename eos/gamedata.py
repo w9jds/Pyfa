@@ -127,7 +127,7 @@ class Effect(EqBase):
         self.__activeByDefault = value
 
     @property
-    def type(self):
+    def effectType(self):
         """
         The type of the effect, automaticly fetched from effects/<effectName>.py if the file exists.
 
@@ -156,7 +156,7 @@ class Effect(EqBase):
         """
         Check if this effect is of the passed type
         """
-        return self.type is not None and _type in self.type
+        return self.effectType is not None and _type in self.effectType
 
     def __generateHandler(self):
         """
@@ -172,7 +172,7 @@ class Effect(EqBase):
                 self.__handler = getattr(effectModule, "handler", effectDummy)
                 self.__runTime = getattr(effectModule, "runTime", "normal")
                 self.__activeByDefault = getattr(effectModule, "activeByDefault", True)
-                t = getattr(effectModule, "type", None)
+                t = getattr(effectModule, "effectType", None)
 
                 t = t if isinstance(t, tuple) or t is None else (t,)
                 self.__type = t

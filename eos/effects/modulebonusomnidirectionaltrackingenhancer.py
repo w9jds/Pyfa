@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules from group: Drone Tracking Enhancer (10 of 10)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

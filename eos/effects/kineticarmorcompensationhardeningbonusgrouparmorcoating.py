@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Kinetic Armor Compensation
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, skill, context):

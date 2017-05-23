@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules from group: Cynosural Field (2 of 2)
-type = "active"
+effectType = "active"
 
 
 def handler(fit, module, context):

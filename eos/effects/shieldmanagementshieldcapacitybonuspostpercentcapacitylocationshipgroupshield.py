@@ -6,7 +6,7 @@
 # Implant: Genolution Core Augmentation CA-3
 # Implant: Sansha Modified 'Gnome' Implant
 # Skill: Shield Management
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

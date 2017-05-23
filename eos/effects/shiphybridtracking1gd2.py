@@ -3,7 +3,7 @@
 # Used by:
 # Variations of ship: Catalyst (2 of 2)
 # Ship: Algos
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

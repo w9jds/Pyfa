@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules named like: Defense Mode (3 of 4)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

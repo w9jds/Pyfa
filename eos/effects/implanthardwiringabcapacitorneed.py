@@ -2,7 +2,7 @@
 #
 # Used by:
 # Implants named like: Eifyr and Co. 'Rogue' Fuel Conservation FC (6 of 6)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, implant, context):

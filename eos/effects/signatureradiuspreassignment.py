@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystems from group: Defensive Systems (16 of 16)
-type = "passive"
+effectType = "passive"
 runTime = "early"
 
 

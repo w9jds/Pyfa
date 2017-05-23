@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ships from group: Heavy Interdiction Cruiser (5 of 5)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

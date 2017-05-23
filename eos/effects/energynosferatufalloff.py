@@ -4,7 +4,7 @@
 # Modules from group: Energy Nosferatu (51 of 51)
 from eos.modifiedAttributeDict import ModifiedAttributeDict
 
-type = "active", "projected"
+effectType = "active", "projected"
 runTime = "late"
 
 

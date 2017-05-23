@@ -3,7 +3,7 @@
 # Used by:
 # Implants named like: Zainou 'Gnome' Shield Emission Systems SE (6 of 6)
 # Skill: Shield Emission Systems
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

@@ -3,7 +3,7 @@
 # Used by:
 # Variations of module: Information Command Burst I (2 of 2)
 
-type = "active", "gang"
+effectType = "active", "gang"
 
 
 def handler(fit, module, context, **kwargs):

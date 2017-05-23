@@ -3,7 +3,7 @@
 # Used by:
 # Ships from group: Force Recon Ship (6 of 7)
 # Skill: Cynosural Field Theory
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

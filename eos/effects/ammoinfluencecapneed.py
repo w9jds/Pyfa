@@ -4,7 +4,7 @@
 # Items from category: Charge (466 of 913)
 # Charges from group: Frequency Crystal (185 of 185)
 # Charges from group: Hybrid Charge (209 of 209)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

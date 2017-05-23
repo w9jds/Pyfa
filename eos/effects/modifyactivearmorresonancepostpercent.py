@@ -3,7 +3,7 @@
 # Used by:
 # Modules from group: Armor Hardener (156 of 156)
 # Modules from group: Flex Armor Hardener (4 of 4)
-type = "active"
+effectType = "active"
 
 
 def handler(fit, module, context):

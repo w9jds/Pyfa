@@ -3,7 +3,7 @@
 # Used by:
 # Implants named like: grade Halo (18 of 18)
 runTime = "early"
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, implant, context):

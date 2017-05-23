@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules named like: Command Processor I (4 of 4)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

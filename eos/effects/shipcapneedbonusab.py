@@ -3,7 +3,7 @@
 # Used by:
 # Variations of ship: Armageddon (3 of 5)
 # Ship: Apocalypse Imperial Issue
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

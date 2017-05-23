@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ship: Thanatos
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

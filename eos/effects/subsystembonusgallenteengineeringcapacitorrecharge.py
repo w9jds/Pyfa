@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystem: Proteus Engineering - Capacitor Regeneration Matrix
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

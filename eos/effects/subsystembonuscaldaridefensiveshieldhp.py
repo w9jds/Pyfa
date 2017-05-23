@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystem: Tengu Defensive - Supplemental Screening
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

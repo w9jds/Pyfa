@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Structure Missile Systems
-type = "passive", "structure"
+effectType = "passive", "structure"
 
 
 def handler(fit, src, context):

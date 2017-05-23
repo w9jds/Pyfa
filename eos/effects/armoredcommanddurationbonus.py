@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Armored Command
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

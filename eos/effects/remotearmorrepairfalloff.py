@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules from group: Remote Armor Repairer (39 of 39)
-type = "projected", "active"
+effectType = "projected", "active"
 
 
 def handler(fit, container, context, **kwargs):

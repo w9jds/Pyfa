@@ -1,5 +1,5 @@
 # Not used by any item
-type = "projected", "active"
+effectType = "projected", "active"
 
 
 def handler(fit, container, context):

@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ship: Griffin Navy Issue
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

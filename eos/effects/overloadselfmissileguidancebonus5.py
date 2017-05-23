@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules from group: Missile Guidance Computer (3 of 3)
-type = "overheat"
+effectType = "overheat"
 
 
 def handler(fit, module, context):

@@ -2,7 +2,7 @@
 #
 # Used by:
 # Implant: Republic Special Ops Field Enhancer - Gamma
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, implant, context):

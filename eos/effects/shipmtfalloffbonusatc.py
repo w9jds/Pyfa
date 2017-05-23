@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ship: Mimir
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

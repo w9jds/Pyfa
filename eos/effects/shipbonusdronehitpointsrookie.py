@@ -6,10 +6,10 @@
 # Ship: Sunesis
 # Ship: Taipan
 # Ship: Velator
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):
-    for type in ("shieldCapacity", "armorHP", "hp"):
+    for hp_type in ("shieldCapacity", "armorHP", "hp"):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill("Drones"),
-                                     type, ship.getModifiedItemAttr("rookieDroneBonus"))
+                                     hp_type, ship.getModifiedItemAttr("rookieDroneBonus"))

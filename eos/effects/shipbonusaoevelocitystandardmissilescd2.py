@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ship: Corax
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

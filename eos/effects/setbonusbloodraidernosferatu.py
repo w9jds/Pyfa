@@ -2,7 +2,7 @@
 #
 # Used by:
 # Implants named like: grade Talisman (15 of 18)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, implant, context):

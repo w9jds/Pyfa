@@ -5,7 +5,7 @@
 # Modules named like: Core Defense Field Purger (8 of 8)
 # Implant: Sansha Modified 'Gnome' Implant
 # Skill: Shield Operation
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

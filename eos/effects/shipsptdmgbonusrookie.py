@@ -3,7 +3,7 @@
 # Used by:
 # Ship: Echo
 # Ship: Reaper
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

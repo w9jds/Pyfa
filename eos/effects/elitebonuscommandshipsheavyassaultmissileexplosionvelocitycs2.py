@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ship: Claymore
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

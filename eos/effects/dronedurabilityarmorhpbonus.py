@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules named like: Drone Durability Enhancer (6 of 8)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

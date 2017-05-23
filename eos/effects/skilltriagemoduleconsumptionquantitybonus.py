@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Tactical Logistics Reconfiguration
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, skill, context):

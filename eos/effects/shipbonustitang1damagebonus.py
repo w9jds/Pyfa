@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ship: Erebus
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

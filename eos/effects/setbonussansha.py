@@ -4,7 +4,7 @@
 # Implants named like: grade Slave (18 of 18)
 # Implant: High-grade Halo Omega
 runTime = "early"
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, implant, context):

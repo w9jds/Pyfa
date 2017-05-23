@@ -3,7 +3,7 @@
 # Used by:
 # Ships from group: Command Destroyer (4 of 4)
 # Ship: Porpoise
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

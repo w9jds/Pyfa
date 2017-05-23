@@ -2,7 +2,7 @@
 #
 # Used by:
 # Module: 'Oblivion' Kinetic Doomsday
-type = 'active'
+effectType = 'active'
 
 
 def handler(fit, module, context):

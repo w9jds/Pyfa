@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ship: Curse
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

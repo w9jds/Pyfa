@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules named like: Dynamic Fuel Valve (8 of 8)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

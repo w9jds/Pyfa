@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystem: Proteus Engineering - Supplemental Coolant Injector
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):
