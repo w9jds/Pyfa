@@ -31,9 +31,9 @@ class DamagePattern(object):
 
     def calculateEhp(self, fit):
         ehp = {}
-        for (type, attr) in (('shield', 'shieldCapacity'), ('armor', 'armorHP'), ('hull', 'hp')):
+        for (resist_type, attr) in (('shield', 'shieldCapacity'), ('armor', 'armorHP'), ('hull', 'hp')):
             rawCapacity = fit.ship.getModifiedItemAttr(attr)
-            ehp[type] = self.effectivify(fit, rawCapacity, type)
+            ehp[resist_type] = self.effectivify(fit, rawCapacity, resist_type)
 
         return ehp
 
@@ -41,18 +41,18 @@ class DamagePattern(object):
         ehps = {}
         passiveShield = fit.calculateShieldRecharge()
         ehps["passiveShield"] = self.effectivify(fit, passiveShield, "shield")
-        for type in ("shield", "armor", "hull"):
-            ehps["%sRepair" % type] = self.effectivify(fit, tankInfo["%sRepair" % type], type)
+        for resist_type in ("shield", "armor", "hull"):
+            ehps["%sRepair" % resist_type] = self.effectivify(fit, tankInfo["%sRepair" % resist_type], resist_type)
 
         return ehps
 
-    def effectivify(self, fit, amount, type):
-        type = type if type != "hull" else ""
+    def effectivify(self, fit, amount, resist_type):
+        resist_type = resist_type if resist_type != "hull" else ""
         totalDamage = sum((self.emAmount, self.thermalAmount, self.kineticAmount, self.explosiveAmount))
         specificDivider = 0
         for damageType in self.DAMAGE_TYPES:
             # Compose an attribute name, then make sure the first letter is NOT capitalized
-            attrName = "%s%sDamageResonance" % (type, damageType.capitalize())
+            attrName = "%s%sDamageResonance" % (resist_type, damageType.capitalize())
             attrName = attrName[0].lower() + attrName[1:]
 
             resonance = fit.ship.getModifiedItemAttr(attrName)
@@ -79,13 +79,13 @@ class DamagePattern(object):
                 if line.strip()[0] == "#":  # comments
                     continue
                 line = line.split('#', 1)[0]  # allows for comments
-                type, data = line.rsplit('=', 1)
-                type, data = type.strip(), data.split(',')
+                resist_type, data = line.rsplit('=', 1)
+                resist_type, data = resist_type.strip(), data.split(',')
             except:
                 # Data isn't in correct format, continue to next line
                 continue
 
-            if type != "DamageProfile":
+            if resist_type != "DamageProfile":
                 continue
 
             numPatterns += 1

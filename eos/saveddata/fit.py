@@ -344,16 +344,16 @@ class Fit(object):
     @property
     def scanType(self):
         maxStr = -1
-        type = None
+        sensor_type = None
         for scanType in ("Magnetometric", "Ladar", "Radar", "Gravimetric"):
             currStr = self.ship.getModifiedItemAttr("scan%sStrength" % scanType)
             if currStr > maxStr:
                 maxStr = currStr
-                type = scanType
+                sensor_type = scanType
             elif currStr == maxStr:
-                type = "Multispectral"
+                sensor_type = "Multispectral"
 
-        return type
+        return sensor_type
 
     @property
     def jamChance(self):
@@ -916,20 +916,20 @@ class Fit(object):
 
         return amount
 
-    def getHardpointsUsed(self, type):
+    def getHardpointsUsed(self, hardpoint_type):
         amount = 0
         for mod in self.modules:
-            if mod.hardpoint is type and not mod.isEmpty:
+            if mod.hardpoint is hardpoint_type and not mod.isEmpty:
                 amount += 1
 
         return amount
 
-    def getSlotsUsed(self, type, countDummies=False):
+    def getSlotsUsed(self, slot_type, countDummies=False):
         amount = 0
 
         for mod in chain(self.modules, self.fighters):
-            if mod.slot is type and (not getattr(mod, "isEmpty", False) or countDummies):
-                if type in (Slot.F_HEAVY, Slot.F_SUPPORT, Slot.F_LIGHT) and not mod.active:
+            if mod.slot is slot_type and (not getattr(mod, "isEmpty", False) or countDummies):
+                if slot_type in (Slot.F_HEAVY, Slot.F_SUPPORT, Slot.F_LIGHT) and not mod.active:
                     continue
                 amount += 1
 
@@ -947,17 +947,17 @@ class Fit(object):
         Slot.F_HEAVY  : "fighterHeavySlots"
     }
 
-    def getSlotsFree(self, type, countDummies=False):
-        if type in (Slot.MODE, Slot.SYSTEM):
+    def getSlotsFree(self, slot_type, countDummies=False):
+        if slot_type in (Slot.MODE, Slot.SYSTEM):
             # These slots don't really exist, return default 0
             return 0
 
-        slotsUsed = self.getSlotsUsed(type, countDummies)
-        totalSlots = self.ship.getModifiedItemAttr(self.slots[type]) or 0
+        slotsUsed = self.getSlotsUsed(slot_type, countDummies)
+        totalSlots = self.ship.getModifiedItemAttr(self.slots[slot_type]) or 0
         return int(totalSlots - slotsUsed)
 
-    def getNumSlots(self, type):
-        return self.ship.getModifiedItemAttr(self.slots[type]) or 0
+    def getNumSlots(self, slot_type):
+        return self.ship.getModifiedItemAttr(self.slots[slot_type]) or 0
 
     @property
     def calibrationUsed(self):
@@ -1295,8 +1295,8 @@ class Fit(object):
     @property
     def hp(self):
         hp = {}
-        for (type, attr) in (('shield', 'shieldCapacity'), ('armor', 'armorHP'), ('hull', 'hp')):
-            hp[type] = self.ship.getModifiedItemAttr(attr)
+        for (resist_type, attr) in (('shield', 'shieldCapacity'), ('armor', 'armorHP'), ('hull', 'hp')):
+            hp[resist_type] = self.ship.getModifiedItemAttr(attr)
 
         return hp
 
@@ -1314,8 +1314,8 @@ class Fit(object):
     @property
     def tank(self):
         hps = {"passiveShield": self.calculateShieldRecharge()}
-        for type in ("shield", "armor", "hull"):
-            hps["%sRepair" % type] = self.extraAttributes["%sRepair" % type]
+        for resist_type in ("shield", "armor", "hull"):
+            hps["%sRepair" % resist_type] = self.extraAttributes["%sRepair" % resist_type]
 
         return hps
 

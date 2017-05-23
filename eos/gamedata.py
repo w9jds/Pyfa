@@ -152,11 +152,11 @@ class Effect(EqBase):
         """
         return self.handler != effectDummy
 
-    def isType(self, type):
+    def isType(self, _type):
         """
         Check if this effect is of the passed type
         """
-        return self.type is not None and type in self.type
+        return self.type is not None and _type in self.type
 
     def __generateHandler(self):
         """
@@ -282,9 +282,9 @@ class Item(EqBase):
         except (AttributeError, KeyError):
             return False
 
-    def isType(self, type):
+    def isType(self, _type):
         for effect in self.effects.itervalues():
-            if effect.isType(type):
+            if effect.isType(_type):
                 return True
 
         return False
@@ -572,7 +572,7 @@ class Icon(EqBase):
 class MarketGroup(EqBase):
     def __repr__(self):
         return u"MarketGroup(ID={}, name={}, parent={}) at {}".format(
-                self.ID, self.name, getattr(self.parent, "name", None), self.name, hex(id(self))
+                self.ID, self.name, getattr(self.parent, "name", None), hex(id(self))
         ).encode('utf8')
 
 
