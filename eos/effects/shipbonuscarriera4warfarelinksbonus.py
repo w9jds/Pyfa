@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ship: Archon
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

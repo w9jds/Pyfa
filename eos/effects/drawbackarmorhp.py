@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules from group: Rig Navigation (48 of 64)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

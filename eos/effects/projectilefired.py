@@ -3,7 +3,7 @@
 # Used by:
 # Modules from group: Hybrid Weapon (221 of 221)
 # Modules from group: Projectile Weapon (165 of 165)
-type = 'active'
+effectType = 'active'
 
 
 def handler(fit, module, context):

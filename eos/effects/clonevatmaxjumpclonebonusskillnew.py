@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Cloning Facility Operation
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, skill, context):

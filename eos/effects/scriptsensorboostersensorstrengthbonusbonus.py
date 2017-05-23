@@ -2,7 +2,7 @@
 #
 # Used by:
 # Charges from group: Sensor Booster Script (3 of 3)
-type = "active"
+effectType = "active"
 
 
 def handler(fit, module, context):

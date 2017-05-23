@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules from group: Drone Damage Modules (11 of 11)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

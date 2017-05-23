@@ -80,8 +80,8 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
             self.multiSwitch.ReplaceActivePage(view)
             view.fitSelected(event)
 
-    def handleDrag(self, type, fitID):
-        if type == "fit":
+    def handleDrag(self, drag_type, fitID):
+        if drag_type == "fit":
             for page in self.multiSwitch.pages:
                 if isinstance(page, FittingView) and page.activeFitID == fitID:
                     index = self.multiSwitch.GetPageIndex(page)
@@ -91,12 +91,12 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
                 elif isinstance(page, gui.builtinViews.emptyView.BlankPage):
                     view = FittingView(self.multiSwitch)
                     self.multiSwitch.ReplaceActivePage(view)
-                    view.handleDrag(type, fitID)
+                    view.handleDrag(drag_type, fitID)
                     return
 
             view = FittingView(self.multiSwitch)
             self.multiSwitch.AddPage(view)
-            view.handleDrag(type, fitID)
+            view.handleDrag(drag_type, fitID)
 
 
 FitSpawner.register()
@@ -214,9 +214,9 @@ class FittingView(d.Display):
             pyfalog.error(u"Error matching data ({0}:{1}) to valid category", data[0], data[1])
             pyfalog.exception(e)
 
-    def handleDrag(self, type, fitID):
+    def handleDrag(self, drag_type, fitID):
         # Those are drags coming from pyfa sources, NOT builtin wx drags
-        if type == "fit":
+        if drag_type == "fit":
             wx.PostEvent(self.mainFrame, gui.shipBrowser.FitSelected(fitID=fitID))
 
     def Destroy(self):
@@ -664,7 +664,7 @@ class FittingView(d.Display):
             self.SetItemBackgroundColour(i, self.GetBackgroundColour())
 
             #  only consider changing color if we're dealing with a Module
-            if type(mod) is Module:
+            if isinstance(mod, Module):
                 if slotMap[mod.slot]:  # Color too many modules as red
                     self.SetItemBackgroundColour(i, wx.Colour(204, 51, 51))
                 elif sFit.serviceFittingOptions["colorFitBySlot"]:  # Color by slot it enabled

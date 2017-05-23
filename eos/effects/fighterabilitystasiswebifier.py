@@ -9,7 +9,7 @@ displayName = "Stasis Webifier"
 
 prefix = "fighterAbilityStasisWebifier"
 
-type = "active", "projected"
+effectType = "active", "projected"
 
 
 def handler(fit, src, context):

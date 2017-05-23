@@ -2,7 +2,7 @@
 #
 # Used by:
 # Module: Bastion Module I
-type = "active"
+effectType = "active"
 runTime = "early"
 
 

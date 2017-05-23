@@ -2,7 +2,7 @@
 #
 # Used by:
 # Implants from group: Booster (12 of 48)
-type = "boosterSideEffect"
+effectType = "boosterSideEffect"
 activeByDefault = False
 
 

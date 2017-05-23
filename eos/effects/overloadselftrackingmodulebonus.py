@@ -3,7 +3,7 @@
 # Used by:
 # Modules named like: Tracking Computer (19 of 19)
 # Variations of module: Tracking Disruptor I (6 of 6)
-type = "overheat"
+effectType = "overheat"
 
 
 def handler(fit, module, context):

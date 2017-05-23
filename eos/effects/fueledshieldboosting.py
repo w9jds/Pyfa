@@ -3,7 +3,7 @@
 # Used by:
 # Modules from group: Ancillary Shield Booster (5 of 5)
 runTime = "late"
-type = "active"
+effectType = "active"
 
 
 def handler(fit, module, context):

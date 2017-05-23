@@ -6,7 +6,7 @@
 # Ship: Deacon
 # Ship: Exequror
 # Ship: Inquisitor
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

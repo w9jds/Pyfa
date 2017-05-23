@@ -879,8 +879,8 @@ class ItemEffects(wx.Panel):
                 activeByDefault = ""
 
             effectTypeText = ""
-            if effects[name].type:
-                for effectType in effects[name].type:
+            if effects[name].effectType:
+                for effectType in effects[name].effectType:
                     effectTypeText += effectType + " "
                     pass
 

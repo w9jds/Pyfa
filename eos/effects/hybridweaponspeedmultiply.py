@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules from group: Magnetic Field Stabilizer (14 of 14)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

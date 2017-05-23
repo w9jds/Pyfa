@@ -6,7 +6,7 @@
 # Implant: Antipharmakon Iokira
 # Implant: Ogdin's Eye Coordination Enhancer
 # Skill: Motion Prediction
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

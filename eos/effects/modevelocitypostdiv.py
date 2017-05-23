@@ -2,7 +2,7 @@
 #
 # Used by:
 # Module: Jackdaw Propulsion Mode
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

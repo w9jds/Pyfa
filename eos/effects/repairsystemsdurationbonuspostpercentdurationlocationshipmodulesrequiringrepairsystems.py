@@ -5,7 +5,7 @@
 # Modules named like: Nanobot Accelerator (8 of 8)
 # Implant: Numon Family Heirloom
 # Skill: Repair Systems
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

@@ -3,7 +3,7 @@
 # Used by:
 # Module: Jackdaw Defense Mode
 # Module: Svipul Defense Mode
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

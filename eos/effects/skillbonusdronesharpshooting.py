@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Drone Sharpshooting
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

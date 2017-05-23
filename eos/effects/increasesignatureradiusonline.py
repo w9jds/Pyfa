@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules from group: Inertial Stabilizer (7 of 7)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

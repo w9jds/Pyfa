@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ship: Magnate
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

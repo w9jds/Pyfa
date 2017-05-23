@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystem: Loki Offensive - Projectile Scoping Array
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

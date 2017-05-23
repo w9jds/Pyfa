@@ -3,7 +3,7 @@
 # Used by:
 # Skill: Afterburner
 # Skill: Fuel Conservation
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, skill, context):

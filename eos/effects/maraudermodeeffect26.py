@@ -1,5 +1,5 @@
 # Not used by any item
-type = "active"
+effectType = "active"
 runTime = "early"
 
 

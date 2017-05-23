@@ -5,7 +5,7 @@
 # Implant: Poteque 'Prospector' Environmental Analysis EY-1005
 # Implant: Poteque 'Prospector' Hacking HC-905
 # Skill: Hacking
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

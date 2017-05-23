@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystem: Legion Propulsion - Wake Limiter
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

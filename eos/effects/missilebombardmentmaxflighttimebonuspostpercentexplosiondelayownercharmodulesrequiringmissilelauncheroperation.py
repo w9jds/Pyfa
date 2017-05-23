@@ -5,7 +5,7 @@
 # Modules named like: Rocket Fuel Cache Partition (8 of 8)
 # Implant: Antipharmakon Toxot
 # Skill: Missile Bombardment
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

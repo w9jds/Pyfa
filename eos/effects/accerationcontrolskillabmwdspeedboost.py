@@ -3,7 +3,7 @@
 # Used by:
 # Implant: Zor's Custom Navigation Hyper-Link
 # Skill: Acceleration Control
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

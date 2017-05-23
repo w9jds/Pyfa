@@ -3,7 +3,7 @@
 # Used by:
 # Implant: Low-grade Snake Alpha
 # Implant: Mid-grade Snake Alpha
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, implant, context):

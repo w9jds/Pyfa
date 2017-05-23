@@ -4,7 +4,7 @@
 # Skill: Archaeology
 # Skill: Hacking
 # Skill: Salvaging
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, skill, context):

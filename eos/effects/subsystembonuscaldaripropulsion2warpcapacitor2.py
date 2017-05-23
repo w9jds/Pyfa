@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystem: Tengu Propulsion - Gravitational Capacitor
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

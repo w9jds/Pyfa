@@ -3,7 +3,7 @@
 # Used by:
 # Variations of module: Damage Control I (16 of 16)
 # Module: Civilian Damage Control
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

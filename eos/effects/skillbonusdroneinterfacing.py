@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Drone Interfacing
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

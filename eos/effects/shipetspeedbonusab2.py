@@ -2,7 +2,7 @@
 #
 # Used by:
 # Variations of ship: Armageddon (3 of 5)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

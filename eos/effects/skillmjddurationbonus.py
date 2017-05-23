@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Micro Jump Drive Operation
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, skill, context):

@@ -4,7 +4,7 @@
 # Modules from group: Burst Jammer (11 of 11)
 from eos.modifiedAttributeDict import ModifiedAttributeDict
 
-type = "projected", "active"
+effectType = "projected", "active"
 
 
 def handler(fit, module, context, **kwargs):

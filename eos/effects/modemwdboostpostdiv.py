@@ -2,7 +2,7 @@
 #
 # Used by:
 # Module: Hecate Propulsion Mode
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

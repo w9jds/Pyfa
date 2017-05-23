@@ -44,9 +44,9 @@ if configVal is True:
     itemCache = {}
     queryCache = {}
 
-    def cachedQuery(type, amount, *keywords):
-        itemCache[type] = localItemCache = weakref.WeakValueDictionary()
-        queryCache[type] = typeQueryCache = {}
+    def cachedQuery(_type, amount, *keywords):
+        itemCache[_type] = localItemCache = weakref.WeakValueDictionary()
+        queryCache[_type] = typeQueryCache = {}
 
         def deco(function):
             localQueryCache = typeQueryCache[function] = {}
@@ -103,10 +103,10 @@ if configVal is True:
 
         return deco
 
-    def removeCachedEntry(type, ID):
-        if type not in queryCache:
+    def removeCachedEntry(_type, ID):
+        if _type not in queryCache:
             return
-        functionCache = queryCache[type]
+        functionCache = queryCache[_type]
         for _, localCache in functionCache.iteritems():
             toDelete = set()
             for cacheKey, info in localCache.iteritems():
@@ -117,8 +117,8 @@ if configVal is True:
             for cacheKey in toDelete:
                 del localCache[cacheKey]
 
-            if ID in itemCache[type]:
-                del itemCache[type][ID]
+            if ID in itemCache[_type]:
+                del itemCache[_type][ID]
 
 elif callable(configVal):
     cachedQuery, removeCachedEntry = eos.config.gamedataCache

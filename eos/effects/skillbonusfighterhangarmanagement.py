@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Fighter Hangar Management
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

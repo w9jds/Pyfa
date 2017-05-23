@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystem: Proteus Electronics - Dissolution Sequencer
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

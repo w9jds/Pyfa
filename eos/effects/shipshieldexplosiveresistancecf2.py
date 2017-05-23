@@ -4,7 +4,7 @@
 # Variations of ship: Merlin (3 of 4)
 # Ship: Cambion
 # Ship: Whiptail
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

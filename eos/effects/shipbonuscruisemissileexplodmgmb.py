@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ship: Typhoon Fleet Issue
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

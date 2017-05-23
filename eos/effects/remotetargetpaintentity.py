@@ -2,7 +2,7 @@
 #
 # Used by:
 # Drones named like: TP (3 of 3)
-type = "projected", "active"
+effectType = "projected", "active"
 
 
 def handler(fit, container, context, *args, **kwargs):

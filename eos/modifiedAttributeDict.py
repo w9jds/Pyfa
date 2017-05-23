@@ -404,5 +404,5 @@ class ModifiedAttributeDict(collections.MutableMapping):
 
 class Affliction(object):
     def __init__(self, affliction_type, amount):
-        self.type = affliction_type
+        self.effectType = affliction_type
         self.amount = amount

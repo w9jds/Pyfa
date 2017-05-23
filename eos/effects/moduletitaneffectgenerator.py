@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules from group: Titan Phenomena Generator (4 of 4)
-type = "active", "gang"
+effectType = "active", "gang"
 
 
 def handler(fit, module, context, **kwargs):

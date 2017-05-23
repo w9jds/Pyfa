@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ships named like: Megathron (3 of 3)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

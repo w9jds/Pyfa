@@ -3,7 +3,7 @@
 # Used by:
 # Ships from group: Stealth Bomber (4 of 4)
 # Subsystems named like: Offensive Covert Reconfiguration (4 of 4)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

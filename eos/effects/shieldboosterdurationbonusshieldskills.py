@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules named like: Core Defense Operational Solidifier (8 of 8)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

@@ -9,7 +9,7 @@
 # Ships from group: Mining Barge (3 of 3)
 # Variations of ship: Venture (3 of 3)
 # Ship: Rorqual
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

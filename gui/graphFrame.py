@@ -167,8 +167,8 @@ class GraphFrame(wx.Frame):
         self.Fit()
         self.SetMinSize(self.GetSize())
 
-    def handleDrag(self, type, fitID):
-        if type == "fit":
+    def handleDrag(self, drag_type, fitID):
+        if drag_type == "fit":
             self.AppendFitToList(fitID)
 
     def close(self, event):

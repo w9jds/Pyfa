@@ -3,7 +3,7 @@
 # Used by:
 # Ship: Griffin Navy Issue
 # Ship: Merlin
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

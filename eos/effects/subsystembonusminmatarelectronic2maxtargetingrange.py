@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystem: Loki Electronics - Dissolution Sequencer
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules from group: Ballistic Control system (17 of 17)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

@@ -4,7 +4,7 @@
 # Ship: Ashimmu
 # Ship: Rabisu
 # Ship: Vangel
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

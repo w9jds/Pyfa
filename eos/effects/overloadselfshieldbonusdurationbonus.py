@@ -3,7 +3,7 @@
 # Used by:
 # Modules from group: Ancillary Shield Booster (5 of 5)
 # Modules from group: Shield Booster (93 of 93)
-type = "overheat"
+effectType = "overheat"
 
 
 def handler(fit, module, context):

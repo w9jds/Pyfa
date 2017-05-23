@@ -2,7 +2,7 @@
 #
 # Used by:
 # Variations of module: Guidance Disruptor I (6 of 6)
-type = "overheat"
+effectType = "overheat"
 
 
 def handler(fit, module, context):

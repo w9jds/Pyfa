@@ -2,7 +2,7 @@
 #
 # Used by:
 # Items from category: Charge (571 of 913)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystem: Tengu Offensive - Accelerated Ejection Bay
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

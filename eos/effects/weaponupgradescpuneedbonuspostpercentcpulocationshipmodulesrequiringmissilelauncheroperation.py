@@ -3,7 +3,7 @@
 # Used by:
 # Implants named like: Zainou 'Gnome' Launcher CPU Efficiency LE (6 of 6)
 # Skill: Weapon Upgrades
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

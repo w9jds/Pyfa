@@ -2,7 +2,7 @@
 #
 # Used by:
 # Module: 'Gjallarhorn' Explosive Doomsday
-type = 'active'
+effectType = 'active'
 
 
 def handler(fit, module, context):

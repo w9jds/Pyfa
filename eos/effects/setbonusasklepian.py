@@ -3,7 +3,7 @@
 # Used by:
 # Implants named like: grade Asklepian (18 of 18)
 runTime = "early"
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

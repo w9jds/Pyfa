@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystem: Proteus Propulsion - Gravitational Capacitor
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

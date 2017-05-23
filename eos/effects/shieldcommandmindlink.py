@@ -2,7 +2,7 @@
 #
 # Used by:
 # Implants from group: Cyber Leadership (4 of 10)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

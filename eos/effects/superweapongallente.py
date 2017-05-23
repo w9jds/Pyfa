@@ -2,7 +2,7 @@
 #
 # Used by:
 # Module: 'Aurora Ominae' Thermal Doomsday
-type = 'active'
+effectType = 'active'
 
 
 def handler(fit, module, context):

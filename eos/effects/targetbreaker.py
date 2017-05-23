@@ -2,7 +2,7 @@
 #
 # Used by:
 # Module: Target Spectrum Breaker
-type = "active"
+effectType = "active"
 
 
 def handler(fit, module, context):

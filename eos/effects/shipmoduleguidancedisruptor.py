@@ -2,7 +2,7 @@
 #
 # Used by:
 # Variations of module: Guidance Disruptor I (6 of 6)
-type = "active", "projected"
+effectType = "active", "projected"
 
 
 def handler(fit, module, context, *args, **kwargs):

@@ -4,7 +4,7 @@
 # Variations of ship: Rupture (3 of 3)
 # Ship: Cynabal
 # Ship: Moracha
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

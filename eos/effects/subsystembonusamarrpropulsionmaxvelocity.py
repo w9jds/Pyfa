@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystem: Legion Propulsion - Chassis Optimization
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

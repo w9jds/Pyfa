@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystem: Legion Engineering - Augmented Capacitor Reservoir
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

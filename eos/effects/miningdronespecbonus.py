@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Mining Drone Specialization
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

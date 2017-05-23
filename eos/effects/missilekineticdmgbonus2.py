@@ -4,7 +4,7 @@
 # Skills named like: Missiles (5 of 7)
 # Skill: Rockets
 # Skill: Torpedoes
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, skill, context):

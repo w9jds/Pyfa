@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ship: Claw
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

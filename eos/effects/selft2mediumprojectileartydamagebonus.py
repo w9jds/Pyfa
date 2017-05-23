@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Medium Artillery Specialization
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, skill, context):

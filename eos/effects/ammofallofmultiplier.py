@@ -7,7 +7,7 @@
 # Charges from group: Advanced Blaster Charge (8 of 8)
 # Charges from group: Advanced Pulse Laser Crystal (8 of 8)
 # Charges from group: Advanced Railgun Charge (8 of 8)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

@@ -43,13 +43,13 @@ class TargetResists(object):
                 if line.strip()[0] == "#":  # comments
                     continue
                 line = line.split('#', 1)[0]  # allows for comments
-                type, data = line.rsplit('=', 1)
-                type, data = type.strip(), data.split(',')
+                damage_type, data = line.rsplit('=', 1)
+                damage_type, data = damage_type.strip(), data.split(',')
             except:
                 pyfalog.warning("Data isn't in correct format, continue to next line.")
                 continue
 
-            if type != "TargetResists":
+            if damage_type != "TargetResists":
                 continue
 
             numPatterns += 1

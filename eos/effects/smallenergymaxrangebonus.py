@@ -4,7 +4,7 @@
 # Ship: Coercer
 # Ship: Gold Magnate
 # Ship: Silver Magnate
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

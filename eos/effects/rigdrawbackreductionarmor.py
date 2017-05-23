@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Armor Rigging
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

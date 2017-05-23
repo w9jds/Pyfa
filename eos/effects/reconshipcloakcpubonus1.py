@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ships from group: Force Recon Ship (6 of 7)
-type = "passive"
+effectType = "passive"
 runTime = "early"
 
 

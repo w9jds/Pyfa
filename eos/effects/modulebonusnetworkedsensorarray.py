@@ -2,7 +2,7 @@
 #
 # Used by:
 # Module: Networked Sensor Array
-type = "active"
+effectType = "active"
 
 
 def handler(fit, src, context):

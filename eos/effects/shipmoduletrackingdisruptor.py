@@ -2,7 +2,7 @@
 #
 # Used by:
 # Variations of module: Tracking Disruptor I (6 of 6)
-type = "projected", "active"
+effectType = "projected", "active"
 
 
 def handler(fit, module, context, *args, **kwargs):

@@ -3,7 +3,7 @@
 # Used by:
 # Modules named like: Warp Core Optimizer (8 of 8)
 # Skill: Warp Drive Operation
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

@@ -6,7 +6,7 @@
 from eos.saveddata.module import State
 
 runTime = "early"
-type = "projected", "active"
+effectType = "projected", "active"
 
 
 def handler(fit, module, context):

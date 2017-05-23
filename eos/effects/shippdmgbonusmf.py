@@ -6,7 +6,7 @@
 # Ship: Cheetah
 # Ship: Freki
 # Ship: Republic Fleet Firetail
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

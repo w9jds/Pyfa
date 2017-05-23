@@ -3,7 +3,7 @@
 # Used by:
 # Implants named like: grade Harvest (12 of 12)
 runTime = "early"
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, implant, context):

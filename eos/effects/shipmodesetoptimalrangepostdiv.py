@@ -2,7 +2,7 @@
 #
 # Used by:
 # Module: Confessor Sharpshooter Mode
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

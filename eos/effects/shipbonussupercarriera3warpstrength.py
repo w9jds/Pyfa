@@ -3,7 +3,7 @@
 # Used by:
 # Ship: Aeon
 # Ship: Revenant
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

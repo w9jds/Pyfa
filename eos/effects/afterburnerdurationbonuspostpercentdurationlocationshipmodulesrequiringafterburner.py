@@ -4,7 +4,7 @@
 # Implants named like: Eifyr and Co. 'Rogue' Afterburner AB (6 of 6)
 # Implant: Zor's Custom Navigation Link
 # Skill: Afterburner
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

@@ -6,7 +6,7 @@
 # Implant: Whelan Machorin's Ballistic Smartlink
 # Skill: Missile Launcher Operation
 # Skill: Rapid Launch
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules from group: Frequency Mining Laser (3 of 3)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

@@ -4,7 +4,7 @@
 # Modules from group: Missile Launcher Heavy (12 of 12)
 # Modules from group: Missile Launcher Rocket (15 of 15)
 # Modules named like: Launcher (153 of 153)
-type = 'active', "projected"
+effectType = 'active', "projected"
 
 
 def handler(fit, src, context):

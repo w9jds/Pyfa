@@ -10,7 +10,7 @@
 # Subsystems named like: Defensive Warfare Processor (4 of 4)
 # Ship: Orca
 # Ship: Rorqual
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

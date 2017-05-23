@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules from group: Target Painter (8 of 8)
-type = "overheat"
+effectType = "overheat"
 
 
 def handler(fit, module, context):

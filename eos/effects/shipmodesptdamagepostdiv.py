@@ -2,7 +2,7 @@
 #
 # Used by:
 # Module: Svipul Sharpshooter Mode
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystems named like: Offensive Covert Reconfiguration (4 of 4)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

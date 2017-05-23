@@ -18,32 +18,32 @@ def test_attribute():
     info = sAttr.getAttributeInfo("maxRange")
 
     assert info.attributeID == 54
-    assert type(info.attributeID) is int
+    assert isinstance(info.attributeID, int)
     assert info.attributeName == 'maxRange'
-    assert type(info.attributeName) is unicode
+    assert isinstance(info.attributeName, unicode)
     assert info.defaultValue == 0.0
-    assert type(info.defaultValue) is float
+    assert isinstance(info.defaultValue, float)
     assert info.description == 'Distance below which range does not affect the to-hit equation.'
-    assert type(info.description) is unicode
+    assert isinstance(info.description, unicode)
     assert info.displayName == 'Optimal Range'
-    assert type(info.displayName) is unicode
+    assert isinstance(info.displayName, unicode)
     assert info.highIsGood is True
-    assert type(info.highIsGood) is bool
+    assert isinstance(info.highIsGood, bool)
     assert info.iconID == 1391
-    assert type(info.iconID) is int
+    assert isinstance(info.iconID, int)
     assert info.name == 'maxRange'
-    assert type(info.name) is unicode
+    assert isinstance(info.name, unicode)
     assert info.published is True
-    assert type(info.published) is bool
+    assert isinstance(info.published, bool)
     assert info.unitID == 1
-    assert type(info.unitID) is int
+    assert isinstance(info.unitID, int)
     assert info.unit.ID == 1
-    assert type(info.unit.ID) is int
+    assert isinstance(info.unit.ID, int)
     assert info.unit.displayName == 'm'
-    assert type(info.unit.displayName) is unicode
+    assert isinstance(info.unit.displayName, unicode)
     assert info.unit.name == 'Length'
-    assert type(info.unit.name) is unicode
+    assert isinstance(info.unit.name, unicode)
     assert info.unit.unitID == 1
-    assert type(info.unit.unitID) is int
+    assert isinstance(info.unit.unitID, int)
     assert info.unit.unitName == 'Length'
-    assert type(info.unit.unitName) is unicode
+    assert isinstance(info.unit.unitName, unicode)

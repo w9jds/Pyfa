@@ -31,7 +31,8 @@ class CachingImageList(wx.ImageList):
     def GetImageIndex(self, *loaderArgs):
         id_ = self.map.get(loaderArgs)
         if id_ is None:
-            bitmap = BitmapLoader.getBitmap(*loaderArgs)
+            name, location = loaderArgs
+            bitmap = BitmapLoader.getBitmap(name, location)
             if bitmap is None:
                 return -1
             id_ = self.map[loaderArgs] = wx.ImageList.Add(self, bitmap)

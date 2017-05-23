@@ -3,7 +3,7 @@
 # Used by:
 # Modules from group: Ancillary Armor Repairer (4 of 4)
 runTime = "late"
-type = "active"
+effectType = "active"
 
 
 def handler(fit, module, context):

@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystem: Proteus Propulsion - Interdiction Nullifier
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

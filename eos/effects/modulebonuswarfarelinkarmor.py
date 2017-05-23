@@ -12,7 +12,7 @@ bonuses and actually run the effect. To do this, we have a special argument pass
 which warfareBuffID to run (shouldn't need this right now, but better safe than sorry)
 '''
 
-type = "active", "gang"
+effectType = "active", "gang"
 
 
 def handler(fit, module, context, **kwargs):

@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules from group: Warp Disrupt Field Generator (7 of 7)
-type = "active"
+effectType = "active"
 runTime = "early"
 
 

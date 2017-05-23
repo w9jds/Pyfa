@@ -3,7 +3,7 @@
 # Used by:
 # Implants named like: Eifyr and Co. 'Gunslinger' Surgical Strike SS (6 of 6)
 # Implant: Standard Cerebral Accelerator
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, implant, context):

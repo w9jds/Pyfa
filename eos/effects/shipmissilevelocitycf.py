@@ -4,7 +4,7 @@
 # Ship: Caldari Navy Hookbill
 # Ship: Crow
 # Ship: Kestrel
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

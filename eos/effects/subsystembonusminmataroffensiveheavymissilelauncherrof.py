@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystem: Loki Offensive - Hardpoint Efficiency Configuration
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

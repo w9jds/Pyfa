@@ -26,19 +26,19 @@ class MultiSwitch(PFNotebook):
         PFNotebook.__init__(self, parent)
         # self.AddPage() # now handled by mainFrame
         self.handlers = handlers = []
-        for type in TabSpawner.tabTypes:
-            handlers.append(type(self))
+        for tab_type in TabSpawner.tabTypes:
+            handlers.append(tab_type(self))
 
-    def handleDrag(self, type, info):
+    def handleDrag(self, drag_type, info):
         for handler in self.handlers:
             h = getattr(handler, "handleDrag", None)
             if h:
-                h(type, info)
+                h(drag_type, info)
 
     def AddPage(self, tabWnd=None, tabTitle="Empty Tab", tabImage=None):
         if tabWnd is None:
             tabWnd = gui.builtinViews.emptyView.BlankPage(self)
-            tabWnd.handleDrag = lambda type, info: self.handleDrag(type, info)
+            tabWnd.handleDrag = lambda drag_type, info: self.handleDrag(drag_type, info)
 
         PFNotebook.AddPage(self, tabWnd, tabTitle, tabImage, True)
 

@@ -3,7 +3,7 @@
 # Used by:
 # Variations of ship: Sigil (2 of 2)
 # Ship: Bestower
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

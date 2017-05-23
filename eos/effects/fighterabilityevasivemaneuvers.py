@@ -11,7 +11,7 @@ prefix = "fighterAbilityEvasiveManeuvers"
 # Is ability applied to the fighter squad as a whole, or per fighter?
 grouped = True
 
-type = "active"
+effectType = "active"
 runTime = "late"
 
 

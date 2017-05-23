@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules from group: Auxiliary Power Core (5 of 5)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

@@ -3,7 +3,7 @@
 # Used by:
 # Subsystem: Loki Propulsion - Intercalated Nanofibers
 # Subsystem: Loki Propulsion - Interdiction Nullifier
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

@@ -4,7 +4,7 @@
 # Drones named like: EC (3 of 3)
 from eos.modifiedAttributeDict import ModifiedAttributeDict
 
-type = "projected", "active"
+effectType = "projected", "active"
 
 
 def handler(fit, module, context, **kwargs):

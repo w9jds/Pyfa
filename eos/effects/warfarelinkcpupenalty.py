@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystems from group: Defensive Systems (12 of 16)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

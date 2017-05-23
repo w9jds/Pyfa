@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ship: Augoror Navy Issue
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

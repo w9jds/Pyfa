@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Weapon Upgrades
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, skill, context):

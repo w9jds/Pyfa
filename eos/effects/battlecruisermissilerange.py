@@ -3,7 +3,7 @@
 # Used by:
 # Ships named like: Drake (2 of 2)
 # Ship: Cyclone
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, skill, context):

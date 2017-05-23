@@ -5,7 +5,7 @@
 # Modules named like: Processor Overclocking Unit (8 of 8)
 # Implant: Genolution Core Augmentation CA-2
 # Skill: CPU Management
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Ice Harvesting Drone Specialization
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystem: Proteus Electronics - Friction Extension Processor
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

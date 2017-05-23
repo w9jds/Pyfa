@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Projectile Weapon Rigging
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

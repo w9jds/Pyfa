@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Drones Rigging
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

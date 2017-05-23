@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules from group: Remote Hull Repairer (8 of 8)
-type = "projected", "active"
+effectType = "projected", "active"
 runTime = "late"
 
 

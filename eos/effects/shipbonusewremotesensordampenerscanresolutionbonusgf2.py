@@ -3,7 +3,7 @@
 # Used by:
 # Ship: Keres
 # Ship: Maulus
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

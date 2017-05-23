@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystem: Loki Offensive - Covert Reconfiguration
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

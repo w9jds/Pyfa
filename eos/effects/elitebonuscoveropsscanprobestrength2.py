@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ships from group: Covert Ops (7 of 7)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

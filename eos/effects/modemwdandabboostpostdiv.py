@@ -3,7 +3,7 @@
 # Used by:
 # Module: Confessor Propulsion Mode
 # Module: Svipul Propulsion Mode
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

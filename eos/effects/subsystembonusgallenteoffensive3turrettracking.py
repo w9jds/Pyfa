@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystem: Proteus Offensive - Dissonic Encoding Platform
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

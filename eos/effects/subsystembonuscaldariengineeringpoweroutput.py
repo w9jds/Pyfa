@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystem: Tengu Engineering - Power Core Multiplier
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

@@ -2,7 +2,7 @@
 #
 # Used by:
 # Module: 'Judgment' Electromagnetic Doomsday
-type = 'active'
+effectType = 'active'
 
 
 def handler(fit, module, context):

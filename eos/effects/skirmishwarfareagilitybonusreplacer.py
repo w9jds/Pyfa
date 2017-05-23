@@ -1,5 +1,5 @@
 # Not used by any item
-type = "gang"
+effectType = "gang"
 gangBoost = "agility"
 gangBonus = "agilityBonus"
 

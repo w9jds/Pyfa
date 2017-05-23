@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ship: Naglfar
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

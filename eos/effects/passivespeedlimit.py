@@ -3,7 +3,7 @@
 # Used by:
 # Modules from group: Entosis Link (6 of 6)
 runtime = "late"
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

@@ -2,7 +2,7 @@
 #
 # Used by:
 # Items from category: Subsystem (42 of 80)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

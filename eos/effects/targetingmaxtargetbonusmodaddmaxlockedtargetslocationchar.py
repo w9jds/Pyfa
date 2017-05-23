@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skills named like: Target Management (2 of 2)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, skill, context):

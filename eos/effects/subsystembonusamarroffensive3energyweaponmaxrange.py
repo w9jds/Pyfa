@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystem: Legion Offensive - Liquid Crystal Magnifiers
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

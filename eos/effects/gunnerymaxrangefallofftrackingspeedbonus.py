@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules from group: Tracking Computer (11 of 11)
-type = "active"
+effectType = "active"
 
 
 def handler(fit, module, context):

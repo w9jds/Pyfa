@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Signature Focusing
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, skill, context):

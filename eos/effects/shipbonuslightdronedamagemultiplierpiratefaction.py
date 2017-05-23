@@ -3,7 +3,7 @@
 # Used by:
 # Ship: Whiptail
 # Ship: Worm
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

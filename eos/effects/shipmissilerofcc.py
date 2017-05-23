@@ -3,7 +3,7 @@
 # Used by:
 # Ships named like: Caracal (2 of 2)
 # Ship: Enforcer
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ships from group: Command Destroyer (4 of 4)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

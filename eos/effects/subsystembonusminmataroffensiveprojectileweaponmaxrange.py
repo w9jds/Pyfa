@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystem: Loki Offensive - Turret Concurrence Registry
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

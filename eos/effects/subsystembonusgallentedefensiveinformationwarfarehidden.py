@@ -1,5 +1,5 @@
 # Not used by any item
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

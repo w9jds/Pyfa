@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules from group: Rig Energy Weapon (56 of 56)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

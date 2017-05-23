@@ -3,7 +3,7 @@
 # Used by:
 # Ship: Chemosh
 # Ship: Molok
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

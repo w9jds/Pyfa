@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skills from group: Drones (8 of 26)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, skill, context):

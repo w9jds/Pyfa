@@ -3,7 +3,7 @@
 # Used by:
 # Ship: Imperial Navy Slicer
 # Ship: Pacifier
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

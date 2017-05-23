@@ -1,5 +1,5 @@
 # Not used by any item
-type = "gang", "active"
+effectType = "gang", "active"
 gangBonus = "armorHpBonus2"
 gangBoost = "armorHP"
 

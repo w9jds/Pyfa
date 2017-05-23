@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Skirmish Command Specialist
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

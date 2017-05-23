@@ -7,7 +7,7 @@
 # Implant: Antipharmakon Aeolis
 # Implant: Genolution Core Augmentation CA-1
 # Skill: Capacitor Management
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

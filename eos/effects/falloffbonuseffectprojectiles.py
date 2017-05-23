@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules named like: Projectile Ambit Extension (8 of 8)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

@@ -3,7 +3,7 @@
 # Used by:
 # Implant: Mining Foreman Mindlink
 # Implant: ORE Mining Director Mindlink
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

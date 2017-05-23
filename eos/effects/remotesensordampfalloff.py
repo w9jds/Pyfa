@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules from group: Sensor Dampener (6 of 6)
-type = "projected", "active"
+effectType = "projected", "active"
 
 
 def handler(fit, module, context, *args, **kwargs):

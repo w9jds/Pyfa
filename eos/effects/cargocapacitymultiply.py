@@ -4,7 +4,7 @@
 # Modules from group: Expanded Cargohold (7 of 7)
 # Modules from group: Overdrive Injector System (7 of 7)
 # Modules from group: Reinforced Bulkhead (8 of 8)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, module, context):

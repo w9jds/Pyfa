@@ -3,7 +3,7 @@
 # Used by:
 # Implants named like: Zainou 'Gypsy' Sensor Linking SL (6 of 6)
 # Skill: Sensor Linking
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):
