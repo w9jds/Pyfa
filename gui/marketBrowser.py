@@ -28,6 +28,7 @@ from gui.contextMenu import ContextMenu
 from gui.bitmapLoader import BitmapLoader
 from logbook import Logger
 from gui.utils.fonts import Fonts
+from service.settings import GeneralSettings
 
 pyfalog = Logger(__name__)
 
@@ -240,6 +241,9 @@ class ItemView(Display):
     def __init__(self, parent, marketBrowser):
         Display.__init__(self, parent)
         pyfalog.debug("Initialize ItemView")
+
+        # Instances
+        self.generalSettings = GeneralSettings.getInstance()
 
         marketBrowser.Bind(wx.EVT_TREE_SEL_CHANGED, self.selectionMade)
 
