@@ -664,7 +664,7 @@ class FittingView(d.Display):
             self.SetItemBackgroundColour(i, self.GetBackgroundColour())
 
             #  only consider changing color if we're dealing with a Module
-            if type(mod) is Module:
+            if isinstance(mod, Module):
                 if slotMap[mod.slot]:  # Color too many modules as red
                     self.SetItemBackgroundColour(i, wx.Colour(204, 51, 51))
                 elif sFit.serviceFittingOptions["colorFitBySlot"]:  # Color by slot it enabled

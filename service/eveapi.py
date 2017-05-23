@@ -279,7 +279,7 @@ def _ParseXML(response, fromContext, storeFunc):
 
     if fromContext and isinstance(response, Element):
         obj = response
-    elif type(response) in (str, unicode):
+    elif isinstance(response, (str, unicode)):
         obj = _Parser().Parse(response, False)
     elif hasattr(response, "read"):
         obj = _Parser().Parse(response, True)
@@ -744,7 +744,7 @@ class Row(object):
         return self.__cmp__(other) == 0
 
     def __cmp__(self, other):
-        if type(other) != type(self):
+        if not isinstance(other, type(self)):
             raise TypeError("Incompatible comparison type")
         return cmp(self._cols, other._cols) or cmp(self._row, other._row)
 
@@ -867,7 +867,7 @@ class Rowset(object):
         return self[:]
 
     def __getitem__(self, ix):
-        if type(ix) is slice:
+        if isinstance(ix, slice):
             return Rowset(self._cols, self._rows[ix])
         return Row(self._cols, self._rows[ix])
 
