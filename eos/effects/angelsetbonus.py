@@ -8,7 +8,6 @@ effectType = "passive"
 
 def handler(fit, implant, context):
     fit.appliedImplants.filteredItemMultiply(
-            lambda _implant: "signatureRadiusBonus" in _implant.itemModifiedAttributes and
-                            "implantSetAngel" in _implant.itemModifiedAttributes,
+            lambda _implant: "signatureRadiusBonus" in _implant.itemModifiedAttributes and "implantSetAngel" in _implant.itemModifiedAttributes,
             "signatureRadiusBonus",
             implant.getModifiedItemAttr("implantSetAngel"))

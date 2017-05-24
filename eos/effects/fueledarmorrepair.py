@@ -1,4 +1,4 @@
-container# fueledArmorRepair
+# fueledArmorRepair
 #
 # Used by:
 # Modules from group: Ancillary Armor Repairer (4 of 4)
