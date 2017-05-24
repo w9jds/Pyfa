@@ -6,7 +6,7 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    module.multiplyItemAttr("specialtyMiningAmount",
-                            module.getModifiedChargeAttr("specialisationAsteroidYieldMultiplier"))
+def handler(fit, container, context):
+    container.multiplyItemAttr("specialtyMiningAmount",
+                               container.getModifiedChargeAttr("specialisationAsteroidYieldMultiplier"))
     # module.multiplyItemAttr("miningAmount", module.getModifiedChargeAttr("specialisationAsteroidYieldMultiplier"))

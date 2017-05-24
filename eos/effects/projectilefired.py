@@ -6,10 +6,10 @@
 effectType = 'active'
 
 
-def handler(fit, module, context):
-    rt = module.getModifiedItemAttr("reloadTime")
+def handler(fit, container, context):
+    rt = container.getModifiedItemAttr("reloadTime")
     if not rt:
         # Set reload time to 10 seconds
-        module.reloadTime = 10000
+        container.reloadTime = 10000
     else:
-        module.reloadTime = rt
+        container.reloadTime = rt

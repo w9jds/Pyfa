@@ -5,8 +5,8 @@
 effectType = "active"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     for attr in ("maxRange", "falloff", "trackingSpeed"):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Gunnery"),
-                                      attr, module.getModifiedItemAttr("%sBonus" % attr),
+                                      attr, container.getModifiedItemAttr("%sBonus" % attr),
                                       stackingPenalties=True)

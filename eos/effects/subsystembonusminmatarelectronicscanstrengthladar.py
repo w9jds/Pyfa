@@ -5,6 +5,6 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.boostItemAttr("scanLadarStrength", module.getModifiedItemAttr("subsystemBonusMinmatarElectronic"),
+def handler(fit, container, context):
+    fit.ship.boostItemAttr("scanLadarStrength", container.getModifiedItemAttr("subsystemBonusMinmatarElectronic"),
                            skill="Minmatar Electronic Systems")

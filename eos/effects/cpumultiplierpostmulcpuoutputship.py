@@ -5,5 +5,5 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.multiplyItemAttr("cpuOutput", module.getModifiedItemAttr("cpuMultiplier"))
+def handler(fit, container, context):
+    fit.ship.multiplyItemAttr("cpuOutput", container.getModifiedItemAttr("cpuMultiplier"))

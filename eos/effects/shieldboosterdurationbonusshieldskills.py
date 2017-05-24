@@ -5,7 +5,7 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemBoost(
             lambda mod: mod.item.requiresSkill("Shield Operation") or mod.item.requiresSkill("Capital Shield Operation"),
-            "duration", module.getModifiedItemAttr("durationSkillBonus"))
+            "duration", container.getModifiedItemAttr("durationSkillBonus"))

@@ -2,8 +2,8 @@
 effectType = "active", "projected"
 
 
-def handler(fit, module, context, *args, **kwargs):
+def handler(fit, container, context, *args, **kwargs):
     if "projected" not in context:
         return
-    fit.ship.boostItemAttr("maxVelocity", module.getModifiedItemAttr("speedFactor"),
+    fit.ship.boostItemAttr("maxVelocity", container.getModifiedItemAttr("speedFactor"),
                            stackingPenalties=True, *args, **kwargs)

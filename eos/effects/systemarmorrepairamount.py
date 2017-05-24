@@ -6,8 +6,8 @@ runTime = "early"
 effectType = ("projected", "passive")
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill("Repair Systems") or
                                                  mod.item.requiresSkill("Capital Repair Systems"),
-                                     "armorDamageAmount", module.getModifiedItemAttr("armorDamageAmountMultiplier"),
+                                     "armorDamageAmount", container.getModifiedItemAttr("armorDamageAmountMultiplier"),
                                      stackingPenalties=True, penaltyGroup="postMul")

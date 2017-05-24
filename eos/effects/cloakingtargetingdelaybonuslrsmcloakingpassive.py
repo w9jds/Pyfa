@@ -5,6 +5,6 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.modules.filteredItemBoost(lambda module: module.item.requiresSkill("Cloaking"),
-                                  "cloakingTargetingDelay", module.getModifiedItemAttr("cloakingTargetingDelayBonus"))
+def handler(fit, container, context):
+    fit.modules.filteredItemBoost(lambda container: container.item.requiresSkill("Cloaking"),
+                                  "cloakingTargetingDelay", container.getModifiedItemAttr("cloakingTargetingDelayBonus"))

@@ -5,6 +5,6 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.boostItemAttr("agility", module.getModifiedItemAttr("subsystemBonusGallentePropulsion"),
+def handler(fit, container, context):
+    fit.ship.boostItemAttr("agility", container.getModifiedItemAttr("subsystemBonusGallentePropulsion"),
                            skill="Gallente Propulsion Systems")

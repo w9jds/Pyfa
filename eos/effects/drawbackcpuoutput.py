@@ -5,5 +5,5 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.boostItemAttr("cpuOutput", module.getModifiedItemAttr("drawback"))
+def handler(fit, container, context):
+    fit.ship.boostItemAttr("cpuOutput", container.getModifiedItemAttr("drawback"))

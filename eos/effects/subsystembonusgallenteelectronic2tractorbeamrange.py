@@ -5,7 +5,7 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Tractor Beam",
-                                  "maxRange", module.getModifiedItemAttr("subsystemBonusGallenteElectronic2"),
+                                  "maxRange", container.getModifiedItemAttr("subsystemBonusGallenteElectronic2"),
                                   skill="Gallente Electronic Systems")

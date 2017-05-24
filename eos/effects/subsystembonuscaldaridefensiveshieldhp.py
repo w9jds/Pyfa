@@ -5,6 +5,6 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.boostItemAttr("shieldCapacity", module.getModifiedItemAttr("subsystemBonusCaldariDefensive"),
+def handler(fit, container, context):
+    fit.ship.boostItemAttr("shieldCapacity", container.getModifiedItemAttr("subsystemBonusCaldariDefensive"),
                            skill="Caldari Defensive Systems")

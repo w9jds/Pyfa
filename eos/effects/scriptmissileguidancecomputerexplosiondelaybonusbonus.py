@@ -5,5 +5,5 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    module.boostItemAttr("explosionDelayBonus", module.getModifiedChargeAttr("explosionDelayBonusBonus"))
+def handler(fit, container, context):
+    container.boostItemAttr("explosionDelayBonus", container.getModifiedChargeAttr("explosionDelayBonusBonus"))

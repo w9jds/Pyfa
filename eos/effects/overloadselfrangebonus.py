@@ -7,6 +7,6 @@
 effectType = "overheat"
 
 
-def handler(fit, module, context):
-    module.boostItemAttr("maxRange", module.getModifiedItemAttr("overloadRangeBonus"),
-                         stackingPenalties=True)
+def handler(fit, container, context):
+    container.boostItemAttr("maxRange", container.getModifiedItemAttr("overloadRangeBonus"),
+                            stackingPenalties=True)

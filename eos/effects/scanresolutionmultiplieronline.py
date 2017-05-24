@@ -6,6 +6,6 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.multiplyItemAttr("scanResolution", module.getModifiedItemAttr("scanResolutionMultiplier"),
+def handler(fit, container, context):
+    fit.ship.multiplyItemAttr("scanResolution", container.getModifiedItemAttr("scanResolutionMultiplier"),
                               stackingPenalties=True)

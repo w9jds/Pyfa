@@ -6,5 +6,5 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.boostItemAttr("signatureRadius", module.getModifiedItemAttr("drawback"), stackingPenalties=True)
+def handler(fit, container, context):
+    fit.ship.boostItemAttr("signatureRadius", container.getModifiedItemAttr("drawback"), stackingPenalties=True)

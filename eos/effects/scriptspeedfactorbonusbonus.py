@@ -6,5 +6,5 @@ effectType = "passive"
 runTime = "early"
 
 
-def handler(fit, module, context):
-    module.boostItemAttr("speedFactorBonus", module.getModifiedChargeAttr("speedFactorBonusBonus"))
+def handler(fit, container, context):
+    container.boostItemAttr("speedFactorBonus", container.getModifiedChargeAttr("speedFactorBonusBonus"))

@@ -5,6 +5,6 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill("Drones"),
-                                 "armorHP", module.getModifiedItemAttr("hullHpBonus"))
+                                 "armorHP", container.getModifiedItemAttr("hullHpBonus"))

@@ -5,7 +5,7 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "ECM",
-                                  "maxRange", module.getModifiedItemAttr("subsystemBonusCaldariElectronic"),
+                                  "maxRange", container.getModifiedItemAttr("subsystemBonusCaldariElectronic"),
                                   skill="Caldari Electronic Systems")

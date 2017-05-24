@@ -5,8 +5,8 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     for sensor_type in ("Gravimetric", "Magnetometric", "Radar", "Ladar"):
         fit.ship.boostItemAttr("scan%sStrength" % sensor_type,
-                               module.getModifiedItemAttr("scan%sStrengthPercent" % sensor_type),
+                               container.getModifiedItemAttr("scan%sStrengthPercent" % sensor_type),
                                stackingPenalties=True)

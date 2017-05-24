@@ -5,5 +5,5 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.boostItemAttr("mass", module.getModifiedItemAttr("massBonusPercentage"), stackingPenalties=True)
+def handler(fit, container, context):
+    fit.ship.boostItemAttr("mass", container.getModifiedItemAttr("massBonusPercentage"), stackingPenalties=True)

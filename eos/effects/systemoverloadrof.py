@@ -6,6 +6,6 @@ runTime = "early"
 effectType = ("projected", "passive")
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemMultiply(lambda mod: "overloadRofBonus" in mod.itemModifiedAttributes,
-                                     "overloadRofBonus", module.getModifiedItemAttr("overloadBonusMultiplier"))
+                                     "overloadRofBonus", container.getModifiedItemAttr("overloadBonusMultiplier"))

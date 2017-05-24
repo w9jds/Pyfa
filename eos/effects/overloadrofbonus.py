@@ -7,5 +7,5 @@
 effectType = "overheat"
 
 
-def handler(fit, module, context):
-    module.boostItemAttr("speed", module.getModifiedItemAttr("overloadRofBonus"))
+def handler(fit, container, context):
+    container.boostItemAttr("speed", container.getModifiedItemAttr("overloadRofBonus"))

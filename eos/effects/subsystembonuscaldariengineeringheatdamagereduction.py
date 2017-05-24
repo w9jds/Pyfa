@@ -5,7 +5,7 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemBoost(lambda mod: True, "heatDamage",
-                                  module.getModifiedItemAttr("subsystemBonusCaldariEngineering"),
+                                  container.getModifiedItemAttr("subsystemBonusCaldariEngineering"),
                                   skill="Caldari Engineering Systems")

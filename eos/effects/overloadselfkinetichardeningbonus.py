@@ -7,5 +7,5 @@
 effectType = "overheat"
 
 
-def handler(fit, module, context):
-    module.boostItemAttr("kineticDamageResistanceBonus", module.getModifiedItemAttr("overloadHardeningBonus"))
+def handler(fit, container, context):
+    container.boostItemAttr("kineticDamageResistanceBonus", container.getModifiedItemAttr("overloadHardeningBonus"))

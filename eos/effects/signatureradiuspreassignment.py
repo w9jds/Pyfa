@@ -6,5 +6,5 @@ effectType = "passive"
 runTime = "early"
 
 
-def handler(fit, module, context):
-    fit.ship.preAssignItemAttr("signatureRadius", module.getModifiedItemAttr("signatureRadius"))
+def handler(fit, container, context):
+    fit.ship.preAssignItemAttr("signatureRadius", container.getModifiedItemAttr("signatureRadius"))

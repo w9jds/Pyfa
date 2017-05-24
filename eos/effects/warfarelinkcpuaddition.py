@@ -6,5 +6,5 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    module.increaseItemAttr("cpu", module.getModifiedItemAttr("warfareLinkCPUAdd") or 0)
+def handler(fit, container, context):
+    container.increaseItemAttr("cpu", container.getModifiedItemAttr("warfareLinkCPUAdd") or 0)

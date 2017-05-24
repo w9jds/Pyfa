@@ -6,5 +6,5 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    module.boostItemAttr("falloffBonus", module.getModifiedChargeAttr("falloffBonusBonus"))
+def handler(fit, container, context):
+    container.boostItemAttr("falloffBonus", container.getModifiedChargeAttr("falloffBonusBonus"))

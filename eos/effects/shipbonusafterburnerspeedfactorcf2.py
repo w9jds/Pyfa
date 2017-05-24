@@ -6,6 +6,6 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Afterburner"),
-                                  "speedFactor", module.getModifiedItemAttr("shipBonusCF2"), skill="Caldari Frigate")
+                                  "speedFactor", container.getModifiedItemAttr("shipBonusCF2"), skill="Caldari Frigate")

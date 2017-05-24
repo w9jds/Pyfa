@@ -5,10 +5,10 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.ship.multiplyItemAttr(
             "agility",
-            1 / module.getModifiedItemAttr("modeAgilityPostDiv"),
+            1 / container.getModifiedItemAttr("modeAgilityPostDiv"),
             stackingPenalties=True,
             penaltyGroup="postDiv"
     )

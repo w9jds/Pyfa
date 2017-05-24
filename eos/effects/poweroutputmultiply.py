@@ -8,5 +8,5 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.multiplyItemAttr("powerOutput", module.getModifiedItemAttr("powerOutputMultiplier"))
+def handler(fit, container, context):
+    fit.ship.multiplyItemAttr("powerOutput", container.getModifiedItemAttr("powerOutputMultiplier"))

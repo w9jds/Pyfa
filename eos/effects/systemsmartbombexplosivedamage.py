@@ -6,6 +6,6 @@ runTime = "early"
 effectType = ("projected", "passive")
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == "Smart Bomb",
-                                     "explosiveDamage", module.getModifiedItemAttr("smartbombDamageMultiplier"))
+                                     "explosiveDamage", container.getModifiedItemAttr("smartbombDamageMultiplier"))

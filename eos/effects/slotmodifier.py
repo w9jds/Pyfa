@@ -5,7 +5,7 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.increaseItemAttr("hiSlots", module.getModifiedItemAttr("hiSlotModifier"))
-    fit.ship.increaseItemAttr("medSlots", module.getModifiedItemAttr("medSlotModifier"))
-    fit.ship.increaseItemAttr("lowSlots", module.getModifiedItemAttr("lowSlotModifier"))
+def handler(fit, container, context):
+    fit.ship.increaseItemAttr("hiSlots", container.getModifiedItemAttr("hiSlotModifier"))
+    fit.ship.increaseItemAttr("medSlots", container.getModifiedItemAttr("medSlotModifier"))
+    fit.ship.increaseItemAttr("lowSlots", container.getModifiedItemAttr("lowSlotModifier"))

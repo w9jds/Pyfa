@@ -5,5 +5,5 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    module.preAssignItemAttr("specialtyMiningAmount", module.getModifiedItemAttr("miningAmount"))
+def handler(fit, container, context):
+    container.preAssignItemAttr("specialtyMiningAmount", container.getModifiedItemAttr("miningAmount"))

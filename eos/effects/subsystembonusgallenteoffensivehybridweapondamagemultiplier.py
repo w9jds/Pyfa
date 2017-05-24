@@ -5,7 +5,7 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Medium Hybrid Turret"),
-                                  "damageMultiplier", module.getModifiedItemAttr("subsystemBonusGallenteOffensive"),
+                                  "damageMultiplier", container.getModifiedItemAttr("subsystemBonusGallenteOffensive"),
                                   skill="Gallente Offensive Systems")

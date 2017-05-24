@@ -6,9 +6,9 @@
 effectType = "overheat"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     if "projected" not in context:
         for scanType in ("Gravimetric", "Magnetometric", "Radar", "Ladar"):
-            module.boostItemAttr("scan{0}StrengthBonus".format(scanType),
-                                 module.getModifiedItemAttr("overloadECMStrengthBonus"),
-                                 stackingPenalties=True)
+            container.boostItemAttr("scan{0}StrengthBonus".format(scanType),
+                                    container.getModifiedItemAttr("overloadECMStrengthBonus"),
+                                    stackingPenalties=True)

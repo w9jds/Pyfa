@@ -4,7 +4,7 @@ gangBonus = "armorHpBonus2"
 gangBoost = "armorHP"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     if "gang" not in context:
         return
-    fit.ship.boostItemAttr("armorHP", module.getModifiedItemAttr("armorHpBonus2"))
+    fit.ship.boostItemAttr("armorHP", container.getModifiedItemAttr("armorHpBonus2"))

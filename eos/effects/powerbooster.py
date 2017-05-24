@@ -5,11 +5,11 @@
 effectType = "active"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     # Set reload time to 10 seconds
-    module.reloadTime = 10000
+    container.reloadTime = 10000
 
-    if module.charge is None:
+    if container.charge is None:
         return
-    capAmount = module.getModifiedChargeAttr("capacitorBonus") or 0
-    module.itemModifiedAttributes["capacitorNeed"] = -capAmount
+    capAmount = container.getModifiedChargeAttr("capacitorBonus") or 0
+    container.itemModifiedAttributes["capacitorNeed"] = -capAmount

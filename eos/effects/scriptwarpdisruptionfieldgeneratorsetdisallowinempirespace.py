@@ -5,5 +5,5 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    module.forceItemAttr("disallowInEmpireSpace", module.getModifiedChargeAttr("disallowInEmpireSpace"))
+def handler(fit, container, context):
+    container.forceItemAttr("disallowInEmpireSpace", container.getModifiedChargeAttr("disallowInEmpireSpace"))

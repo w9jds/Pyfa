@@ -8,5 +8,5 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.multiplyItemAttr("shieldCapacity", module.getModifiedItemAttr("shieldCapacityMultiplier"))
+def handler(fit, container, context):
+    fit.ship.multiplyItemAttr("shieldCapacity", container.getModifiedItemAttr("shieldCapacityMultiplier"))

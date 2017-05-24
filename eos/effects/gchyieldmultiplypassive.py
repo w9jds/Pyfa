@@ -6,6 +6,6 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == "Gas Cloud Harvester",
-                                     "miningAmount", module.getModifiedItemAttr("miningAmountMultiplier"))
+                                     "miningAmount", container.getModifiedItemAttr("miningAmountMultiplier"))

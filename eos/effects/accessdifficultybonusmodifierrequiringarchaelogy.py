@@ -8,6 +8,6 @@ effectType = "passive"
 
 
 def handler(fit, container, context):
-    fit.modules.filteredItemIncrease(lambda module: module.item.requiresSkill("Archaeology"),
+    fit.modules.filteredItemIncrease(lambda _module: _module.item.requiresSkill("Archaeology"),
                                      "accessDifficultyBonus",
                                      container.getModifiedItemAttr("accessDifficultyBonusModifier"), position="post")

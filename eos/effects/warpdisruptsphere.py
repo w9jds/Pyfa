@@ -6,11 +6,11 @@ effectType = "active"
 runTime = "early"
 
 
-def handler(fit, module, context):
-    fit.ship.boostItemAttr("mass", module.getModifiedItemAttr("massBonusPercentage"))
-    fit.ship.boostItemAttr("signatureRadius", module.getModifiedItemAttr("signatureRadiusBonus"))
+def handler(fit, container, context):
+    fit.ship.boostItemAttr("mass", container.getModifiedItemAttr("massBonusPercentage"))
+    fit.ship.boostItemAttr("signatureRadius", container.getModifiedItemAttr("signatureRadiusBonus"))
     fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Propulsion Module",
-                                  "speedBoostFactor", module.getModifiedItemAttr("speedBoostFactorBonus"))
+                                  "speedBoostFactor", container.getModifiedItemAttr("speedBoostFactorBonus"))
     fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Propulsion Module",
-                                  "speedFactor", module.getModifiedItemAttr("speedFactorBonus"))
+                                  "speedFactor", container.getModifiedItemAttr("speedFactorBonus"))
     fit.ship.forceItemAttr("disallowAssistance", 1)

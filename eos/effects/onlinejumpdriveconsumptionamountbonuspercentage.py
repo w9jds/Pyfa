@@ -6,6 +6,6 @@ runTime = "early"
 effectType = ("projected", "passive")
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.ship.boostItemAttr("jumpDriveConsumptionAmount",
-                           module.getModifiedItemAttr("consumptionQuantityBonusPercentage"), stackingPenalties=True)
+                           container.getModifiedItemAttr("consumptionQuantityBonusPercentage"), stackingPenalties=True)

@@ -6,5 +6,5 @@ effectType = "passive"
 runTime = "early"
 
 
-def handler(fit, module, context):
-    module.boostItemAttr("massBonusPercentage", module.getModifiedChargeAttr("massBonusPercentageBonus"))
+def handler(fit, container, context):
+    container.boostItemAttr("massBonusPercentage", container.getModifiedChargeAttr("massBonusPercentageBonus"))

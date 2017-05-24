@@ -6,5 +6,5 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    module.boostItemAttr("maxTargetRangeBonus", module.getModifiedChargeAttr("maxTargetRangeBonusBonus"))
+def handler(fit, container, context):
+    container.boostItemAttr("maxTargetRangeBonus", container.getModifiedChargeAttr("maxTargetRangeBonusBonus"))

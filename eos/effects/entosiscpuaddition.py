@@ -5,5 +5,5 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    module.increaseItemAttr("cpu", module.getModifiedItemAttr("entosisCPUAdd"))
+def handler(fit, container, context):
+    container.increaseItemAttr("cpu", container.getModifiedItemAttr("entosisCPUAdd"))

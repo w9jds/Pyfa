@@ -5,6 +5,6 @@
 effectType = "active"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     # This effect enables the ACTIVE state for auto targeting systems.
     pass

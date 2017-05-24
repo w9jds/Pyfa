@@ -6,6 +6,6 @@
 effectType = "overheat"
 
 
-def handler(fit, module, context):
-    module.boostItemAttr("duration", module.getModifiedItemAttr("overloadSelfDurationBonus"))
-    module.boostItemAttr("shieldBonus", module.getModifiedItemAttr("overloadShieldBonus"), stackingPenalties=True)
+def handler(fit, container, context):
+    container.boostItemAttr("duration", container.getModifiedItemAttr("overloadSelfDurationBonus"))
+    container.boostItemAttr("shieldBonus", container.getModifiedItemAttr("overloadShieldBonus"), stackingPenalties=True)

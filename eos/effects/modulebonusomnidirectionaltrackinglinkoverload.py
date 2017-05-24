@@ -5,10 +5,10 @@
 effectType = "overheat"
 
 
-def handler(fit, module, context):
-    overloadBonus = module.getModifiedItemAttr("overloadTrackingModuleStrengthBonus")
-    module.boostItemAttr("maxRangeBonus", overloadBonus)
-    module.boostItemAttr("falloffBonus", overloadBonus)
-    module.boostItemAttr("trackingSpeedBonus", overloadBonus)
-    module.boostItemAttr("aoeCloudSizeBonus", overloadBonus)
-    module.boostItemAttr("aoeVelocityBonus", overloadBonus)
+def handler(fit, container, context):
+    overloadBonus = container.getModifiedItemAttr("overloadTrackingModuleStrengthBonus")
+    container.boostItemAttr("maxRangeBonus", overloadBonus)
+    container.boostItemAttr("falloffBonus", overloadBonus)
+    container.boostItemAttr("trackingSpeedBonus", overloadBonus)
+    container.boostItemAttr("aoeCloudSizeBonus", overloadBonus)
+    container.boostItemAttr("aoeVelocityBonus", overloadBonus)

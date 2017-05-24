@@ -5,7 +5,7 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("Missile Launcher Operation"),
-                                    "maxVelocity", module.getModifiedItemAttr("missileVelocityBonus"),
+                                    "maxVelocity", container.getModifiedItemAttr("missileVelocityBonus"),
                                     stackingPenalties=True)

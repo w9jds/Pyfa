@@ -6,7 +6,7 @@ runTime = "early"
 effectType = ("projected", "passive")
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill("Gunnery"),
-                                     "trackingSpeed", module.getModifiedItemAttr("trackingSpeedMultiplier"),
+                                     "trackingSpeed", container.getModifiedItemAttr("trackingSpeedMultiplier"),
                                      stackingPenalties=True, penaltyGroup="postMul")

@@ -5,5 +5,5 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.forceItemAttr("warpBubbleImmune", module.getModifiedItemAttr("warpBubbleImmuneModifier"))
+def handler(fit, container, context):
+    fit.ship.forceItemAttr("warpBubbleImmune", container.getModifiedItemAttr("warpBubbleImmuneModifier"))

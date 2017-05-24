@@ -5,5 +5,5 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.increaseItemAttr("shieldCapacity", module.getModifiedItemAttr("shieldCapacity"))
+def handler(fit, container, context):
+    fit.ship.increaseItemAttr("shieldCapacity", container.getModifiedItemAttr("shieldCapacity"))

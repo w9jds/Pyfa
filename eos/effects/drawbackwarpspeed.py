@@ -5,5 +5,5 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.boostItemAttr("warpSpeedMultiplier", module.getModifiedItemAttr("drawback"), stackingPenalties=True)
+def handler(fit, container, context):
+    fit.ship.boostItemAttr("warpSpeedMultiplier", container.getModifiedItemAttr("drawback"), stackingPenalties=True)

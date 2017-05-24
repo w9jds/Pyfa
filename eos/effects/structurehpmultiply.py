@@ -1,3 +1,4 @@
+container
 # structureHPMultiply
 #
 # Used by:
@@ -6,5 +7,5 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.multiplyItemAttr("hp", module.getModifiedItemAttr("structureHPMultiplier"))
+def handler(fit, container, context):
+    fit.ship.multiplyItemAttr("hp", container.getModifiedItemAttr("structureHPMultiplier"))

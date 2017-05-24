@@ -5,7 +5,7 @@
 effectType = "active"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     for x in xrange(1, 4):
-        value = module.getModifiedChargeAttr("warfareBuff{}Multiplier".format(x))
-        module.multiplyItemAttr("warfareBuff{}Value".format(x), value)
+        value = container.getModifiedChargeAttr("warfareBuff{}Multiplier".format(x))
+        container.multiplyItemAttr("warfareBuff{}Value".format(x), value)

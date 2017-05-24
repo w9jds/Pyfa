@@ -7,5 +7,5 @@
 effectType = "overheat"
 
 
-def handler(fit, module, context):
-    module.boostItemAttr("damageMultiplier", module.getModifiedItemAttr("overloadDamageModifier"))
+def handler(fit, container, context):
+    container.boostItemAttr("damageMultiplier", container.getModifiedItemAttr("overloadDamageModifier"))

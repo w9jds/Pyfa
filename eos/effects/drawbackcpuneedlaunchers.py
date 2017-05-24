@@ -5,6 +5,6 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Missile Launcher Operation"),
-                                  "cpu", module.getModifiedItemAttr("drawback"))
+                                  "cpu", container.getModifiedItemAttr("drawback"))
