@@ -258,7 +258,7 @@ class AttributeGrid(wxpg.PropertyGrid):
         self.itemView.Select(self.itemView.GetFirstSelected(), on=False)
         self.Clear()
 
-    def Clear(self):
+    def Clear(self, **kwargs):
         self.item = None
         self.btn.Enable(False)
         wxpg.PropertyGrid.Clear(self)

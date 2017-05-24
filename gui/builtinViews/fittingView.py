@@ -219,7 +219,7 @@ class FittingView(d.Display):
         if drag_type == "fit":
             wx.PostEvent(self.mainFrame, gui.shipBrowser.FitSelected(fitID=fitID))
 
-    def Destroy(self):
+    def Destroy(self, **kwargs):
         self.parent.Unbind(EVT_NOTEBOOK_PAGE_CHANGED, handler=self.pageChanged)
         self.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.fitChanged)
         self.mainFrame.Unbind(gui.shipBrowser.EVT_FIT_RENAMED, handler=self.fitRenamed)

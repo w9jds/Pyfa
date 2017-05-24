@@ -44,7 +44,7 @@ class CharacterTextValidor(BaseValidator):
     def __init__(self):
         BaseValidator.__init__(self)
 
-    def Clone(self):
+    def Clone(self, **kwargs):
         return CharacterTextValidor()
 
     def Validate(self, win):
@@ -259,7 +259,7 @@ class CharacterEditor(wx.Frame):
         if event is not None:
             event.Skip()
 
-    def Destroy(self):
+    def Destroy(self, **kwargs):
         sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         if fitID is not None:

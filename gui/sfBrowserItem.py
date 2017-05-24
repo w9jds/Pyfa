@@ -263,7 +263,7 @@ class SFBrowserItem(wx.Window):
         self.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeaveWindow)
         self.Bind(wx.EVT_MOTION, self.OnMotion)
 
-    def Refresh(self):
+    def Refresh(self, **kwargs):
         self.RenderBackground()
         wx.Window.Refresh(self)
 

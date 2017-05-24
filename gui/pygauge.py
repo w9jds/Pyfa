@@ -98,10 +98,11 @@ class PyGauge(wx.PyWindow):
         self._showRemaining = False
         self.Refresh()
 
-    def DoGetBestSize(self):
+    def DoGetBestSize(self, **kwargs):
         """
         Overridden base class virtual. Determines the best size of the
         button based on the label and bezel size.
+        :param **kwargs: 
         """
 
         return wx.Size(self._size[0], self._size[1])
