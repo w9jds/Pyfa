@@ -59,7 +59,8 @@ class Miscellanea(ViewColumn):
     def getImageId(self, mod):
         return -1
 
-    def getParameters(self):
+    @staticmethod
+    def getParameters():
         return ("displayName", bool, False), ("showIcon", bool, True)
 
     def __getData(self, stuff):
