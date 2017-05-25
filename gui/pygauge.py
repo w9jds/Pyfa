@@ -102,7 +102,7 @@ class PyGauge(wx.PyWindow):
         """
         Overridden base class virtual. Determines the best size of the
         button based on the label and bezel size.
-        :param **kwargs: 
+        :param **kwargs:
         """
 
         return wx.Size(self._size[0], self._size[1])
