@@ -36,14 +36,14 @@ class AmmoIcon(ViewColumn):
     def getText(self, mod):
         return ""
 
-    def getImageId(self, stuff):
-        if not isinstance(stuff, Module):
+    def getImageId(self, mod):
+        if not isinstance(mod, Module):
             return -1
 
-        if stuff.charge is None:
+        if mod.charge is None:
             return -1
         else:
-            iconFile = stuff.charge.icon.iconFile if stuff.charge.icon else ""
+            iconFile = mod.charge.icon.iconFile if mod.charge.icon else ""
             if iconFile:
                 return self.fittingView.imageList.GetImageIndex(iconFile, "icons")
             else:

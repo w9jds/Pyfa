@@ -47,8 +47,8 @@ class SlotColumn(ViewColumn):
 
         return ""
 
-    def getImageId(self, stuff):
-        slot_name = Slot.getName(stuff.slot)
+    def getImageId(self, mod):
+        slot_name = Slot.getName(mod.slot)
 
         if slot_name:
             slot_icon = self.fittingView.imageList.GetImageIndex("slot_%s_small" % slot_name.lower(), "gui")
