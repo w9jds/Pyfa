@@ -18,7 +18,7 @@ class ShipJump(ContextMenu):
 
         return srcContext == "fittingShip"
 
-    def getText(self, itmContext, selection):
+    def getContextMenuText(self, itmContext, selection):
         return "Open in Fitting Browser"
 
     def activate(self, fullContext, selection, i):

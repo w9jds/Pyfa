@@ -53,7 +53,7 @@ class ModuleAmmoPicker(ContextMenu):
         self.charges = list(filter(lambda charge: Market.getInstance().getPublicityByItem(charge), validCharges))
         return len(self.charges) > 0
 
-    def getText(self, itmContext, selection):
+    def getContextMenuText(self, itmContext, selection):
         return "Charge"
 
     def turretSorter(self, charge):

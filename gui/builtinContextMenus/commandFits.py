@@ -45,7 +45,7 @@ class CommandFits(ContextMenu):
 
         return True
 
-    def getText(self, itmContext, selection):
+    def getContextMenuText(self, itmContext, selection):
         return "Command Fits"
 
     def addFit(self, menu, fit, includeShip=False):

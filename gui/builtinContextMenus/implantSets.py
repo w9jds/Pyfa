@@ -26,7 +26,7 @@ class ImplantSets(ContextMenu):
 
         return srcContext in ("implantView", "implantEditor")
 
-    def getText(self, itmContext, selection):
+    def getContextMenuText(self, itmContext, selection):
         return "Add Implant Set"
 
     def getSubMenu(self, context, selection, rootMenu, i, pitem):

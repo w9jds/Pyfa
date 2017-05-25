@@ -32,7 +32,7 @@ class TargetResists(ContextMenu):
 
         return len(self.patterns) > 0
 
-    def getText(self, itmContext, selection):
+    def getContextMenuText(self, itmContext, selection):
         return "Target Resists"
 
     def handleResistSwitch(self, event):

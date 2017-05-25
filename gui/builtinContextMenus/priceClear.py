@@ -18,7 +18,7 @@ class PriceClear(ContextMenu):
 
         return srcContext in ("priceViewFull", "priceViewMinimal")
 
-    def getText(self, itmContext, selection):
+    def getContextMenuText(self, itmContext, selection):
         return "Reset Price Cache"
 
     def activate(self, fullContext, selection, i):

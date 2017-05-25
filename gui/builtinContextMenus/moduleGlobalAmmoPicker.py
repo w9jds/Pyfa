@@ -15,7 +15,7 @@ class ModuleGlobalAmmoPicker(ModuleAmmoPicker):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = ContextMenuSettings.getInstance()
 
-    def getText(self, itmContext, selection):
+    def getContextMenuText(self, itmContext, selection):
         return "Charge (All)"
 
     def handleAmmoSwitch(self, event):

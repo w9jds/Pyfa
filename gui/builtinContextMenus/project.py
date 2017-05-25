@@ -29,7 +29,7 @@ class Project(ContextMenu):
         item = selection[0]
         return item.isType("projected")
 
-    def getText(self, itmContext, selection):
+    def getContextMenuText(self, itmContext, selection):
         return "Project {0} onto Fit".format(itmContext)
 
     def activate(self, fullContext, selection, i):
