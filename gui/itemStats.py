@@ -812,7 +812,7 @@ class ItemDependents(wx.Panel):
 
         for x in sorted(levelToItems.keys()):
             items = levelToItems[x]
-            items.sort(key=lambda x: x.name)
+            items.sort(key=lambda _: _.name)
 
             child = self.reqTree.AppendItem(parent, "Level {}".format(self.romanNb[int(x)]), sbIconId)
             for item in items:

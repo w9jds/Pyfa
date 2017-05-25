@@ -266,17 +266,17 @@ def getItemsByCategory(_filter, where=None, eager=None):
 
 
 @cachedQuery(3, "where", "nameLike", "join")
-def searchItems(nameLike, where=None, join=None, eager=None, result_limit=150):
+def searchItems(nameLike, where=None, _join=None, eager=None, result_limit=150):
     if not isinstance(nameLike, basestring):
         raise TypeError("Need string as argument")
 
-    if join is None:
-        join = tuple()
+    if _join is None:
+        _join = tuple()
 
-    if not hasattr(join, "__iter__"):
-        join = (join,)
+    if not hasattr(_join, "__iter__"):
+        _join = (_join,)
 
-    items = gamedata_session.query(Item).options(*processEager(eager)).join(*join)
+    items = gamedata_session.query(Item).options(*processEager(eager)).join(*_join)
     for token in nameLike.split(' '):
         token_safe = u"%{0}%".format(sqlizeString(token))
         if where is not None:
