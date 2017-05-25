@@ -139,7 +139,7 @@ class ContextMenu(object):
         else:
             event.Skip()
 
-    def display(self, context, selection):
+    def display(self, srcContext, selection):
         raise NotImplementedError()
 
     def activate(self, fullContext, selection, i):

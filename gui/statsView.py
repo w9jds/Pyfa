@@ -32,7 +32,7 @@ class StatsView(object):
     def getView(cls, name):
         return cls.views[name]
 
-    def populatePanel(self, panel):
+    def populatePanel(self, contentPanel, headerPanel):
         raise NotImplementedError()
 
     def getHeaderText(self, fit):
