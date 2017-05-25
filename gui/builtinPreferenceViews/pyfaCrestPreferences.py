@@ -19,7 +19,7 @@ if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION 
 class PFCrestPref(PreferenceView):
     title = "CREST"
 
-    def populatePanel(self, panel):
+    def populatePrefPanel(self, panel):
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = CRESTSettings.getInstance()

@@ -18,7 +18,7 @@ class PFStatViewPref(PreferenceView):
         pass
 
     # noinspection PyAttributeOutsideInit
-    def populatePanel(self, panel):
+    def populatePrefPanel(self, panel):
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.stTitle = wx.StaticText(panel, wx.ID_ANY, self.title, wx.DefaultPosition, wx.DefaultSize, 0)

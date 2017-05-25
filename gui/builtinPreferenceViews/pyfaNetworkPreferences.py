@@ -13,7 +13,7 @@ from gui.utils.fonts import Fonts
 class PFNetworkPref(PreferenceView):
     title = "Network"
 
-    def populatePanel(self, panel):
+    def populatePrefPanel(self, panel):
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = NetworkSettings.getInstance()

@@ -23,7 +23,7 @@ class PFDatabasePref(PreferenceView):
     def __init__(self):
         self.databaseSettings = DatabaseSettings.getInstance()
 
-    def populatePanel(self, panel):
+    def populatePrefPanel(self, panel):
         self.dirtySettings = False
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)

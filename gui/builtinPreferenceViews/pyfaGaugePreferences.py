@@ -152,7 +152,7 @@ class PFGaugePreview(wx.Window):
 class PFGaugePref(PreferenceView):
     title = "Pyfa Gauge Theme"
 
-    def populatePanel(self, panel):
+    def populatePrefPanel(self, panel):
 
         self.InitDefaultColours()
 

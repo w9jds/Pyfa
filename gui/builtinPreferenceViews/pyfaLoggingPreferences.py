@@ -16,7 +16,7 @@ def OnDumpLogs(event):
 class PFGeneralPref(PreferenceView):
     title = "Logging"
 
-    def populatePanel(self, panel):
+    def populatePrefPanel(self, panel):
         self.dirtySettings = False
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)

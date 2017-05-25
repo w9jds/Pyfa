@@ -23,7 +23,7 @@ class PFFittingEnginePref(PreferenceView):
         pass
 
     # noinspection PyAttributeOutsideInit
-    def populatePanel(self, panel):
+    def populatePrefPanel(self, panel):
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         helpCursor = wx.StockCursor(wx.CURSOR_QUESTION_ARROW)

@@ -19,7 +19,7 @@ class PFHTMLExportPref(PreferenceView):
     desc4 = ("Export Fittings in a minimal HTML Version, just containing the fittings links "
              "without any visual styling")
 
-    def populatePanel(self, panel):
+    def populatePrefPanel(self, panel):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.HTMLExportSettings = HTMLExportSettings.getInstance()
         self.dirtySettings = False
