@@ -9,5 +9,5 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.multiplyItemAttr("capacitorCapacity", module.getModifiedItemAttr("capacitorCapacityMultiplier"))
+def handler(fit, container, context):
+    fit.ship.multiplyItemAttr("capacitorCapacity", container.getModifiedItemAttr("capacitorCapacityMultiplier"))

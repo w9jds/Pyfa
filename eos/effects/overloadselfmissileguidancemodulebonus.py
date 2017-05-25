@@ -5,11 +5,11 @@
 effectType = "overheat"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     for tgtAttr in (
             "aoeCloudSizeBonus",
             "explosionDelayBonus",
             "missileVelocityBonus",
             "aoeVelocityBonus"
     ):
-        module.boostItemAttr(tgtAttr, module.getModifiedItemAttr("overloadTrackingModuleStrengthBonus"))
+        container.boostItemAttr(tgtAttr, container.getModifiedItemAttr("overloadTrackingModuleStrengthBonus"))

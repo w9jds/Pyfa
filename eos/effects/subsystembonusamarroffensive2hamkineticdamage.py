@@ -5,7 +5,7 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("Heavy Assault Missiles"),
-                                    "kineticDamage", module.getModifiedItemAttr("subsystemBonusAmarrOffensive2"),
+                                    "kineticDamage", container.getModifiedItemAttr("subsystemBonusAmarrOffensive2"),
                                     skill="Amarr Offensive Systems")

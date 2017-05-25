@@ -6,7 +6,7 @@ runTime = "early"
 effectType = ("projected", "passive")
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill("Small Hybrid Turret"),
-                                     "damageMultiplier", module.getModifiedItemAttr("smallWeaponDamageMultiplier"),
+                                     "damageMultiplier", container.getModifiedItemAttr("smallWeaponDamageMultiplier"),
                                      stackingPenalties=True)

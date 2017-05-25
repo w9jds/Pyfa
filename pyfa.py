@@ -365,8 +365,8 @@ if __name__ == "__main__":
 
         requirements_path = config.getPyfaPath(u"requirements.txt")
         if os.path.exists(requirements_path):
-            file = open(requirements_path, "r")
-            for requirement in file:
+            filename = open(requirements_path, "r")
+            for requirement in filename:
                 requirement = requirement.replace("\n", "")
                 requirement_parsed = requirement.split(' ')
                 if requirement_parsed:

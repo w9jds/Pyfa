@@ -5,6 +5,6 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining"),
-                                  "cpu", module.getModifiedItemAttr("cpuPenaltyPercent"))
+                                  "cpu", container.getModifiedItemAttr("cpuPenaltyPercent"))

@@ -10,5 +10,5 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    module.multiplyItemAttr("falloff", module.getModifiedChargeAttr("fallofMultiplier") or 1)
+def handler(fit, container, context):
+    container.multiplyItemAttr("falloff", container.getModifiedChargeAttr("fallofMultiplier") or 1)

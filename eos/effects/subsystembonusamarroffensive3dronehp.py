@@ -5,8 +5,8 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     for layer in ("shieldCapacity", "armorHP", "hp"):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill("Drones"), layer,
-                                     module.getModifiedItemAttr("subsystemBonusAmarrOffensive3"),
+                                     container.getModifiedItemAttr("subsystemBonusAmarrOffensive3"),
                                      skill="Amarr Offensive Systems")

@@ -6,7 +6,7 @@ runTime = "late"
 effectType = "active"
 
 
-def handler(fit, module, context):
-    amount = module.getModifiedItemAttr("armorDamageAmount")
-    speed = module.cycleTime / 1000.0
+def handler(fit, container, context):
+    amount = container.getModifiedItemAttr("armorDamageAmount")
+    speed = container.cycleTime / 1000.0
     fit.extraAttributes.increase("armorRepair", amount / speed)

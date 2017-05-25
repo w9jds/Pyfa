@@ -120,7 +120,7 @@ class SearchWorkerThread(threading.Thread):
                 filter_ = None
 
             results = eos.db.searchItems(request, where=filter_,
-                                         join=(types_Item.group, types_Group.category),
+                                         _join=(types_Item.group, types_Group.category),
                                          eager=("icon", "group.category", "metaGroup", "metaGroup.parent"),
                                          result_limit=self.generalSettings.get("itemSearchLimit"),
                                          )
@@ -785,7 +785,7 @@ class Market(object):
         """Find ships according to given text pattern"""
         filter_ = types_Category.name.in_(["Ship", "Structure"])
         results = eos.db.searchItems(name, where=filter_,
-                                     join=(types_Item.group, types_Group.category),
+                                     _join=(types_Item.group, types_Group.category),
                                      eager=("icon", "group.category", "metaGroup", "metaGroup.parent"),
                                      result_limit=self.generalSettings.get("itemSearchLimit"),
                                      )

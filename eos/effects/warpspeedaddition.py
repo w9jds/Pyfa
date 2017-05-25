@@ -5,5 +5,5 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.increaseItemAttr("warpSpeedMultiplier", module.getModifiedItemAttr("warpSpeedAdd"))
+def handler(fit, container, context):
+    fit.ship.increaseItemAttr("warpSpeedMultiplier", container.getModifiedItemAttr("warpSpeedAdd"))

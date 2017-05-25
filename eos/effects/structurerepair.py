@@ -6,7 +6,7 @@ effectType = "active"
 runTime = "late"
 
 
-def handler(fit, module, context):
-    amount = module.getModifiedItemAttr("structureDamageAmount")
-    speed = module.cycleTime / 1000.0
+def handler(fit, container, context):
+    amount = container.getModifiedItemAttr("structureDamageAmount")
+    speed = container.cycleTime / 1000.0
     fit.extraAttributes.increase("hullRepair", amount / speed)

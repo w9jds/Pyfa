@@ -6,5 +6,5 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.multiplyItemAttr("armorHP", module.getModifiedItemAttr("armorHPMultiplier"))
+def handler(fit, container, context):
+    fit.ship.multiplyItemAttr("armorHP", container.getModifiedItemAttr("armorHPMultiplier"))

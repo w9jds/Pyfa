@@ -7,5 +7,5 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    module.multiplyItemAttr("speed", module.getModifiedChargeAttr("speedMultiplier") or 1)
+def handler(fit, container, context):
+    container.multiplyItemAttr("speed", container.getModifiedChargeAttr("speedMultiplier") or 1)

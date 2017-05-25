@@ -5,5 +5,5 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.increaseItemAttr("warmScrambleStatus", module.getModifiedItemAttr("warpScrambleStrength"))
+def handler(fit, container, context):
+    fit.ship.increaseItemAttr("warmScrambleStatus", container.getModifiedItemAttr("warpScrambleStrength"))

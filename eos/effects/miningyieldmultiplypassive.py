@@ -5,6 +5,6 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill("Mining"),
-                                     "miningAmount", module.getModifiedItemAttr("miningAmountMultiplier"))
+                                     "miningAmount", container.getModifiedItemAttr("miningAmountMultiplier"))

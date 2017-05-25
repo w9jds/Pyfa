@@ -219,7 +219,7 @@ class FittingView(d.Display):
         if drag_type == "fit":
             wx.PostEvent(self.mainFrame, gui.shipBrowser.FitSelected(fitID=fitID))
 
-    def Destroy(self):
+    def Destroy(self, **kwargs):
         self.parent.Unbind(EVT_NOTEBOOK_PAGE_CHANGED, handler=self.pageChanged)
         self.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.fitChanged)
         self.mainFrame.Unbind(gui.shipBrowser.EVT_FIT_RENAMED, handler=self.fitRenamed)
@@ -412,17 +412,17 @@ class FittingView(d.Display):
 
         dstRow, _ = self.HitTest((x, y))
         if dstRow != -1 and dstRow not in self.blanks:
-            module = self.mods[dstRow]
+            _module = self.mods[dstRow]
 
-            if not isinstance(module, Module):
+            if not isinstance(_module, Module):
                 return
 
             sFit = Fit.getInstance()
             fit = sFit.getFit(self.activeFitID)
             typeID = fit.cargo[srcIdx].item.ID
 
-            sFit.moveCargoToModule(self.mainFrame.getActiveFit(), module.modPosition, srcIdx,
-                                   mstate.CmdDown() and module.isEmpty)
+            sFit.moveCargoToModule(self.mainFrame.getActiveFit(), _module.modPosition, srcIdx,
+                                   mstate.CmdDown() and _module.isEmpty)
 
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit(), action="modadd", typeID=typeID))
 

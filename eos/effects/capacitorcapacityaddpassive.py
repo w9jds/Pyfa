@@ -6,6 +6,6 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.ship.increaseItemAttr("capacitorCapacity",
-                              module.getModifiedItemAttr("capacitorCapacity"))
+                              container.getModifiedItemAttr("capacitorCapacity"))

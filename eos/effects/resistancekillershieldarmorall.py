@@ -5,8 +5,8 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     for layer in ('armor', 'shield'):
         for dmgType in ('em', 'thermal', 'kinetic', 'explosive'):
             tgtAttr = '{}{}DamageResonance'.format(layer, dmgType.capitalize())
-            fit.ship.forceItemAttr(tgtAttr, module.getModifiedItemAttr("resistanceKiller"))
+            fit.ship.forceItemAttr(tgtAttr, container.getModifiedItemAttr("resistanceKiller"))

@@ -5,11 +5,11 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemMultiply(
             lambda mod: mod.item.requiresSkill("Small Projectile Turret"),
             "trackingSpeed",
-            1 / module.getModifiedItemAttr("modeTrackingPostDiv"),
+            1 / container.getModifiedItemAttr("modeTrackingPostDiv"),
             stackingPenalties=True,
             penaltyGroup="postDiv"
     )

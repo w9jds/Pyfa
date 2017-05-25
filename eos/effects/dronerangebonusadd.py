@@ -5,6 +5,6 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    amount = module.getModifiedItemAttr("droneRangeBonus")
+def handler(fit, container, context):
+    amount = container.getModifiedItemAttr("droneRangeBonus")
     fit.extraAttributes.increase("droneControlRange", amount)

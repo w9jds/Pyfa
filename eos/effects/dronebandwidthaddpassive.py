@@ -6,5 +6,5 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.increaseItemAttr("droneBandwidth", module.getModifiedItemAttr("droneBandwidth"))
+def handler(fit, container, context):
+    fit.ship.increaseItemAttr("droneBandwidth", container.getModifiedItemAttr("droneBandwidth"))

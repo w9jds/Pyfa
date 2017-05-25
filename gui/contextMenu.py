@@ -78,9 +78,9 @@ class ContextMenu(object):
                     bitmap = m.getBitmap(srcContext, selection)
                     multiple = not isinstance(bitmap, wx.Bitmap)
                     for it, text in enumerate(texts):
-                        id = cls.nextID()
-                        rootItem = wx.MenuItem(rootMenu, id, text)
-                        rootMenu.info[id] = (m, fullContext, it)
+                        _id = cls.nextID()
+                        rootItem = wx.MenuItem(rootMenu, _id, text)
+                        rootMenu.info[_id] = (m, fullContext, it)
 
                         sub = m.getSubMenu(srcContext, selection, rootMenu, it, rootItem)
 

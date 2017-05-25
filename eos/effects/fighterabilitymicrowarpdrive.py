@@ -13,8 +13,8 @@ effectType = "active"
 runTime = "late"
 
 
-def handler(fit, module, context):
-    module.boostItemAttr("maxVelocity", module.getModifiedItemAttr("fighterAbilityMicroWarpDriveSpeedBonus"))
-    module.boostItemAttr("signatureRadius",
-                         module.getModifiedItemAttr("fighterAbilityMicroWarpDriveSignatureRadiusBonus"),
-                         stackingPenalties=True)
+def handler(fit, container, context):
+    container.boostItemAttr("maxVelocity", container.getModifiedItemAttr("fighterAbilityMicroWarpDriveSpeedBonus"))
+    container.boostItemAttr("signatureRadius",
+                            container.getModifiedItemAttr("fighterAbilityMicroWarpDriveSignatureRadiusBonus"),
+                            stackingPenalties=True)

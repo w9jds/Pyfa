@@ -6,6 +6,6 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.increaseItemAttr("turretSlotsLeft", module.getModifiedItemAttr("turretHardPointModifier"))
-    fit.ship.increaseItemAttr("launcherSlotsLeft", module.getModifiedItemAttr("launcherHardPointModifier"))
+def handler(fit, container, context):
+    fit.ship.increaseItemAttr("turretSlotsLeft", container.getModifiedItemAttr("turretHardPointModifier"))
+    fit.ship.increaseItemAttr("launcherSlotsLeft", container.getModifiedItemAttr("launcherHardPointModifier"))

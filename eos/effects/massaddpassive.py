@@ -5,5 +5,5 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.increaseItemAttr("mass", module.getModifiedItemAttr("mass") or 0)
+def handler(fit, container, context):
+    fit.ship.increaseItemAttr("mass", container.getModifiedItemAttr("mass") or 0)

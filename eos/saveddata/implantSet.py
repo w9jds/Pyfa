@@ -40,9 +40,9 @@ class ImplantSet(object):
               "# [Implant name]\n" \
               "# ...\n\n"
 
-        for set in sets:
-            out += "[{}]\n".format(set.name)
-            for implant in set.implants:
+        for implant_set in sets:
+            out += "[{}]\n".format(implant_set.name)
+            for implant in implant_set.implants:
                 out += "{}\n".format(implant.item.name)
             out += "\n"
 

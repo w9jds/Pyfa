@@ -215,7 +215,7 @@ class ServerError(Error):
     pass
 
 
-def EVEAPIConnection(url="api.eveonline.com", cacheHandler=None, proxy=None, proxySSL=False):
+def EVEAPIConnection(url="api.eveonline.com", cacheHandler=None, _proxy=None, _proxySSL=False):
     # Creates an API object through which you can call remote functions.
     #
     # The following optional arguments may be provided:
@@ -262,8 +262,8 @@ def EVEAPIConnection(url="api.eveonline.com", cacheHandler=None, proxy=None, pro
     ctx._handler = cacheHandler
     ctx._scheme = p.scheme
     ctx._host = p.netloc
-    ctx._proxy = proxy or globals()["proxy"]
-    ctx._proxySSL = proxySSL or globals()["proxySSL"]
+    ctx._proxy = _proxy or globals()["proxy"]
+    ctx._proxySSL = _proxySSL or globals()["proxySSL"]
     return ctx
 
 

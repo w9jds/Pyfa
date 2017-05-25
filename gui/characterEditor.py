@@ -44,7 +44,7 @@ class CharacterTextValidor(BaseValidator):
     def __init__(self):
         BaseValidator.__init__(self)
 
-    def Clone(self):
+    def Clone(self, **kwargs):
         return CharacterTextValidor()
 
     def Validate(self, win):
@@ -259,7 +259,7 @@ class CharacterEditor(wx.Frame):
         if event is not None:
             event.Skip()
 
-    def Destroy(self):
+    def Destroy(self, **kwargs):
         sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         if fitID is not None:
@@ -748,7 +748,7 @@ class APIView(wx.Panel):
         sChar = Character.getInstance()
         try:
             activeChar = self.charEditor.entityEditor.getActiveEntity()
-            list = sChar.apiCharList(activeChar.ID, self.inputID.GetLineText(0), self.inputKey.GetLineText(0))
+            _list = sChar.apiCharList(activeChar.ID, self.inputID.GetLineText(0), self.inputKey.GetLineText(0))
         except AuthenticationError, e:
             msg = "Authentication failure. Please check keyID and vCode combination."
             pyfalog.info(msg)
@@ -762,7 +762,7 @@ class APIView(wx.Panel):
             self.stStatus.SetLabel("Error:\n%s" % e.message)
         else:
             self.charChoice.Clear()
-            for charName in list:
+            for charName in _list:
                 self.charChoice.Append(charName)
 
             self.btnFetchSkills.Enable(True)

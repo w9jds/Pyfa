@@ -11,5 +11,5 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    module.multiplyItemAttr("trackingSpeed", module.getModifiedChargeAttr("trackingSpeedMultiplier"))
+def handler(fit, container, context):
+    container.multiplyItemAttr("trackingSpeed", container.getModifiedChargeAttr("trackingSpeedMultiplier"))

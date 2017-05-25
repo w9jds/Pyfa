@@ -6,5 +6,5 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    module.boostItemAttr("scanResolutionBonus", module.getModifiedChargeAttr("scanResolutionBonusBonus"))
+def handler(fit, container, context):
+    container.boostItemAttr("scanResolutionBonus", container.getModifiedChargeAttr("scanResolutionBonusBonus"))

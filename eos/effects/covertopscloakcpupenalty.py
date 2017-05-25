@@ -5,6 +5,6 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemIncrease(lambda mod: mod.item.requiresSkill("Cloaking"),
-                                     "covertCloakCPUAdd", module.getModifiedItemAttr("covertCloakCPUPenalty"))
+                                     "covertCloakCPUAdd", container.getModifiedItemAttr("covertCloakCPUPenalty"))

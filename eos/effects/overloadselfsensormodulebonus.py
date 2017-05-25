@@ -7,14 +7,14 @@
 effectType = "overheat"
 
 
-def handler(fit, module, context):
-    module.boostItemAttr("maxTargetRangeBonus", module.getModifiedItemAttr("overloadSensorModuleStrengthBonus"))
-    module.boostItemAttr("scanResolutionBonus", module.getModifiedItemAttr("overloadSensorModuleStrengthBonus"),
-                         stackingPenalties=True)
+def handler(fit, container, context):
+    container.boostItemAttr("maxTargetRangeBonus", container.getModifiedItemAttr("overloadSensorModuleStrengthBonus"))
+    container.boostItemAttr("scanResolutionBonus", container.getModifiedItemAttr("overloadSensorModuleStrengthBonus"),
+                            stackingPenalties=True)
 
     for scanType in ("Gravimetric", "Magnetometric", "Radar", "Ladar"):
-        module.boostItemAttr(
+        container.boostItemAttr(
                 "scan{}StrengthPercent".format(scanType),
-                module.getModifiedItemAttr("overloadSensorModuleStrengthBonus"),
+                container.getModifiedItemAttr("overloadSensorModuleStrengthBonus"),
                 stackingPenalties=True
         )

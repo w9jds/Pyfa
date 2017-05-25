@@ -7,5 +7,5 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.multiplyItemAttr("capacity", module.getModifiedItemAttr("cargoCapacityMultiplier"))
+def handler(fit, container, context):
+    fit.ship.multiplyItemAttr("capacity", container.getModifiedItemAttr("cargoCapacityMultiplier"))

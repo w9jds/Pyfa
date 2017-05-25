@@ -5,5 +5,5 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    module.boostItemAttr("duration", module.getModifiedChargeAttr("durationBonus"))
+def handler(fit, container, context):
+    container.boostItemAttr("duration", container.getModifiedChargeAttr("durationBonus"))

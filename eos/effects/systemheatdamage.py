@@ -6,6 +6,6 @@ runTime = "early"
 effectType = ("projected", "passive")
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemMultiply(lambda mod: "heatDamage" in mod.itemModifiedAttributes,
-                                     "heatDamage", module.getModifiedItemAttr("heatDamageMultiplier"))
+                                     "heatDamage", container.getModifiedItemAttr("heatDamageMultiplier"))

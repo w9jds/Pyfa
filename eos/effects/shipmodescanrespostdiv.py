@@ -2,10 +2,10 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.ship.multiplyItemAttr(
             "scanResolution",
-            1 / module.getModifiedItemAttr("modeScanResPostDiv"),
+            1 / container.getModifiedItemAttr("modeScanResPostDiv"),
             stackingPenalties=True,
             penaltyGroup="postDiv"
     )

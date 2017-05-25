@@ -12,10 +12,10 @@ class BaseValidator(wx.PyValidator):
     def Validate(self, win):
         raise NotImplementedError()
 
-    def TransferToWindow(self):
+    def TransferToWindow(self, **kwargs):
         return True
 
-    def TransferFromWindow(self):
+    def TransferFromWindow(self, **kwargs):
         return True
 
 

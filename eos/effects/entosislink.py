@@ -5,5 +5,5 @@
 effectType = "active"
 
 
-def handler(fit, module, context):
-    fit.ship.forceItemAttr("disallowAssistance", module.getModifiedItemAttr("disallowAssistance"))
+def handler(fit, container, context):
+    fit.ship.forceItemAttr("disallowAssistance", container.getModifiedItemAttr("disallowAssistance"))

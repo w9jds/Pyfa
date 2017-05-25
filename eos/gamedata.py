@@ -232,8 +232,8 @@ class Item(EqBase):
         info = getattr(cls, "MOVE_ATTR_INFO", None)
         if info is None:
             cls.MOVE_ATTR_INFO = info = []
-            for id in cls.MOVE_ATTRS:
-                info.append(eos.db.getAttributeInfo(id))
+            for _id in cls.MOVE_ATTRS:
+                info.append(eos.db.getAttributeInfo(_id))
 
         return info
 
@@ -390,7 +390,7 @@ class Item(EqBase):
             # thus keep old mechanism for now
             except KeyError:
                 # Define race map
-                map = {
+                race_map = {
                     1  : "caldari",
                     2  : "minmatar",
                     4  : "amarr",
@@ -409,8 +409,8 @@ class Item(EqBase):
                 # Check primary and secondary required skills' races
                 if race is None:
                     skillRaces = tuple(filter(lambda rid: rid, (s.raceID for s in tuple(self.requiredSkills.keys()))))
-                    if sum(skillRaces) in map:
-                        race = map[sum(skillRaces)]
+                    if sum(skillRaces) in race_map:
+                        race = race_map[sum(skillRaces)]
                         if race == "angelserp":
                             if skillRaces == (2, 8):
                                 race = "angel"
@@ -418,7 +418,7 @@ class Item(EqBase):
                                 race = "serpentis"
                 # Rely on item's own raceID as last resort
                 if race is None:
-                    race = map.get(self.raceID, None)
+                    race = race_map.get(self.raceID, None)
                 # Store our final value
                 self.__race = race
         return self.__race

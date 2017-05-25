@@ -398,14 +398,14 @@ class FittingsTreeView(wx.Panel):
         tree = self.fittingsTreeCtrl
         tree.DeleteChildren(root)
 
-        dict = {}
+        skilltree_dict = {}
         fits = data['items']
         for fit in fits:
-            if fit['ship']['name'] not in dict:
-                dict[fit['ship']['name']] = []
-            dict[fit['ship']['name']].append(fit)
+            if fit['ship']['name'] not in skilltree_dict:
+                skilltree_dict[fit['ship']['name']] = []
+            skilltree_dict[fit['ship']['name']].append(fit)
 
-        for name, fits in dict.iteritems():
+        for name, fits in skilltree_dict.iteritems():
             shipID = tree.AppendItem(root, name)
             for fit in fits:
                 fitId = tree.AppendItem(shipID, fit['name'])
@@ -416,19 +416,19 @@ class FittingsTreeView(wx.Panel):
     def displayFit(self, event):
         selection = self.fittingsTreeCtrl.GetSelection()
         fit = json.loads(self.fittingsTreeCtrl.GetPyData(selection))
-        list = []
+        _list = []
 
         for item in fit['items']:
             try:
                 cargo = Cargo(getItem(item['type']['id']))
                 cargo.amount = item['quantity']
-                list.append(cargo)
+                _list.append(cargo)
             except Exception as e:
                 pyfalog.critical("Exception caught in displayFit")
                 pyfalog.critical(e)
 
         self.parent.fitView.fitSelection = selection
-        self.parent.fitView.update(list)
+        self.parent.fitView.update(_list)
 
 
 class FitView(Display):

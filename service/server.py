@@ -102,7 +102,7 @@ class AuthHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             # Only stop once if we've received something in the querystring
             self.server.stop()
 
-    def log_message(self, format, *args):
+    def log_message(self, _format, *args):
         return
 
 

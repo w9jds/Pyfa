@@ -6,5 +6,5 @@ effectType = "passive"
 runTime = "early"
 
 
-def handler(fit, module, context):
-    module.boostItemAttr("signatureRadiusBonus", module.getModifiedChargeAttr("signatureRadiusBonusBonus"))
+def handler(fit, container, context):
+    container.boostItemAttr("signatureRadiusBonus", container.getModifiedChargeAttr("signatureRadiusBonusBonus"))

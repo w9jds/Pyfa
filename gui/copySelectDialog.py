@@ -47,8 +47,8 @@ class CopySelectDialog(wx.Dialog):
         selector = wx.RadioBox(self, wx.ID_ANY, label=u"Copy to the clipboard using:", choices=copyFormats,
                                style=wx.RA_SPECIFY_ROWS)
         selector.Bind(wx.EVT_RADIOBOX, self.Selected)
-        for format, tooltip in copyFormatTooltips.iteritems():
-            selector.SetItemToolTip(format, tooltip)
+        for _format, tooltip in copyFormatTooltips.iteritems():
+            selector.SetItemToolTip(_format, tooltip)
 
         self.copyFormat = CopySelectDialog.copyFormatEft
         selector.SetSelection(self.copyFormat)

@@ -5,8 +5,8 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     for damage_type in ("Em", "Explosive", "Kinetic", "Thermal"):
         fit.ship.boostItemAttr("armor{0}DamageResonance".format(damage_type),
-                               module.getModifiedItemAttr("subsystemBonusGallenteDefensive"),
+                               container.getModifiedItemAttr("subsystemBonusGallenteDefensive"),
                                skill="Gallente Defensive Systems")

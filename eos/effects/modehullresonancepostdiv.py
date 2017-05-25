@@ -5,7 +5,7 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     for srcResType, tgtResType in (
             ("Em", "em"),
             ("Explosive", "explosive"),
@@ -14,5 +14,5 @@ def handler(fit, module, context):
     ):
         fit.ship.multiplyItemAttr(
                 "{0}DamageResonance".format(tgtResType),
-                1 / module.getModifiedItemAttr("mode{0}ResistancePostDiv".format(srcResType))
+                1 / container.getModifiedItemAttr("mode{0}ResistancePostDiv".format(srcResType))
         )

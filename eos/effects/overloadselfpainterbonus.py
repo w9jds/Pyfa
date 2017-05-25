@@ -5,5 +5,5 @@
 effectType = "overheat"
 
 
-def handler(fit, module, context):
-    module.boostItemAttr("signatureRadiusBonus", module.getModifiedItemAttr("overloadPainterStrengthBonus") or 0)
+def handler(fit, container, context):
+    container.boostItemAttr("signatureRadiusBonus", container.getModifiedItemAttr("overloadPainterStrengthBonus") or 0)

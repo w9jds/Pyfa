@@ -6,8 +6,8 @@ runTime = "early"
 effectType = ("projected", "passive")
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems"),
                                      "armorDamageAmount",
-                                     module.getModifiedItemAttr("armorDamageAmountMultiplierRemote"),
+                                     container.getModifiedItemAttr("armorDamageAmountMultiplierRemote"),
                                      stackingPenalties=True)

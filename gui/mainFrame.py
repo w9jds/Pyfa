@@ -256,13 +256,13 @@ class MainFrame(wx.Frame, IPortUser):
         fits = self.prevOpenFits['pyfaOpenFits']
 
         # Remove any fits that cause exception when fetching (non-existent fits)
-        for id in fits[:]:
+        for _id in fits[:]:
             try:
-                fit = sFit.getFit(id, basic=True)
+                fit = sFit.getFit(_id, basic=True)
                 if fit is None:
-                    fits.remove(id)
+                    fits.remove(_id)
             except:
-                fits.remove(id)
+                fits.remove(_id)
 
         if not self.prevOpenFits['enabled'] or len(fits) is 0:
             # add blank page if there are no fits to be loaded
@@ -619,7 +619,7 @@ class MainFrame(wx.Frame, IPortUser):
         if event.type == CrestModes.IMPLICIT:
             menu.SetLabel(menu.ssoLoginId, "Login to EVE")
 
-    def updateCrestMenus(self, type):
+    def updateCrestMenus(self, crest_type):
         # in case we are logged in when switching, change title back
         self.titleTimer.Stop()
         self.SetTitle(self.title)
@@ -627,7 +627,7 @@ class MainFrame(wx.Frame, IPortUser):
         menu = self.GetMenuBar()
         sCrest = Crest.getInstance()
 
-        if type == CrestModes.IMPLICIT:
+        if crest_type == CrestModes.IMPLICIT:
             menu.SetLabel(menu.ssoLoginId, "Login to EVE")
             menu.Enable(menu.eveFittingsId, False)
             menu.Enable(menu.exportToEveId, False)

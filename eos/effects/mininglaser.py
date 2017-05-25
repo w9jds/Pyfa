@@ -7,6 +7,6 @@
 effectType = 'active'
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     # Set reload time to 1 second
-    module.reloadTime = 1000
+    container.reloadTime = 1000

@@ -5,7 +5,7 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Gunnery"),
-                                  "trackingSpeed", module.getModifiedItemAttr("trackingSpeedBonus"),
+                                  "trackingSpeed", container.getModifiedItemAttr("trackingSpeedBonus"),
                                   stackingPenalties=True)

@@ -30,7 +30,7 @@ class shieldRepsGraph(Graph):
         self.shieldReps = None
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-    def getFields(self):
+    def getFields(self, **kwargs):
         # return self.defaults
         return None
 

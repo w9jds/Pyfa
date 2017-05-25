@@ -5,8 +5,8 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     for resist_type in ("kinetic", "thermal", "explosive", "em"):
         fit.ship.boostItemAttr("armor" + resist_type.capitalize() + "DamageResonance",
-                               module.getModifiedItemAttr(resist_type + "DamageResistanceBonus") or 0,
+                               container.getModifiedItemAttr(resist_type + "DamageResistanceBonus") or 0,
                                stackingPenalties=True)

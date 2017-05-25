@@ -2,7 +2,7 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     # Note: we increase maxGroupActive by two.
     # If we only increased it by one, we'd get the number to stay equal
     # As Comman Processors use one themselves too

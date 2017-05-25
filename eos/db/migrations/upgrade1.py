@@ -91,8 +91,8 @@ def upgrade(saveddata_engine):
         saveddata_engine.execute("ALTER TABLE fits ADD COLUMN targetResistsID INTEGER;")
 
     # Convert modules
-    for replacement_item, list in CONVERSIONS.iteritems():
-        for retired_item in list:
+    for replacement_item, _list in CONVERSIONS.iteritems():
+        for retired_item in _list:
             saveddata_engine.execute('UPDATE "modules" SET "itemID" = ? WHERE "itemID" = ?',
                                      (replacement_item, retired_item))
             saveddata_engine.execute('UPDATE "cargo" SET "itemID" = ? WHERE "itemID" = ?',

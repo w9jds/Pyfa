@@ -5,5 +5,5 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    module.boostItemAttr("warpScrambleRange", module.getModifiedChargeAttr("warpScrambleRangeBonus"))
+def handler(fit, container, context):
+    container.boostItemAttr("warpScrambleRange", container.getModifiedChargeAttr("warpScrambleRangeBonus"))

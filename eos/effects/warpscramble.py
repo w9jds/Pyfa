@@ -5,5 +5,5 @@
 effectType = "projected", "active"
 
 
-def handler(fit, module, context):
-    fit.ship.increaseItemAttr("warpScrambleStatus", module.getModifiedItemAttr("warpScrambleStrength"))
+def handler(fit, container, context):
+    fit.ship.increaseItemAttr("warpScrambleStatus", container.getModifiedItemAttr("warpScrambleStrength"))

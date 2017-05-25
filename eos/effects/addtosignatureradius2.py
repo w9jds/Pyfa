@@ -6,5 +6,5 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.increaseItemAttr("signatureRadius", module.getModifiedItemAttr("signatureRadiusAdd"))
+def handler(fit, container, context):
+    fit.ship.increaseItemAttr("signatureRadius", container.getModifiedItemAttr("signatureRadiusAdd"))

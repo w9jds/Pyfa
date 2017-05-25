@@ -5,7 +5,7 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     for resist_type in ("Em", "Explosive", "Kinetic", "Thermal"):
         fit.ship.preAssignItemAttr("shield{0}DamageResonance".format(resist_type),
-                                   module.getModifiedItemAttr("passiveShield{0}DamageResonance".format(resist_type)))
+                                   container.getModifiedItemAttr("passiveShield{0}DamageResonance".format(resist_type)))

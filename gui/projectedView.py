@@ -148,8 +148,8 @@ class ProjectedView(d.Display):
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
     @staticmethod
-    def moduleSort(module):
-        return module.item.name
+    def moduleSort(_module):
+        return _module.item.name
 
     @staticmethod
     def fighterSort(fighter):

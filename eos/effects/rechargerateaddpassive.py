@@ -5,5 +5,5 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.increaseItemAttr("rechargeRate", module.getModifiedItemAttr("rechargeRate"))
+def handler(fit, container, context):
+    fit.ship.increaseItemAttr("rechargeRate", container.getModifiedItemAttr("rechargeRate"))

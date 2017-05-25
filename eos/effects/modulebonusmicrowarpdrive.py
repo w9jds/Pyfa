@@ -6,11 +6,11 @@ effectType = "active"
 runTime = "late"
 
 
-def handler(fit, module, context):
-    fit.ship.increaseItemAttr("mass", module.getModifiedItemAttr("massAddition"))
-    speedBoost = module.getModifiedItemAttr("speedFactor")
+def handler(fit, container, context):
+    fit.ship.increaseItemAttr("mass", container.getModifiedItemAttr("massAddition"))
+    speedBoost = container.getModifiedItemAttr("speedFactor")
     mass = fit.ship.getModifiedItemAttr("mass")
-    thrust = module.getModifiedItemAttr("speedBoostFactor")
+    thrust = container.getModifiedItemAttr("speedBoostFactor")
     fit.ship.boostItemAttr("maxVelocity", speedBoost * thrust / mass)
-    fit.ship.boostItemAttr("signatureRadius", module.getModifiedItemAttr("signatureRadiusBonus"),
+    fit.ship.boostItemAttr("signatureRadius", container.getModifiedItemAttr("signatureRadiusBonus"),
                            stackingPenalties=True)

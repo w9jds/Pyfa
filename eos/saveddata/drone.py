@@ -198,7 +198,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @validates("ID", "itemID", "chargeID", "amount", "amountActive")
     def validator(self, key, val):
-        map = {
+        _map = {
             "ID"          : lambda _val: isinstance(_val, int),
             "itemID"      : lambda _val: isinstance(_val, int),
             "chargeID"    : lambda _val: isinstance(_val, int),
@@ -206,7 +206,7 @@ class Drone(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
             "amountActive": lambda _val: isinstance(_val, int) and self.amount >= _val >= 0
         }
 
-        if not map[key](val):
+        if not _map[key](val):
             raise ValueError(str(val) + " is not a valid value for " + key)
         else:
             return val

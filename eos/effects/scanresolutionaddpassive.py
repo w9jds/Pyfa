@@ -5,5 +5,5 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.increaseItemAttr("scanResolution", module.getModifiedItemAttr("scanResolution"))
+def handler(fit, container, context):
+    fit.ship.increaseItemAttr("scanResolution", container.getModifiedItemAttr("scanResolution"))

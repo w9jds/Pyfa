@@ -112,20 +112,20 @@ class CargoView(d.Display):
         mstate = wx.GetMouseState()
 
         # Gather module information to get position
-        module = fit.modules[modIdx]
+        _module = fit.modules[modIdx]
 
         if dstRow != -1:  # we're swapping with cargo
             if mstate.CmdDown():  # if copying, append to cargo
-                sFit.addCargo(self.mainFrame.getActiveFit(), module.item.ID)
+                sFit.addCargo(self.mainFrame.getActiveFit(), _module.item.ID)
             else:  # else, move / swap
-                sFit.moveCargoToModule(self.mainFrame.getActiveFit(), module.position, dstRow)
+                sFit.moveCargoToModule(self.mainFrame.getActiveFit(), _module.position, dstRow)
         else:  # dragging to blank spot, append
-            sFit.addCargo(self.mainFrame.getActiveFit(), module.item.ID)
+            sFit.addCargo(self.mainFrame.getActiveFit(), _module.item.ID)
 
             if not mstate.CmdDown():  # if not copying, remove module
-                sFit.removeModule(self.mainFrame.getActiveFit(), module.position)
+                sFit.removeModule(self.mainFrame.getActiveFit(), _module.position)
 
-        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit(), action="moddel", typeID=module.item.ID))
+        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit(), action="moddel", typeID=_module.item.ID))
 
     def fitChanged(self, event):
         sFit = Fit.getInstance()

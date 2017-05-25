@@ -5,5 +5,5 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    module.boostItemAttr("missileVelocityBonus", module.getModifiedChargeAttr("missileVelocityBonusBonus"))
+def handler(fit, container, context):
+    container.boostItemAttr("missileVelocityBonus", container.getModifiedChargeAttr("missileVelocityBonusBonus"))

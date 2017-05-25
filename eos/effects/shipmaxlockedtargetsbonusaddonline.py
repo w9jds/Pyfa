@@ -5,5 +5,5 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.increaseItemAttr("maxLockedTargets", module.getModifiedItemAttr("maxLockedTargetsBonus"))
+def handler(fit, container, context):
+    fit.ship.increaseItemAttr("maxLockedTargets", container.getModifiedItemAttr("maxLockedTargetsBonus"))

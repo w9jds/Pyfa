@@ -5,9 +5,9 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemMultiply(
             lambda mod: mod.item.requiresSkill("High Speed Maneuvering"),
             "capacitorNeed",
-            1 / module.getModifiedItemAttr("modeMWDCapPostDiv")
+            1 / container.getModifiedItemAttr("modeMWDCapPostDiv")
     )

@@ -5,6 +5,6 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.boostItemAttr("maxVelocity", module.getModifiedItemAttr("implantBonusVelocity"),
+def handler(fit, container, context):
+    fit.ship.boostItemAttr("maxVelocity", container.getModifiedItemAttr("implantBonusVelocity"),
                            stackingPenalties=True)

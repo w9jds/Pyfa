@@ -5,6 +5,6 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.boostItemAttr("maxTargetRange", module.getModifiedItemAttr("subsystemBonusCaldariElectronic2"),
+def handler(fit, container, context):
+    fit.ship.boostItemAttr("maxTargetRange", container.getModifiedItemAttr("subsystemBonusCaldariElectronic2"),
                            skill="Caldari Electronic Systems")

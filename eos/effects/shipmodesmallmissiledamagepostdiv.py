@@ -5,11 +5,11 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     types = ("thermal", "em", "explosive", "kinetic")
     for damage_type in types:
         fit.modules.filteredChargeMultiply(lambda mod: mod.charge.requiresSkill("Rockets") or mod.charge.requiresSkill("Light Missiles"),
                                            "{}Damage".format(damage_type),
-                                           1 / module.getModifiedItemAttr("modeDamageBonusPostDiv"),
+                                           1 / container.getModifiedItemAttr("modeDamageBonusPostDiv"),
                                            stackingPenalties=True,
                                            penaltyGroup="postDiv")

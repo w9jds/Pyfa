@@ -35,7 +35,7 @@ class DmgPatternTextValidor(BaseValidator):
     def __init__(self):
         BaseValidator.__init__(self)
 
-    def Clone(self):
+    def Clone(self, **kwargs):
         return DmgPatternTextValidor()
 
     def Validate(self, win):

@@ -6,6 +6,6 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.boostItemAttr("maxVelocity", module.getModifiedItemAttr("drawback"),
+def handler(fit, container, context):
+    fit.ship.boostItemAttr("maxVelocity", container.getModifiedItemAttr("drawback"),
                            stackingPenalties=True)

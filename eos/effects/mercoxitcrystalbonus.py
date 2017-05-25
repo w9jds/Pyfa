@@ -6,7 +6,7 @@ effectType = "passive"
 runTime = "early"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("Mercoxit Processing"),
                                     "specialisationAsteroidYieldMultiplier",
-                                    module.getModifiedItemAttr("miningAmountBonus"))
+                                    container.getModifiedItemAttr("miningAmountBonus"))

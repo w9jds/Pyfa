@@ -11,7 +11,7 @@ runTime = "late"
 effectType = "active"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     damagePattern = fit.damagePattern
 
     static_adaptive_behavior = eos.config.settings['useStaticAdaptiveArmorHardener']
@@ -21,7 +21,7 @@ def handler(fit, module, context):
         for i, attr in enumerate((
                 'armorEmDamageResonance', 'armorThermalDamageResonance', 'armorKineticDamageResonance',
                 'armorExplosiveDamageResonance')):
-            fit.ship.multiplyItemAttr(attr, module.getModifiedItemAttr(attr), stackingPenalties=True, penaltyGroup="preMul")
+            fit.ship.multiplyItemAttr(attr, container.getModifiedItemAttr(attr), stackingPenalties=True, penaltyGroup="preMul")
         return
 
     # Skip if there is no damage pattern. Example: projected ships or fleet boosters
@@ -36,13 +36,13 @@ def handler(fit, module, context):
         )
         # pyfalog.debug("Damage Adjusted for Armor Resists: %f/%f/%f/%f", baseDamageTaken[0], baseDamageTaken[1], baseDamageTaken[2], baseDamageTaken[3])
 
-        resistanceShiftAmount = module.getModifiedItemAttr(
+        resistanceShiftAmount = container.getModifiedItemAttr(
                 'resistanceShiftAmount') / 100  # The attribute is in percent and we want a fraction
         RAHResistance = [
-            module.getModifiedItemAttr('armorEmDamageResonance'),
-            module.getModifiedItemAttr('armorThermalDamageResonance'),
-            module.getModifiedItemAttr('armorKineticDamageResonance'),
-            module.getModifiedItemAttr('armorExplosiveDamageResonance'),
+            container.getModifiedItemAttr('armorEmDamageResonance'),
+            container.getModifiedItemAttr('armorThermalDamageResonance'),
+            container.getModifiedItemAttr('armorKineticDamageResonance'),
+            container.getModifiedItemAttr('armorExplosiveDamageResonance'),
         ]
 
         # Simulate RAH cycles until the RAH either stops changing or enters a loop.
@@ -61,7 +61,7 @@ def handler(fit, module, context):
             ]
 
             # Sort the tuple to drop the highest damage value to the bottom
-            sortedDamagePattern_tuples = sorted(damagePattern_tuples, key=lambda damagePattern: damagePattern[1])
+            sortedDamagePattern_tuples = sorted(damagePattern_tuples, key=lambda _damagePattern: _damagePattern[1])
 
             if sortedDamagePattern_tuples[2][1] == 0:
                 # One damage type: the top damage type takes from the other three
@@ -125,5 +125,5 @@ def handler(fit, module, context):
         for i, attr in enumerate((
                 'armorEmDamageResonance', 'armorThermalDamageResonance', 'armorKineticDamageResonance',
                 'armorExplosiveDamageResonance')):
-            module.increaseItemAttr(attr, average[i] - module.getModifiedItemAttr(attr))
+            container.increaseItemAttr(attr, average[i] - container.getModifiedItemAttr(attr))
             fit.ship.multiplyItemAttr(attr, average[i], stackingPenalties=True, penaltyGroup="preMul")

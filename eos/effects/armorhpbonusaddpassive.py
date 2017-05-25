@@ -5,5 +5,5 @@
 effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.increaseItemAttr("armorHP", module.getModifiedItemAttr("armorHPBonusAdd"))
+def handler(fit, container, context):
+    fit.ship.increaseItemAttr("armorHP", container.getModifiedItemAttr("armorHPBonusAdd"))

@@ -17,7 +17,7 @@ class BlankPage(wx.Panel):
 
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=None))
 
-    def Destroy(self):
+    def Destroy(self, **kwargs):
         self.parent.Unbind(EVT_NOTEBOOK_PAGE_CHANGED, handler=self.pageChanged)
         wx.Panel.Destroy(self)
 
