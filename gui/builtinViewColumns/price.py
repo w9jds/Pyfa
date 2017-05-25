@@ -37,7 +37,7 @@ class Price(ViewColumn):
         self.bitmap = BitmapLoader.getBitmap("totalPrice_small", "gui")
         self.imageId = fittingView.imageList.GetImageIndex("totalPrice_small", "gui")
 
-    def getText(self, stuff):
+    def getColumnText(self, stuff):
         if stuff.item is None or stuff.item.group.name == "Ship Modifiers":
             return ""
 

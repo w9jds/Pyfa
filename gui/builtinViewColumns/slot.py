@@ -37,7 +37,7 @@ class SlotColumn(ViewColumn):
         self.mask = wx.LIST_MASK_TEXT
         self.projectedView = isinstance(fittingView, gui.projectedView.ProjectedView)
 
-    def getText(self, stuff):
+    def getColumnText(self, stuff):
         slot_name = Slot.getName(stuff.slot)
 
         if slot_name:

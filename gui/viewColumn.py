@@ -49,7 +49,7 @@ class ViewColumn(object):
     def getRestrictions(self):
         raise NotImplementedError()
 
-    def getText(self, mod):
+    def getColumnText(self, mod):
         return ""
 
     def getToolTip(self, mod):

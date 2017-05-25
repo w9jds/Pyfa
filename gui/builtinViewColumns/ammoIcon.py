@@ -33,7 +33,7 @@ class AmmoIcon(ViewColumn):
         self.mask = wx.LIST_MASK_IMAGE
         self.columnText = ""
 
-    def getText(self, mod):
+    def getColumnText(self, mod):
         return ""
 
     def getImageId(self, mod):
