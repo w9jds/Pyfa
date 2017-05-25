@@ -176,7 +176,7 @@ class Effect(EqBase):
 
                 t = t if isinstance(t, tuple) or t is None else (t,)
                 self.__type = t
-            except (ImportError) as e:
+            except ImportError as e:
                 # Effect probably doesn't exist, so create a dummy effect and flag it with a warning.
                 self.__handler = effectDummy
                 self.__runTime = "normal"
@@ -184,7 +184,7 @@ class Effect(EqBase):
                 self.__type = None
                 pyfalog.debug("ImportError generating handler: {0}", e)
                 badHandlers.append(self.handlerName)
-            except (AttributeError) as e:
+            except AttributeError as e:
                 # Effect probably exists but there is an issue with it.  Turn it into a dummy effect so we can continue, but flag it with an error.
                 self.__handler = effectDummy
                 self.__runTime = "normal"

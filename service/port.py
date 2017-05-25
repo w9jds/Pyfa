@@ -363,11 +363,9 @@ class Port(object):
         except UserCancelException:
             return False, "Processing has been canceled.\n"
         except Exception as e:
-            pyfalog.critical("Unknown exception processing: {0}", path)
+            pyfalog.critical("Unknown exception processing paths.")
             pyfalog.critical(e)
-            # TypeError: not all arguments converted during string formatting
-#                 return False, "Unknown Error while processing {0}" % path
-            return False, "Unknown error while processing %s\n\n Error: %s" % (path, e.message)
+            return False, "Unknown error while processing paths\n\n Error: %s" % (e.message)
 
         return True, fit_list
 

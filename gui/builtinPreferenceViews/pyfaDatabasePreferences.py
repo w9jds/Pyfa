@@ -159,28 +159,32 @@ class PFDatabasePref(PreferenceView):
         panel.SetSizer(mainSizer)
         panel.Layout()
 
-    def DeleteDamagePatterns(self, event):
+    @staticmethod
+    def DeleteDamagePatterns():
         question = u"This is a destructive action that will delete all damage pattern profiles.\nAre you sure you want to do this?"
         if wxHelpers.YesNoDialog(question, u"Confirm"):
             clearDamagePatterns()
             DefaultDatabaseValues.importRequiredDefaults()
 
-    def DeleteTargetResists(self, event):
+    @staticmethod
+    def DeleteTargetResists():
         question = u"This is a destructive action that will delete all target resist profiles.\nAre you sure you want to do this?"
         if wxHelpers.YesNoDialog(question, u"Confirm"):
             clearTargetResists()
             DefaultDatabaseValues.importRequiredDefaults()
 
-    def DeletePrices(self, event):
+    @staticmethod
+    def DeletePrices():
         question = u"This is a destructive action that will delete all cached prices out of the database.\nAre you sure you want to do this?"
         if wxHelpers.YesNoDialog(question, u"Confirm"):
             clearPrices()
 
-    def UpdateDatabase(self, event):
+    @staticmethod
+    def UpdateDatabase():
         question = u"This will take a significant amount of time.  Once the update is complete, Pyfa will restart.\n" \
                    u"Pyfa will become unresponsive until the update is complete.  Would you like to proceed?"
         if wxHelpers.YesNoDialog(question, u"Confirm"):
-            loadDlg = wxHelpers.PopupDialog(None, ("Updating..."), ("Updating database.\n\nPlease wait...."))
+            loadDlg = wxHelpers.PopupDialog(None, "Updating...", "Updating database.\n\nPlease wait....")
 
             sESI = esiItems.getInstance()
             sESI.updateTypes()

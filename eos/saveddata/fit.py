@@ -1121,11 +1121,12 @@ class Fit(object):
                 total_armor_reps += _['Armor Reps']
                 total_hull_reps += _['Hull Reps']
 
-        sustainable = {}
-        sustainable["shieldRepair"] = total_shield_reps / total_time
-        sustainable["armorRepair"] = total_armor_reps / total_time
-        sustainable["hullRepair"] = total_hull_reps / total_time
-        sustainable["passiveShield"] = self.calculateShieldRecharge()
+        sustainable = {
+            "shieldRepair" : total_shield_reps / total_time,
+            "armorRepair"  : total_armor_reps / total_time,
+            "hullRepair"   : total_hull_reps / total_time,
+            "passiveShield": self.calculateShieldRecharge()
+        }
 
         # Check to make sure we're not over the maximum reps
         # This can occur if we cut off in the middle of a cycle

@@ -29,6 +29,8 @@ class CommandFits(ContextMenu):
                 ids = getattr(evt, 'typeID')
                 if not isinstance(ids, set):
                     ids = set([ids])
+            else:
+                ids = None
 
             if evt is None or not ids.isdisjoint(cls.commandTypeIDs):
                 # we are adding or removing an item that defines a command fit. Need to refresh fit list

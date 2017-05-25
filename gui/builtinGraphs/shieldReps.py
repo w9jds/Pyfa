@@ -53,7 +53,8 @@ class shieldRepsGraph(Graph):
         """
         return None
 
-    def getPoints(self, fit, fields):
+    @staticmethod
+    def getPoints(fit, fields):
         capacitor_amount = fit.ship.getModifiedItemAttr("capacitorCapacity")
         capacitor_recharge = fit.ship.getModifiedItemAttr("rechargeRate")
         projected = []

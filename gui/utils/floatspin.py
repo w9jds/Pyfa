@@ -1349,7 +1349,8 @@ class FixedPoint(object):
         try:
             aslong = long(value)
         except:
-            yes = 0
+            aslong = yes = 0
+
         if yes:
             self.__init__(aslong, p)
             return

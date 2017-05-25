@@ -766,8 +766,8 @@ class esiHelpers(object):
         Returns nothing.
         """
 
+        query = u"SELECT * FROM {0} WHERE {1}".format(table, identifier)
         try:
-            query = u"SELECT * FROM {0} WHERE {1}".format(table, identifier)
             results = DatabaseCleanup.ExecuteSQLQuery(self.sESIConnection.gamedata_connection, query)
             if results:
                 row = results.first()
