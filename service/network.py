@@ -71,14 +71,14 @@ class Network(object):
 
         return cls._instance
 
-    def request(self, url, type, data=None):
+    def request(self, url, request_type, data=None):
         # URL is required to be https as of right now
         # print "Starting request: %s\n\tType: %s\n\tPost Data: %s"%(url,type,data)
 
         # Make sure request is enabled
         access = NetworkSettings.getInstance().getAccess()
 
-        if not self.ENABLED & access or not type & access:
+        if not self.ENABLED & access or not request_type & access:
             pyfalog.warning("Access not enabled - please enable in Preferences > Network")
             raise Error("Access not enabled - please enable in Preferences > Network")
 

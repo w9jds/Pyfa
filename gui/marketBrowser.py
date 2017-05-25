@@ -211,9 +211,9 @@ class MarketTree(wx.TreeCtrl):
             jumpList.append(mg.ID)
             mg = mg.parent
 
-        for id in sMkt.ROOT_MARKET_GROUPS:
-            if id in jumpList:
-                jumpList = jumpList[:jumpList.index(id) + 1]
+        for _id in sMkt.ROOT_MARKET_GROUPS:
+            if _id in jumpList:
+                jumpList = jumpList[:jumpList.index(_id) + 1]
 
         item = self.root
         for i in range(len(jumpList) - 1, -1, -1):

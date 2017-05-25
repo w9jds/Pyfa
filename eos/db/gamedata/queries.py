@@ -31,7 +31,7 @@ cache = {}
 configVal = getattr(eos.config, "gamedataCache", None)
 if configVal is True:
     def cachedQuery(amount, *keywords):
-        def deco(function):
+        def deco(_function):
             def checkAndReturn(*args, **kwargs):
                 useCache = kwargs.pop("useCache", True)
                 cacheKey = []
@@ -42,7 +42,7 @@ if configVal is True:
                 cacheKey = tuple(cacheKey)
                 handler = cache.get(cacheKey)
                 if handler is None or not useCache:
-                    handler = cache[cacheKey] = function(*args, **kwargs)
+                    handler = cache[cacheKey] = _function(*args, **kwargs)
 
                 return handler
 
@@ -54,9 +54,9 @@ elif callable(configVal):
     cachedQuery = eos.config.gamedataCache
 else:
     def cachedQuery(amount, *keywords):
-        def deco(function):
+        def deco(_function):
             def checkAndReturn(*args, **kwargs):
-                return function(*args, **kwargs)
+                return _function(*args, **kwargs)
 
             return checkAndReturn
 
@@ -83,11 +83,11 @@ def getItem(lookfor, eager=None):
             item = gamedata_session.query(Item).options(*processEager(eager)).filter(Item.ID == lookfor).first()
     elif isinstance(lookfor, basestring):
         if lookfor in itemNameMap:
-            id = itemNameMap[lookfor]
+            _id = itemNameMap[lookfor]
             if eager is None:
-                item = gamedata_session.query(Item).get(id)
+                item = gamedata_session.query(Item).get(_id)
             else:
-                item = gamedata_session.query(Item).options(*processEager(eager)).filter(Item.ID == id).first()
+                item = gamedata_session.query(Item).options(*processEager(eager)).filter(Item.ID == _id).first()
         else:
             # Item names are unique, so we can use first() instead of one()
             item = gamedata_session.query(Item).options(*processEager(eager)).filter(Item.name == lookfor).first()
@@ -157,11 +157,11 @@ def getGroup(lookfor, eager=None):
             group = gamedata_session.query(Group).options(*processEager(eager)).filter(Group.ID == lookfor).first()
     elif isinstance(lookfor, basestring):
         if lookfor in groupNameMap:
-            id = groupNameMap[lookfor]
+            _id = groupNameMap[lookfor]
             if eager is None:
-                group = gamedata_session.query(Group).get(id)
+                group = gamedata_session.query(Group).get(_id)
             else:
-                group = gamedata_session.query(Group).options(*processEager(eager)).filter(Group.ID == id).first()
+                group = gamedata_session.query(Group).options(*processEager(eager)).filter(Group.ID == _id).first()
         else:
             # Group names are unique, so we can use first() instead of one()
             group = gamedata_session.query(Group).options(*processEager(eager)).filter(Group.name == lookfor).first()
@@ -184,12 +184,12 @@ def getCategory(lookfor, eager=None):
                     Category.ID == lookfor).first()
     elif isinstance(lookfor, basestring):
         if lookfor in categoryNameMap:
-            id = categoryNameMap[lookfor]
+            _id = categoryNameMap[lookfor]
             if eager is None:
-                category = gamedata_session.query(Category).get(id)
+                category = gamedata_session.query(Category).get(_id)
             else:
                 category = gamedata_session.query(Category).options(*processEager(eager)).filter(
-                        Category.ID == id).first()
+                        Category.ID == _id).first()
         else:
             # Category names are unique, so we can use first() instead of one()
             category = gamedata_session.query(Category).options(*processEager(eager)).filter(
@@ -213,12 +213,12 @@ def getMetaGroup(lookfor, eager=None):
                     MetaGroup.ID == lookfor).first()
     elif isinstance(lookfor, basestring):
         if lookfor in metaGroupNameMap:
-            id = metaGroupNameMap[lookfor]
+            _id = metaGroupNameMap[lookfor]
             if eager is None:
-                metaGroup = gamedata_session.query(MetaGroup).get(id)
+                metaGroup = gamedata_session.query(MetaGroup).get(_id)
             else:
                 metaGroup = gamedata_session.query(MetaGroup).options(*processEager(eager)).filter(
-                        MetaGroup.ID == id).first()
+                        MetaGroup.ID == _id).first()
         else:
             # MetaGroup names are unique, so we can use first() instead of one()
             metaGroup = gamedata_session.query(MetaGroup).options(*processEager(eager)).filter(
@@ -252,17 +252,17 @@ def getAllMarketGroups(eager=None):
 
 
 @cachedQuery(2, "where", "filter")
-def getItemsByCategory(filter, where=None, eager=None):
-    if isinstance(filter, int):
-        filter = Category.ID == filter
-    elif isinstance(filter, basestring):
-        filter = Category.name == filter
+def getItemsByCategory(_filter, where=None, eager=None):
+    if isinstance(_filter, int):
+        _filter = Category.ID == _filter
+    elif isinstance(_filter, basestring):
+        _filter = Category.name == _filter
     else:
         raise TypeError("Need integer or string as argument")
 
-    filter = processWhere(filter, where)
+    _filter = processWhere(_filter, where)
     return gamedata_session.query(Item).options(*processEager(eager)).join(Item.group, Group.category).filter(
-            filter).all()
+            _filter).all()
 
 
 @cachedQuery(3, "where", "nameLike", "join")
@@ -313,33 +313,33 @@ def getVariations(itemids, groupIDs=None, where=None, eager=None):
         return []
 
     itemfilter = or_(*(metatypes_table.c.parentTypeID == itemid for itemid in itemids))
-    filter = processWhere(itemfilter, where)
+    _filter = processWhere(itemfilter, where)
     joinon = items_table.c.typeID == metatypes_table.c.typeID
-    vars = gamedata_session.query(Item).options(*processEager(eager)).join((metatypes_table, joinon)).filter(
-            filter).all()
+    _vars = gamedata_session.query(Item).options(*processEager(eager)).join((metatypes_table, joinon)).filter(
+            _filter).all()
 
-    if vars:
-        return vars
+    if _vars:
+        return _vars
     elif groupIDs:
         itemfilter = or_(*(groups_table.c.groupID == groupID for groupID in groupIDs))
-        filter = processWhere(itemfilter, where)
+        _filter = processWhere(itemfilter, where)
         joinon = items_table.c.groupID == groups_table.c.groupID
-        vars = gamedata_session.query(Item).options(*processEager(eager)).join((groups_table, joinon)).filter(
-                filter).all()
+        _vars = gamedata_session.query(Item).options(*processEager(eager)).join((groups_table, joinon)).filter(
+                _filter).all()
 
-        return vars
+        return _vars
 
 
 @cachedQuery(1, "attr")
 def getAttributeInfo(attr, eager=None):
     if isinstance(attr, basestring):
-        filter = AttributeInfo.name == attr
+        _filter = AttributeInfo.name == attr
     elif isinstance(attr, int):
-        filter = AttributeInfo.ID == attr
+        _filter = AttributeInfo.ID == attr
     else:
         raise TypeError("Need integer or string as argument")
     try:
-        result = gamedata_session.query(AttributeInfo).options(*processEager(eager)).filter(filter).one()
+        result = gamedata_session.query(AttributeInfo).options(*processEager(eager)).filter(_filter).one()
     except exc.NoResultFound:
         result = None
     return result

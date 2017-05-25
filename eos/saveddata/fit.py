@@ -391,13 +391,13 @@ class Fit(object):
 
     @validates("ID", "ownerID", "shipID")
     def validator(self, key, val):
-        map = {
+        _map = {
             "ID"     : lambda _val: isinstance(_val, int),
             "ownerID": lambda _val: isinstance(_val, int) or _val is None,
             "shipID" : lambda _val: isinstance(_val, int) or _val is None
         }
 
-        if not map[key](val):
+        if not _map[key](val):
             raise ValueError(str(val) + " is not a valid value for " + key)
         else:
             return val
@@ -472,12 +472,12 @@ class Fit(object):
     def getOrigin(self):
         return self.__origin
 
-    def addCommandBonus(self, warfareBuffID, value, module, effect, runTime="normal"):
+    def addCommandBonus(self, warfareBuffID, value, _module, effect, runTime="normal"):
         # oh fuck this is so janky
         # @todo should we pass in min/max to this function, or is abs okay?
         # (abs is old method, ccp now provides the aggregate function in their data)
         if warfareBuffID not in self.commandBonuses or abs(self.commandBonuses[warfareBuffID][1]) < abs(value):
-            self.commandBonuses[warfareBuffID] = (runTime, value, module, effect)
+            self.commandBonuses[warfareBuffID] = (runTime, value, _module, effect)
 
     def __runCommandBoosts(self, runTime="normal"):
         pyfalog.debug("Applying gang boosts for {0}", repr(self))
@@ -897,9 +897,9 @@ class Fit(object):
         return x
 
     @staticmethod
-    def getItemAttrSum(dict, attr):
+    def getItemAttrSum(_dict, attr):
         amount = 0
-        for mod in dict:
+        for mod in _dict:
             add = mod.getModifiedItemAttr(attr)
             if add is not None:
                 amount += add
@@ -907,9 +907,9 @@ class Fit(object):
         return amount
 
     @staticmethod
-    def getItemAttrOnlineSum(dict, attr):
+    def getItemAttrOnlineSum(_dict, attr):
         amount = 0
-        for mod in dict:
+        for mod in _dict:
             add = mod.getModifiedItemAttr(attr) if mod.state >= State.ONLINE else None
             if add is not None:
                 amount += add

@@ -748,7 +748,7 @@ class APIView(wx.Panel):
         sChar = Character.getInstance()
         try:
             activeChar = self.charEditor.entityEditor.getActiveEntity()
-            list = sChar.apiCharList(activeChar.ID, self.inputID.GetLineText(0), self.inputKey.GetLineText(0))
+            _list = sChar.apiCharList(activeChar.ID, self.inputID.GetLineText(0), self.inputKey.GetLineText(0))
         except AuthenticationError, e:
             msg = "Authentication failure. Please check keyID and vCode combination."
             pyfalog.info(msg)
@@ -762,7 +762,7 @@ class APIView(wx.Panel):
             self.stStatus.SetLabel("Error:\n%s" % e.message)
         else:
             self.charChoice.Clear()
-            for charName in list:
+            for charName in _list:
                 self.charChoice.Append(charName)
 
             self.btnFetchSkills.Enable(True)

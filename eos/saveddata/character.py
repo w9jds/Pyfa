@@ -77,22 +77,22 @@ class Character(object):
     @classmethod
     def getSkillIDMap(cls):
         if cls.__itemIDMap is None:
-            map = {}
+            _map = {}
             for skill in cls.getSkillList():
-                map[skill.ID] = skill
+                _map[skill.ID] = skill
 
-            cls.__itemIDMap = map
+            cls.__itemIDMap = _map
 
         return cls.__itemIDMap
 
     @classmethod
     def getSkillNameMap(cls):
         if cls.__itemNameMap is None:
-            map = {}
+            _map = {}
             for skill in cls.getSkillList():
-                map[skill.name] = skill
+                _map[skill.name] = skill
 
-            cls.__itemNameMap = map
+            cls.__itemNameMap = _map
 
         return cls.__itemNameMap
 
@@ -234,19 +234,19 @@ class Character(object):
 
         self.dirtySkills = set()
 
-    def filteredSkillIncrease(self, filter, *args, **kwargs):
+    def filteredSkillIncrease(self, _filter, *args, **kwargs):
         for element in self.skills:
-            if filter(element):
+            if _filter(element):
                 element.increaseItemAttr(*args, **kwargs)
 
-    def filteredSkillMultiply(self, filter, *args, **kwargs):
+    def filteredSkillMultiply(self, _filter, *args, **kwargs):
         for element in self.skills:
-            if filter(element):
+            if _filter(element):
                 element.multiplyItemAttr(*args, **kwargs)
 
-    def filteredSkillBoost(self, filter, *args, **kwargs):
+    def filteredSkillBoost(self, _filter, *args, **kwargs):
         for element in self.skills:
-            if filter(element):
+            if _filter(element):
                 element.boostItemAttr(*args, **kwargs)
 
     def calculateModifiedAttributes(self, fit, runTime, forceProjected=False):
@@ -277,14 +277,14 @@ class Character(object):
 
     @validates("ID", "name", "apiKey", "ownerID")
     def validator(self, key, val):
-        map = {
+        _map = {
             "ID"     : lambda _val: isinstance(_val, int),
             "name"   : lambda _val: True,
             "apiKey" : lambda _val: _val is None or (isinstance(_val, basestring) and len(_val) > 0),
             "ownerID": lambda _val: isinstance(_val, int) or _val is None
         }
 
-        if not map[key](val):
+        if not _map[key](val):
             raise ValueError(str(val) + " is not a valid value for " + key)
         else:
             return val
@@ -431,12 +431,12 @@ class Skill(HandledItem):
         if hasattr(self, "_Skill__ro") and self.__ro is True and key != "characterID":
             raise ReadOnlyException()
 
-        map = {
+        _map = {
             "characterID": lambda _val: isinstance(_val, int),
             "skillID"    : lambda _val: isinstance(_val, int)
         }
 
-        if not map[key](val):
+        if not _map[key](val):
             raise ValueError(str(val) + " is not a valid value for " + key)
         else:
             return val

@@ -23,82 +23,82 @@ pyfalog = Logger(__name__)
 
 
 class HandledList(list):
-    def filteredItemPreAssign(self, filter, *args, **kwargs):
+    def filteredItemPreAssign(self, _filter, *args, **kwargs):
         for element in self:
             try:
-                if filter(element):
+                if _filter(element):
                     element.preAssignItemAttr(*args, **kwargs)
             except AttributeError:
                 pass
 
-    def filteredItemIncrease(self, filter, *args, **kwargs):
+    def filteredItemIncrease(self, _filter, *args, **kwargs):
         for element in self:
             try:
-                if filter(element):
+                if _filter(element):
                     element.increaseItemAttr(*args, **kwargs)
             except AttributeError:
                 pass
 
-    def filteredItemMultiply(self, filter, *args, **kwargs):
+    def filteredItemMultiply(self, _filter, *args, **kwargs):
         for element in self:
             try:
-                if filter(element):
+                if _filter(element):
                     element.multiplyItemAttr(*args, **kwargs)
             except AttributeError:
                 pass
 
-    def filteredItemBoost(self, filter, *args, **kwargs):
+    def filteredItemBoost(self, _filter, *args, **kwargs):
         for element in self:
             try:
-                if filter(element):
+                if _filter(element):
                     element.boostItemAttr(*args, **kwargs)
             except AttributeError:
                 pass
 
-    def filteredItemForce(self, filter, *args, **kwargs):
+    def filteredItemForce(self, _filter, *args, **kwargs):
         for element in self:
             try:
-                if filter(element):
+                if _filter(element):
                     element.forceItemAttr(*args, **kwargs)
             except AttributeError:
                 pass
 
-    def filteredChargePreAssign(self, filter, *args, **kwargs):
+    def filteredChargePreAssign(self, _filter, *args, **kwargs):
         for element in self:
             try:
-                if filter(element):
+                if _filter(element):
                     element.preAssignChargeAttr(*args, **kwargs)
             except AttributeError:
                 pass
 
-    def filteredChargeIncrease(self, filter, *args, **kwargs):
+    def filteredChargeIncrease(self, _filter, *args, **kwargs):
         for element in self:
             try:
-                if filter(element):
+                if _filter(element):
                     element.increaseChargeAttr(*args, **kwargs)
             except AttributeError:
                 pass
 
-    def filteredChargeMultiply(self, filter, *args, **kwargs):
+    def filteredChargeMultiply(self, _filter, *args, **kwargs):
         for element in self:
             try:
-                if filter(element):
+                if _filter(element):
                     element.multiplyChargeAttr(*args, **kwargs)
             except AttributeError:
                 pass
 
-    def filteredChargeBoost(self, filter, *args, **kwargs):
+    def filteredChargeBoost(self, _filter, *args, **kwargs):
         for element in self:
             try:
-                if filter(element):
+                if _filter(element):
                     element.boostChargeAttr(*args, **kwargs)
             except AttributeError:
                 pass
 
-    def filteredChargeForce(self, filter, *args, **kwargs):
+    def filteredChargeForce(self, _filter, *args, **kwargs):
         for element in self:
             try:
-                if filter(element):
+                if _filter(element):
                     element.forceChargeAttr(*args, **kwargs)
             except AttributeError:
                 pass

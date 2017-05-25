@@ -35,9 +35,9 @@ class ItemRemove(ContextMenu):
         fit = sFit.getFit(fitID)
 
         if srcContext == "fittingModule":
-            for module in selection:
-                if module is not None:
-                    sFit.removeModule(fitID, fit.modules.index(module))
+            for _module in selection:
+                if _module is not None:
+                    sFit.removeModule(fitID, fit.modules.index(_module))
         elif srcContext in ("fittingCharge", "projectedCharge"):
             sFit.setAmmo(fitID, None, selection)
         elif srcContext == "droneItem":

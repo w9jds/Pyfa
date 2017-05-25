@@ -71,7 +71,7 @@ class Cargo(HandledItem, ItemAttrShortcut):
 
     @validates("fitID", "itemID", "amount")
     def validator(self, key, val):
-        map = {
+        _map = {
             "fitID" : lambda _val: isinstance(_val, int),
             "itemID": lambda _val: isinstance(_val, int),
             "amount": lambda _val: isinstance(_val, int)
@@ -80,7 +80,7 @@ class Cargo(HandledItem, ItemAttrShortcut):
         if key == "amount" and val > sys.maxint:
             val = sys.maxint
 
-        if not map[key](val):
+        if not _map[key](val):
             raise ValueError(str(val) + " is not a valid value for " + key)
         else:
             return val

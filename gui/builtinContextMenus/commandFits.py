@@ -50,9 +50,9 @@ class CommandFits(ContextMenu):
 
     def addFit(self, menu, fit, includeShip=False):
         label = fit.name if not includeShip else u"({}) {}".format(fit.ship.item.name, fit.name)
-        id = ContextMenu.nextID()
-        self.fitMenuItemIds[id] = fit
-        menuItem = wx.MenuItem(menu, id, label)
+        _id = ContextMenu.nextID()
+        self.fitMenuItemIds[_id] = fit
+        menuItem = wx.MenuItem(menu, _id, label)
         menu.Bind(wx.EVT_MENU, self.handleSelection, menuItem)
         return menuItem
 

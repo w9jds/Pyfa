@@ -48,11 +48,11 @@ if configVal is True:
         itemCache[_type] = localItemCache = weakref.WeakValueDictionary()
         queryCache[_type] = typeQueryCache = {}
 
-        def deco(function):
-            localQueryCache = typeQueryCache[function] = {}
+        def deco(_function):
+            localQueryCache = typeQueryCache[_function] = {}
 
             def setCache(cacheKey, args, kwargs):
-                items = function(*args, **kwargs)
+                items = _function(*args, **kwargs)
                 IDs = set()
                 localQueryCache[cacheKey] = (isinstance(items, list), IDs)
                 stuff = items if isinstance(items, list) else (items,)
@@ -124,9 +124,9 @@ elif callable(configVal):
     cachedQuery, removeCachedEntry = eos.config.gamedataCache
 else:
     def cachedQuery(amount, *keywords):
-        def deco(function):
+        def deco(_function):
             def checkAndReturn(*args, **kwargs):
-                return function(*args, **kwargs)
+                return _function(*args, **kwargs)
 
             return checkAndReturn
 
@@ -229,14 +229,14 @@ def getFitsWithShip(shipID, ownerID=None, where=None, eager=None):
     if isinstance(shipID, int):
         if ownerID is not None and not isinstance(ownerID, int):
             raise TypeError("OwnerID must be integer")
-        filter = Fit.shipID == shipID
+        _filter = Fit.shipID == shipID
         if ownerID is not None:
-            filter = and_(filter, Fit.ownerID == ownerID)
+            _filter = and_(_filter, Fit.ownerID == ownerID)
 
-        filter = processWhere(filter, where)
+        _filter = processWhere(_filter, where)
         eager = processEager(eager)
         with sd_lock:
-            fits = removeInvalid(saveddata_session.query(Fit).options(*eager).filter(filter).all())
+            fits = removeInvalid(saveddata_session.query(Fit).options(*eager).filter(_filter).all())
     else:
         raise TypeError("ShipID must be integer")
 
@@ -290,21 +290,21 @@ def countFitsWithShip(lookfor, ownerID=None, where=None, eager=None):
         raise TypeError("OwnerID must be integer")
 
     if isinstance(lookfor, int):
-        filter = Fit.shipID == lookfor
+        _filter = Fit.shipID == lookfor
     elif isinstance(lookfor, list):
         if len(lookfor) == 0:
             return 0
-        filter = Fit.shipID.in_(lookfor)
+        _filter = Fit.shipID.in_(lookfor)
     else:
         raise TypeError("You must supply either an integer or ShipID must be integer")
 
     if ownerID is not None:
-        filter = and_(filter, Fit.ownerID == ownerID)
+        _filter = and_(_filter, Fit.ownerID == ownerID)
 
-    filter = processWhere(filter, where)
+    _filter = processWhere(_filter, where)
     eager = processEager(eager)
     with sd_lock:
-        count = saveddata_session.query(Fit).options(*eager).filter(filter).count()
+        count = saveddata_session.query(Fit).options(*eager).filter(_filter).count()
 
     return count
 
@@ -447,10 +447,10 @@ def searchFits(nameLike, where=None, eager=None):
     nameLike = u"%{0}%".format(sqlizeString(nameLike))
 
     # Add any extra components to the search to our where clause
-    filter = processWhere(Fit.name.like(nameLike, escape="\\"), where)
+    _filter = processWhere(Fit.name.like(nameLike, escape="\\"), where)
     eager = processEager(eager)
     with sd_lock:
-        fits = removeInvalid(saveddata_session.query(Fit).options(*eager).filter(filter).all())
+        fits = removeInvalid(saveddata_session.query(Fit).options(*eager).filter(_filter).all())
 
     return fits
 
@@ -458,8 +458,8 @@ def searchFits(nameLike, where=None, eager=None):
 def getProjectedFits(fitID):
     if isinstance(fitID, int):
         with sd_lock:
-            filter = and_(projectedFits_table.c.sourceID == fitID, Fit.ID == projectedFits_table.c.victimID)
-            fits = saveddata_session.query(Fit).filter(filter).all()
+            _filter = and_(projectedFits_table.c.sourceID == fitID, Fit.ID == projectedFits_table.c.victimID)
+            fits = saveddata_session.query(Fit).filter(_filter).all()
             return fits
     else:
         raise TypeError("Need integer as argument")

@@ -34,12 +34,12 @@ class GnosisSimulation(object):
     def capacitor_simulation(fit, projected_capacitor, capacity, recharge_rate, add_reactivation_delay=None):
 
         module_list = []
-        for module in fit.modules:
+        for _module in fit.modules:
 
-            if getattr(module, 'state', 0) > 0:
+            if getattr(_module, 'state', 0) > 0:
 
                 # Get capacitor usage
-                capacitor_need = module.getModifiedItemAttr("capacitorNeed")
+                capacitor_need = _module.getModifiedItemAttr("capacitorNeed")
                 if capacitor_need:
                     # Turn drains into negative and boosts to positive
                     capacitor_need *= -1
@@ -47,31 +47,31 @@ class GnosisSimulation(object):
                     capacitor_need = 0
 
                 # Get how long the module takes to cycle
-                duration = module.rawCycleTime
+                duration = _module.rawCycleTime
 
                 # Get number of charges/reloads
-                charges = getattr(module, 'numCharges', None)
+                charges = getattr(_module, 'numCharges', None)
 
                 if not charges:
                     charges = False
 
-                reload_time = getattr(module, 'reloadTime', False)
+                reload_time = getattr(_module, 'reloadTime', False)
 
                 # Get reactivation delay
-                reactivation_delay = module.getModifiedItemAttr("moduleReactivationDelay")
+                reactivation_delay = _module.getModifiedItemAttr("moduleReactivationDelay")
                 if not reactivation_delay:
                     reactivation_delay = False
 
                 # Get rep amounts
-                shield_reps = module.getModifiedItemAttr("shieldBonus")
+                shield_reps = _module.getModifiedItemAttr("shieldBonus")
                 if not shield_reps:
                     shield_reps = False
 
-                armor_reps = module.getModifiedItemAttr("armorDamageAmount")
+                armor_reps = _module.getModifiedItemAttr("armorDamageAmount")
                 if not armor_reps:
                     armor_reps = False
 
-                hull_reps = module.getModifiedItemAttr("structureDamageAmount")
+                hull_reps = _module.getModifiedItemAttr("structureDamageAmount")
                 if not hull_reps:
                     hull_reps = False
 

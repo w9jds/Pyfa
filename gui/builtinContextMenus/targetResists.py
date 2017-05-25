@@ -47,11 +47,11 @@ class TargetResists(ContextMenu):
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
     def addPattern(self, rootMenu, pattern):
-        id = ContextMenu.nextID()
+        _id = ContextMenu.nextID()
         name = getattr(pattern, "_name", pattern.name) if pattern is not None else "No Profile"
 
-        self.patternIds[id] = pattern
-        item = wx.MenuItem(rootMenu, id, name)
+        self.patternIds[_id] = pattern
+        item = wx.MenuItem(rootMenu, _id, name)
         rootMenu.Bind(wx.EVT_MENU, self.handleResistSwitch, item)
 
         # set pattern attr to menu item

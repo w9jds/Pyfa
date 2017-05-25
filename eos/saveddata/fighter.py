@@ -222,14 +222,14 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
 
     @validates("ID", "itemID", "chargeID", "amount", "amountActive")
     def validator(self, key, val):
-        map = {
+        _map = {
             "ID"      : lambda _val: isinstance(_val, int),
             "itemID"  : lambda _val: isinstance(_val, int),
             "chargeID": lambda _val: isinstance(_val, int),
             "amount"  : lambda _val: isinstance(_val, int) and _val >= -1,
         }
 
-        if not map[key](val):
+        if not _map[key](val):
             raise ValueError(str(val) + " is not a valid value for " + key)
         else:
             return val
