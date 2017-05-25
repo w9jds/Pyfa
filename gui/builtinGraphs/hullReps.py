@@ -30,7 +30,7 @@ class hullRepsGraph(Graph):
         self.hullReps = None
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-    def getFields(self, **kwargs):
+    def getFields(self):
         # return self.defaults
         return None
 

@@ -30,7 +30,7 @@ class capWarfareGraph(Graph):
         self.capWarfare = None
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-    def getFields(self, **kwargs):
+    def getFields(self):
         # return self.defaults
         return None
 
