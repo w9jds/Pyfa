@@ -216,8 +216,10 @@ class ResistsEditorDlg(wx.Dialog):
 
                 value = float(editObj.GetValue())
 
-                # assertion, because they're easy
-                assert 0 <= value <= 100
+                if value < 0:
+                    value = 0
+                elif value > 100:
+                    value = 100
 
                 # if everything checks out, set resist attribute
                 setattr(p, "%sAmount" % type_, value / 100)

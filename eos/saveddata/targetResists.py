@@ -59,7 +59,10 @@ class TargetResists(object):
             for index, val in enumerate(data):
                 val = float(val)
                 try:
-                    assert 0 <= val <= 100
+                    if val < 0:
+                        val = 0
+                    elif val > 100:
+                        val = 100
                     fields["%sAmount" % cls.DAMAGE_TYPES[index]] = val / 100
                 except:
                     pyfalog.warning("Caught unhandled exception in import patterns.")

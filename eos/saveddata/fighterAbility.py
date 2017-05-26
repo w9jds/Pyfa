@@ -104,6 +104,7 @@ class FighterAbility(object):
 
     @property
     def cycleTime(self):
+        # TODO: Add factor in reload
         speed = self.fighter.getModifiedItemAttr("{}Duration".format(self.attrPrefix))
 
         # Factor in reload

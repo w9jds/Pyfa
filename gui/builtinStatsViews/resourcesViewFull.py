@@ -80,7 +80,7 @@ class ResourcesViewFull(StatsView):
         return "Resources"
 
     def getTextExtentW(self, text):
-        width, height = self.parent.GetTextExtent(text)
+        width, __ = self.parent.GetTextExtent(text)
         return width
 
     def populatePanel(self, contentPanel, headerPanel):
@@ -144,7 +144,7 @@ class ResourcesViewFull(StatsView):
             "cpu"           : "CPU", "pg": "PowerGrid", "droneBay": "Drone bay", "fighterBay": "Fighter bay",
             "droneBandwidth": "Drone bandwidth", "cargoBay": "Cargo bay"
         }
-        for i, group in enumerate((("cpu", "pg"), ("cargoBay", "droneBay", "fighterBay", "droneBandwidth"))):
+        for __, group in enumerate((("cpu", "pg"), ("cargoBay", "droneBay", "fighterBay", "droneBandwidth"))):
             main = wx.BoxSizer(wx.VERTICAL)
             base.Add(main, 1, wx.ALIGN_CENTER)
 

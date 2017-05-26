@@ -222,7 +222,7 @@ class Display(wx.ListCtrl):
             stuffItemCount = len(stuff)
 
             if listItemCount < stuffItemCount:
-                for i in range(stuffItemCount - listItemCount):
+                for __ in range(stuffItemCount - listItemCount):
                     self.InsertStringItem(sys.maxint, "")
 
             if listItemCount > stuffItemCount:
@@ -299,5 +299,5 @@ class Display(wx.ListCtrl):
         self.refresh(stuff)
 
     def getColumn(self, point):
-        row, _, col = self.HitTestSubItem(point)
+        __, _, col = self.HitTestSubItem(point)
         return col

@@ -751,12 +751,7 @@ class Fit(object):
         item = eos.db.getItem(itemID, eager=("attributes", "group.category"))
         if item.category.name == "Fighter":
             fighter = None
-            '''
-            for d in fit.fighters.find(item):
-                if d is not None and d.amountActive == 0 and d.amount < max(5, fit.extraAttributes["maxActiveDrones"]):
-                    drone = d
-                    break
-            '''
+
             if fighter is None:
                 fighter = es_Fighter(item)
                 used = fit.getSlotsUsed(fighter.slot)

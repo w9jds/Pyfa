@@ -274,13 +274,12 @@ class PFNotebook(wx.Panel):
                 # (deleting from the tab automatically deletes itself)
                 self.tabsContainer.DeleteTab(n, True)
 
-            """
-            We used to try and get the current tab using:
-            sel = self.tabsContainer.GetSelected()
-            But there's a race condition that causes it to give us back the wrong tab.
-            Now we get the tab using a little basic math.
-            See GH #1055
-            """
+            # We used to try and get the current tab using:
+            #     sel = self.tabsContainer.GetSelected()
+            # But there's a race condition that causes it to give us back the wrong tab.
+            # Now we get the tab using a little basic math.
+            # See GH #1055
+
             if page_count == 1:
                 # We just deleted the only page.
                 sel = None
@@ -359,7 +358,7 @@ class PFNotebook(wx.Panel):
         self.tabsContainer.Refresh()
 
     def OnSize(self, event):
-        w, h = self.GetSize()
+        w, __ = self.GetSize()
         self.tabsContainer.SetSize((w, -1))
         self.tabsContainer.UpdateSize()
         self.tabsContainer.Refresh()
@@ -464,7 +463,7 @@ class PFTabRenderer(object):
         mdc = wx.MemoryDC()
         mdc.SelectObject(ebmp)
         mdc.SetFont(Fonts.getFont("font_title_plus_two"))
-        textSizeX, textSizeY = mdc.GetTextExtent(self.text)
+        textSizeX, __ = mdc.GetTextExtent(self.text)
         totalSize = self.leftWidth + self.rightWidth + textSizeX + self.closeBtnWidth / 2 + 16 + self.padding * 2
         mdc.SelectObject(wx.NullBitmap)
         return totalSize, self.tabHeight
@@ -614,7 +613,7 @@ class PFTabRenderer(object):
         mdc.SetTextForeground(colorUtils.GetSuitableColor(color, 1))
 
         text = drawUtils.GetPartialText(mdc, self.text, maxsize, "")
-        tx, ty = mdc.GetTextExtent(text)
+        __, ty = mdc.GetTextExtent(text)
         mdc.DrawText(text, textStart + self.padding, height / 2 - ty / 2)
 
         if self.closeButton:
@@ -808,7 +807,7 @@ class PFTabsContainer(wx.Panel):
                 if self.showAddButton:
                     # If we can add tabs, we can drag them. Set flag
                     self.startDrag = True
-                    tx, ty = tab.GetPosition()
+                    tx, __ = tab.GetPosition()
                     self.dragx = mposx - tx
                     self.dragy = self.containerHeight - self.height
                 self.Refresh()
@@ -1054,7 +1053,7 @@ class PFTabsContainer(wx.Panel):
                     self.dragTrigger -= 1
             if self.dragging:
                 dtx = mposx - self.dragx
-                w, h = self.draggedTab.GetSize()
+                w, __ = self.draggedTab.GetSize()
 
                 if dtx < 0:
                     dtx = 0
@@ -1214,7 +1213,7 @@ class PFTabsContainer(wx.Panel):
         pass
 
     def UpdateTabFX(self):
-        w, h = self.tabShadow.GetSize()
+        w, __ = self.tabShadow.GetSize()
         if w != self.tabMinWidth:
             self.tabShadow.SetSize((self.tabMinWidth, self.height + 1))
             fxBmp = self.tabShadow.Render()
@@ -1275,7 +1274,7 @@ class PFTabsContainer(wx.Panel):
         tabMinWidth = 9000000  # Really, it should be over 9000
         tabMaxWidth = 0
         for tab in self.tabs:
-            mw, mh = tab.GetMinSize()
+            mw, __ = tab.GetMinSize()
             if tabMinWidth > mw:
                 tabMinWidth = mw
             if tabMaxWidth < mw:

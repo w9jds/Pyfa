@@ -200,11 +200,6 @@ class PFDatabasePref(PreferenceView):
         # so if they try and change it, set it back to the current setting
         self.cbsaveInRoot.SetValue(config.saveInRoot)
 
-        # If we ever enable it might need this.
-        '''
-        config.saveInRoot = self.cbsaveInRoot.GetValue()
-        '''
-
     def getImage(self):
         return BitmapLoader.getBitmap("settings_database", "gui")
 

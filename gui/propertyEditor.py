@@ -128,7 +128,7 @@ class AttributeEditor(wx.Frame):
             with open(path, 'wb') as csvfile:
                 writer = csv.writer(csvfile)
                 for item in items:
-                    for key, override in item.overrides.iteritems():
+                    for __, override in item.overrides.iteritems():
                         writer.writerow([item.ID, override.attrID, override.value])
 
     def OnClear(self, event):

@@ -26,7 +26,6 @@ def test_os_walk():
             with open(testfile, 'r') as f:
                 read_data = f.read()
             # noinspection PyStatementEffect
-            f.closed
         except:
             print("Test File:")
             print(testfile)
