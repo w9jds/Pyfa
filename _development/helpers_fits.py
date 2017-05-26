@@ -64,3 +64,15 @@ def HeronFit(DB, Gamedata, Saveddata):
         fit.modules.append(mod)
 
     return fit
+
+
+# noinspection PyShadowingNames
+@pytest.fixture  # noqa: F811
+def GnosisFit(DB, Gamedata, Saveddata):
+    print("Creating Gnosis")
+    item = DB['gamedata_session'].query(Gamedata['Item']).filter(Gamedata['Item'].name == "Gnosis").first()
+    ship = Saveddata['Ship'](item)
+    # setup fit
+    fit = Saveddata['Fit'](ship, "Gnosis Fit")
+
+    return fit

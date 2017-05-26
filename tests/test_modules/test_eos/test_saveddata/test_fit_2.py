@@ -9,7 +9,8 @@ sys.path.append(os.path.realpath(os.getcwd()))
 
 # noinspection PyPackageRequirements
 from _development.helpers import DBInMemory as DB, Gamedata, Saveddata  # noqa: E402, E401
-from _development.helpers_fits import RifterFit, KeepstarFit, HeronFit  # noqa: E402, E401
+from _development.helpers_fits import RifterFit, KeepstarFit, HeronFit, GnosisFit  # noqa: E402, E401
+from _development.helpers_items import DamageControlII, ExperimentalEnergizedAdaptiveNanoMembraneI, EnergizedAdaptiveNanoMembraneI  # noqa: E402, E401
 
 
 def test_calculateModifiedAttributes(DB, RifterFit, KeepstarFit):  # noqa: F811
@@ -57,6 +58,88 @@ def test_calculateModifiedAttributes(DB, RifterFit, KeepstarFit):  # noqa: F811
 
     for test_dict in keepstar_modifier_dicts:
         assert len(getattr(KeepstarFit.ship.itemModifiedAttributes, test_dict)) == keepstar_modifier_dicts[test_dict]
+
+
+def test_calculateStackingPenaltyNoPenalty(DB, Saveddata, GnosisFit, DamageControlII, ExperimentalEnergizedAdaptiveNanoMembraneI):  # noqa: F811
+    resist_stats = {
+        "armorEmDamageResonance",
+        "armorThermalDamageResonance",
+        "armorKineticDamageResonance",
+        "armorExplosiveDamageResonance",
+    }
+
+    # Base stats
+    # resists should equal 32.5%
+    GnosisFit.clear()
+    GnosisFit.calculateFitAttributes()
+    for resist in resist_stats:
+        assert GnosisFit.ship.getModifiedItemAttr(resist) == 0.675
+
+    # Damage Control II
+    # resists should equal 42.6%
+    GnosisFit.clear()
+
+    DamageControlII.state = Saveddata['State'].ONLINE
+    GnosisFit.modules.append(DamageControlII)
+
+    GnosisFit.calculateFitAttributes()
+
+    for resist in resist_stats:
+        assert GnosisFit.ship.getModifiedItemAttr(resist) == 0.57375
+
+    # Damage Control II
+    # Experimental Energized Adaptive Nano Membrane I
+    # resists should equal 42.6%
+    GnosisFit.clear()
+
+    DamageControlII.state = Saveddata['State'].ONLINE
+    GnosisFit.modules.append(ExperimentalEnergizedAdaptiveNanoMembraneI)
+
+    GnosisFit.calculateFitAttributes()
+
+    for resist in resist_stats:
+        assert GnosisFit.ship.getModifiedItemAttr(resist) == 0.4876875
+
+
+def test_calculateStackingPenaltyWithPenalty(DB, Saveddata, GnosisFit, EnergizedAdaptiveNanoMembraneI, ExperimentalEnergizedAdaptiveNanoMembraneI):  # noqa: F811
+    resist_stats = {
+        "armorEmDamageResonance",
+        "armorThermalDamageResonance",
+        "armorKineticDamageResonance",
+        "armorExplosiveDamageResonance",
+    }
+
+    # Base stats
+    # resists should equal 32.5%
+    GnosisFit.clear()
+    GnosisFit.calculateFitAttributes()
+    for resist in resist_stats:
+        assert GnosisFit.ship.getModifiedItemAttr(resist) == 0.675
+
+    # Energized Adaptive Nano Membrane I
+    # resists should equal 42.6%
+    GnosisFit.clear()
+
+    DamageControlII.state = Saveddata['State'].ONLINE
+    GnosisFit.modules.append(EnergizedAdaptiveNanoMembraneI)
+
+    GnosisFit.calculateFitAttributes()
+
+    for resist in resist_stats:
+        assert GnosisFit.ship.getModifiedItemAttr(resist) == 0.57375
+
+    # Energized Adaptive Nano Membrane I
+    # Experimental Energized Adaptive Nano Membrane I
+    # resists should equal 50.1%
+    GnosisFit.clear()
+
+    DamageControlII.state = Saveddata['State'].ONLINE
+    GnosisFit.modules.append(ExperimentalEnergizedAdaptiveNanoMembraneI)
+
+    GnosisFit.calculateFitAttributes()
+
+    for resist in resist_stats:
+        assert GnosisFit.ship.getModifiedItemAttr(resist) == 0.49895136165236575
 
 
 def test_calculateModifiedAttributes_withBooster(DB, RifterFit, HeronFit):  # noqa: F811
