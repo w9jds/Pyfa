@@ -10,7 +10,7 @@ from gui.utils.fonts import Fonts
 class PFContextMenuPref(PreferenceView):
     title = "Context Menu Panel"
 
-    def populatePanel(self, panel):
+    def populatePrefPanel(self, panel):
         self.settings = ContextMenuSettings.getInstance()
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 

@@ -25,7 +25,7 @@ class DamagePattern(ContextMenu):
 
         return srcContext == "resistancesViewFull" and self.mainFrame.getActiveFit() is not None
 
-    def getText(self, itmContext, selection):
+    def getContextMenuText(self, itmContext, selection):
         sDP = import_DamagePattern.getInstance()
         sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()

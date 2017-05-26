@@ -176,7 +176,8 @@ class Price(object):
 
         return list(set(fit_items))
 
-    def getPriceNow(self, objitem):
+    @staticmethod
+    def getPriceNow(objitem):
         """Get price for provided typeID"""
         sMkt = Market.getInstance()
         item = sMkt.getItem(objitem)
@@ -205,7 +206,8 @@ class Price(object):
         else:
             self.priceWorkerThread.trigger(requests, cb)
 
-    def clearPriceCache(self):
+    @staticmethod
+    def clearPriceCache():
         pyfalog.debug("Clearing Prices")
         db.clearPrices()
 

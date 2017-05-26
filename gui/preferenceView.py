@@ -28,7 +28,7 @@ class PreferenceView(object):
     def register(cls):
         PreferenceView.views.append(cls())
 
-    def populatePanel(self, panel):
+    def populatePrefPanel(self, panel):
         raise NotImplementedError()
 
     def refreshPanel(self, fit):

@@ -13,7 +13,7 @@ from gui.utils.fonts import Fonts
 class PFNetworkPref(PreferenceView):
     title = "Network"
 
-    def populatePanel(self, panel):
+    def populatePrefPanel(self, panel):
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.settings = NetworkSettings.getInstance()
@@ -74,7 +74,7 @@ class PFNetworkPref(PreferenceView):
         self.nMode = self.settings.getMode()
         self.nAddr = self.settings.getAddress()
         self.nPort = self.settings.getPort()
-        self.nType = self.settings.getType()
+        self.nType = self.settings.getNetworkType()
         self.nAuth = self.settings.getProxyAuthDetails()  # tuple of (login, password)
         if self.nAuth is None:
             self.nAuth = ("", "")  # we don't want None here, it should be a tuple

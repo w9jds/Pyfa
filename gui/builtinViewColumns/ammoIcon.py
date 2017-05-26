@@ -33,17 +33,17 @@ class AmmoIcon(ViewColumn):
         self.mask = wx.LIST_MASK_IMAGE
         self.columnText = ""
 
-    def getText(self, mod):
+    def getColumnText(self, mod):
         return ""
 
-    def getImageId(self, stuff):
-        if not isinstance(stuff, Module):
+    def getImageId(self, mod):
+        if not isinstance(mod, Module):
             return -1
 
-        if stuff.charge is None:
+        if mod.charge is None:
             return -1
         else:
-            iconFile = stuff.charge.icon.iconFile if stuff.charge.icon else ""
+            iconFile = mod.charge.icon.iconFile if mod.charge.icon else ""
             if iconFile:
                 return self.fittingView.imageList.GetImageIndex(iconFile, "icons")
             else:

@@ -19,7 +19,7 @@ class WhProjector(ContextMenu):
 
         return srcContext == "projected"
 
-    def getText(self, itmContext, selection):
+    def getContextMenuText(self, itmContext, selection):
         return "Add System Effects"
 
     def getSubMenu(self, context, selection, rootMenu, i, pitem):

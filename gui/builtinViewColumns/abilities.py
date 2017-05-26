@@ -35,7 +35,7 @@ class Abilities(ViewColumn):
         self.columnText = "Active Abilities"
         self.mask = wx.LIST_MASK_TEXT
 
-    def getText(self, stuff):
+    def getColumnText(self, stuff):
         if isinstance(stuff, Fighter):
             active = [x.name for x in stuff.abilities if x.active]
             if len(active) == 0:

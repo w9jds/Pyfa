@@ -67,7 +67,7 @@ class PreferenceDialog(wx.Dialog):
                 imgID = self.imageList.Add(bmp)
             else:
                 imgID = -1
-            prefView.populatePanel(page)
+            prefView.populatePrefPanel(page)
             self.listbook.AddPage(page, prefView.title, imageId=imgID)
 
         # Set the height based on a condition. Can all the panels fit in the current height?

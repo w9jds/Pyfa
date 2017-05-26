@@ -27,7 +27,7 @@ class ItemStats(ContextMenu):
                               "implantItemChar", "projectedFighter",
                               "fittingMode")
 
-    def getText(self, itmContext, selection):
+    def getContextMenuText(self, itmContext, selection):
         return "{0} Stats".format(itmContext if itmContext is not None else "Item")
 
     def activate(self, fullContext, selection, i):

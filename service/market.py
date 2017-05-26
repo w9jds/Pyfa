@@ -624,8 +624,11 @@ class Market(object):
         variations_list = eos.db.getVariations(parentids, groupids)
 
         if variations_limiter:
+            trimmed_variations_list = None
+
             for limit in variations_limiter:
                 trimmed_variations_list = [variation_item for variation_item in variations_list if limit in variation_item.name]
+
             if trimmed_variations_list:
                 variations_list = trimmed_variations_list
 

@@ -53,7 +53,7 @@ class MetaSwap(ContextMenu):
 
         return True
 
-    def getText(self, itmContext, selection):
+    def getContextMenuText(self, itmContext, selection):
         return "Variations"
 
     def getSubMenu(self, context, selection, rootMenu, i, pitem):

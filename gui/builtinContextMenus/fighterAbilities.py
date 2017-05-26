@@ -22,7 +22,7 @@ class FighterAbility(ContextMenu):
         self.fighter = selection[0]
         return True
 
-    def getText(self, itmContext, selection):
+    def getContextMenuText(self, itmContext, selection):
         return "Abilities"
 
     def addAbility(self, menu, ability):

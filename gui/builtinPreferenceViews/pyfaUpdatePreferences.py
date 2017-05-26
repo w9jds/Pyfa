@@ -14,7 +14,7 @@ class PFUpdatePref(PreferenceView):
             "Here, you may allow pre-release notifications and view "
             "suppressed release notifications, if any.")
 
-    def populatePanel(self, panel):
+    def populatePrefPanel(self, panel):
         self.UpdateSettings = UpdateSettings.getInstance()
         self.dirtySettings = False
 

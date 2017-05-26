@@ -35,7 +35,7 @@ class MultiSwitch(PFNotebook):
             if h:
                 h(drag_type, info)
 
-    def AddPage(self, tabWnd=None, tabTitle="Empty Tab", tabImage=None):
+    def AddPage(self, tabWnd=None, tabTitle="Empty Tab", tabImage=None, showClose=True):
         if tabWnd is None:
             tabWnd = gui.builtinViews.emptyView.BlankPage(self)
             tabWnd.handleDrag = lambda drag_type, info: self.handleDrag(drag_type, info)

@@ -18,26 +18,26 @@ class BaseIcon(ViewColumn):
         self.columnText = ""
         self.shipImage = fittingView.imageList.GetImageIndex("ship_small", "gui")
 
-    def getImageId(self, stuff):
-        if isinstance(stuff, Drone):
+    def getImageId(self, mod):
+        if isinstance(mod, Drone):
             return -1
-        elif isinstance(stuff, Fit):
+        elif isinstance(mod, Fit):
             return self.shipImage
-        elif isinstance(stuff, Rack):
+        elif isinstance(mod, Rack):
             return -1
-        elif isinstance(stuff, Implant):
-            if stuff.character:  # if it has a character as it's parent
+        elif isinstance(mod, Implant):
+            if mod.character:  # if it has a character as it's parent
                 return self.fittingView.imageList.GetImageIndex("character_small", "gui")
             else:
                 return self.shipImage
-        elif isinstance(stuff, Module):
-            if stuff.isEmpty:
-                return self.fittingView.imageList.GetImageIndex("slot_%s_small" % Slot.getName(stuff.slot).lower(),
+        elif isinstance(mod, Module):
+            if mod.isEmpty:
+                return self.fittingView.imageList.GetImageIndex("slot_%s_small" % Slot.getName(mod.slot).lower(),
                                                                 "gui")
             else:
-                return self.loadIconFile(stuff.item.icon.iconFile if stuff.item.icon else "")
+                return self.loadIconFile(mod.item.icon.iconFile if mod.item.icon else "")
 
-        item = getattr(stuff, "item", stuff)
+        item = getattr(mod, "item", mod)
         return self.loadIconFile(item.icon.iconFile if item.icon else "")
 
     def loadIconFile(self, iconFile):

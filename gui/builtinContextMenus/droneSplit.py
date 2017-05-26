@@ -18,7 +18,7 @@ class DroneSplit(ContextMenu):
 
         return srcContext in ("droneItem", "projectedDrone") and selection[0].amount > 1
 
-    def getText(self, itmContext, selection):
+    def getContextMenuText(self, itmContext, selection):
         return "Split {0} Stack".format(itmContext)
 
     def activate(self, fullContext, selection, i):

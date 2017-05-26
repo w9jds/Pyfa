@@ -248,7 +248,7 @@ class Display(wx.ListCtrl):
                 colItem = self.GetItem(item, i)
                 oldText = colItem.GetText()
                 oldImageId = colItem.GetImage()
-                newText = col.getText(st)
+                newText = col.getColumnText(st)
                 if newText is False:
                     col.delayedText(st, self, colItem)
                     newText = u"\u21bb"

@@ -17,7 +17,7 @@ class OpenFit(ContextMenu):
 
         return srcContext in ("projectedFit", "commandFit")
 
-    def getText(self, itmContext, selection):
+    def getContextMenuText(self, itmContext, selection):
         return "Open Fit in New Tab"
 
     def activate(self, fullContext, selection, i):

@@ -46,10 +46,7 @@ class ViewColumn(object):
     def getColumn(cls, name):
         return ViewColumn.columns[name]
 
-    def getRestrictions(self):
-        raise NotImplementedError()
-
-    def getText(self, mod):
+    def getColumnText(self, mod):
         return ""
 
     def getToolTip(self, mod):

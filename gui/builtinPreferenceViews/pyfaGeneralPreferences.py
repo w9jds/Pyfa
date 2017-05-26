@@ -17,7 +17,7 @@ from gui.utils.fonts import Fonts
 class PFGeneralPref(PreferenceView):
     title = "General"
 
-    def populatePanel(self, panel):
+    def populatePrefPanel(self, panel):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.dirtySettings = False
         self.openFitsSettings = SettingsProvider.getInstance().getSettings("pyfaPrevOpenFits",

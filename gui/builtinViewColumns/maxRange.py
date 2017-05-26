@@ -54,7 +54,7 @@ class MaxRange(ViewColumn):
             self.columnText = info.displayName if info.displayName != "" else info.name
             self.mask |= wx.LIST_MASK_TEXT
 
-    def getText(self, stuff):
+    def getColumnText(self, stuff):
         if isinstance(stuff, Mode):
             return ""
 
@@ -73,7 +73,8 @@ class MaxRange(ViewColumn):
     def getImageId(self, mod):
         return -1
 
-    def getParameters(self):
+    @staticmethod
+    def getParameters():
         return ("displayName", bool, False), ("showIcon", bool, True)
 
     def getToolTip(self, mod):

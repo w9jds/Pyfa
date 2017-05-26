@@ -29,7 +29,7 @@ class TacticalMode(ContextMenu):
 
         return srcContext == "fittingShip" and self.modes is not None
 
-    def getText(self, itmContext, selection):
+    def getContextMenuText(self, itmContext, selection):
         return "Tactical Mode"
 
     def addMode(self, menu, mode):

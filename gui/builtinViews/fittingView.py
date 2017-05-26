@@ -722,6 +722,7 @@ class FittingView(d.Display):
         try:
             fit = sFit.getFit(self.activeFitID)
         except Exception as e:
+            fit = None
             pyfalog.critical("Failed to get fit")
             pyfalog.critical(e)
 
@@ -743,7 +744,7 @@ class FittingView(d.Display):
             for i, col in enumerate(self.activeColumns):
                 if i > maxColumns:
                     break
-                name = col.getText(st)
+                name = col.getColumnText(st)
 
                 if not isinstance(name, basestring):
                     name = ""
@@ -851,7 +852,7 @@ class FittingView(d.Display):
                 if i > maxColumns:
                     break
 
-                name = col.getText(st)
+                name = col.getColumnText(st)
                 if not isinstance(name, basestring):
                     name = ""
 

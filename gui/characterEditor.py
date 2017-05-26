@@ -44,9 +44,6 @@ class CharacterTextValidor(BaseValidator):
     def __init__(self):
         BaseValidator.__init__(self)
 
-    def Clone(self, **kwargs):
-        return CharacterTextValidor()
-
     def Validate(self, win):
         entityEditor = win.parent
         textCtrl = self.GetWindow()

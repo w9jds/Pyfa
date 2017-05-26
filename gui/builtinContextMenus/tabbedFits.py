@@ -21,7 +21,7 @@ class TabbedFits(ContextMenu):
 
         return True
 
-    def getText(self, itmContext, selection):
+    def getContextMenuText(self, itmContext, selection):
         return "Currently Open Fits"
 
     def getSubMenu(self, context, selection, rootMenu, i, pitem):

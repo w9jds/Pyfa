@@ -186,7 +186,7 @@ class NetworkSettings(object):
     def getPort(self):
         return self.serviceNetworkSettings["port"]
 
-    def getType(self):
+    def getNetworkType(self):
         return self.serviceNetworkSettings["type"]
 
     def getAccess(self):

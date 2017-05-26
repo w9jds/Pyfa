@@ -70,7 +70,7 @@ class ContextMenu(object):
                 m = menuHandler()
                 if m.display(srcContext, selection):
                     display_amount += 1
-                    texts = m.getText(itemContext, selection)
+                    texts = m.getContextMenuText(itemContext, selection)
 
                     if isinstance(texts, basestring):
                         texts = (texts,)
@@ -139,7 +139,7 @@ class ContextMenu(object):
         else:
             event.Skip()
 
-    def display(self, context, selection):
+    def display(self, srcContext, selection):
         raise NotImplementedError()
 
     def activate(self, fullContext, selection, i):
@@ -164,7 +164,7 @@ class ContextMenu(object):
 
         return cls._ids[cls._idxid]
 
-    def getText(self, context, selection):
+    def getContextMenuText(self, itmContext, selection):
         """
         getText should be implemented in child classes, and should return either
         a string that will make up a menu item label or a list of strings which

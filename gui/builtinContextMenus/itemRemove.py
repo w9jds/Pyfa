@@ -24,7 +24,7 @@ class ItemRemove(ContextMenu):
                               "fighterItem", "projectedFighter",
                               "commandFit")
 
-    def getText(self, itmContext, selection):
+    def getContextMenuText(self, itmContext, selection):
         return "Remove {0}".format(itmContext if itmContext is not None else "Item")
 
     def activate(self, fullContext, selection, i):

@@ -70,7 +70,7 @@ class AttributeDisplay(ViewColumn):
 
             fittingView.refresh = refresh
 
-    def getText(self, mod):
+    def getColumnText(self, mod):
         if hasattr(mod, "item"):
             attr = mod.getModifiedItemAttr(self.info.name)
         else:

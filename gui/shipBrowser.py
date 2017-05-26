@@ -1049,7 +1049,8 @@ class CategoryItem(SFItem.SFBrowserItem):
 
         return -c * t * (t - 2) + b
 
-    def GetType(self):
+    @staticmethod
+    def GetType():
         return 1
 
     def MouseLeftUp(self, event):
@@ -1221,7 +1222,8 @@ class ShipItem(SFItem.SFBrowserItem):
 
         return -c * t * (t - 2) + b
 
-    def GetType(self):
+    @staticmethod
+    def GetType():
         return 2
 
     def MouseLeftUp(self, event):
@@ -1635,7 +1637,8 @@ class FitItem(SFItem.SFBrowserItem):
 
         event.Skip()
 
-    def GetType(self):
+    @staticmethod
+    def GetType():
         return 3
 
     def OnTimer(self, event):
