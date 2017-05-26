@@ -448,37 +448,37 @@ class ItemView(Display):
         menu = ContextMenu.getMenu((item,), (sourceContext, itemContext))
         self.PopupMenu(menu)
 
-    def populate(self, items):
-        if len(items) > 0:
+    def populate(self, stuff):
+        if len(stuff) > 0:
             # Get dictionary with meta level attribute
             sAttr = Attribute.getInstance()
             attrs = sAttr.getAttributeInfo("metaLevel")
             sMkt = self.sMkt
-            self.metalvls = sMkt.directAttrRequest(items, attrs)
+            self.metalvls = sMkt.directAttrRequest(stuff, attrs)
             # Clear selection
             self.deselectItems()
             # Perform sorting, using item's meta levels besides other stuff
-            items.sort(key=self.itemSort)
+            stuff.sort(key=self.itemSort)
         # Mark current item list as active
-        self.active = items
+        self.active = stuff
         # Show them
-        Display.populate(self, items)
+        Display.populate(self, stuff)
 
-    def refresh(self, items):
-        if len(items) > 1:
+    def refresh(self, stuff):
+        if len(stuff) > 1:
             # Get dictionary with meta level attribute
             sAttr = Attribute.getInstance()
             attrs = sAttr.getAttributeInfo("metaLevel")
             sMkt = self.sMkt
-            self.metalvls = sMkt.directAttrRequest(items, attrs)
+            self.metalvls = sMkt.directAttrRequest(stuff, attrs)
             # Re-sort stuff
-            items.sort(key=self.itemSort)
+            stuff.sort(key=self.itemSort)
 
-        for i, item in enumerate(items[:9]):
+        for i, item in enumerate(stuff[:9]):
             # set shortcut info for first 9 modules
             item.marketShortcut = i + 1
 
-        Display.refresh(self, items)
+        Display.refresh(self, stuff)
 
     def makeReverseMetaMap(self):
         """

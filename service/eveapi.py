@@ -991,11 +991,11 @@ class FilterRowset(object):
     def copy(self):
         return FilterRowset(self._cols[:], None, self.key, self.key2, dict_=copy.deepcopy(self._items))
 
-    def get(self, key, default=_unspecified):
+    def get(self, key, default=None):
         try:
             return self[key]
         except KeyError:
-            if default is _unspecified:
+            if default is None:
                 raise
         return default
 

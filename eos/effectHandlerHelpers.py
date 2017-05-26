@@ -144,11 +144,11 @@ class HandledModuleList(HandledList):
             i += 1
         HandledList.insert(self, index, mod)
 
-    def remove(self, mod):
-        HandledList.remove(self, mod)
-        oldPos = mod.position
+    def remove(self, thing):
+        HandledList.remove(self, thing)
+        oldPos = thing.position
 
-        mod.position = None
+        thing.position = None
         for i in xrange(oldPos, len(self)):
             self[i].position -= 1
 

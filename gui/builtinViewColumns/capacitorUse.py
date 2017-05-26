@@ -39,11 +39,11 @@ class CapacitorUse(ViewColumn):
         self.imageId = fittingView.imageList.GetImageIndex("capacitorRecharge_small", "gui")
         self.bitmap = BitmapLoader.getBitmap("capacitorRecharge_small", "gui")
 
-    def getColumnText(self, mod):
-        if isinstance(mod, Mode):
+    def getColumnText(self, stuff):
+        if isinstance(stuff, Mode):
             return ""
 
-        capUse = mod.capUse
+        capUse = stuff.capUse
         if capUse:
             return "%s%s" % ("+" if capUse < 0 else "", (formatAmount(-capUse, 3, 0, 3)))
         else:

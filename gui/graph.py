@@ -28,7 +28,7 @@ class Graph(object):
     def __init__(self):
         self.name = ""
 
-    def getFields(self):
+    def getGraphFields(self):
         raise NotImplementedError()
 
     def getIcons(self):

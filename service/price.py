@@ -142,7 +142,6 @@ class Price(object):
         except:
             # all other errors will pass and continue onward to the REREQUEST delay
             pyfalog.warning("Caught exception in fetchPrices")
-            pass
 
         # if we get to this point, then we've got an error. Set to REREQUEST delay
         for typeID in priceMap.keys():

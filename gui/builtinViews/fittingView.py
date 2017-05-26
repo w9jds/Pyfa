@@ -297,7 +297,6 @@ class FittingView(d.Display):
                     wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
         except wx._core.PyDeadObjectError:
             pyfalog.error("Caught dead object on fit removed")
-            pass
 
         event.Skip()
 
