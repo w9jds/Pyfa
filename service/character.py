@@ -380,7 +380,7 @@ class Character(object):
         wx.CallAfter(guiCallback, e)
 
     @staticmethod
-    def apiUpdateCharSheet(charID, skills, securitystatus):
+    def apiUpdateCharSheet(charID, skills, securitystatus=0):
         char = eos.db.getCharacter(charID)
         char.apiUpdateCharSheet(skills, securitystatus)
         eos.db.commit()

@@ -45,7 +45,7 @@ class ResistancesViewMinimal(StatsView):
         return "Resistances"
 
     def getTextExtentW(self, text):
-        width, height = self.parent.GetTextExtent(text)
+        width, __ = self.parent.GetTextExtent(text)
         return width
 
     def populatePanel(self, contentPanel, headerPanel):

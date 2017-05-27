@@ -121,7 +121,7 @@ class StatsPane(wx.Panel):
             i += 1
             tp.OnStateChange(tp.GetBestSize())
 
-        width, height = self.GetSize()
+        width, __ = self.GetSize()
         self.SetMinSize((width + 9, -1))
 
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()

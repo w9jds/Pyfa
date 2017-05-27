@@ -34,4 +34,3 @@ class Timer(object):
 
     def __exit__(self, exit_type, value, traceback):
         self.checkpoint('finished')
-        pass

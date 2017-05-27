@@ -367,7 +367,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
         self.thoverw = wlabel
 
         self.browserBoxX = self.thoverx
-        bEditBoxWidth, bEditBoxHeight = self.BrowserSearchBox.GetSize()
+        __, bEditBoxHeight = self.BrowserSearchBox.GetSize()
         self.browserBoxY = (rect.height - bEditBoxHeight) / 2
 
         self.bEditBoxWidth = rect.width - self.browserBoxX - self.padding
@@ -736,10 +736,10 @@ class ShipItem(SFItem.SFBrowserItem):
 
         self.shipNamey = (rect.height - self.shipBmp.GetHeight()) / 2
 
-        shipName, shipTrait, fittings = self.shipFittingInfo
+        shipName, __, fittings = self.shipFittingInfo
 
         mdc.SetFont(Fonts.getFont("font_plus_one"))
-        wtext, htext = mdc.GetTextExtent(shipName)
+        __, htext = mdc.GetTextExtent(shipName)
 
         self.fittingsy = self.shipNamey + htext
 
@@ -1230,7 +1230,7 @@ class FitItem(SFItem.SFBrowserItem):
         self.fitNamey = (rect.height - self.shipBmp.GetHeight()) / 2
 
         mdc.SetFont(Fonts.getFont("font_plus_one"))
-        wtext, htext = mdc.GetTextExtent(self.fitName)
+        __, htext = mdc.GetTextExtent(self.fitName)
 
         self.timestampy = self.fitNamey + htext
 

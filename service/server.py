@@ -129,7 +129,6 @@ class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
                 return sock, addr
             except socket.timeout:
                 pyfalog.warning("Server timed out waiting for connection")
-                pass
 
     def stop(self):
         pyfalog.warning("Setting CREST server to stop.")

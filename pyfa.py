@@ -218,14 +218,12 @@ if __name__ == "__main__":
     # Basic logging initialization
 
     # Logging levels:
-    '''
-    logbook.CRITICAL
-    logbook.ERROR
-    logbook.WARNING
-    logbook.INFO
-    logbook.DEBUG
-    logbook.NOTSET
-    '''
+    # logbook.CRITICAL
+    # logbook.ERROR
+    # logbook.WARNING
+    # logbook.INFO
+    # logbook.DEBUG
+    # logbook.NOTSET
 
     if options.debug:
         savePath_filename = u"Pyfa_debug.log"

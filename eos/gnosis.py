@@ -163,7 +163,7 @@ class GnosisSimulation(object):
                     # We can see local modules projected back on the fit. This is bad. Don't do this.
                     pass
                 else:
-                    for afflictor, modifier, amount, used in afflictors:
+                    for afflictor, __, amount, used in afflictors:
                         # Get capacitor usage
                         # Projected modules never use cap, as cap trans is handed under __drains
                         capacitor_need = 0

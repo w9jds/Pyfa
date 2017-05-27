@@ -38,7 +38,7 @@ class MiningYieldViewFull(StatsView):
         return "Mining Yield"
 
     def getTextExtentW(self, text):
-        width, height = self.parent.GetTextExtent(text)
+        width, __ = self.parent.GetTextExtent(text)
         return width
 
     def populatePanel(self, contentPanel, headerPanel):
@@ -133,7 +133,7 @@ class MiningYieldViewFull(StatsView):
                  ("labelFullminingyieldTotal", lambda: fit.totalYield, 3, 0, 0, u"%s m\u00B3/s", None))
 
         counter = 0
-        for labelName, value, prec, lowest, highest, valueFormat, altFormat in stats:
+        for labelName, value, prec, lowest, highest, valueFormat, __ in stats:
             label = getattr(self, labelName)
             value = value() if fit is not None else 0
             value = value if value is not None else 0

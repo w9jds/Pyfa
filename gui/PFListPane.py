@@ -128,7 +128,7 @@ class PFListPane(wx.ScrolledWindow):
 
         selected = None
         for i in xrange(len(self._wList)):
-            iwidth, iheight = self._wList[i].GetSize()
+            __, iheight = self._wList[i].GetSize()
             xa, ya = self.CalcScrolledPosition((0, maxy))
             self._wList[i].SetPosition((xa, ya))
             if self.IsWidgetSelectedByContext(i):
@@ -136,7 +136,7 @@ class PFListPane(wx.ScrolledWindow):
             maxy += iheight
 
         self.SetVirtualSize((1, maxy))
-        cwidth, cheight = self.GetVirtualSize()
+        cwidth, __ = self.GetVirtualSize()
 
         if selected:
             self.ScrollChildIntoView(selected)

@@ -452,7 +452,7 @@ class SkillTreeView(wx.Panel):
     def expandLookup(self, event):
         root = event.Item
         tree = self.skillTreeListCtrl
-        child, cookie = tree.GetFirstChild(root)
+        child, __ = tree.GetFirstChild(root)
         if tree.GetItemText(child) == "dummy":
             tree.Delete(child)
 
@@ -782,7 +782,7 @@ class APIView(wx.Panel):
         if e is None:
             self.stStatus.SetLabel("Successfully fetched {}\'s skills from EVE API.".format(charName))
         else:
-            exc_type, exc_obj, exc_trace = e
+            exc_type, exc_obj, __ = e
             pyfalog.error("Unable to retrieve {0}\'s skills. Error message:\n{1}".format(charName, exc_obj))
             self.stStatus.SetLabel("Unable to retrieve {}\'s skills. Error message:\n{}".format(charName, exc_obj))
 

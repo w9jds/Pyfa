@@ -30,7 +30,7 @@ class armorRepsGraph(Graph):
         self.armorReps = None
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-    def getFields(self):
+    def getGraphFields(self):
         # return self.defaults
         return None
 

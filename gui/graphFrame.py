@@ -195,7 +195,7 @@ class GraphFrame(wx.Frame):
         self.fields.clear()
 
         # Setup textboxes
-        for field, defaultVal in view.getFields().iteritems():
+        for field, defaultVal in view.getGraphFields().iteritems():
 
             textBox = wx.TextCtrl(self.gridPanel, wx.ID_ANY, style=0)
             self.fields[field] = textBox

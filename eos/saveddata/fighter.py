@@ -240,7 +240,8 @@ class Fighter(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         self.__miningyield = None
         self.itemModifiedAttributes.clear()
         self.chargeModifiedAttributes.clear()
-        [x.clear() for x in self.abilities]
+        for x in self.abilities:
+            x.clear()
 
     def canBeApplied(self, projectedOnto):
         """Check if fighter can engage specific fitting"""

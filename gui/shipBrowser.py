@@ -367,7 +367,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
         self.recentSearches = []  # not used?
         self.inSearch = False
 
-        w, h = size
+        __, h = size
         self.BrowserSearchBox = wx.TextCtrl(self, wx.ID_ANY, "", wx.DefaultPosition,
                                             (-1, h - 2 if 'wxGTK' in wx.PlatformInfo else -1),
                                             wx.TE_PROCESS_ENTER | (wx.BORDER_NONE if 'wxGTK' in wx.PlatformInfo else 0))
@@ -483,7 +483,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
         self.thoverw = wlabel
 
         self.browserBoxX = self.thoverx
-        bEditBoxWidth, bEditBoxHeight = self.BrowserSearchBox.GetSize()
+        __, bEditBoxHeight = self.BrowserSearchBox.GetSize()
         self.browserBoxY = (rect.height - bEditBoxHeight) / 2
 
         self.bEditBoxWidth = rect.width - self.browserBoxX - self.padding
@@ -1066,8 +1066,8 @@ class CategoryItem(SFItem.SFBrowserItem):
         self.shipBmpx -= self.animCount
 
         mdc.SetFont(Fonts.getFont("font_plus_one"))
-        categoryName, fittings = self.fittingInfo
-        wtext, htext = mdc.GetTextExtent(categoryName)
+        categoryName, __ = self.fittingInfo
+        __, htext = mdc.GetTextExtent(categoryName)
 
         self.catx = self.shipBmpx + self.shipBmp.GetWidth() + self.padding
         self.caty = (rect.height - htext) / 2
@@ -1232,7 +1232,7 @@ class ShipItem(SFItem.SFBrowserItem):
             self.newBtn.SetBitmap(self.newBmp)
             self.Refresh()
         else:
-            shipName, shipTrait, fittings = self.shipFittingInfo
+            shipName, __, fittings = self.shipFittingInfo
             if fittings > 0:
                 wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=self.shipID, back=True))
             else:
@@ -1301,7 +1301,7 @@ class ShipItem(SFItem.SFBrowserItem):
         shipName, shipTrait, fittings = self.shipFittingInfo
 
         mdc.SetFont(Fonts.getFont("font_plus_one"))
-        wtext, htext = mdc.GetTextExtent(shipName)
+        __, htext = mdc.GetTextExtent(shipName)
 
         self.fittingsy = self.shipNamey + htext
 
@@ -1858,7 +1858,7 @@ class FitItem(SFItem.SFBrowserItem):
         self.fitNamey = (rect.height - self.shipBmp.GetHeight()) / 2
 
         mdc.SetFont(Fonts.getFont("font_plus_one"))
-        wtext, htext = mdc.GetTextExtent(self.fitName)
+        __, htext = mdc.GetTextExtent(self.fitName)
 
         self.timestampy = self.fitNamey + htext
 

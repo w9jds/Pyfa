@@ -46,7 +46,7 @@ class ViewColumn(object):
     def getColumn(cls, name):
         return ViewColumn.columns[name]
 
-    def getColumnText(self, mod):
+    def getColumnText(self, stuff):
         return ""
 
     def getToolTip(self, mod):

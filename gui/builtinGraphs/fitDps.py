@@ -49,7 +49,7 @@ class FitDpsGraph(Graph):
         self.fitDps = None
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-    def getFields(self):
+    def getGraphFields(self):
         return self.defaults
 
     def getLabels(self):

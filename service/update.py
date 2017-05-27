@@ -88,7 +88,6 @@ class CheckUpdateThread(threading.Thread):
         except Exception as e:
             pyfalog.error("Caught exception in run")
             pyfalog.error(e)
-            pass
 
     @staticmethod
     def versiontuple(v):

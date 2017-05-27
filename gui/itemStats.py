@@ -882,7 +882,6 @@ class ItemEffects(wx.Panel):
             if effects[name].effectType:
                 for effectType in effects[name].effectType:
                     effectTypeText += effectType + " "
-                    pass
 
             if effects[name].runTime and effects[name].isImplemented:
                 effectRunTime = str(effects[name].runTime)

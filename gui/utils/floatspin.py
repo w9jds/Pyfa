@@ -1495,7 +1495,7 @@ class FixedPoint(object):
         return q, _mkFP(n1 - q * n2, p)
 
     def __rdivmod__(self, other):
-        n1, n2, p = _norm(self, other)
+        __, n2, p = _norm(self, other)
         return divmod(_mkFP(n2, p), self)
 
     def __mod__(self, other):

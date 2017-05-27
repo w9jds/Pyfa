@@ -41,7 +41,7 @@ class State(ViewColumn):
         self.maxsize = self.size
         self.mask = wx.LIST_MASK_IMAGE
 
-    def getColumnText(self, mod):
+    def getColumnText(self, stuff):
         return ""
 
     def getToolTip(self, mod):
