@@ -735,6 +735,9 @@ class Port(object):
             except:
                 # if no data can be found (old names)
                 pyfalog.warning("no data can be found (old names)")
+                item = None
+
+            if item is None:
                 continue
 
             if item.category.name == "Drone":

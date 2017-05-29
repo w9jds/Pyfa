@@ -738,8 +738,9 @@ class MainFrame(wx.Frame, IPortUser):
         clipboard = fromClipboard()
         try:
             fits = Port().importFitFromBuffer(clipboard, self.getActiveFit())
-        except:
+        except Exception as e:
             pyfalog.error("Attempt to import failed:\n{0}", clipboard)
+            pyfalog.error(e)
         else:
             self._openAfterImport(fits)
 
