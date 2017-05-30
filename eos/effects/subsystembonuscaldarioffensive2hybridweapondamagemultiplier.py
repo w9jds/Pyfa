@@ -2,10 +2,10 @@
 #
 # Used by:
 # Subsystem: Tengu Offensive - Magnetic Infusion Basin
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Medium Hybrid Turret"),
-                                  "damageMultiplier", module.getModifiedItemAttr("subsystemBonusCaldariOffensive2"),
+                                  "damageMultiplier", container.getModifiedItemAttr("subsystemBonusCaldariOffensive2"),
                                   skill="Caldari Offensive Systems")

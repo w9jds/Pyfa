@@ -2,8 +2,8 @@
 #
 # Used by:
 # Modules from group: Expanded Cargohold (7 of 7)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.multiplyItemAttr("maxVelocity", module.getModifiedItemAttr("maxVelocityModifier"), stackingPenalties=True)
+def handler(fit, container, context):
+    fit.ship.multiplyItemAttr("maxVelocity", container.getModifiedItemAttr("maxVelocityModifier"), stackingPenalties=True)

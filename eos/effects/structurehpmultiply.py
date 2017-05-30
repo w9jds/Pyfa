@@ -3,8 +3,8 @@
 # Used by:
 # Modules from group: Nanofiber Internal Structure (7 of 7)
 # Modules from group: Reinforced Bulkhead (8 of 8)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.multiplyItemAttr("hp", module.getModifiedItemAttr("structureHPMultiplier"))
+def handler(fit, container, context):
+    fit.ship.multiplyItemAttr("hp", container.getModifiedItemAttr("structureHPMultiplier"))

@@ -127,7 +127,7 @@ class Effect(EqBase):
         self.__activeByDefault = value
 
     @property
-    def type(self):
+    def effectType(self):
         """
         The type of the effect, automaticly fetched from effects/<effectName>.py if the file exists.
 
@@ -152,11 +152,11 @@ class Effect(EqBase):
         """
         return self.handler != effectDummy
 
-    def isType(self, type):
+    def isType(self, _type):
         """
         Check if this effect is of the passed type
         """
-        return self.type is not None and type in self.type
+        return self.effectType is not None and _type in self.effectType
 
     def __generateHandler(self):
         """
@@ -172,11 +172,11 @@ class Effect(EqBase):
                 self.__handler = getattr(effectModule, "handler", effectDummy)
                 self.__runTime = getattr(effectModule, "runTime", "normal")
                 self.__activeByDefault = getattr(effectModule, "activeByDefault", True)
-                t = getattr(effectModule, "type", None)
+                t = getattr(effectModule, "effectType", None)
 
                 t = t if isinstance(t, tuple) or t is None else (t,)
                 self.__type = t
-            except (ImportError) as e:
+            except ImportError as e:
                 # Effect probably doesn't exist, so create a dummy effect and flag it with a warning.
                 self.__handler = effectDummy
                 self.__runTime = "normal"
@@ -184,7 +184,7 @@ class Effect(EqBase):
                 self.__type = None
                 pyfalog.debug("ImportError generating handler: {0}", e)
                 badHandlers.append(self.handlerName)
-            except (AttributeError) as e:
+            except AttributeError as e:
                 # Effect probably exists but there is an issue with it.  Turn it into a dummy effect so we can continue, but flag it with an error.
                 self.__handler = effectDummy
                 self.__runTime = "normal"
@@ -232,8 +232,8 @@ class Item(EqBase):
         info = getattr(cls, "MOVE_ATTR_INFO", None)
         if info is None:
             cls.MOVE_ATTR_INFO = info = []
-            for id in cls.MOVE_ATTRS:
-                info.append(eos.db.getAttributeInfo(id))
+            for _id in cls.MOVE_ATTRS:
+                info.append(eos.db.getAttributeInfo(_id))
 
         return info
 
@@ -282,9 +282,9 @@ class Item(EqBase):
         except (AttributeError, KeyError):
             return False
 
-    def isType(self, type):
+    def isType(self, _type):
         for effect in self.effects.itervalues():
-            if effect.isType(type):
+            if effect.isType(_type):
                 return True
 
         return False
@@ -390,7 +390,7 @@ class Item(EqBase):
             # thus keep old mechanism for now
             except KeyError:
                 # Define race map
-                map = {
+                race_map = {
                     1  : "caldari",
                     2  : "minmatar",
                     4  : "amarr",
@@ -409,8 +409,8 @@ class Item(EqBase):
                 # Check primary and secondary required skills' races
                 if race is None:
                     skillRaces = tuple(filter(lambda rid: rid, (s.raceID for s in tuple(self.requiredSkills.keys()))))
-                    if sum(skillRaces) in map:
-                        race = map[sum(skillRaces)]
+                    if sum(skillRaces) in race_map:
+                        race = race_map[sum(skillRaces)]
                         if race == "angelserp":
                             if skillRaces == (2, 8):
                                 race = "angel"
@@ -418,7 +418,7 @@ class Item(EqBase):
                                 race = "serpentis"
                 # Rely on item's own raceID as last resort
                 if race is None:
-                    race = map.get(self.raceID, None)
+                    race = race_map.get(self.raceID, None)
                 # Store our final value
                 self.__race = race
         return self.__race
@@ -572,7 +572,7 @@ class Icon(EqBase):
 class MarketGroup(EqBase):
     def __repr__(self):
         return u"MarketGroup(ID={}, name={}, parent={}) at {}".format(
-                self.ID, self.name, getattr(self.parent, "name", None), self.name, hex(id(self))
+                self.ID, self.name, getattr(self.parent, "name", None), hex(id(self))
         ).encode('utf8')
 
 

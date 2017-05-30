@@ -2,10 +2,10 @@
 #
 # Used by:
 # Modules named like: Hybrid Burst Aerator (8 of 8)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == "Hybrid Weapon",
-                                     "speed", module.getModifiedItemAttr("speedMultiplier"),
+                                     "speed", container.getModifiedItemAttr("speedMultiplier"),
                                      stackingPenalties=True)

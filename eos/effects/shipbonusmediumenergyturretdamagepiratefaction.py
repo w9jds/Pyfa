@@ -5,7 +5,7 @@
 # Ship: Fiend
 # Ship: Gnosis
 # Ship: Phantasm
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

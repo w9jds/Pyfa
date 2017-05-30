@@ -2,8 +2,8 @@
 #
 # Used by:
 # Module: Target Spectrum Breaker
-type = "active"
+effectType = "active"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     pass

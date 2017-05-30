@@ -4,7 +4,7 @@
 # Implants named like: Inherent Implants 'Noble' Repair Proficiency RP (6 of 6)
 # Modules named like: Auxiliary Nano Pump (8 of 8)
 # Implant: Imperial Navy Modified 'Noble' Implant
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

@@ -4,10 +4,10 @@
 # Modules from group: Inertial Stabilizer (7 of 7)
 # Modules from group: Nanofiber Internal Structure (7 of 7)
 # Modules from group: Reinforced Bulkhead (8 of 8)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.ship.boostItemAttr("agility",
-                           module.getModifiedItemAttr("agilityMultiplier"),
+                           container.getModifiedItemAttr("agilityMultiplier"),
                            stackingPenalties=True)

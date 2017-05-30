@@ -2,9 +2,9 @@
 #
 # Used by:
 # Subsystems named like: Electronics Emergent Locus Analyzer (4 of 4)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Scan Probe Launcher",
-                                  "cpu", module.getModifiedItemAttr("cpuNeedBonus"))
+                                  "cpu", container.getModifiedItemAttr("cpuNeedBonus"))

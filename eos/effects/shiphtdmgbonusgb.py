@@ -6,7 +6,7 @@
 # Ship: Kronos
 # Ship: Megathron Federate Issue
 # Ship: Sin
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

@@ -2,9 +2,9 @@
 #
 # Used by:
 # Modules named like: Stasis Drone Augmentor (8 of 8)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.drones.filteredItemBoost(lambda drone: drone.item.group.name == "Stasis Webifying Drone",
-                                 "speedFactor", module.getModifiedItemAttr("webSpeedFactorBonus"))
+                                 "speedFactor", container.getModifiedItemAttr("webSpeedFactorBonus"))

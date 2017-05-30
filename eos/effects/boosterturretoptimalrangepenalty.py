@@ -4,7 +4,7 @@
 # Implants named like: Blue Pill Booster (3 of 5)
 # Implants named like: Mindflood Booster (3 of 4)
 # Implants named like: Sooth Sayer Booster (3 of 4)
-type = "boosterSideEffect"
+effectType = "boosterSideEffect"
 activeByDefault = False
 
 

@@ -2,10 +2,10 @@
 #
 # Used by:
 # Modules from group: Capacitor Battery (27 of 27)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.ship.boostItemAttr("energyWarfareResistance",
-                           module.getModifiedItemAttr("energyWarfareResistanceBonus"),
+                           container.getModifiedItemAttr("energyWarfareResistanceBonus"),
                            stackingPenalties=True)

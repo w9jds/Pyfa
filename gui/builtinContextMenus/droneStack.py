@@ -26,7 +26,7 @@ class DroneStack(ContextMenu):
 
         return False
 
-    def getText(self, itmContext, selection):
+    def getContextMenuText(self, itmContext, selection):
         return "Add {0} to Drone Bay (x5)".format(itmContext)
 
     def activate(self, fullContext, selection, i):

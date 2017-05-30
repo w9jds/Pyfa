@@ -7,7 +7,7 @@
 # Modules named like: Gravity Capacitor Upgrade (8 of 8)
 # Skill: Astrometric Rangefinding
 # Skill: Astrometrics
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

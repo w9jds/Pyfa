@@ -3,12 +3,11 @@
 # Used by:
 # Implants named like: grade Halo (18 of 18)
 runTime = "early"
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, implant, context):
     fit.appliedImplants.filteredItemMultiply(
-            lambda implant: "signatureRadiusBonus" in implant.itemModifiedAttributes and
-                            "implantSetAngel" in implant.itemModifiedAttributes,
+            lambda _implant: "signatureRadiusBonus" in _implant.itemModifiedAttributes and "implantSetAngel" in _implant.itemModifiedAttributes,
             "signatureRadiusBonus",
             implant.getModifiedItemAttr("implantSetAngel"))

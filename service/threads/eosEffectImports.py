@@ -6,7 +6,7 @@ def threadedEosEffectsImport():
     # Walk eos.effects and add all effects so we can import them properly
     print("Starting Eos Effects Import")
 
-    for root, folders, files in os.walk("eos/effects"):
+    for root, __, files in os.walk("eos/effects"):
         for file_ in files:
             if file_.endswith(".py") and not file_.startswith("_"):
                 root = root.replace("../", "")

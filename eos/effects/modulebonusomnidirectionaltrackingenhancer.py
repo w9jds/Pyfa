@@ -2,42 +2,31 @@
 #
 # Used by:
 # Modules from group: Drone Tracking Enhancer (10 of 10)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):
-    fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill("Fighters"),
-                                   "fighterAbilityAttackMissileExplosionRadius",
-                                   src.getModifiedItemAttr("aoeCloudSizeBonus"), stackingPenalties=True)
-    fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill("Fighters"),
-                                   "fighterAbilityAttackMissileRangeOptimal", src.getModifiedItemAttr("maxRangeBonus"),
-                                   stackingPenalties=True)
-    fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill("Fighters"),
-                                   "fighterAbilityAttackTurretRangeFalloff", src.getModifiedItemAttr("falloffBonus"),
-                                   stackingPenalties=True)
-    fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill("Fighters"),
-                                   "fighterAbilityMissilesExplosionRadius",
-                                   src.getModifiedItemAttr("aoeCloudSizeBonus"), stackingPenalties=True)
-    fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"), "falloff",
-                                 src.getModifiedItemAttr("falloffBonus"), stackingPenalties=True)
-    fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill("Fighters"),
-                                   "fighterAbilityAttackMissileRangeFalloff", src.getModifiedItemAttr("falloffBonus"),
-                                   stackingPenalties=True)
-    fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill("Fighters"),
-                                   "fighterAbilityAttackTurretTrackingSpeed",
-                                   src.getModifiedItemAttr("trackingSpeedBonus"), stackingPenalties=True)
-    fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"), "maxRange",
-                                 src.getModifiedItemAttr("maxRangeBonus"), stackingPenalties=True)
-    fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"), "trackingSpeed",
-                                 src.getModifiedItemAttr("trackingSpeedBonus"), stackingPenalties=True)
-    fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill("Fighters"),
-                                   "fighterAbilityAttackTurretRangeOptimal", src.getModifiedItemAttr("maxRangeBonus"),
-                                   stackingPenalties=True)
-    fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill("Fighters"),
-                                   "fighterAbilityMissilesExplosionVelocity",
-                                   src.getModifiedItemAttr("aoeVelocityBonus"), stackingPenalties=True)
-    fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill("Fighters"),
-                                   "fighterAbilityAttackMissileExplosionVelocity",
-                                   src.getModifiedItemAttr("aoeVelocityBonus"), stackingPenalties=True)
-    fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill("Fighters"), "fighterAbilityMissilesRange",
-                                   src.getModifiedItemAttr("maxRangeBonus"), stackingPenalties=True)
+    fighter_effects = {
+        "fighterAbilityAttackTurretRangeFalloff"      : src.getModifiedItemAttr("falloffBonus"),
+        "fighterAbilityMissilesExplosionVelocity"     : src.getModifiedItemAttr("aoeVelocityBonus"),
+        "fighterAbilityAttackMissileExplosionRadius"  : src.getModifiedItemAttr("aoeCloudSizeBonus"),
+        "fighterAbilityAttackTurretTrackingSpeed"     : src.getModifiedItemAttr("trackingSpeedBonus"),
+        "fighterAbilityMissilesExplosionRadius"       : src.getModifiedItemAttr("aoeCloudSizeBonus"),
+        "fighterAbilityMissilesRange"                 : src.getModifiedItemAttr("maxRangeBonus"),
+        "fighterAbilityAttackMissileRangeOptimal"     : src.getModifiedItemAttr("maxRangeBonus"),
+        "fighterAbilityAttackMissileExplosionVelocity": src.getModifiedItemAttr("aoeVelocityBonus"),
+        "fighterAbilityAttackMissileRangeFalloff"     : src.getModifiedItemAttr("falloffBonus"),
+        "fighterAbilityAttackTurretRangeOptimal"      : src.getModifiedItemAttr("maxRangeBonus"),
+    }
+
+    drone_effects = {
+        "trackingSpeed": src.getModifiedItemAttr("trackingSpeedBonus"),
+        "falloff"      : src.getModifiedItemAttr("falloffBonus"),
+        "maxRange"     : src.getModifiedItemAttr("maxRangeBonus"),
+    }
+
+    for attribute in fighter_effects:
+        fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill("Fighters"), attribute, fighter_effects[attribute], stackingPenalties=True)
+
+    for attribute in drone_effects:
+        fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill("Drones"), attribute, drone_effects[attribute], stackingPenalties=True)

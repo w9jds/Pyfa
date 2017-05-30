@@ -1,8 +1,8 @@
 # Not used by any item
-type = "passive"
+effectType = "passive"
 runTime = "late"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     for x in xrange(1, 4):
-        module.boostChargeAttr("warfareBuff{}Multiplier".format(x), module.getModifiedItemAttr("commandBurstStrengthBonus"))
+        container.boostChargeAttr("warfareBuff{}Multiplier".format(x), container.getModifiedItemAttr("commandBurstStrengthBonus"))

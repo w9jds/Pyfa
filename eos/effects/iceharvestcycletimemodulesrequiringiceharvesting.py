@@ -4,7 +4,7 @@
 # Implants named like: Inherent Implants 'Yeti' Ice Harvesting IH (3 of 3)
 # Module: Medium Ice Harvester Accelerator I
 # Skill: Ice Harvesting
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

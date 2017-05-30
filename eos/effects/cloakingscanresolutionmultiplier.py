@@ -2,10 +2,10 @@
 #
 # Used by:
 # Modules from group: Cloaking Device (12 of 14)
-type = "offline"
+effectType = "offline"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.ship.multiplyItemAttr("scanResolution",
-                              module.getModifiedItemAttr("scanResolutionMultiplier"),
+                              container.getModifiedItemAttr("scanResolutionMultiplier"),
                               stackingPenalties=True, penaltyGroup="cloakingScanResolutionMultiplier")

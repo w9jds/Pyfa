@@ -43,7 +43,7 @@ class BaseName(ViewColumn):
         self.mask = wx.LIST_MASK_TEXT
         self.projectedView = isinstance(fittingView, gui.projectedView.ProjectedView)
 
-    def getText(self, stuff):
+    def getColumnText(self, stuff):
         if isinstance(stuff, Drone):
             return "%dx %s" % (stuff.amount, stuff.item.name)
         elif isinstance(stuff, Fighter):

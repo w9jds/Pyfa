@@ -2,21 +2,21 @@
 #
 # Used by:
 # Modules from group: Remote Sensor Booster (8 of 8)
-type = "projected", "active"
+effectType = "projected", "active"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     if "projected" not in context:
         return
 
-    fit.ship.boostItemAttr("maxTargetRange", module.getModifiedItemAttr("maxTargetRangeBonus"),
+    fit.ship.boostItemAttr("maxTargetRange", container.getModifiedItemAttr("maxTargetRangeBonus"),
                            stackingPenalties=True)
-    fit.ship.boostItemAttr("scanResolution", module.getModifiedItemAttr("scanResolutionBonus"),
+    fit.ship.boostItemAttr("scanResolution", container.getModifiedItemAttr("scanResolutionBonus"),
                            stackingPenalties=True)
 
     for scanType in ("Gravimetric", "Magnetometric", "Radar", "Ladar"):
         fit.ship.boostItemAttr(
                 "scan{}Strength".format(scanType),
-                module.getModifiedItemAttr("scan{}StrengthPercent".format(scanType)),
+                container.getModifiedItemAttr("scan{}StrengthPercent".format(scanType)),
                 stackingPenalties=True
         )

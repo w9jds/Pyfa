@@ -101,9 +101,9 @@ class PriceViewFull(StatsView):
             ship_price = fit.ship.item.price.price
 
             if fit.modules:
-                for module in fit.modules:
-                    if not module.isEmpty:
-                        module_price += module.item.price.price
+                for _module in fit.modules:
+                    if not _module.isEmpty:
+                        module_price += _module.item.price.price
 
             if fit.drones:
                 for drone in fit.drones:

@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Thermodynamics
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, skill, context):

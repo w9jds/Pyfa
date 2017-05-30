@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: XL Cruise Missile Specialization
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

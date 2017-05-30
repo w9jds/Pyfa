@@ -8,7 +8,7 @@
 # Implant: Genolution Core Augmentation CA-4
 # Skill: Evasive Maneuvering
 # Skill: Spaceship Command
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

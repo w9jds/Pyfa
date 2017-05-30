@@ -3,11 +3,11 @@
 # Used by:
 # Modules from group: Armor Coating (202 of 202)
 # Modules from group: Armor Plating Energized (187 of 187)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
-    for type in ("kinetic", "thermal", "explosive", "em"):
-        fit.ship.boostItemAttr("armor%sDamageResonance" % type.capitalize(),
-                               module.getModifiedItemAttr("%sDamageResistanceBonus" % type),
+def handler(fit, container, context):
+    for resist_type in ("kinetic", "thermal", "explosive", "em"):
+        fit.ship.boostItemAttr("armor%sDamageResonance" % resist_type.capitalize(),
+                               container.getModifiedItemAttr("%sDamageResistanceBonus" % resist_type),
                                stackingPenalties=True)

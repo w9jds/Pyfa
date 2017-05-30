@@ -3,7 +3,7 @@
 # Used by:
 # Implants named like: Eifyr and Co. 'Alchemist' Neurotoxin Recovery NR (2 of 2)
 # Skill: Neurotoxin Recovery
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

@@ -33,11 +33,11 @@ class Ammo(ViewColumn):
         self.imageId = fittingView.imageList.GetImageIndex("damagePattern_small", "gui")
         self.bitmap = BitmapLoader.getBitmap("damagePattern_small", "gui")
 
-    def getText(self, stuff):
+    def getColumnText(self, stuff):
         if isinstance(stuff, Fighter):
             # this is an experiment, not sure I like it. But it saves us from duplicating code.
             col = self.columns['Fighter Abilities'](self.fittingView, {})
-            text = col.getText(stuff)
+            text = col.getColumnText(stuff)
             del col
             return text
         if getattr(stuff, "charge", None) is not None:

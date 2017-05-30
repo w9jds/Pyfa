@@ -26,7 +26,7 @@ import gui.utils.drawUtils as drawUtils
 from gui.bitmapLoader import BitmapLoader
 from logbook import Logger
 from service.fit import Fit
-from service.settings import GeneralSettings
+from gui.utils.fonts import Fonts
 
 pyfalog = Logger(__name__)
 
@@ -274,13 +274,12 @@ class PFNotebook(wx.Panel):
                 # (deleting from the tab automatically deletes itself)
                 self.tabsContainer.DeleteTab(n, True)
 
-            """
-            We used to try and get the current tab using:
-            sel = self.tabsContainer.GetSelected()
-            But there's a race condition that causes it to give us back the wrong tab.
-            Now we get the tab using a little basic math.
-            See GH #1055
-            """
+            # We used to try and get the current tab using:
+            #     sel = self.tabsContainer.GetSelected()
+            # But there's a race condition that causes it to give us back the wrong tab.
+            # Now we get the tab using a little basic math.
+            # See GH #1055
+
             if page_count == 1:
                 # We just deleted the only page.
                 sel = None
@@ -359,7 +358,7 @@ class PFNotebook(wx.Panel):
         self.tabsContainer.Refresh()
 
     def OnSize(self, event):
-        w, h = self.GetSize()
+        w, __ = self.GetSize()
         self.tabsContainer.SetSize((w, -1))
         self.tabsContainer.UpdateSize()
         self.tabsContainer.Refresh()
@@ -409,15 +408,6 @@ class PFTabRenderer(object):
         self.tabBackBitmap = None
         self.cbSize = 5
         self.padding = 4
-
-        general_settings = GeneralSettings.getInstance()
-        self.font = wx.Font(
-                general_settings.get('fontSize'),
-                getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
-                getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
-                getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
-                False,
-        )
 
         self.tabImg = img
         self.position = (0, 0)  # Not used internally for rendering - helper for tab container
@@ -472,8 +462,8 @@ class PFTabRenderer(object):
         ebmp = wx.EmptyBitmap(1, 1)
         mdc = wx.MemoryDC()
         mdc.SelectObject(ebmp)
-        mdc.SetFont(self.font)
-        textSizeX, textSizeY = mdc.GetTextExtent(self.text)
+        mdc.SetFont(Fonts.getFont("font_title_plus_two"))
+        textSizeX, __ = mdc.GetTextExtent(self.text)
         totalSize = self.leftWidth + self.rightWidth + textSizeX + self.closeBtnWidth / 2 + 16 + self.padding * 2
         mdc.SelectObject(wx.NullBitmap)
         return totalSize, self.tabHeight
@@ -615,7 +605,7 @@ class PFTabRenderer(object):
         else:
             textStart = self.leftWidth
 
-        mdc.SetFont(self.font)
+        mdc.SetFont(Fonts.getFont("font_standard"))
 
         maxsize = self.tabWidth - textStart - self.rightWidth - self.padding * 4
         color = self.selectedColor if self.selected else self.inactiveColor
@@ -623,7 +613,7 @@ class PFTabRenderer(object):
         mdc.SetTextForeground(colorUtils.GetSuitableColor(color, 1))
 
         text = drawUtils.GetPartialText(mdc, self.text, maxsize, "")
-        tx, ty = mdc.GetTextExtent(text)
+        __, ty = mdc.GetTextExtent(text)
         mdc.DrawText(text, textStart + self.padding, height / 2 - ty / 2)
 
         if self.closeButton:
@@ -817,7 +807,7 @@ class PFTabsContainer(wx.Panel):
                 if self.showAddButton:
                     # If we can add tabs, we can drag them. Set flag
                     self.startDrag = True
-                    tx, ty = tab.GetPosition()
+                    tx, __ = tab.GetPosition()
                     self.dragx = mposx - tx
                     self.dragy = self.containerHeight - self.height
                 self.Refresh()
@@ -1063,7 +1053,7 @@ class PFTabsContainer(wx.Panel):
                     self.dragTrigger -= 1
             if self.dragging:
                 dtx = mposx - self.dragx
-                w, h = self.draggedTab.GetSize()
+                w, __ = self.draggedTab.GetSize()
 
                 if dtx < 0:
                     dtx = 0
@@ -1223,7 +1213,7 @@ class PFTabsContainer(wx.Panel):
         pass
 
     def UpdateTabFX(self):
-        w, h = self.tabShadow.GetSize()
+        w, __ = self.tabShadow.GetSize()
         if w != self.tabMinWidth:
             self.tabShadow.SetSize((self.tabMinWidth, self.height + 1))
             fxBmp = self.tabShadow.Render()
@@ -1284,7 +1274,7 @@ class PFTabsContainer(wx.Panel):
         tabMinWidth = 9000000  # Really, it should be over 9000
         tabMaxWidth = 0
         for tab in self.tabs:
-            mw, mh = tab.GetMinSize()
+            mw, __ = tab.GetMinSize()
             if tabMinWidth > mw:
                 tabMinWidth = mw
             if tabMaxWidth < mw:
@@ -1394,15 +1384,7 @@ class PFNotebookPagePreview(wx.Frame):
         self.padding = 15
         self.transp = 0
 
-        general_settings = GeneralSettings.getInstance()
-        self.hfont = wx.Font(
-                general_settings.get('fontSize'),
-                getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
-                getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
-                getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
-                False
-        )
-        self.SetFont(self.hfont)
+        self.SetFont(Fonts.getFont("font_standard"))
 
         tx, __ = self.GetTextExtent(self.title)
         tx += self.padding * 2
@@ -1463,7 +1445,7 @@ class PFNotebookPagePreview(wx.Frame):
         mdc.SetBackground(wx.Brush(color))
         mdc.Clear()
 
-        mdc.SetFont(self.hfont)
+        mdc.SetFont(Fonts.getFont("font_standard"))
 
         x, y = mdc.GetTextExtent(self.title)
 

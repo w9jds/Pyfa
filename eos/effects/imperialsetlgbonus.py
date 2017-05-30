@@ -2,7 +2,7 @@
 #
 # Used by:
 # Implants named like: Low grade Grail (6 of 6)
-type = "passive"
+effectType = "passive"
 runTime = "early"
 
 

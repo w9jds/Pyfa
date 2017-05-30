@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Magnetometric Sensor Compensation
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

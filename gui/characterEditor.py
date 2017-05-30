@@ -35,6 +35,7 @@ from service.character import Character
 from service.network import AuthenticationError, TimeoutError
 from service.market import Market
 from logbook import Logger
+from gui.utils.fonts import Fonts
 
 pyfalog = Logger(__name__)
 
@@ -42,9 +43,6 @@ pyfalog = Logger(__name__)
 class CharacterTextValidor(BaseValidator):
     def __init__(self):
         BaseValidator.__init__(self)
-
-    def Clone(self):
-        return CharacterTextValidor()
 
     def Validate(self, win):
         entityEditor = win.parent
@@ -134,6 +132,7 @@ class CharacterEditor(wx.Frame):
 
         i = wx.IconFromBitmap(BitmapLoader.getBitmap("character_small", "gui"))
         self.SetIcon(i)
+        self.SetFont(Fonts.getFont("font_standard"))
 
         self.mainFrame = parent
         # self.disableWin = wx.WindowDisabler(self)
@@ -257,7 +256,7 @@ class CharacterEditor(wx.Frame):
         if event is not None:
             event.Skip()
 
-    def Destroy(self):
+    def Destroy(self, **kwargs):
         sFit = Fit.getInstance()
         fitID = self.mainFrame.getActiveFit()
         if fitID is not None:
@@ -273,6 +272,7 @@ class SkillTreeView(wx.Panel):
                           style=wx.TAB_TRAVERSAL)
         self.charEditor = self.Parent.Parent  # first parent is Notebook, second is Character Editor
         self.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
+        self.SetFont(Fonts.getFont("font_standard"))
 
         pmainSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -305,6 +305,7 @@ class SkillTreeView(wx.Panel):
         self.Bind(wx.EVT_TIMER, self.populateSkillTreeSkillSearch, self.searchTimer)
 
         tree = self.skillTreeListCtrl = wx.gizmos.TreeListCtrl(self, wx.ID_ANY, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT)
+        tree.SetFont(Fonts.getFont("font_standard"))
         pmainSizer.Add(tree, 1, wx.EXPAND | wx.ALL, 5)
 
         self.imageList = wx.ImageList(16, 16)
@@ -451,7 +452,7 @@ class SkillTreeView(wx.Panel):
     def expandLookup(self, event):
         root = event.Item
         tree = self.skillTreeListCtrl
-        child, cookie = tree.GetFirstChild(root)
+        child, __ = tree.GetFirstChild(root)
         if tree.GetItemText(child) == "dummy":
             tree.Delete(child)
 
@@ -744,7 +745,7 @@ class APIView(wx.Panel):
         sChar = Character.getInstance()
         try:
             activeChar = self.charEditor.entityEditor.getActiveEntity()
-            list = sChar.apiCharList(activeChar.ID, self.inputID.GetLineText(0), self.inputKey.GetLineText(0))
+            _list = sChar.apiCharList(activeChar.ID, self.inputID.GetLineText(0), self.inputKey.GetLineText(0))
         except AuthenticationError, e:
             msg = "Authentication failure. Please check keyID and vCode combination."
             pyfalog.info(msg)
@@ -758,7 +759,7 @@ class APIView(wx.Panel):
             self.stStatus.SetLabel("Error:\n%s" % e.message)
         else:
             self.charChoice.Clear()
-            for charName in list:
+            for charName in _list:
                 self.charChoice.Append(charName)
 
             self.btnFetchSkills.Enable(True)
@@ -781,7 +782,7 @@ class APIView(wx.Panel):
         if e is None:
             self.stStatus.SetLabel("Successfully fetched {}\'s skills from EVE API.".format(charName))
         else:
-            exc_type, exc_obj, exc_trace = e
+            exc_type, exc_obj, __ = e
             pyfalog.error("Unable to retrieve {0}\'s skills. Error message:\n{1}".format(charName, exc_obj))
             self.stStatus.SetLabel("Unable to retrieve {}\'s skills. Error message:\n{}".format(charName, exc_obj))
 

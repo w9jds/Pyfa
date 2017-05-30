@@ -2,8 +2,8 @@
 #
 # Used by:
 # Items from category: Subsystem (40 of 80)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.increaseItemAttr("powerOutput", module.getModifiedItemAttr("powerOutput"))
+def handler(fit, container, context):
+    fit.ship.increaseItemAttr("powerOutput", container.getModifiedItemAttr("powerOutput"))

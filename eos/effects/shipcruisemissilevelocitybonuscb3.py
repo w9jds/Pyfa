@@ -2,7 +2,7 @@
 #
 # Used by:
 # Variations of ship: Raven (3 of 4)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

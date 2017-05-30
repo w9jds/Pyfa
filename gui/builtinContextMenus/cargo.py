@@ -28,7 +28,7 @@ class Cargo(ContextMenu):
 
         return True
 
-    def getText(self, itmContext, selection):
+    def getContextMenuText(self, itmContext, selection):
         return "Add {0} to Cargo".format(itmContext)
 
     def activate(self, fullContext, selection, i):

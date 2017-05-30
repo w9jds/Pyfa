@@ -1,7 +1,7 @@
 # Not used by any item
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Information Command Specialist"),
-                                  "commandBonusHidden", module.getModifiedItemAttr("subsystemBonusCaldariDefensive"), skill="Caldari Defensive Systems")
+                                  "commandBonusHidden", container.getModifiedItemAttr("subsystemBonusCaldariDefensive"), skill="Caldari Defensive Systems")

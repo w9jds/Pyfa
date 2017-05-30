@@ -9,7 +9,7 @@ displayName = "Missile Attack"
 # Attribute prefix that this ability targets
 prefix = "fighterAbilityMissiles"
 
-type = "active"
+effectType = "active"
 
 # This flag is required for effects that use charges in order to properly calculate reload time
 hasCharges = True

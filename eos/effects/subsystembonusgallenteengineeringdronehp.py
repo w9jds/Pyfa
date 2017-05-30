@@ -2,11 +2,11 @@
 #
 # Used by:
 # Subsystem: Proteus Engineering - Augmented Capacitor Reservoir
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     for layer in ("shieldCapacity", "armorHP", "hp"):
         fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill("Drones"), layer,
-                                     module.getModifiedItemAttr("subsystemBonusGallenteEngineering"),
+                                     container.getModifiedItemAttr("subsystemBonusGallenteEngineering"),
                                      skill="Gallente Engineering Systems")

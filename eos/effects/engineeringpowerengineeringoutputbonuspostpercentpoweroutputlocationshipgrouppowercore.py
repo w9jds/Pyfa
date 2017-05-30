@@ -5,7 +5,7 @@
 # Modules named like: Ancillary Current Router (8 of 8)
 # Implant: Genolution Core Augmentation CA-1
 # Skill: Power Grid Management
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

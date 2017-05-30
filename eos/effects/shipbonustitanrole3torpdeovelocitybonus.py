@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ship: Leviathan
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

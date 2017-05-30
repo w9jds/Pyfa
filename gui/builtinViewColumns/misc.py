@@ -50,7 +50,7 @@ class Miscellanea(ViewColumn):
             self.mask |= wx.LIST_MASK_TEXT
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-    def getText(self, stuff):
+    def getColumnText(self, stuff):
         return self.__getData(stuff)[0]
 
     def getToolTip(self, mod):
@@ -59,7 +59,8 @@ class Miscellanea(ViewColumn):
     def getImageId(self, mod):
         return -1
 
-    def getParameters(self):
+    @staticmethod
+    def getParameters():
         return ("displayName", bool, False), ("showIcon", bool, True)
 
     def __getData(self, stuff):

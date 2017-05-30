@@ -2,10 +2,10 @@
 #
 # Used by:
 # Subsystem: Loki Offensive - Projectile Scoping Array
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Medium Projectile Turret"),
-                                  "falloff", module.getModifiedItemAttr("subsystemBonusMinmatarOffensive"),
+                                  "falloff", container.getModifiedItemAttr("subsystemBonusMinmatarOffensive"),
                                   skill="Minmatar Offensive Systems")

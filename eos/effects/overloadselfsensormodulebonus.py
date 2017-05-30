@@ -4,17 +4,17 @@
 # Modules from group: Remote Sensor Booster (8 of 8)
 # Modules from group: Sensor Booster (16 of 16)
 # Modules from group: Sensor Dampener (6 of 6)
-type = "overheat"
+effectType = "overheat"
 
 
-def handler(fit, module, context):
-    module.boostItemAttr("maxTargetRangeBonus", module.getModifiedItemAttr("overloadSensorModuleStrengthBonus"))
-    module.boostItemAttr("scanResolutionBonus", module.getModifiedItemAttr("overloadSensorModuleStrengthBonus"),
-                         stackingPenalties=True)
+def handler(fit, container, context):
+    container.boostItemAttr("maxTargetRangeBonus", container.getModifiedItemAttr("overloadSensorModuleStrengthBonus"))
+    container.boostItemAttr("scanResolutionBonus", container.getModifiedItemAttr("overloadSensorModuleStrengthBonus"),
+                            stackingPenalties=True)
 
     for scanType in ("Gravimetric", "Magnetometric", "Radar", "Ladar"):
-        module.boostItemAttr(
+        container.boostItemAttr(
                 "scan{}StrengthPercent".format(scanType),
-                module.getModifiedItemAttr("overloadSensorModuleStrengthBonus"),
+                container.getModifiedItemAttr("overloadSensorModuleStrengthBonus"),
                 stackingPenalties=True
         )

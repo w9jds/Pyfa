@@ -6,7 +6,7 @@
 # Ship: Condor
 # Ship: Executioner
 # Ship: Slasher
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

@@ -6,7 +6,7 @@
 # Implant: Low-grade Snake Epsilon
 # Implant: Mid-grade Snake Epsilon
 # Skill: Hull Upgrades
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

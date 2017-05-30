@@ -21,14 +21,14 @@ import itertools
 
 
 class Graph(object):
-    def __init__(self, fit, function, data=None):
+    def __init__(self, fit, _function, data=None):
         self.fit = fit
         self.data = {}
         if data is not None:
             for name, d in data.iteritems():
                 self.setData(Data(name, d))
 
-        self.function = function
+        self.function = _function
 
     def clearData(self):
         self.data.clear()

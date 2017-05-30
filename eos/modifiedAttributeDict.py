@@ -359,7 +359,7 @@ class ModifiedAttributeDict(collections.MutableMapping):
         if resist:
             afflictPenal += "r"
 
-        self.__afflict(attributeName, "%s*" % (afflictPenal), multiplier, multiplier != 1)
+        self.__afflict(attributeName, "%s*" % afflictPenal, multiplier, multiplier != 1)
 
     def boost(self, attributeName, boostFactor, skill=None, *args, **kwargs):
         """Boost value by some percentage"""
@@ -404,5 +404,5 @@ class ModifiedAttributeDict(collections.MutableMapping):
 
 class Affliction(object):
     def __init__(self, affliction_type, amount):
-        self.type = affliction_type
+        self.effectType = affliction_type
         self.amount = amount

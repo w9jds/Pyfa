@@ -2,8 +2,8 @@
 #
 # Used by:
 # Modules from group: Armor Reinforcer (48 of 48)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.increaseItemAttr("mass", module.getModifiedItemAttr("massAddition"))
+def handler(fit, container, context):
+    fit.ship.increaseItemAttr("mass", container.getModifiedItemAttr("massAddition"))

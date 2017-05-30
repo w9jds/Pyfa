@@ -26,7 +26,7 @@ class ImplantSets(ContextMenu):
 
         return srcContext in ("implantView", "implantEditor")
 
-    def getText(self, itmContext, selection):
+    def getContextMenuText(self, itmContext, selection):
         return "Add Implant Set"
 
     def getSubMenu(self, context, selection, rootMenu, i, pitem):
@@ -56,19 +56,19 @@ class ImplantSets(ContextMenu):
 
         self.idmap = {}
 
-        for set in implantSets:
-            id = ContextMenu.nextID()
-            mitem = wx.MenuItem(rootMenu, id, set.name)
+        for implant_set in implantSets:
+            _id = ContextMenu.nextID()
+            mitem = wx.MenuItem(rootMenu, _id, implant_set.name)
             bindmenu.Bind(wx.EVT_MENU, self.handleSelection, mitem)
-            self.idmap[id] = set
+            self.idmap[_id] = implant_set
             m.AppendItem(mitem)
 
         return m
 
     def handleSelection(self, event):
-        set = self.idmap.get(event.Id, None)
+        implant_set = self.idmap.get(event.Id, None)
 
-        if set is None:
+        if implant_set is None:
             event.Skip()
             return
 
@@ -77,15 +77,15 @@ class ImplantSets(ContextMenu):
             sChar = Character.getInstance()
             charID = self.selection.getActiveCharacter()
 
-            for implant in set.implants:
+            for implant in implant_set.implants:
                 sChar.addImplant(charID, implant.item.ID)
 
             wx.PostEvent(self.selection, GE.CharChanged())
         else:
             sFit = Fit.getInstance()
             fitID = self.mainFrame.getActiveFit()
-            for implant in set.implants:
-                sFit.addImplant(fitID, implant.item.ID, recalc=implant == set.implants[-1])
+            for implant in implant_set.implants:
+                sFit.addImplant(fitID, implant.item.ID, recalc=implant == implant_set.implants[-1])
 
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 

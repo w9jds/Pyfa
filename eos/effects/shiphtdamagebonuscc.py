@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ship: Moa
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

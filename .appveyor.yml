@@ -2,6 +2,8 @@ version: 1.0.{build}
 
 # Do not build feature branch with open Pull Requests
 skip_branch_with_pr: true
+max_jobs: 3
+shallow_clone: true
 
 # scripts that are called at very beginning, before repo cloning
 init:
@@ -155,6 +157,12 @@ install:
   - "pip install -r requirements_build.txt"
 
 build_script:
+
+  - ps: if ($env:APPVEYOR_PULL_REQUEST_NUMBER -and $env:APPVEYOR_BUILD_NUMBER -ne ((Invoke-RestMethod `
+        https://ci.appveyor.com/api/projects/$env:APPVEYOR_ACCOUNT_NAME/$env:APPVEYOR_PROJECT_SLUG/history?recordsNumber=50).builds | `
+        Where-Object pullRequestId -eq $env:APPVEYOR_PULL_REQUEST_NUMBER)[0].buildNumber) { `
+          throw "There are newer queued builds for this pull request, failing early." }
+
   # Build the compiled extension
   # - "python setup.py build"
   - ECHO "Build pyfa:"
@@ -170,6 +178,11 @@ build_script:
 build: on
 
 after_build:
+  - ps: if ($env:APPVEYOR_PULL_REQUEST_NUMBER -and $env:APPVEYOR_BUILD_NUMBER -ne ((Invoke-RestMethod `
+        https://ci.appveyor.com/api/projects/$env:APPVEYOR_ACCOUNT_NAME/$env:APPVEYOR_PROJECT_SLUG/history?recordsNumber=50).builds | `
+        Where-Object pullRequestId -eq $env:APPVEYOR_PULL_REQUEST_NUMBER)[0].buildNumber) { `
+          throw "There are newer queued builds for this pull request, failing early." }
+
   - ps: "ls \".\\dist\\pyfa\\\""
   # Zip
   # APPVEYOR_PULL_REQUEST_NUMBER -and $env:APPVEYOR_BUILD_NUMBER
@@ -177,16 +190,10 @@ after_build:
   - if [%PYTHON_ARCH%]==[32] (
     7z a Pyfa_Windows.zip -r .\dist\pyfa\*.*)
   - if [%PYTHON_ARCH%]==[64] (
-    7z a Pyfa_Windows_x64.zip -r .\dist\pyfa\*.*)
+    7z a Pyfa_Windows_x64.zip -r .\dist\pyfa\*.* -mx=9)
 
   - if [%PYTHON_ARCH%]==[32] (
-    7z a pyfa_windows_debug.zip -r .\dist\pyfa_debug\*.*)
-
-
-  - ps: if ($env:APPVEYOR_PULL_REQUEST_NUMBER -and $env:APPVEYOR_BUILD_NUMBER -ne ((Invoke-RestMethod `
-        https://ci.appveyor.com/api/projects/$env:APPVEYOR_ACCOUNT_NAME/$env:APPVEYOR_PROJECT_SLUG/history?recordsNumber=50).builds | `
-        Where-Object pullRequestId -eq $env:APPVEYOR_PULL_REQUEST_NUMBER)[0].buildNumber) { `
-          throw "There are newer queued builds for this pull request, failing early." }
+    7z a pyfa_windows_debug.zip -r .\dist\pyfa_debug\*.* -mx=9)
 
   - ps: if ($env:PYTHON_ARCH -eq 32){
           Push-AppveyorArtifact Pyfa_Windows.zip;

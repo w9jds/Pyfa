@@ -2,8 +2,8 @@
 #
 # Used by:
 # Modules from group: Entosis Link (6 of 6)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
-    module.increaseItemAttr("cpu", module.getModifiedItemAttr("entosisCPUAdd"))
+def handler(fit, container, context):
+    container.increaseItemAttr("cpu", container.getModifiedItemAttr("entosisCPUAdd"))

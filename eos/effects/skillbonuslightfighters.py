@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Light Fighters
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

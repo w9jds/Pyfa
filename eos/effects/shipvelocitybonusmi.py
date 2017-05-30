@@ -4,7 +4,7 @@
 # Variations of ship: Mammoth (2 of 2)
 # Ship: Hoarder
 # Ship: Prowler
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

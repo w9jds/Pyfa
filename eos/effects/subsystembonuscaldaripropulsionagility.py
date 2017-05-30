@@ -3,9 +3,9 @@
 # Used by:
 # Subsystem: Tengu Propulsion - Intercalated Nanofibers
 # Subsystem: Tengu Propulsion - Interdiction Nullifier
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.boostItemAttr("agility", module.getModifiedItemAttr("subsystemBonusCaldariPropulsion"),
+def handler(fit, container, context):
+    fit.ship.boostItemAttr("agility", container.getModifiedItemAttr("subsystemBonusCaldariPropulsion"),
                            skill="Caldari Propulsion Systems")

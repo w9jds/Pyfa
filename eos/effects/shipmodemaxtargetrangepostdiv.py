@@ -2,13 +2,13 @@
 #
 # Used by:
 # Modules named like: Sharpshooter Mode (4 of 4)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.ship.multiplyItemAttr(
             "maxTargetRange",
-            1 / module.getModifiedItemAttr("modeMaxTargetRangePostDiv"),
+            1 / container.getModifiedItemAttr("modeMaxTargetRangePostDiv"),
             stackingPenalties=True,
             penaltyGroup="postDiv"
     )

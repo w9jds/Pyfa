@@ -4,7 +4,7 @@
 # Implants named like: Zainou 'Gypsy' Electronic Warfare EW (6 of 6)
 # Modules named like: Signal Disruption Amplifier (8 of 8)
 # Skill: Electronic Warfare
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

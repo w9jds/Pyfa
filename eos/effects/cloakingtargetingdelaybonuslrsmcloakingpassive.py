@@ -2,9 +2,9 @@
 #
 # Used by:
 # Modules named like: Targeting Systems Stabilizer (8 of 8)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.modules.filteredItemBoost(lambda module: module.item.requiresSkill("Cloaking"),
-                                  "cloakingTargetingDelay", module.getModifiedItemAttr("cloakingTargetingDelayBonus"))
+def handler(fit, container, context):
+    fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Cloaking"),
+                                  "cloakingTargetingDelay", container.getModifiedItemAttr("cloakingTargetingDelayBonus"))

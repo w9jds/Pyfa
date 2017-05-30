@@ -2,9 +2,9 @@
 #
 # Used by:
 # Subsystem: Proteus Electronics - Dissolution Sequencer
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.boostItemAttr("scanMagnetometricStrength", module.getModifiedItemAttr("subsystemBonusGallenteElectronic"),
+def handler(fit, container, context):
+    fit.ship.boostItemAttr("scanMagnetometricStrength", container.getModifiedItemAttr("subsystemBonusGallenteElectronic"),
                            skill="Gallente Electronic Systems")

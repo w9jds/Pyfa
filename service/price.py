@@ -142,7 +142,6 @@ class Price(object):
         except:
             # all other errors will pass and continue onward to the REREQUEST delay
             pyfalog.warning("Caught exception in fetchPrices")
-            pass
 
         # if we get to this point, then we've got an error. Set to REREQUEST delay
         for typeID in priceMap.keys():
@@ -176,7 +175,8 @@ class Price(object):
 
         return list(set(fit_items))
 
-    def getPriceNow(self, objitem):
+    @staticmethod
+    def getPriceNow(objitem):
         """Get price for provided typeID"""
         sMkt = Market.getInstance()
         item = sMkt.getItem(objitem)
@@ -205,7 +205,8 @@ class Price(object):
         else:
             self.priceWorkerThread.trigger(requests, cb)
 
-    def clearPriceCache(self):
+    @staticmethod
+    def clearPriceCache():
         pyfalog.debug("Clearing Prices")
         db.clearPrices()
 

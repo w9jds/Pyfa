@@ -2,10 +2,10 @@
 #
 # Used by:
 # Modules from group: Heat Sink (18 of 18)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemMultiply(lambda mod: mod.item.group.name == "Energy Weapon",
-                                     "speed", module.getModifiedItemAttr("speedMultiplier"),
+                                     "speed", container.getModifiedItemAttr("speedMultiplier"),
                                      stackingPenalties=True)

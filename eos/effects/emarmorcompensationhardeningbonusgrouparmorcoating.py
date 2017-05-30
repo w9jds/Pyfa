@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: EM Armor Compensation
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, skill, context):

@@ -3,8 +3,8 @@
 # Used by:
 # Charges from group: Tracking Script (2 of 2)
 # Charges named like: Missile Script (4 of 4)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
-    module.boostItemAttr("aoeCloudSizeBonus", module.getModifiedChargeAttr("aoeCloudSizeBonusBonus"))
+def handler(fit, container, context):
+    container.boostItemAttr("aoeCloudSizeBonus", container.getModifiedChargeAttr("aoeCloudSizeBonusBonus"))

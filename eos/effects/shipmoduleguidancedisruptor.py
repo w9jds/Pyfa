@@ -2,10 +2,10 @@
 #
 # Used by:
 # Variations of module: Guidance Disruptor I (6 of 6)
-type = "active", "projected"
+effectType = "active", "projected"
 
 
-def handler(fit, module, context, *args, **kwargs):
+def handler(fit, container, context, *args, **kwargs):
     if "projected" in context:
         for srcAttr, tgtAttr in (
                 ("aoeCloudSizeBonus", "aoeCloudSize"),
@@ -14,5 +14,5 @@ def handler(fit, module, context, *args, **kwargs):
                 ("explosionDelayBonus", "explosionDelay"),
         ):
             fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("Missile Launcher Operation"),
-                                            tgtAttr, module.getModifiedItemAttr(srcAttr),
+                                            tgtAttr, container.getModifiedItemAttr(srcAttr),
                                             stackingPenalties=True, *args, **kwargs)

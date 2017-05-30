@@ -3,7 +3,7 @@
 # Used by:
 # Variations of ship: Bestower (2 of 2)
 # Ship: Prorator
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

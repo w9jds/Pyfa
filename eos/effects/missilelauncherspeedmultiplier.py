@@ -2,10 +2,10 @@
 #
 # Used by:
 # Modules from group: Ballistic Control system (17 of 17)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill("Missile Launcher Operation"),
-                                     "speed", module.getModifiedItemAttr("speedMultiplier"),
+                                     "speed", container.getModifiedItemAttr("speedMultiplier"),
                                      stackingPenalties=True)

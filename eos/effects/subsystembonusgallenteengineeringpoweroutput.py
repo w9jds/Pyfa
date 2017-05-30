@@ -2,9 +2,9 @@
 #
 # Used by:
 # Subsystem: Proteus Engineering - Power Core Multiplier
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.boostItemAttr("powerOutput", module.getModifiedItemAttr("subsystemBonusGallenteEngineering"),
+def handler(fit, container, context):
+    fit.ship.boostItemAttr("powerOutput", container.getModifiedItemAttr("subsystemBonusGallenteEngineering"),
                            skill="Gallente Engineering Systems")

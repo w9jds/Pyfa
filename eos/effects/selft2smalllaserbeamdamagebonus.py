@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Small Beam Laser Specialization
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, skill, context):

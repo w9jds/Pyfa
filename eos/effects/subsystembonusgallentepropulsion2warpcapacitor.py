@@ -2,9 +2,9 @@
 #
 # Used by:
 # Subsystem: Proteus Propulsion - Gravitational Capacitor
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.boostItemAttr("warpCapacitorNeed", module.getModifiedItemAttr("subsystemBonusGallentePropulsion2"),
+def handler(fit, container, context):
+    fit.ship.boostItemAttr("warpCapacitorNeed", container.getModifiedItemAttr("subsystemBonusGallentePropulsion2"),
                            skill="Gallente Propulsion Systems")

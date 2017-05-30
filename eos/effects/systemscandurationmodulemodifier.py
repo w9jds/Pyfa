@@ -2,9 +2,9 @@
 #
 # Used by:
 # Modules from group: Scanning Upgrade Time (2 of 2)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Astrometrics"),
-                                  "duration", module.getModifiedItemAttr("scanDurationBonus"))
+                                  "duration", container.getModifiedItemAttr("scanDurationBonus"))

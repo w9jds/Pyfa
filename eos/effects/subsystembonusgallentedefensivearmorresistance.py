@@ -2,11 +2,11 @@
 #
 # Used by:
 # Subsystem: Proteus Defensive - Adaptive Augmenter
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
-    for type in ("Em", "Explosive", "Kinetic", "Thermal"):
-        fit.ship.boostItemAttr("armor{0}DamageResonance".format(type),
-                               module.getModifiedItemAttr("subsystemBonusGallenteDefensive"),
+def handler(fit, container, context):
+    for damage_type in ("Em", "Explosive", "Kinetic", "Thermal"):
+        fit.ship.boostItemAttr("armor{0}DamageResonance".format(damage_type),
+                               container.getModifiedItemAttr("subsystemBonusGallenteDefensive"),
                                skill="Gallente Defensive Systems")

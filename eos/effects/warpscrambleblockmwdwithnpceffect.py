@@ -6,10 +6,10 @@
 from eos.saveddata.module import State
 
 runTime = "early"
-type = "projected", "active"
+effectType = "projected", "active"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     if "projected" not in context:
         return
     # this is such a dirty hack

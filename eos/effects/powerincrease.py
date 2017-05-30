@@ -2,8 +2,8 @@
 #
 # Used by:
 # Modules from group: Auxiliary Power Core (5 of 5)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.increaseItemAttr("powerOutput", module.getModifiedItemAttr("powerIncrease"))
+def handler(fit, container, context):
+    fit.ship.increaseItemAttr("powerOutput", container.getModifiedItemAttr("powerIncrease"))

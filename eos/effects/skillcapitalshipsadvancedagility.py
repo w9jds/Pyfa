@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Capital Ships
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, skill, context):

@@ -2,10 +2,10 @@
 #
 # Used by:
 # Modules named like: Projectile Ambit Extension (8 of 8)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Projectile Weapon",
-                                  "falloff", module.getModifiedItemAttr("falloffBonus"),
+                                  "falloff", container.getModifiedItemAttr("falloffBonus"),
                                   stackingPenalties=True)

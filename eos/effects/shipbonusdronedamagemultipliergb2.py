@@ -3,7 +3,7 @@
 # Used by:
 # Variations of ship: Dominix (3 of 3)
 # Ship: Nestor
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

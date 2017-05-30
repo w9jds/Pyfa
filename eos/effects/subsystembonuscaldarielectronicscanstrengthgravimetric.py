@@ -2,9 +2,9 @@
 #
 # Used by:
 # Subsystem: Tengu Electronics - Dissolution Sequencer
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.boostItemAttr("scanGravimetricStrength", module.getModifiedItemAttr("subsystemBonusCaldariElectronic"),
+def handler(fit, container, context):
+    fit.ship.boostItemAttr("scanGravimetricStrength", container.getModifiedItemAttr("subsystemBonusCaldariElectronic"),
                            skill="Caldari Electronic Systems")

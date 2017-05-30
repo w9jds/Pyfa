@@ -2,11 +2,11 @@
 #
 # Used by:
 # Modules from group: Signal Amplifier (7 of 7)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
-    for type in ("Gravimetric", "Magnetometric", "Radar", "Ladar"):
-        fit.ship.boostItemAttr("scan%sStrength" % type,
-                               module.getModifiedItemAttr("scan%sStrengthPercent" % type),
+def handler(fit, container, context):
+    for sensor_type in ("Gravimetric", "Magnetometric", "Radar", "Ladar"):
+        fit.ship.boostItemAttr("scan%sStrength" % sensor_type,
+                               container.getModifiedItemAttr("scan%sStrengthPercent" % sensor_type),
                                stackingPenalties=True)

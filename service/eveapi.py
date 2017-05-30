@@ -215,7 +215,7 @@ class ServerError(Error):
     pass
 
 
-def EVEAPIConnection(url="api.eveonline.com", cacheHandler=None, proxy=None, proxySSL=False):
+def EVEAPIConnection(url="api.eveonline.com", cacheHandler=None, _proxy=None, _proxySSL=False):
     # Creates an API object through which you can call remote functions.
     #
     # The following optional arguments may be provided:
@@ -262,8 +262,8 @@ def EVEAPIConnection(url="api.eveonline.com", cacheHandler=None, proxy=None, pro
     ctx._handler = cacheHandler
     ctx._scheme = p.scheme
     ctx._host = p.netloc
-    ctx._proxy = proxy or globals()["proxy"]
-    ctx._proxySSL = proxySSL or globals()["proxySSL"]
+    ctx._proxy = _proxy or globals()["proxy"]
+    ctx._proxySSL = _proxySSL or globals()["proxySSL"]
     return ctx
 
 
@@ -279,7 +279,7 @@ def _ParseXML(response, fromContext, storeFunc):
 
     if fromContext and isinstance(response, Element):
         obj = response
-    elif type(response) in (str, unicode):
+    elif isinstance(response, (str, unicode)):
         obj = _Parser().Parse(response, False)
     elif hasattr(response, "read"):
         obj = _Parser().Parse(response, True)
@@ -744,7 +744,7 @@ class Row(object):
         return self.__cmp__(other) == 0
 
     def __cmp__(self, other):
-        if type(other) != type(self):
+        if not isinstance(other, type(self)):
             raise TypeError("Incompatible comparison type")
         return cmp(self._cols, other._cols) or cmp(self._row, other._row)
 
@@ -867,7 +867,7 @@ class Rowset(object):
         return self[:]
 
     def __getitem__(self, ix):
-        if type(ix) is slice:
+        if isinstance(ix, slice):
             return Rowset(self._cols, self._rows[ix])
         return Row(self._cols, self._rows[ix])
 
@@ -991,11 +991,11 @@ class FilterRowset(object):
     def copy(self):
         return FilterRowset(self._cols[:], None, self.key, self.key2, dict_=copy.deepcopy(self._items))
 
-    def get(self, key, default=_unspecified):
+    def get(self, key, default=None):
         try:
             return self[key]
         except KeyError:
-            if default is _unspecified:
+            if default is None:
                 raise
         return default
 

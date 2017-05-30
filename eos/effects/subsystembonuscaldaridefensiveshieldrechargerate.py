@@ -2,9 +2,9 @@
 #
 # Used by:
 # Subsystem: Tengu Defensive - Supplemental Screening
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.boostItemAttr("shieldRechargeRate", module.getModifiedItemAttr("subsystemBonusCaldariDefensive2"),
+def handler(fit, container, context):
+    fit.ship.boostItemAttr("shieldRechargeRate", container.getModifiedItemAttr("subsystemBonusCaldariDefensive2"),
                            skill="Caldari Defensive Systems")

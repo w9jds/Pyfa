@@ -8,7 +8,7 @@
 # Ship: Retribution
 # Ship: Silver Magnate
 # Ship: Tormentor
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

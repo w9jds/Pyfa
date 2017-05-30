@@ -5,7 +5,7 @@
 # Implant: Michi's Excavation Augmentor
 # Skill: Astrogeology
 # Skill: Mining
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

@@ -2,8 +2,8 @@
 #
 # Used by:
 # Subsystems named like: Offensive Covert Reconfiguration (4 of 4)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.forceItemAttr("jumpHarmonics", module.getModifiedItemAttr("jumpHarmonicsModifier"))
+def handler(fit, container, context):
+    fit.ship.forceItemAttr("jumpHarmonics", container.getModifiedItemAttr("jumpHarmonicsModifier"))

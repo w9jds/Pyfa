@@ -5,7 +5,7 @@
 # Modules named like: Targeting System Subcontroller (8 of 8)
 # Implant: Quafe Zero
 # Skill: Signature Analysis
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

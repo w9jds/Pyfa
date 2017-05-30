@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Mining Foreman
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

@@ -4,7 +4,7 @@
 # Implants named like: Zainou 'Deadeye' Guided Missile Precision GP (6 of 6)
 # Modules named like: Warhead Rigor Catalyst (8 of 8)
 # Skill: Guided Missile Precision
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

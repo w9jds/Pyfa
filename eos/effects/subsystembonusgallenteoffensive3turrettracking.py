@@ -2,10 +2,10 @@
 #
 # Used by:
 # Subsystem: Proteus Offensive - Dissonic Encoding Platform
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Medium Hybrid Turret"),
-                                  "trackingSpeed", module.getModifiedItemAttr("subsystemBonusGallenteOffensive3"),
+                                  "trackingSpeed", container.getModifiedItemAttr("subsystemBonusGallenteOffensive3"),
                                   skill="Gallente Offensive Systems")

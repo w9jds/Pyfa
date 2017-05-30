@@ -2,11 +2,11 @@
 #
 # Used by:
 # Subsystem: Tengu Offensive - Rifling Launcher Pattern
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "ECM",
                                   "scanLadarStrengthBonus",
-                                  module.getModifiedItemAttr("subsystemBonusCaldariOffensive3"),
+                                  container.getModifiedItemAttr("subsystemBonusCaldariOffensive3"),
                                   skill="Caldari Offensive Systems")

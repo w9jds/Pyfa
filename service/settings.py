@@ -186,7 +186,7 @@ class NetworkSettings(object):
     def getPort(self):
         return self.serviceNetworkSettings["port"]
 
-    def getType(self):
+    def getNetworkType(self):
         return self.serviceNetworkSettings["type"]
 
     def getAccess(self):
@@ -382,11 +382,11 @@ class GeneralSettings(object):
         if not isinstance(self.serviceGeneralDefaultSettings['fontSize'], int):
             self.serviceGeneralDefaultSettings['fontSize'] = 9
 
-    def get(self, type):
-        return self.serviceGeneralDefaultSettings[type]
+    def get(self, setting_type):
+        return self.serviceGeneralDefaultSettings[setting_type]
 
-    def set(self, type, value):
-        self.serviceGeneralDefaultSettings[type] = value
+    def set(self, setting_type, value):
+        self.serviceGeneralDefaultSettings[setting_type] = value
 
 
 class DatabaseSettings(object):
@@ -412,11 +412,11 @@ class DatabaseSettings(object):
 
         self.serviceDatabaseDefaultSettings = SettingsProvider.getInstance().getSettings("pyfaDatabaseSettings", DatabaseDefaultSettings)
 
-    def get(self, type):
-        return self.serviceDatabaseDefaultSettings[type]
+    def get(self, setting_type):
+        return self.serviceDatabaseDefaultSettings[setting_type]
 
-    def set(self, type, value):
-        self.serviceDatabaseDefaultSettings[type] = value
+    def set(self, setting_type, value):
+        self.serviceDatabaseDefaultSettings[setting_type] = value
 
 
 class StatViewSettings(object):
@@ -449,11 +449,11 @@ class StatViewSettings(object):
 
         self.serviceStatViewDefaultSettings = SettingsProvider.getInstance().getSettings("pyfaServiceStatViewSettings", serviceStatViewDefaultSettings)
 
-    def get(self, type):
-        return self.serviceStatViewDefaultSettings[type]
+    def get(self, setting_type):
+        return self.serviceStatViewDefaultSettings[setting_type]
 
-    def set(self, type, value):
-        self.serviceStatViewDefaultSettings[type] = value
+    def set(self, setting_type, value):
+        self.serviceStatViewDefaultSettings[setting_type] = value
 
 
 class ContextMenuSettings(object):
@@ -500,11 +500,11 @@ class ContextMenuSettings(object):
 
         self.ContextMenuDefaultSettings = SettingsProvider.getInstance().getSettings("pyfaContextMenuSettings", ContextMenuDefaultSettings)
 
-    def get(self, type):
-        return self.ContextMenuDefaultSettings[type]
+    def get(self, setting_type):
+        return self.ContextMenuDefaultSettings[setting_type]
 
-    def set(self, type, value):
-        self.ContextMenuDefaultSettings[type] = value
+    def set(self, setting_type, value):
+        self.ContextMenuDefaultSettings[setting_type] = value
 
 
 class EOSSettings(object):
@@ -520,10 +520,10 @@ class EOSSettings(object):
     def __init__(self):
         self.EOSSettings = SettingsProvider.getInstance().getSettings("pyfaEOSSettings", eos_config.settings)
 
-    def get(self, type):
-        return self.EOSSettings[type]
+    def get(self, setting_type):
+        return self.EOSSettings[setting_type]
 
-    def set(self, type, value):
-        self.EOSSettings[type] = value
+    def set(self, setting_type, value):
+        self.EOSSettings[setting_type] = value
 
 # @todo: migrate fit settings (from fit service) here?

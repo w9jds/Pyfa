@@ -2,9 +2,9 @@
 #
 # Used by:
 # Subsystem: Loki Defensive - Amplification Node
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.boostItemAttr("signatureRadius", module.getModifiedItemAttr("subsystemBonusMinmatarDefensive"),
+def handler(fit, container, context):
+    fit.ship.boostItemAttr("signatureRadius", container.getModifiedItemAttr("subsystemBonusMinmatarDefensive"),
                            skill="Minmatar Defensive Systems")

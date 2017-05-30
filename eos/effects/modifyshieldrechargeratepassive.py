@@ -2,8 +2,8 @@
 #
 # Used by:
 # Modules named like: Processor Overclocking Unit (8 of 8)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.multiplyItemAttr("shieldRechargeRate", module.getModifiedItemAttr("shieldRechargeRateMultiplier"))
+def handler(fit, container, context):
+    fit.ship.multiplyItemAttr("shieldRechargeRate", container.getModifiedItemAttr("shieldRechargeRateMultiplier"))

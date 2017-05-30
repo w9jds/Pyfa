@@ -18,7 +18,7 @@ import copy
 from gui.utils import colorUtils
 import gui.utils.drawUtils as drawUtils
 import gui.utils.animEffects as animEffects
-from service.settings import GeneralSettings
+from gui.utils.fonts import Fonts
 
 from service.fit import Fit
 
@@ -29,7 +29,7 @@ class PyGauge(wx.PyWindow):
     only support determinant mode (see SetValue and SetRange)
     """
 
-    def __init__(self, parent, id=wx.ID_ANY, range=100, pos=wx.DefaultPosition,
+    def __init__(self, parent, id=wx.ID_ANY, _range=100, pos=wx.DefaultPosition,
                  size=(-1, 30), style=0):
         """
         Default class constructor.
@@ -51,7 +51,7 @@ class PyGauge(wx.PyWindow):
         self._barGradient = self._barGradientSorted = None
 
         self._border_padding = 0
-        self._range = range
+        self._range = _range
         self._value = 0
 
         self._fractionDigits = 0
@@ -78,16 +78,6 @@ class PyGauge(wx.PyWindow):
         self._oldPercentage = 0
         self._showRemaining = False
 
-        general_settings = GeneralSettings.getInstance()
-
-        # Set the font size used on the stats pane
-        self.font = wx.Font(
-                general_settings.get('fontSize'),
-                getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
-                getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
-                getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
-        )
-
         self.SetBarGradient((wx.Colour(119, 119, 119), wx.Colour(153, 153, 153)))
         self.SetBackgroundColour(wx.Colour(51, 51, 51))
         self._tooltip = wx.ToolTip("")
@@ -108,7 +98,7 @@ class PyGauge(wx.PyWindow):
         self._showRemaining = False
         self.Refresh()
 
-    def DoGetBestSize(self):
+    def DoGetBestSize(self, **kwargs):
         """
         Overridden base class virtual. Determines the best size of the
         button based on the label and bezel size.
@@ -192,19 +182,19 @@ class PyGauge(wx.PyWindow):
             self._animValue = self._percentage
             self.Refresh()
 
-    def SetRange(self, range, reinit=False):
+    def SetRange(self, _range, reinit=False):
         """
         Sets the range of the gauge. The gauge length is its
         value as a proportion of the range.
 
         :param reinit:
-        :param range: The maximum value of the gauge.
+        :param _range: The maximum value of the gauge.
         """
 
-        if self._range == range:
+        if self._range == _range:
             return
 
-        range_ = float(range)
+        range_ = float(_range)
 
         if range_ <= 0:
             self._range = 0.01
@@ -244,11 +234,11 @@ class PyGauge(wx.PyWindow):
 
         self._tooltip.SetTip("%.2f/%.2f" % (self._value, self._range))
 
-    def SetValueRange(self, value, range, reinit=False):
-        if self._value == value and self._range == range:
+    def SetValueRange(self, value, _range, reinit=False):
+        if self._value == value and self._range == _range:
             return
 
-        range_ = float(range)
+        range_ = float(_range)
 
         if range_ <= 0:
             self._range = 0.01
@@ -381,7 +371,7 @@ class PyGauge(wx.PyWindow):
             r.width = w
             dc.DrawRectangleRect(r)
 
-        dc.SetFont(self.font)
+        dc.SetFont(Fonts.getFont("font_standard"))
 
         r = copy.copy(rect)
         r.left += 1
@@ -395,8 +385,8 @@ class PyGauge(wx.PyWindow):
             dc.DrawLabel(formatStr, rect, wx.ALIGN_CENTER)
         else:
             if self.GetBarGradient() and self._showRemaining:
-                range = self._range if self._range > 0.01 else 0
-                value = range - self._value
+                _range = self._range if self._range > 0.01 else 0
+                value = _range - self._value
                 if value < 0:
                     label = "over"
                     value = -value

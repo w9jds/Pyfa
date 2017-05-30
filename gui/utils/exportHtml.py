@@ -68,7 +68,6 @@ class exportHtmlThread(threading.Thread):
             FILE.close()
         except IOError:
             pyfalog.error("Failed to write to {0}", settings.getPath())
-            pass
 
         if self.callback:
             wx.CallAfter(self.callback, -1)

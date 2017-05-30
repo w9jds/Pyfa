@@ -5,7 +5,7 @@
 from eos.saveddata.module import State
 from eos.modifiedAttributeDict import ModifiedAttributeDict
 
-type = "active", "projected"
+effectType = "active", "projected"
 
 
 def handler(fit, src, context, **kwargs):

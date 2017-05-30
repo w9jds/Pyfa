@@ -8,6 +8,7 @@ from gui.bitmapLoader import BitmapLoader
 import gui.mainFrame
 
 from service.settings import HTMLExportSettings
+from gui.utils.fonts import Fonts
 
 
 class PFHTMLExportPref(PreferenceView):
@@ -18,7 +19,7 @@ class PFHTMLExportPref(PreferenceView):
     desc4 = ("Export Fittings in a minimal HTML Version, just containing the fittings links "
              "without any visual styling")
 
-    def populatePanel(self, panel):
+    def populatePrefPanel(self, panel):
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.HTMLExportSettings = HTMLExportSettings.getInstance()
         self.dirtySettings = False
@@ -27,7 +28,7 @@ class PFHTMLExportPref(PreferenceView):
 
         self.stTitle = wx.StaticText(panel, wx.ID_ANY, self.title, wx.DefaultPosition, wx.DefaultSize, 0)
         self.stTitle.Wrap(-1)
-        self.stTitle.SetFont(wx.Font(12, 70, 90, 90, False, wx.EmptyString))
+        self.stTitle.SetFont(Fonts.getFont("font_title_plus_one"))
         mainSizer.Add(self.stTitle, 0, wx.ALL, 5)
 
         self.m_staticline1 = wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)

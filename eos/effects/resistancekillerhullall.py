@@ -2,10 +2,10 @@
 #
 # Used by:
 # Modules named like: Polarized (12 of 18)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     for dmgType in ('em', 'thermal', 'kinetic', 'explosive'):
         tgtAttr = '{}DamageResonance'.format(dmgType)
-        fit.ship.forceItemAttr(tgtAttr, module.getModifiedItemAttr("resistanceKillerHull"))
+        fit.ship.forceItemAttr(tgtAttr, container.getModifiedItemAttr("resistanceKillerHull"))

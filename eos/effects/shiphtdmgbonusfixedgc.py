@@ -9,7 +9,7 @@
 # Ship: Guardian-Vexor
 # Ship: Thorax
 # Ship: Vexor
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

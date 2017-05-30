@@ -2,10 +2,10 @@
 #
 # Used by:
 # Subsystem: Legion Engineering - Supplemental Coolant Injector
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemBoost(lambda mod: True, "heatDamage",
-                                  module.getModifiedItemAttr("subsystemBonusAmarrEngineering"),
+                                  container.getModifiedItemAttr("subsystemBonusAmarrEngineering"),
                                   skill="Amarr Engineering Systems")

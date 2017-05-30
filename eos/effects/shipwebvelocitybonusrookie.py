@@ -3,7 +3,7 @@
 # Used by:
 # Ship: Hematos
 # Ship: Violator
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

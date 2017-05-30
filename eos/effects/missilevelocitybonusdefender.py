@@ -2,7 +2,7 @@
 #
 # Used by:
 # Implants named like: Zainou 'Snapshot' Defender Missiles DM (6 of 6)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

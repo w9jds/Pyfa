@@ -27,6 +27,7 @@ from gui.cachingImageList import CachingImageList
 from gui.contextMenu import ContextMenu
 from gui.bitmapLoader import BitmapLoader
 from logbook import Logger
+from gui.utils.fonts import Fonts
 from service.settings import GeneralSettings
 
 pyfalog = Logger(__name__)
@@ -60,16 +61,8 @@ class MetaButton(wx.ToggleButton):
 class MarketBrowser(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
-        general_settings = GeneralSettings.getInstance()
 
-        # Set the font size used on the stats pane
-        font = wx.Font(
-                general_settings.get('fontSize'),
-                getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
-                getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
-                getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
-        )
-        self.SetFont(font)
+        self.SetFont(Fonts.getFont("font_standard"))
         pyfalog.debug("Initialize marketBrowser")
         vbox = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(vbox)
@@ -218,9 +211,9 @@ class MarketTree(wx.TreeCtrl):
             jumpList.append(mg.ID)
             mg = mg.parent
 
-        for id in sMkt.ROOT_MARKET_GROUPS:
-            if id in jumpList:
-                jumpList = jumpList[:jumpList.index(id) + 1]
+        for _id in sMkt.ROOT_MARKET_GROUPS:
+            if _id in jumpList:
+                jumpList = jumpList[:jumpList.index(_id) + 1]
 
         item = self.root
         for i in range(len(jumpList) - 1, -1, -1):
@@ -455,37 +448,37 @@ class ItemView(Display):
         menu = ContextMenu.getMenu((item,), (sourceContext, itemContext))
         self.PopupMenu(menu)
 
-    def populate(self, items):
-        if len(items) > 0:
+    def populate(self, stuff):
+        if len(stuff) > 0:
             # Get dictionary with meta level attribute
             sAttr = Attribute.getInstance()
             attrs = sAttr.getAttributeInfo("metaLevel")
             sMkt = self.sMkt
-            self.metalvls = sMkt.directAttrRequest(items, attrs)
+            self.metalvls = sMkt.directAttrRequest(stuff, attrs)
             # Clear selection
             self.deselectItems()
             # Perform sorting, using item's meta levels besides other stuff
-            items.sort(key=self.itemSort)
+            stuff.sort(key=self.itemSort)
         # Mark current item list as active
-        self.active = items
+        self.active = stuff
         # Show them
-        Display.populate(self, items)
+        Display.populate(self, stuff)
 
-    def refresh(self, items):
-        if len(items) > 1:
+    def refresh(self, stuff):
+        if len(stuff) > 1:
             # Get dictionary with meta level attribute
             sAttr = Attribute.getInstance()
             attrs = sAttr.getAttributeInfo("metaLevel")
             sMkt = self.sMkt
-            self.metalvls = sMkt.directAttrRequest(items, attrs)
+            self.metalvls = sMkt.directAttrRequest(stuff, attrs)
             # Re-sort stuff
-            items.sort(key=self.itemSort)
+            stuff.sort(key=self.itemSort)
 
-        for i, item in enumerate(items[:9]):
+        for i, item in enumerate(stuff[:9]):
             # set shortcut info for first 9 modules
             item.marketShortcut = i + 1
 
-        Display.refresh(self, items)
+        Display.refresh(self, stuff)
 
     def makeReverseMetaMap(self):
         """

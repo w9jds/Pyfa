@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Remote Hull Repair Systems
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, skill, context):

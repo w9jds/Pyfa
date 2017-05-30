@@ -120,7 +120,7 @@ class SearchWorkerThread(threading.Thread):
                 filter_ = None
 
             results = eos.db.searchItems(request, where=filter_,
-                                         join=(types_Item.group, types_Group.category),
+                                         _join=(types_Item.group, types_Group.category),
                                          eager=("icon", "group.category", "metaGroup", "metaGroup.parent"),
                                          result_limit=self.generalSettings.get("itemSearchLimit"),
                                          )
@@ -624,8 +624,11 @@ class Market(object):
         variations_list = eos.db.getVariations(parentids, groupids)
 
         if variations_limiter:
+            trimmed_variations_list = None
+
             for limit in variations_limiter:
                 trimmed_variations_list = [variation_item for variation_item in variations_list if limit in variation_item.name]
+
             if trimmed_variations_list:
                 variations_list = trimmed_variations_list
 
@@ -785,7 +788,7 @@ class Market(object):
         """Find ships according to given text pattern"""
         filter_ = types_Category.name.in_(["Ship", "Structure"])
         results = eos.db.searchItems(name, where=filter_,
-                                     join=(types_Item.group, types_Group.category),
+                                     _join=(types_Item.group, types_Group.category),
                                      eager=("icon", "group.category", "metaGroup", "metaGroup.parent"),
                                      result_limit=self.generalSettings.get("itemSearchLimit"),
                                      )

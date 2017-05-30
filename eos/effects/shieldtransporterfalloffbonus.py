@@ -5,7 +5,7 @@
 # Variations of ship: Burst (2 of 2)
 # Ship: Osprey
 # Ship: Scythe
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

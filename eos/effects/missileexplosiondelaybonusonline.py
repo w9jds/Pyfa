@@ -2,10 +2,10 @@
 #
 # Used by:
 # Modules from group: Missile Guidance Enhancer (3 of 3)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("Missile Launcher Operation"),
-                                    "explosionDelay", module.getModifiedItemAttr("explosionDelayBonus"),
+                                    "explosionDelay", container.getModifiedItemAttr("explosionDelayBonus"),
                                     stackingPenalties=True)

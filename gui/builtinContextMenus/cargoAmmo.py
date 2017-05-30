@@ -24,7 +24,7 @@ class CargoAmmo(ContextMenu):
             ):
                 return True
 
-    def getText(self, itmContext, selection):
+    def getContextMenuText(self, itmContext, selection):
         return "Add {0} to Cargo (x1000)".format(itmContext)
 
     def activate(self, fullContext, selection, i):

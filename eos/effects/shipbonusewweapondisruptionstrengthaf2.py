@@ -2,7 +2,7 @@
 #
 # Used by:
 # Variations of ship: Crucifier (3 of 3)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

@@ -45,7 +45,7 @@ class ResistancesViewMinimal(StatsView):
         return "Resistances"
 
     def getTextExtentW(self, text):
-        width, height = self.parent.GetTextExtent(text)
+        width, __ = self.parent.GetTextExtent(text)
         return width
 
     def populatePanel(self, contentPanel, headerPanel):
@@ -135,6 +135,7 @@ class ResistancesViewMinimal(StatsView):
             if tankType != "damagePattern":
                 lbl = wx.StaticText(contentPanel, wx.ID_ANY, "0" if tankType != "damagePattern" else "")
                 box.Add(lbl, 0, wx.ALIGN_CENTER)
+                setattr(self, "labelResistance%sEhp" % tankType.capitalize(), lbl)
             else:
                 self.stEHPs = wx.Button(contentPanel, style=wx.BU_EXACTFIT, label="EHP")
                 self.stEHPs.SetToolTip(wx.ToolTip("Click to toggle between effective HP and raw HP"))
@@ -142,7 +143,6 @@ class ResistancesViewMinimal(StatsView):
                 self.stEHPs.Bind(wx.EVT_BUTTON, self.toggleEHP)
                 box.Add(self.stEHPs, 0, wx.ALIGN_CENTER)
 
-            setattr(self, "labelResistance%sEhp" % tankType.capitalize(), lbl)
             sizerResistances.Add(box, wx.GBPosition(row, col), wx.GBSpan(1, 1), wx.ALIGN_CENTER)
             row += 1
             col = 0

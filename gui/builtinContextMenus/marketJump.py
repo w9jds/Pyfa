@@ -35,7 +35,7 @@ class MarketJump(ContextMenu):
         doit = not selection[0].isEmpty if srcContext == "fittingModule" else True
         return doit
 
-    def getText(self, itmContext, selection):
+    def getContextMenuText(self, itmContext, selection):
         return "{0} Market Group".format(itmContext if itmContext is not None else "Item")
 
     def activate(self, fullContext, selection, i):

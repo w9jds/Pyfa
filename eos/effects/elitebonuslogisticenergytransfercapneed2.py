@@ -3,7 +3,7 @@
 # Used by:
 # Ship: Basilisk
 # Ship: Etana
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

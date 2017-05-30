@@ -53,7 +53,7 @@ class MetaSwap(ContextMenu):
 
         return True
 
-    def getText(self, itmContext, selection):
+    def getContextMenuText(self, itmContext, selection):
         return "Variations"
 
     def getSubMenu(self, context, selection, rootMenu, i, pitem):
@@ -111,14 +111,14 @@ class MetaSwap(ContextMenu):
 
             if thisgroup != group and context not in ("implantItem", "boosterItem"):
                 group = thisgroup
-                id = ContextMenu.nextID()
-                m.Append(id, u'─ %s ─' % group)
-                m.Enable(id, False)
+                _id = ContextMenu.nextID()
+                m.Append(_id, u'─ %s ─' % group)
+                m.Enable(_id, False)
 
-            id = ContextMenu.nextID()
-            mitem = wx.MenuItem(rootMenu, id, item.name)
+            _id = ContextMenu.nextID()
+            mitem = wx.MenuItem(rootMenu, _id, item.name)
             bindmenu.Bind(wx.EVT_MENU, self.handleModule, mitem)
-            self.moduleLookup[id] = item
+            self.moduleLookup[_id] = item
             m.AppendItem(mitem)
         return m
 

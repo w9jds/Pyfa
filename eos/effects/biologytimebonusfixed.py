@@ -3,7 +3,7 @@
 # Used by:
 # Implants named like: Eifyr and Co. 'Alchemist' Biology BY (2 of 2)
 # Skill: Biology
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

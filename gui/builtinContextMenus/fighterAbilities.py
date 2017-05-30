@@ -22,14 +22,14 @@ class FighterAbility(ContextMenu):
         self.fighter = selection[0]
         return True
 
-    def getText(self, itmContext, selection):
+    def getContextMenuText(self, itmContext, selection):
         return "Abilities"
 
     def addAbility(self, menu, ability):
         label = ability.name
-        id = ContextMenu.nextID()
-        self.abilityIds[id] = ability
-        menuItem = wx.MenuItem(menu, id, label, kind=wx.ITEM_CHECK)
+        _id = ContextMenu.nextID()
+        self.abilityIds[_id] = ability
+        menuItem = wx.MenuItem(menu, _id, label, kind=wx.ITEM_CHECK)
         menu.Bind(wx.EVT_MENU, self.handleMode, menuItem)
         return menuItem
 

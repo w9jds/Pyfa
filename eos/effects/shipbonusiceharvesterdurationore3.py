@@ -3,7 +3,7 @@
 # Used by:
 # Ships from group: Exhumer (3 of 3)
 # Ships from group: Mining Barge (3 of 3)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

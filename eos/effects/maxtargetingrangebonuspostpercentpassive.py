@@ -2,9 +2,9 @@
 #
 # Used by:
 # Modules named like: Ionic Field Projector (8 of 8)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.boostItemAttr("maxTargetRange", module.getModifiedItemAttr("maxTargetRangeBonus"),
+def handler(fit, container, context):
+    fit.ship.boostItemAttr("maxTargetRange", container.getModifiedItemAttr("maxTargetRangeBonus"),
                            stackingPenalties=True)

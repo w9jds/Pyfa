@@ -2,8 +2,8 @@
 #
 # Used by:
 # Modules from group: Salvager (2 of 2)
-type = "active"
+effectType = "active"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     pass

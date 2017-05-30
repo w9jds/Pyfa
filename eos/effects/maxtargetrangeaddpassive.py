@@ -2,8 +2,8 @@
 #
 # Used by:
 # Subsystems from group: Electronic Systems (16 of 16)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.increaseItemAttr("maxTargetRange", module.getModifiedItemAttr("maxTargetRange"))
+def handler(fit, container, context):
+    fit.ship.increaseItemAttr("maxTargetRange", container.getModifiedItemAttr("maxTargetRange"))

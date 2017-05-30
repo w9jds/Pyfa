@@ -7,6 +7,7 @@ from service.fit import Fit
 from gui.bitmapLoader import BitmapLoader
 from gui.preferenceView import PreferenceView
 from service.settings import EOSSettings
+from gui.utils.fonts import Fonts
 
 logger = logging.getLogger(__name__)
 
@@ -22,14 +23,14 @@ class PFFittingEnginePref(PreferenceView):
         pass
 
     # noinspection PyAttributeOutsideInit
-    def populatePanel(self, panel):
+    def populatePrefPanel(self, panel):
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         helpCursor = wx.StockCursor(wx.CURSOR_QUESTION_ARROW)
 
         self.stTitle = wx.StaticText(panel, wx.ID_ANY, self.title, wx.DefaultPosition, wx.DefaultSize, 0)
         self.stTitle.Wrap(-1)
-        self.stTitle.SetFont(wx.Font(12, 70, 90, 90, False, wx.EmptyString))
+        self.stTitle.SetFont(Fonts.getFont("font_title_plus_one"))
         mainSizer.Add(self.stTitle, 0, wx.ALL, 5)
 
         self.m_staticline1 = wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)

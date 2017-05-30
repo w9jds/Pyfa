@@ -30,7 +30,7 @@ class shieldRepsGraph(Graph):
         self.shieldReps = None
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
 
-    def getFields(self):
+    def getGraphFields(self):
         # return self.defaults
         return None
 
@@ -53,7 +53,8 @@ class shieldRepsGraph(Graph):
         """
         return None
 
-    def getPoints(self, fit, fields):
+    @staticmethod
+    def getPoints(fit, fields):
         capacitor_amount = fit.ship.getModifiedItemAttr("capacitorCapacity")
         capacitor_recharge = fit.ship.getModifiedItemAttr("rechargeRate")
         projected = []

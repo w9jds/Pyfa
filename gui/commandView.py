@@ -102,9 +102,9 @@ class CommandView(d.Display):
                 sFit.removeCommand(fitID, self.get(row))
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
-    def handleDrag(self, type, fitID):
+    def handleDrag(self, drag_type, fitID):
         # Those are drags coming from pyfa sources, NOT builtin wx drags
-        if type == "fit":
+        if drag_type == "fit":
             activeFit = self.mainFrame.getActiveFit()
             if activeFit:
                 sFit = Fit.getInstance()

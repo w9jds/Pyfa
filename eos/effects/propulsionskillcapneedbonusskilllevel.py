@@ -3,7 +3,7 @@
 # Used by:
 # Implants named like: Zainou 'Gypsy' Propulsion Jamming PJ (6 of 6)
 # Skill: Propulsion Jamming
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

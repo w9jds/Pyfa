@@ -2,9 +2,9 @@
 #
 # Used by:
 # Variations of module: Mining Laser Upgrade I (5 of 5)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Mining"),
-                                  "miningAmount", module.getModifiedItemAttr("miningAmountBonus"))
+                                  "miningAmount", container.getModifiedItemAttr("miningAmountBonus"))

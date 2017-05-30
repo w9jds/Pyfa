@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Salvage Drone Operation
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

@@ -10,6 +10,7 @@ from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
 from service.settings import DatabaseSettings
 from service.esi import esiItems, esiDogma
 import sys
+from gui.utils.fonts import Fonts
 
 import logging
 
@@ -22,14 +23,14 @@ class PFDatabasePref(PreferenceView):
     def __init__(self):
         self.databaseSettings = DatabaseSettings.getInstance()
 
-    def populatePanel(self, panel):
+    def populatePrefPanel(self, panel):
         self.dirtySettings = False
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.stTitle = wx.StaticText(panel, wx.ID_ANY, self.title, wx.DefaultPosition, wx.DefaultSize, 0)
         self.stTitle.Wrap(-1)
-        self.stTitle.SetFont(wx.Font(12, 70, 90, 90, False, wx.EmptyString))
+        self.stTitle.SetFont(Fonts.getFont("font_title_plus_one"))
         mainSizer.Add(self.stTitle, 0, wx.ALL, 5)
 
         self.stSubTitle = wx.StaticText(panel, wx.ID_ANY, u"(Cannot be changed while pyfa is running. Set via command line switches.)",
@@ -158,28 +159,32 @@ class PFDatabasePref(PreferenceView):
         panel.SetSizer(mainSizer)
         panel.Layout()
 
-    def DeleteDamagePatterns(self, event):
+    @staticmethod
+    def DeleteDamagePatterns():
         question = u"This is a destructive action that will delete all damage pattern profiles.\nAre you sure you want to do this?"
         if wxHelpers.YesNoDialog(question, u"Confirm"):
             clearDamagePatterns()
             DefaultDatabaseValues.importRequiredDefaults()
 
-    def DeleteTargetResists(self, event):
+    @staticmethod
+    def DeleteTargetResists():
         question = u"This is a destructive action that will delete all target resist profiles.\nAre you sure you want to do this?"
         if wxHelpers.YesNoDialog(question, u"Confirm"):
             clearTargetResists()
             DefaultDatabaseValues.importRequiredDefaults()
 
-    def DeletePrices(self, event):
+    @staticmethod
+    def DeletePrices():
         question = u"This is a destructive action that will delete all cached prices out of the database.\nAre you sure you want to do this?"
         if wxHelpers.YesNoDialog(question, u"Confirm"):
             clearPrices()
 
-    def UpdateDatabase(self, event):
+    @staticmethod
+    def UpdateDatabase():
         question = u"This will take a significant amount of time.  Once the update is complete, Pyfa will restart.\n" \
                    u"Pyfa will become unresponsive until the update is complete.  Would you like to proceed?"
         if wxHelpers.YesNoDialog(question, u"Confirm"):
-            loadDlg = wxHelpers.PopupDialog(None, ("Updating..."), ("Updating database.\n\nPlease wait...."))
+            loadDlg = wxHelpers.PopupDialog(None, "Updating...", "Updating database.\n\nPlease wait....")
 
             sESI = esiItems.getInstance()
             sESI.updateTypes()
@@ -194,11 +199,6 @@ class PFDatabasePref(PreferenceView):
         # We don't want users to be able to actually change this,
         # so if they try and change it, set it back to the current setting
         self.cbsaveInRoot.SetValue(config.saveInRoot)
-
-        # If we ever enable it might need this.
-        '''
-        config.saveInRoot = self.cbsaveInRoot.GetValue()
-        '''
 
     def getImage(self):
         return BitmapLoader.getBitmap("settings_database", "gui")

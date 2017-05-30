@@ -24,6 +24,7 @@ from gui.bitmapLoader import BitmapLoader
 from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
 from logbook import Logger
+from gui.utils.fonts import Fonts
 
 pyfalog = Logger(__name__)
 
@@ -31,9 +32,6 @@ pyfalog = Logger(__name__)
 class TargetResistsTextValidor(BaseValidator):
     def __init__(self):
         BaseValidator.__init__(self)
-
-    def Clone(self):
-        return TargetResistsTextValidor()
 
     def Validate(self, win):
         entityEditor = win.parent
@@ -93,6 +91,7 @@ class ResistsEditorDlg(wx.Dialog):
         self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
+        self.SetFont(Fonts.getFont("font_standard"))
 
         self.entityEditor = TargetResistsEntityEditor(self)
         mainSizer.Add(self.entityEditor, 0, wx.ALL | wx.EXPAND, 2)
@@ -217,8 +216,10 @@ class ResistsEditorDlg(wx.Dialog):
 
                 value = float(editObj.GetValue())
 
-                # assertion, because they're easy
-                assert 0 <= value <= 100
+                if value < 0:
+                    value = 0
+                elif value > 100:
+                    value = 100
 
                 # if everything checks out, set resist attribute
                 setattr(p, "%sAmount" % type_, value / 100)

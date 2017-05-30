@@ -3,7 +3,7 @@
 # Used by:
 # Ships named like: Brutix (2 of 2)
 # Ship: Ferox
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

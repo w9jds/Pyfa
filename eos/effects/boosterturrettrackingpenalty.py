@@ -3,7 +3,7 @@
 # Used by:
 # Implants named like: Exile Booster (3 of 4)
 # Implants named like: Frentix Booster (3 of 4)
-type = "boosterSideEffect"
+effectType = "boosterSideEffect"
 activeByDefault = False
 
 

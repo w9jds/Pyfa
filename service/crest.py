@@ -54,7 +54,7 @@ class Crest(object):
         if cls._instance.httpd:
             cls._instance.stopServer()
         cls._instance = Crest()
-        cls._instance.mainFrame.updateCrestMenus(type=cls._instance.settings.get('mode'))
+        cls._instance.mainFrame.updateCrestMenus(crest_type=cls._instance.settings.get('mode'))
         return cls._instance
 
     def __init__(self):

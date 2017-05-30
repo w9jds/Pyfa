@@ -67,7 +67,7 @@ class ChangeAffectingSkills(ContextMenu):
         self.skills = sorted(skills, key=lambda x: x.item.name)
         return len(self.skills) > 0
 
-    def getText(self, itmContext, selection):
+    def getContextMenuText(self, itmContext, selection):
         return "Change %s Skills" % itmContext
 
     def addSkill(self, rootMenu, skill, i):

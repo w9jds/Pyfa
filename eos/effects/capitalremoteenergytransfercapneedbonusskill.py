@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Capital Capacitor Emission Systems
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, skill, context):

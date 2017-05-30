@@ -3,8 +3,8 @@
 # Used by:
 # Modules from group: Command Burst (10 of 10)
 # Modules from group: Gang Coordinator (6 of 6)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
-    module.increaseItemAttr("cpu", module.getModifiedItemAttr("warfareLinkCPUAdd") or 0)
+def handler(fit, container, context):
+    container.increaseItemAttr("cpu", container.getModifiedItemAttr("warfareLinkCPUAdd") or 0)

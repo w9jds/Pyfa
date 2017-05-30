@@ -11,7 +11,7 @@
 # Subsystems named like: Offensive Covert Reconfiguration (4 of 4)
 # Ship: Astero
 # Ship: Rabisu
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

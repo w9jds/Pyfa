@@ -70,20 +70,20 @@ class AttributeDisplay(ViewColumn):
 
             fittingView.refresh = refresh
 
-    def getText(self, mod):
-        if hasattr(mod, "item"):
-            attr = mod.getModifiedItemAttr(self.info.name)
+    def getColumnText(self, stuff):
+        if hasattr(stuff, "item"):
+            attr = stuff.getModifiedItemAttr(self.info.name)
         else:
             if self.direct:
                 info = self.directInfo
-                attr = info.get(mod.ID, "") if info else ""
+                attr = info.get(stuff.ID, "") if info else ""
             else:
-                attr = mod.getAttribute(self.info.name)
+                attr = stuff.getAttribute(self.info.name)
 
         if self.info.name == "volume":
             str_ = (formatAmount(attr, 3, 0, 3))
-            if hasattr(mod, "amount"):
-                str_ += u"m\u00B3 (%s m\u00B3)" % (formatAmount(attr * mod.amount, 3, 0, 3))
+            if hasattr(stuff, "amount"):
+                str_ += u"m\u00B3 (%s m\u00B3)" % (formatAmount(attr * stuff.amount, 3, 0, 3))
             attr = str_
 
         if isinstance(attr, (float, int)):
@@ -94,7 +94,7 @@ class AttributeDisplay(ViewColumn):
     def getImageId(self, mod):
         return -1
 
-    def getToolTip(self, stuff):
+    def getToolTip(self, mod):
         if self.info.name == "cpu":
             return "CPU"
         else:

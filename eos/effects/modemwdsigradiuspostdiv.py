@@ -2,14 +2,14 @@
 #
 # Used by:
 # Module: Svipul Defense Mode
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemMultiply(
             lambda mod: mod.item.requiresSkill("High Speed Maneuvering"),
             "signatureRadiusBonus",
-            1 / module.getModifiedItemAttr("modeMWDSigPenaltyPostDiv"),
+            1 / container.getModifiedItemAttr("modeMWDSigPenaltyPostDiv"),
             stackingPenalties=True,
             penaltyGroup="postDiv"
     )

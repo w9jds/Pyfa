@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Capital Energy Turret
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, skill, context):

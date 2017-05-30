@@ -3,7 +3,7 @@
 # Used by:
 # Implants named like: Blue Pill Booster (5 of 5)
 # Implant: Antipharmakon Thureo
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

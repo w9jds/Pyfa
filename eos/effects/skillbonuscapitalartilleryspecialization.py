@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Capital Artillery Specialization
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

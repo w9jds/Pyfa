@@ -22,6 +22,7 @@ import wx
 # noinspection PyPackageRequirements
 import dateutil.parser
 from service.settings import UpdateSettings as svc_UpdateSettings
+from gui.utils.fonts import Fonts
 
 
 class UpdateDialog(wx.Dialog):
@@ -40,7 +41,7 @@ class UpdateDialog(wx.Dialog):
         self.headingText = wx.StaticText(self, wx.ID_ANY, "Pyfa.fit Update Available!", wx.DefaultPosition, wx.DefaultSize,
                                          wx.ALIGN_CENTRE)
         self.headingText.Wrap(-1)
-        self.headingText.SetFont(wx.Font(14, 74, 90, 92, False))
+        self.headingText.SetFont(Fonts.getFont("font_title_plus_two"))
 
         headSizer.Add(self.headingText, 1, wx.ALL, 5)
         mainSizer.Add(headSizer, 0, wx.EXPAND, 5)
@@ -51,14 +52,13 @@ class UpdateDialog(wx.Dialog):
         versionSizer = wx.BoxSizer(wx.HORIZONTAL)
 
         if self.releaseInfo['prerelease']:
-            self.releaseText = wx.StaticText(self, wx.ID_ANY, "Pre-release", wx.DefaultPosition, wx.DefaultSize,
+            self.releaseText = wx.StaticText(self, wx.ID_ANY, "Pre-release:", wx.DefaultPosition, wx.DefaultSize,
                                              wx.ALIGN_RIGHT)
-            self.releaseText.SetFont(wx.Font(12, 74, 90, 92, False))
             self.releaseText.SetForegroundColour(wx.Colour(230, 0, 0))
         else:
-            self.releaseText = wx.StaticText(self, wx.ID_ANY, "Stable", wx.DefaultPosition, wx.DefaultSize,
+            self.releaseText = wx.StaticText(self, wx.ID_ANY, "Stable:", wx.DefaultPosition, wx.DefaultSize,
                                              wx.ALIGN_RIGHT)
-            self.releaseText.SetFont(wx.Font(12, 74, 90, 90, False))
+        self.releaseText.SetFont(Fonts.getFont("font_plus_one"))
 
         self.releaseText.Wrap(-1)
 
@@ -67,7 +67,7 @@ class UpdateDialog(wx.Dialog):
         self.versionText = wx.StaticText(self, wx.ID_ANY, self.releaseInfo['tag_name'], wx.DefaultPosition,
                                          wx.DefaultSize, wx.ALIGN_LEFT)
         self.versionText.Wrap(-1)
-        self.versionText.SetFont(wx.Font(12, 74, 90, 90, False))
+        self.versionText.SetFont(Fonts.getFont("font_plus_one"))
 
         versionSizer.Add(self.versionText, 1, wx.ALL, 5)
         versionSizer.AddSpacer((15, 5), 0, wx.EXPAND, 5)
@@ -80,6 +80,7 @@ class UpdateDialog(wx.Dialog):
         self.notesTextCtrl = wx.TextCtrl(self, wx.ID_ANY, str(releaseDate.date()) + ":\n\n" + self.releaseInfo['body'],
                                          wx.DefaultPosition, wx.DefaultSize,
                                          wx.TE_AUTO_URL | wx.TE_MULTILINE | wx.TE_READONLY | wx.DOUBLE_BORDER | wx.TRANSPARENT_WINDOW)
+        self.notesTextCtrl.SetFont(Fonts.getFont("font_standard"))
 
         notesSizer.Add(self.notesTextCtrl, 1, wx.EXPAND | wx.LEFT | wx.RIGHT, 5)
         mainSizer.Add(notesSizer, 1, wx.EXPAND, 5)
@@ -87,6 +88,7 @@ class UpdateDialog(wx.Dialog):
         self.supressCheckbox = wx.CheckBox(self, wx.ID_ANY, "Don't remind me again for this release",
                                            wx.DefaultPosition, wx.DefaultSize, 0)
         self.supressCheckbox.Bind(wx.EVT_CHECKBOX, self.SuppressChange)
+        self.supressCheckbox.SetFont(Fonts.getFont("font_standard"))
 
         mainSizer.Add(self.supressCheckbox, 0, wx.ALL, 5)
         mainSizer.Add(wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL), 0,
@@ -97,11 +99,13 @@ class UpdateDialog(wx.Dialog):
         goSizer = wx.BoxSizer(wx.VERTICAL)
         self.downloadButton = wx.Button(self, wx.ID_ANY, "Download", wx.DefaultPosition, wx.DefaultSize, 0)
         self.downloadButton.Bind(wx.EVT_BUTTON, self.OnDownload)
+        self.downloadButton.SetFont(Fonts.getFont("font_standard"))
         goSizer.Add(self.downloadButton, 0, wx.ALL, 5)
         actionSizer.Add(goSizer, 1, wx.EXPAND, 5)
 
         self.closeButton = wx.Button(self, wx.ID_CLOSE)
         self.closeButton.Bind(wx.EVT_BUTTON, self.OnClose)
+        self.closeButton.SetFont(Fonts.getFont("font_standard"))
         actionSizer.Add(self.closeButton, 0, wx.ALL, 5)
         mainSizer.Add(actionSizer, 0, wx.EXPAND, 5)
 
@@ -126,5 +130,5 @@ class UpdateDialog(wx.Dialog):
             self.UpdateSettings.set('version', None)
 
     def OnDownload(self, e):
-        wx.LaunchDefaultBrowser('https://github.com/Pyfa-fit/Pyfa/releases/tag/' + self.releaseInfo['tag_name'])
+        wx.LaunchDefaultBrowser('https://github.com/Pyfa-fit/Pyfa-fit/releases/tag/' + self.releaseInfo['tag_name'])
         self.OnClose(e)

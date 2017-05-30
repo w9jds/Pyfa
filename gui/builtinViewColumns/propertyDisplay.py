@@ -53,7 +53,7 @@ class PropertyDisplay(ViewColumn):
         if params["displayName"] or self.imageId == -1:
             self.columnText = info.displayName if info.displayName != "" else info.name
 
-    def getText(self, stuff):
+    def getColumnText(self, stuff):
         attr = getattr(stuff, self.propertyName, None)
         if attr:
             return formatAmount(attr, 3, 0, 3)

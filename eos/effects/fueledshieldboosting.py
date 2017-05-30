@@ -3,10 +3,10 @@
 # Used by:
 # Modules from group: Ancillary Shield Booster (5 of 5)
 runTime = "late"
-type = "active"
+effectType = "active"
 
 
-def handler(fit, module, context):
-    amount = module.getModifiedItemAttr("shieldBonus")
-    speed = module.cycleTime / 1000.0
+def handler(fit, container, context):
+    amount = container.getModifiedItemAttr("shieldBonus")
+    speed = container.cycleTime / 1000.0
     fit.extraAttributes.increase("shieldRepair", amount / speed)

@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Resistance Phasing
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

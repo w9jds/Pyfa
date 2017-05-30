@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Radar Sensor Compensation
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

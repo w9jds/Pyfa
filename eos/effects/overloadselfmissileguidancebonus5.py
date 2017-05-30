@@ -2,10 +2,10 @@
 #
 # Used by:
 # Modules from group: Missile Guidance Computer (3 of 3)
-type = "overheat"
+effectType = "overheat"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     for tgtAttr in (
             "aoeCloudSizeBonus",
             "explosionDelayBonus",
@@ -13,4 +13,4 @@ def handler(fit, module, context):
             "maxVelocityModifier",
             "aoeVelocityBonus"
     ):
-        module.boostItemAttr(tgtAttr, module.getModifiedItemAttr("overloadTrackingModuleStrengthBonus"))
+        container.boostItemAttr(tgtAttr, container.getModifiedItemAttr("overloadTrackingModuleStrengthBonus"))

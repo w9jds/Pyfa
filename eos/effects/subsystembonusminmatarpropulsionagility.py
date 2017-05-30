@@ -3,9 +3,9 @@
 # Used by:
 # Subsystem: Loki Propulsion - Intercalated Nanofibers
 # Subsystem: Loki Propulsion - Interdiction Nullifier
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.boostItemAttr("agility", module.getModifiedItemAttr("subsystemBonusMinmatarPropulsion"),
+def handler(fit, container, context):
+    fit.ship.boostItemAttr("agility", container.getModifiedItemAttr("subsystemBonusMinmatarPropulsion"),
                            skill="Minmatar Propulsion Systems")

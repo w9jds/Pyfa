@@ -2,10 +2,10 @@
 #
 # Used by:
 # Subsystem: Tengu Defensive - Amplification Node
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Shield Operation"),
-                                  "shieldBonus", module.getModifiedItemAttr("subsystemBonusCaldariDefensive"),
+                                  "shieldBonus", container.getModifiedItemAttr("subsystemBonusCaldariDefensive"),
                                   skill="Caldari Defensive Systems")

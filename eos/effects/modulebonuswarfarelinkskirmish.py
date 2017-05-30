@@ -3,14 +3,14 @@
 # Used by:
 # Variations of module: Skirmish Command Burst I (2 of 2)
 
-type = "active", "gang"
+effectType = "active", "gang"
 
 
-def handler(fit, module, context, **kwargs):
+def handler(fit, container, context, **kwargs):
     for x in xrange(1, 5):
-        if module.getModifiedChargeAttr("warfareBuff{}ID".format(x)):
-            value = module.getModifiedItemAttr("warfareBuff{}Value".format(x))
-            id = module.getModifiedChargeAttr("warfareBuff{}ID".format(x))
+        if container.getModifiedChargeAttr("warfareBuff{}ID".format(x)):
+            value = container.getModifiedItemAttr("warfareBuff{}Value".format(x))
+            warfare_buff_id = container.getModifiedChargeAttr("warfareBuff{}ID".format(x))
 
-            if id:
-                fit.addCommandBonus(id, value, module, kwargs['effect'])
+            if warfare_buff_id:
+                fit.addCommandBonus(warfare_buff_id, value, container, kwargs['effect'])

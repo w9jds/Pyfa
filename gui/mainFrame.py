@@ -256,13 +256,13 @@ class MainFrame(wx.Frame, IPortUser):
         fits = self.prevOpenFits['pyfaOpenFits']
 
         # Remove any fits that cause exception when fetching (non-existent fits)
-        for id in fits[:]:
+        for _id in fits[:]:
             try:
-                fit = sFit.getFit(id, basic=True)
+                fit = sFit.getFit(_id, basic=True)
                 if fit is None:
-                    fits.remove(id)
+                    fits.remove(_id)
             except:
-                fits.remove(id)
+                fits.remove(_id)
 
         if not self.prevOpenFits['enabled'] or len(fits) is 0:
             # add blank page if there are no fits to be loaded
@@ -383,10 +383,7 @@ class MainFrame(wx.Frame, IPortUser):
                                     "\nSQLAlchemy: \t" + sqlalchemy.__version__ +
                                     "\nmatplotlib: \t {}".format(matplotlib_version if matplotlib_version else "Not Installed"),
                                     500, wx.ClientDC(self))
-        if "__WXGTK__" in wx.PlatformInfo:
-            forumUrl = "https://github.com/Pyfa-fit/Pyfa"
-        else:
-            forumUrl = "https://github.com/Pyfa-fit/Pyfa"
+        forumUrl = "https://github.com/Pyfa-fit/Pyfa-fit"
         info.WebSite = (forumUrl, "Pyfa.fit Github Repository")
         wx.AboutBox(info)
 
@@ -452,7 +449,7 @@ class MainFrame(wx.Frame, IPortUser):
 
     @staticmethod
     def goWiki(event):
-        webbrowser.open('https://github.com/Pyfa-fit/Pyfa/wiki')
+        webbrowser.open('https://github.com/Pyfa-fit/Pyfa-fit/wiki')
 
     @staticmethod
     def goForums(event):
@@ -622,7 +619,7 @@ class MainFrame(wx.Frame, IPortUser):
         if event.type == CrestModes.IMPLICIT:
             menu.SetLabel(menu.ssoLoginId, "Login to EVE")
 
-    def updateCrestMenus(self, type):
+    def updateCrestMenus(self, crest_type):
         # in case we are logged in when switching, change title back
         self.titleTimer.Stop()
         self.SetTitle(self.title)
@@ -630,7 +627,7 @@ class MainFrame(wx.Frame, IPortUser):
         menu = self.GetMenuBar()
         sCrest = Crest.getInstance()
 
-        if type == CrestModes.IMPLICIT:
+        if crest_type == CrestModes.IMPLICIT:
             menu.SetLabel(menu.ssoLoginId, "Login to EVE")
             menu.Enable(menu.eveFittingsId, False)
             menu.Enable(menu.exportToEveId, False)
@@ -741,8 +738,9 @@ class MainFrame(wx.Frame, IPortUser):
         clipboard = fromClipboard()
         try:
             fits = Port().importFitFromBuffer(clipboard, self.getActiveFit())
-        except:
+        except Exception as e:
             pyfalog.error("Attempt to import failed:\n{0}", clipboard)
+            pyfalog.error(e)
         else:
             self._openAfterImport(fits)
 

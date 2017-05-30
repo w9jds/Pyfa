@@ -35,7 +35,7 @@ class CapacitorViewMinimal(StatsView):
         return "Capacitor"
 
     def getTextExtentW(self, text):
-        width, height = self.parent.GetTextExtent(text)
+        width, __ = self.parent.GetTextExtent(text)
         return width
 
     def populatePanel(self, contentPanel, headerPanel):
@@ -128,25 +128,20 @@ class CapacitorViewMinimal(StatsView):
         if capStable:
             capStable *= 100
             s = "Stable: " + str(capStable) + "% "
-            if capState:
-                capState /= 1000
-                if capState > 60:
-                    t = "(%dm%ds)" % divmod(capState, 60)
-                else:
-                    t = "(%ds)" % capState
-            else:
-                t = ""
         else:
             s = "Unstable: " + str(capStable) + "% "
 
-            if capState:
-                capState /= 1000
-                if capState > 60:
-                    t = "(%dm%ds)" % divmod(capState, 60)
-                else:
-                    t = "(%ds)" % capState
+        if capState:
+            capState /= 1000
+            if capState > 60:
+                cap_time = divmod(capState, 60)
+                cap_time_minutes = int(round(cap_time[0], 0)) or 0
+                cap_time_seconds = int(round(cap_time[1], 0)) or 0
+                t = "({0}m{1}s)".format(cap_time_minutes, cap_time_seconds)
             else:
-                t = ""
+                t = "(%ds)" % capState
+        else:
+            t = ""
 
         getattr(self, lblNameState % panel).SetLabel(s)
         getattr(self, lblNameTime % panel).SetLabel(t)

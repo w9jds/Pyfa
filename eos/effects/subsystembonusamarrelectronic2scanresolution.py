@@ -2,9 +2,9 @@
 #
 # Used by:
 # Subsystem: Legion Electronics - Tactical Targeting Network
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.boostItemAttr("scanResolution", module.getModifiedItemAttr("subsystemBonusAmarrElectronic2"),
+def handler(fit, container, context):
+    fit.ship.boostItemAttr("scanResolution", container.getModifiedItemAttr("subsystemBonusAmarrElectronic2"),
                            skill="Amarr Electronic Systems")

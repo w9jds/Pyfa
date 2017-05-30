@@ -2,8 +2,8 @@
 #
 # Used by:
 # Modules named like: Transverse Bulkhead (8 of 8)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.boostItemAttr("capacity", module.getModifiedItemAttr("drawback"))
+def handler(fit, container, context):
+    fit.ship.boostItemAttr("capacity", container.getModifiedItemAttr("drawback"))

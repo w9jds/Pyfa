@@ -2,7 +2,7 @@
 #
 # Used by:
 # Variations of ship: Cyclone (2 of 2)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

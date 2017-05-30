@@ -2,9 +2,9 @@
 #
 # Used by:
 # Subsystem: Legion Propulsion - Chassis Optimization
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.boostItemAttr("maxVelocity", module.getModifiedItemAttr("subsystemBonusAmarrPropulsion"),
+def handler(fit, container, context):
+    fit.ship.boostItemAttr("maxVelocity", container.getModifiedItemAttr("subsystemBonusAmarrPropulsion"),
                            skill="Amarr Propulsion Systems")

@@ -4,7 +4,7 @@
 # Ship: Cerberus
 # Ship: Onyx
 # Ship: Orthrus
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

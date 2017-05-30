@@ -3,7 +3,7 @@
 # Used by:
 # Modules named like: Tracking Diagnostic Subroutines (8 of 8)
 # Skill: Weapon Destabilization
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

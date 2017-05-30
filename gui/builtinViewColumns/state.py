@@ -41,51 +41,51 @@ class State(ViewColumn):
         self.maxsize = self.size
         self.mask = wx.LIST_MASK_IMAGE
 
-    def getText(self, mod):
+    def getColumnText(self, stuff):
         return ""
 
     def getToolTip(self, mod):
         if isinstance(mod, Module) and not mod.isEmpty:
             return State_.getName(mod.state).title()
 
-    def getImageId(self, stuff):
+    def getImageId(self, mod):
         generic_active = self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(1).lower(), "gui")
         generic_inactive = self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(-1).lower(),
                                                                     "gui")
 
-        if isinstance(stuff, Drone):
-            if stuff.amountActive > 0:
+        if isinstance(mod, Drone):
+            if mod.amountActive > 0:
                 return generic_active
             else:
                 return generic_inactive
-        elif isinstance(stuff, Rack):
+        elif isinstance(mod, Rack):
             return -1
-        elif isinstance(stuff, Module):
-            if stuff.isEmpty:
+        elif isinstance(mod, Module):
+            if mod.isEmpty:
                 return -1
             else:
-                return self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(stuff.state).lower(),
+                return self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(mod.state).lower(),
                                                                 "gui")
-        elif isinstance(stuff, Fit):
+        elif isinstance(mod, Fit):
             fitID = self.mainFrame.getActiveFit()
 
             # Can't use isinstance here due to being prevented from importing CommandView.
             # So we do the next best thing and compare Name of class.
             if self.fittingView.__class__.__name__ == "CommandView":
-                info = stuff.getCommandInfo(fitID)
+                info = mod.getCommandInfo(fitID)
             else:
-                info = stuff.getProjectionInfo(fitID)
+                info = mod.getProjectionInfo(fitID)
 
             if info is None:
                 return -1
             if info.active:
                 return generic_active
             return generic_inactive
-        elif isinstance(stuff, Implant) and stuff.character:
+        elif isinstance(mod, Implant) and mod.character:
             # if we're showing character implants, show an "online" state, which should not be changed
             return self.fittingView.imageList.GetImageIndex("state_%s_small" % State_.getName(0).lower(), "gui")
         else:
-            active = getattr(stuff, "active", None)
+            active = getattr(mod, "active", None)
             if active is None:
                 return -1
             if active:

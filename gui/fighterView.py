@@ -210,21 +210,6 @@ class FighterDisplay(d.Display):
     def _merge(src, dst):
         return
 
-    '''
-    DRONE_ORDER = ('Light Scout Drones', 'Medium Scout Drones',
-                   'Heavy Attack Drones', 'Sentry Drones', 'Fighters',
-                   'Fighter Bombers', 'Combat Utility Drones',
-                   'Electronic Warfare Drones', 'Logistic Drones', 'Mining Drones', 'Salvage Drones',
-                   'Light Fighters', 'Heavy Fighters', 'Support Fighters')
-    def droneKey(self, drone):
-        sMkt = Market.getInstance()
-
-        groupName = sMkt.getMarketGroupByItem(drone.item).name
-        print groupName
-        return (self.DRONE_ORDER.index(groupName),
-                drone.item.name)
-    '''
-
     def fitChanged(self, event):
         sFit = Fit.getInstance()
         fit = sFit.getFit(event.fitID)
@@ -240,11 +225,6 @@ class FighterDisplay(d.Display):
 
         self.original = fit.fighters if fit is not None else None
         self.fighters = stuff = fit.fighters[:] if fit is not None else None
-
-        '''
-        if stuff is not None:
-            stuff.sort(key=self.droneKey)
-        '''
 
         if event.fitID != self.lastFitId:
             self.lastFitId = event.fitID

@@ -18,7 +18,7 @@ class ItemRemove(ContextMenu):
 
         return srcContext == "droneItem"
 
-    def getText(self, itmContext, selection):
+    def getContextMenuText(self, itmContext, selection):
         return "Remove {0} Stack".format(itmContext)
 
     def activate(self, fullContext, selection, i):

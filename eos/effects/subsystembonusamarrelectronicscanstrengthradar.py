@@ -2,9 +2,9 @@
 #
 # Used by:
 # Subsystem: Legion Electronics - Dissolution Sequencer
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.boostItemAttr("scanRadarStrength", module.getModifiedItemAttr("subsystemBonusAmarrElectronic"),
+def handler(fit, container, context):
+    fit.ship.boostItemAttr("scanRadarStrength", container.getModifiedItemAttr("subsystemBonusAmarrElectronic"),
                            skill="Amarr Electronic Systems")

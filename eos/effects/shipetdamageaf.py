@@ -5,7 +5,7 @@
 # Ship: Crusader
 # Ship: Imperial Navy Slicer
 # Ship: Pacifier
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

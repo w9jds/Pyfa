@@ -363,11 +363,9 @@ class Port(object):
         except UserCancelException:
             return False, "Processing has been canceled.\n"
         except Exception as e:
-            pyfalog.critical("Unknown exception processing: {0}", path)
+            pyfalog.critical("Unknown exception processing paths.")
             pyfalog.critical(e)
-            # TypeError: not all arguments converted during string formatting
-#                 return False, "Unknown Error while processing {0}" % path
-            return False, "Unknown error while processing %s\n\n Error: %s" % (path, e.message)
+            return False, "Unknown error while processing paths\n\n Error: %s" % (e.message)
 
         return True, fit_list
 
@@ -414,16 +412,16 @@ class Port(object):
 
         slotNum = {}
         charges = {}
-        for module in ofit.modules:
-            if module.isEmpty:
+        for _module in ofit.modules:
+            if _module.isEmpty:
                 continue
 
             item = nested_dict()
-            slot = module.slot
+            slot = _module.slot
 
             if slot == Slot.SUBSYSTEM:
                 # Order of subsystem matters based on this attr. See GH issue #130
-                slot = int(module.getModifiedItemAttr("subSystemSlot"))
+                slot = int(_module.getModifiedItemAttr("subSystemSlot"))
                 item['flag'] = slot
             else:
                 if slot not in slotNum:
@@ -433,16 +431,16 @@ class Port(object):
                 slotNum[slot] += 1
 
             item['quantity'] = 1
-            item['type']['href'] = "%sinventory/types/%d/" % (eve._authed_endpoint, module.item.ID)
-            item['type']['id'] = module.item.ID
+            item['type']['href'] = "%sinventory/types/%d/" % (eve._authed_endpoint, _module.item.ID)
+            item['type']['id'] = _module.item.ID
             item['type']['name'] = ''
             fit['items'].append(item)
 
-            if module.charge and sFit.serviceFittingOptions["exportCharges"]:
-                if module.chargeID not in charges:
-                    charges[module.chargeID] = 0
+            if _module.charge and sFit.serviceFittingOptions["exportCharges"]:
+                if _module.chargeID not in charges:
+                    charges[_module.chargeID] = 0
                 # `or 1` because some charges (ie scripts) are without qty
-                charges[module.chargeID] += module.numCharges or 1
+                charges[_module.chargeID] += _module.numCharges or 1
 
         for cargo in ofit.cargo:
             item = nested_dict()
@@ -540,18 +538,18 @@ class Port(object):
         items.sort(key=lambda k: k['flag'])
 
         moduleList = []
-        for module in items:
+        for _module in items:
             try:
-                item = sMkt.getItem(module['type']['id'], eager="group.category")
-                if module['flag'] == INV_FLAG_DRONEBAY:
+                item = sMkt.getItem(_module['type']['id'], eager="group.category")
+                if _module['flag'] == INV_FLAG_DRONEBAY:
                     d = Drone(item)
-                    d.amount = module['quantity']
+                    d.amount = _module['quantity']
                     fitobj.drones.append(d)
-                elif module['flag'] == INV_FLAG_CARGOBAY:
+                elif _module['flag'] == INV_FLAG_CARGOBAY:
                     c = Cargo(item)
-                    c.amount = module['quantity']
+                    c.amount = _module['quantity']
                     fitobj.cargo.append(c)
-                elif module['flag'] == INV_FLAG_FIGHTER:
+                elif _module['flag'] == INV_FLAG_FIGHTER:
                     fighter = Fighter(item)
                     fitobj.fighters.append(fighter)
                 else:
@@ -578,9 +576,9 @@ class Port(object):
         # Recalc to get slot numbers correct for T3 cruisers
         svcFit.getInstance().recalc(fitobj)
 
-        for module in moduleList:
-            if module.fits(fitobj):
-                fitobj.modules.append(module)
+        for _module in moduleList:
+            if _module.fits(fitobj):
+                fitobj.modules.append(_module)
 
         return fitobj
 
@@ -661,12 +659,12 @@ class Port(object):
         # Recalc to get slot numbers correct for T3 cruisers
         svcFit.getInstance().recalc(f)
 
-        for module in moduleList:
-            if module.fits(f):
-                module.owner = f
-                if module.isValidState(State.ACTIVE):
-                    module.state = State.ACTIVE
-                f.modules.append(module)
+        for _module in moduleList:
+            if _module.fits(f):
+                _module.owner = f
+                if _module.isValidState(State.ACTIVE):
+                    _module.state = State.ACTIVE
+                f.modules.append(_module)
 
         return f
 
@@ -737,6 +735,9 @@ class Port(object):
             except:
                 # if no data can be found (old names)
                 pyfalog.warning("no data can be found (old names)")
+                item = None
+
+            if item is None:
                 continue
 
             if item.category.name == "Drone":
@@ -997,9 +998,9 @@ class Port(object):
                 # Recalc to get slot numbers correct for T3 cruisers
                 svcFit.getInstance().recalc(fitobj)
 
-                for module in moduleList:
-                    if module.fits(fitobj):
-                        fitobj.modules.append(module)
+                for _module in moduleList:
+                    if _module.fits(fitobj):
+                        fitobj.modules.append(_module)
 
                 # Append fit to list of fits
                 fits.append(fitobj)
@@ -1094,10 +1095,10 @@ class Port(object):
             # Recalc to get slot numbers correct for T3 cruisers
             svcFit.getInstance().recalc(fitobj)
 
-            for module in moduleList:
-                if module.fits(fitobj):
-                    module.owner = fitobj
-                    fitobj.modules.append(module)
+            for _module in moduleList:
+                if _module.fits(fitobj):
+                    _module.owner = fitobj
+                    fitobj.modules.append(_module)
 
             fit_list.append(fitobj)
             if iportuser:  # NOTE: Send current processing status
@@ -1117,15 +1118,15 @@ class Port(object):
         export = u"[%s, %s]\n" % (fit.ship.item.name, fit.name)
         stuff = {}
         sFit = svcFit.getInstance()
-        for module in fit.modules:
-            slot = module.slot
+        for _module in fit.modules:
+            slot = _module.slot
             if slot not in stuff:
                 stuff[slot] = []
-            curr = module.item.name if module.item \
+            curr = _module.item.name if _module.item \
                 else ("[Empty %s slot]" % Slot.getName(slot).capitalize() if slot is not None else "")
-            if module.charge and sFit.serviceFittingOptions["exportCharges"]:
-                curr += ", %s" % module.charge.name
-            if module.state == State.OFFLINE:
+            if _module.charge and sFit.serviceFittingOptions["exportCharges"]:
+                curr += ", %s" % _module.charge.name
+            if _module.state == State.OFFLINE:
                 curr += offineSuffix
             curr += "\n"
             stuff[slot].append(curr)
@@ -1276,15 +1277,15 @@ class Port(object):
 
                 charges = {}
                 slotNum = {}
-                for module in fit.modules:
-                    if module.isEmpty:
+                for _module in fit.modules:
+                    if _module.isEmpty:
                         continue
 
-                    slot = module.slot
+                    slot = _module.slot
 
                     if slot == Slot.SUBSYSTEM:
                         # Order of subsystem matters based on this attr. See GH issue #130
-                        slotId = module.getModifiedItemAttr("subSystemSlot") - 125
+                        slotId = _module.getModifiedItemAttr("subSystemSlot") - 125
                     else:
                         if slot not in slotNum:
                             slotNum[slot] = 0
@@ -1293,17 +1294,17 @@ class Port(object):
                         slotNum[slot] += 1
 
                     hardware = doc.createElement("hardware")
-                    hardware.setAttribute("type", module.item.name)
+                    hardware.setAttribute("type", _module.item.name)
                     slotName = Slot.getName(slot).lower()
                     slotName = slotName if slotName != "high" else "hi"
                     hardware.setAttribute("slot", "%s slot %d" % (slotName, slotId))
                     fitting.appendChild(hardware)
 
-                    if module.charge and sFit.serviceFittingOptions["exportCharges"]:
-                        if module.charge.name not in charges:
-                            charges[module.charge.name] = 0
+                    if _module.charge and sFit.serviceFittingOptions["exportCharges"]:
+                        if _module.charge.name not in charges:
+                            charges[_module.charge.name] = 0
                         # `or 1` because some charges (ie scripts) are without qty
-                        charges[module.charge.name] += module.numCharges or 1
+                        charges[_module.charge.name] += _module.numCharges or 1
 
                 for drone in fit.drones:
                     hardware = doc.createElement("hardware")
@@ -1349,13 +1350,13 @@ class Port(object):
         export = "%s\n" % fit.ship.item.name
         stuff = {}
         sFit = svcFit.getInstance()
-        for module in fit.modules:
-            slot = module.slot
+        for _module in fit.modules:
+            slot = _module.slot
             if slot not in stuff:
                 stuff[slot] = []
-            curr = "%s\n" % module.item.name if module.item else ""
-            if module.charge and sFit.serviceFittingOptions["exportCharges"]:
-                curr += "%s x%s\n" % (module.charge.name, module.numCharges)
+            curr = "%s\n" % _module.item.name if _module.item else ""
+            if _module.charge and sFit.serviceFittingOptions["exportCharges"]:
+                curr += "%s x%s\n" % (_module.charge.name, _module.numCharges)
             stuff[slot].append(curr)
 
         for slotType in EFT_SLOT_ORDER:

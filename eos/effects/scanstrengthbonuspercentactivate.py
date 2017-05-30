@@ -1,11 +1,11 @@
 # Not used by any item
-type = "active"
+effectType = "active"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     for scanType in ("Gravimetric", "Magnetometric", "Radar", "Ladar"):
         fit.ship.boostItemAttr(
                 "scan{}Strength".format(scanType),
-                module.getModifiedItemAttr("scan{}StrengthPercent".format(scanType)),
+                container.getModifiedItemAttr("scan{}StrengthPercent".format(scanType)),
                 stackingPenalties=True
         )

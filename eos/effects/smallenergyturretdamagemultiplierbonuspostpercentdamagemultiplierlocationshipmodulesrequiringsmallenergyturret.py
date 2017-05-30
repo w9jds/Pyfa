@@ -3,7 +3,7 @@
 # Used by:
 # Implants named like: Inherent Implants 'Lancer' Small Energy Turret SE (6 of 6)
 # Skill: Small Energy Turret
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

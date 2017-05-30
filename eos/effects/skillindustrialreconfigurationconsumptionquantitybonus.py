@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Industrial Reconfiguration
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, skill, context):

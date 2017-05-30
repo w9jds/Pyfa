@@ -6,7 +6,7 @@
 # Modules named like: Auxiliary Thrusters (8 of 8)
 # Implant: Quafe Zero
 # Skill: Navigation
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

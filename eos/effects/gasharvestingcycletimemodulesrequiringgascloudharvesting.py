@@ -2,7 +2,7 @@
 #
 # Used by:
 # Implants named like: Eifyr and Co. 'Alchemist' Gas Harvesting GH (3 of 3)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, implant, context):

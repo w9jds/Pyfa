@@ -2,10 +2,10 @@
 #
 # Used by:
 # Subsystem: Legion Offensive - Liquid Crystal Magnifiers
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Medium Energy Turret"),
-                                  "damageMultiplier", module.getModifiedItemAttr("subsystemBonusAmarrOffensive"),
+                                  "damageMultiplier", container.getModifiedItemAttr("subsystemBonusAmarrOffensive"),
                                   skill="Amarr Offensive Systems")

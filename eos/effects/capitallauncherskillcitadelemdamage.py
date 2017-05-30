@@ -3,7 +3,7 @@
 # Used by:
 # Implants named like: Hardwiring Zainou 'Sharpshooter' ZMX (6 of 6)
 # Skill: XL Torpedoes
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

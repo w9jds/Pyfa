@@ -23,6 +23,7 @@ from gui.preferenceView import PreferenceView
 from gui.bitmapLoader import BitmapLoader
 from service.settings import SettingsProvider
 from logbook import Logger
+from gui.utils.fonts import Fonts
 
 pyfalog = Logger(__name__)
 
@@ -33,6 +34,7 @@ class PreferenceDialog(wx.Dialog):
         self.SetTitle("Pyfa.fit - Preferences")
         i = wx.IconFromBitmap(BitmapLoader.getBitmap("preferences_small", "gui"))
         self.SetIcon(i)
+        self.SetFont(Fonts.getFont("font_standard"))
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.listbook = wx.Listbook(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LB_DEFAULT)
@@ -65,7 +67,7 @@ class PreferenceDialog(wx.Dialog):
                 imgID = self.imageList.Add(bmp)
             else:
                 imgID = -1
-            prefView.populatePanel(page)
+            prefView.populatePrefPanel(page)
             self.listbook.AddPage(page, prefView.title, imageId=imgID)
 
         # Set the height based on a condition. Can all the panels fit in the current height?

@@ -150,7 +150,7 @@ class PFToolbar(object):
                     return button
                 else:
                     return False
-            bwidth, bheight = button.GetSize()
+            bwidth, __ = button.GetSize()
             bx += bwidth + self.padding
 
         bx = self.toolbarX

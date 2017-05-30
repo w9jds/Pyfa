@@ -2,10 +2,10 @@
 #
 # Used by:
 # Modules named like: Projectile Locus Coordinator (8 of 8)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Projectile Weapon",
-                                  "maxRange", module.getModifiedItemAttr("maxRangeBonus"),
+                                  "maxRange", container.getModifiedItemAttr("maxRangeBonus"),
                                   stackingPenalties=True)

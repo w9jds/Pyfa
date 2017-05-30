@@ -30,6 +30,7 @@ import gui.globalEvents as GE
 from gui.graph import Graph
 from gui.bitmapLoader import BitmapLoader
 import traceback
+from gui.utils.fonts import Fonts
 
 pyfalog = Logger(__name__)
 
@@ -103,6 +104,7 @@ class GraphFrame(wx.Frame):
 
         i = wx.IconFromBitmap(BitmapLoader.getBitmap("graphs_small", "gui"))
         self.SetIcon(i)
+        self.SetFont(Fonts.getFont("font_standard"))
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.CreateStatusBar()
 
@@ -165,8 +167,8 @@ class GraphFrame(wx.Frame):
         self.Fit()
         self.SetMinSize(self.GetSize())
 
-    def handleDrag(self, type, fitID):
-        if type == "fit":
+    def handleDrag(self, drag_type, fitID):
+        if drag_type == "fit":
             self.AppendFitToList(fitID)
 
     def close(self, event):
@@ -193,7 +195,7 @@ class GraphFrame(wx.Frame):
         self.fields.clear()
 
         # Setup textboxes
-        for field, defaultVal in view.getFields().iteritems():
+        for field, defaultVal in view.getGraphFields().iteritems():
 
             textBox = wx.TextCtrl(self.gridPanel, wx.ID_ANY, style=0)
             self.fields[field] = textBox

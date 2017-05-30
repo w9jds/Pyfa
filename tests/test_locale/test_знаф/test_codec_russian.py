@@ -27,7 +27,6 @@ def test_codec_russian():
     try:
         with open(decoded_file, 'r') as f:
             read_data = f.read()
-        f.closed
     except:
         assert False, "Specified codec (" + use_codec[os_name] + ") failed to read file."
 

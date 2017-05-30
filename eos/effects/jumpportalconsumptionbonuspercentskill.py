@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Jump Portal Generation
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, skill, context):

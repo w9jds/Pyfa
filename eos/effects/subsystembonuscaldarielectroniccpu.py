@@ -2,9 +2,9 @@
 #
 # Used by:
 # Subsystem: Tengu Electronics - CPU Efficiency Gate
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.boostItemAttr("cpuOutput", module.getModifiedItemAttr("subsystemBonusCaldariElectronic"),
+def handler(fit, container, context):
+    fit.ship.boostItemAttr("cpuOutput", container.getModifiedItemAttr("subsystemBonusCaldariElectronic"),
                            skill="Caldari Electronic Systems")

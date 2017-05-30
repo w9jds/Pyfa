@@ -4,7 +4,7 @@
 # Celestials named like: Drifter Incursion (6 of 6)
 # Celestials named like: Incursion ship attributes effects (3 of 3)
 runTime = "early"
-type = ("projected", "passive")
+effectType = ("projected", "passive")
 
 
 def handler(fit, beacon, context):
@@ -28,5 +28,5 @@ def handler(fit, beacon, context):
     fit.drones.filteredItemBoost(lambda drone: True,
                                  "damageMultiplier", beacon.getModifiedItemAttr("systemEffectDamageReduction"))
     # Nerf turret damage output
-    fit.modules.filteredItemBoost(lambda module: module.item.requiresSkill("Gunnery"),
+    fit.modules.filteredItemBoost(lambda _module: _module.item.requiresSkill("Gunnery"),
                                   "damageMultiplier", beacon.getModifiedItemAttr("systemEffectDamageReduction"))

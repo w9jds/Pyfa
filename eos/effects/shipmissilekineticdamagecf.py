@@ -4,7 +4,7 @@
 # Ship: Buzzard
 # Ship: Condor
 # Ship: Hawk
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

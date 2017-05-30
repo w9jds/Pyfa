@@ -2,13 +2,13 @@
 #
 # Used by:
 # Modules from group: Remote Hull Repairer (8 of 8)
-type = "projected", "active"
+effectType = "projected", "active"
 runTime = "late"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     if "projected" not in context:
         return
-    bonus = module.getModifiedItemAttr("structureDamageAmount")
-    duration = module.cycleTime / 1000.0
+    bonus = container.getModifiedItemAttr("structureDamageAmount")
+    duration = container.cycleTime / 1000.0
     fit.extraAttributes.increase("hullRepair", bonus / duration)

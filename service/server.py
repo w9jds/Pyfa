@@ -102,7 +102,7 @@ class AuthHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             # Only stop once if we've received something in the querystring
             self.server.stop()
 
-    def log_message(self, format, *args):
+    def log_message(self, _format, *args):
         return
 
 
@@ -129,7 +129,6 @@ class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
                 return sock, addr
             except socket.timeout:
                 pyfalog.warning("Server timed out waiting for connection")
-                pass
 
     def stop(self):
         pyfalog.warning("Setting CREST server to stop.")

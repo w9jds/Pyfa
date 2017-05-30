@@ -2,8 +2,8 @@
 #
 # Used by:
 # Charges named like: Missile Script (4 of 4)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
-    module.boostItemAttr("explosionDelayBonus", module.getModifiedChargeAttr("explosionDelayBonusBonus"))
+def handler(fit, container, context):
+    container.boostItemAttr("explosionDelayBonus", container.getModifiedChargeAttr("explosionDelayBonusBonus"))

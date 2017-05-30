@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ships from group: Covert Ops (5 of 7)
-type = "passive"
+effectType = "passive"
 runTime = "early"
 
 

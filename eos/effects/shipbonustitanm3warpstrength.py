@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ships from group: Titan (3 of 6)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

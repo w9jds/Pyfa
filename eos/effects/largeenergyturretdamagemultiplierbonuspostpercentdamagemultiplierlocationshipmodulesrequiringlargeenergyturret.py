@@ -4,7 +4,7 @@
 # Implants named like: Inherent Implants 'Lancer' Large Energy Turret LE (6 of 6)
 # Implant: Pashan's Turret Handling Mindlink
 # Skill: Large Energy Turret
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

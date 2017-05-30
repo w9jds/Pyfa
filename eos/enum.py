@@ -10,14 +10,14 @@ class Enum(object):
 
     @classmethod
     def getName(cls, v):
-        map = getattr(cls, "_map", None)
-        if map is None:
-            map = cls._map = {}
-            for type in cls.getTypes():
-                map[cls.getValue(type)] = type
+        _map = getattr(cls, "_map", None)
+        if _map is None:
+            _map = cls._map = {}
+            for _type in cls.getTypes():
+                _map[cls.getValue(_type)] = _type
 
-        return map.get(v)
+        return _map.get(v)
 
     @classmethod
-    def getValue(cls, type):
-        return cls.__dict__[type]
+    def getValue(cls, _type):
+        return cls.__dict__[_type]

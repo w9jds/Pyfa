@@ -4,7 +4,7 @@
 # Implants named like: Inherent Implants 'Noble' Remote Armor Repair Systems RA (6 of 6)
 # Modules named like: Remote Repair Augmentor (6 of 8)
 # Skill: Remote Armor Repair Systems
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

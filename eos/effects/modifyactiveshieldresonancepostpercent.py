@@ -3,11 +3,11 @@
 # Used by:
 # Modules from group: Flex Shield Hardener (5 of 5)
 # Modules from group: Shield Hardener (97 of 97)
-type = "active"
+effectType = "active"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     for damageType in ("kinetic", "thermal", "explosive", "em"):
         fit.ship.boostItemAttr("shield" + damageType.capitalize() + "DamageResonance",
-                               module.getModifiedItemAttr(damageType + "DamageResistanceBonus"),
+                               container.getModifiedItemAttr(damageType + "DamageResistanceBonus"),
                                stackingPenalties=True)

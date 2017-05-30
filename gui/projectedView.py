@@ -113,9 +113,9 @@ class ProjectedView(d.Display):
                 sFit.removeProjected(fitID, self.get(row))
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
-    def handleDrag(self, type, fitID):
+    def handleDrag(self, drag_type, fitID):
         # Those are drags coming from pyfa sources, NOT builtin wx drags
-        if type == "fit":
+        if drag_type == "fit":
             activeFit = self.mainFrame.getActiveFit()
             if activeFit:
                 sFit = Fit.getInstance()
@@ -148,8 +148,8 @@ class ProjectedView(d.Display):
                 wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
     @staticmethod
-    def moduleSort(module):
-        return module.item.name
+    def moduleSort(_module):
+        return _module.item.name
 
     @staticmethod
     def fighterSort(fighter):

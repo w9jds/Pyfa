@@ -2,7 +2,7 @@
 #
 # Used by:
 # Modules from group: Remote Shield Booster (38 of 38)
-type = "projected", "active"
+effectType = "projected", "active"
 
 
 def handler(fit, container, context, **kwargs):

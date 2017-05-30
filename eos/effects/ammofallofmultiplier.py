@@ -7,8 +7,8 @@
 # Charges from group: Advanced Blaster Charge (8 of 8)
 # Charges from group: Advanced Pulse Laser Crystal (8 of 8)
 # Charges from group: Advanced Railgun Charge (8 of 8)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
-    module.multiplyItemAttr("falloff", module.getModifiedChargeAttr("fallofMultiplier") or 1)
+def handler(fit, container, context):
+    container.multiplyItemAttr("falloff", container.getModifiedChargeAttr("fallofMultiplier") or 1)

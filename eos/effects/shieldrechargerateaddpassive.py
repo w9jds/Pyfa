@@ -2,8 +2,8 @@
 #
 # Used by:
 # Subsystems from group: Defensive Systems (16 of 16)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.increaseItemAttr("shieldRechargeRate", module.getModifiedItemAttr("shieldRechargeRate") or 0)
+def handler(fit, container, context):
+    fit.ship.increaseItemAttr("shieldRechargeRate", container.getModifiedItemAttr("shieldRechargeRate") or 0)

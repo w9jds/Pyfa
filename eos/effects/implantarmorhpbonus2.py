@@ -5,7 +5,7 @@
 # Implant: Genolution Core Augmentation CA-4
 # Implant: Imperial Navy Modified 'Noble' Implant
 # Implant: Imperial Special Ops Field Enhancer - Standard
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, implant, context):

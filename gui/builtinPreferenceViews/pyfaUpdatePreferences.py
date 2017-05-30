@@ -4,6 +4,7 @@ import wx
 from gui.preferenceView import PreferenceView
 from gui.bitmapLoader import BitmapLoader
 from service.settings import UpdateSettings
+from gui.utils.fonts import Fonts
 
 
 class PFUpdatePref(PreferenceView):
@@ -13,7 +14,7 @@ class PFUpdatePref(PreferenceView):
             "Here, you may allow pre-release notifications and view "
             "suppressed release notifications, if any.")
 
-    def populatePanel(self, panel):
+    def populatePrefPanel(self, panel):
         self.UpdateSettings = UpdateSettings.getInstance()
         self.dirtySettings = False
 
@@ -23,7 +24,7 @@ class PFUpdatePref(PreferenceView):
 
         self.stTitle = wx.StaticText(panel, wx.ID_ANY, self.title, wx.DefaultPosition, wx.DefaultSize, 0)
         self.stTitle.Wrap(-1)
-        self.stTitle.SetFont(wx.Font(12, 70, 90, 90, False, wx.EmptyString))
+        self.stTitle.SetFont(Fonts.getFont("font_title_plus_one"))
         mainSizer.Add(self.stTitle, 0, wx.ALL, 5)
 
         self.m_staticline1 = wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
@@ -46,7 +47,7 @@ class PFUpdatePref(PreferenceView):
             self.versionTitle = wx.StaticText(panel, wx.ID_ANY, "Suppressing {0} Notifications".format(
                     self.UpdateSettings.get('version')), wx.DefaultPosition, wx.DefaultSize, 0)
             self.versionTitle.Wrap(-1)
-            self.versionTitle.SetFont(wx.Font(12, 70, 90, 90, False, wx.EmptyString))
+            self.versionTitle.SetFont(Fonts.getFont("font_title_plus_one"))
 
             self.versionInfo = ("There is a release available which you have chosen to suppress. "
                                 "You can choose to reset notification suppression for this release, "

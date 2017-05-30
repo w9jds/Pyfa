@@ -14,14 +14,15 @@ gamedata_version = ""
 gamedata_connectionstring = 'sqlite:///' + realpath(join(dirname(abspath(__file__)), u"..", u"eve.db"))
 pyfalog.debug("Gamedata connection string: {0}", gamedata_connectionstring)
 
-if istravis is True or hasattr(sys, '_called_from_test'):
-    # Running in Travis. Run saveddata database in memory.
-    saveddata_connectionstring = 'sqlite:///:memory:'
 
 try:
-    saveddata_connectionstring
+    if istravis is True or hasattr(sys, '_called_from_test'):
+        # Running in Travis. Run saveddata database in memory.
+        saveddata_connectionstring = 'sqlite:///:memory:'
+    else:
+        # Only set this if it hasn't been set elsewhere
+        saveddata_connectionstring = 'sqlite:///' + realpath(join(dirname(abspath(__file__)), u"..", u"saveddata", u"saveddata.db"))
 except NameError:
-    # Only set this if it hasn't been set elsewhere
     saveddata_connectionstring = 'sqlite:///' + realpath(join(dirname(abspath(__file__)), u"..", u"saveddata", u"saveddata.db"))
 
 pyfalog.debug("Saveddata connection string: {0}", saveddata_connectionstring)

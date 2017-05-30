@@ -23,7 +23,7 @@ import wx
 import gui.mainFrame
 from gui.viewColumn import ViewColumn
 from gui.cachingImageList import CachingImageList
-from service.settings import GeneralSettings
+from gui.utils.fonts import Fonts
 
 
 class Display(wx.ListCtrl):
@@ -33,15 +33,7 @@ class Display(wx.ListCtrl):
 
         wx.ListCtrl.__init__(self, parent, size=size, style=wx.LC_REPORT | style)
 
-        general_settings = GeneralSettings.getInstance()
-        font = wx.Font(
-                general_settings.get('fontSize'),
-                getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
-                getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
-                getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
-                False,
-        )
-        self.SetFont(font)
+        self.SetFont(Fonts.getFont("font_standard"))
 
         self.imageList = CachingImageList(16, 16)
         self.SetImageList(self.imageList, wx.IMAGE_LIST_SMALL)
@@ -64,10 +56,10 @@ class Display(wx.ListCtrl):
                 paramList = colClass.getParameters()
                 paramDict = {}
                 for x, param in enumerate(paramList):
-                    name, type, defaultValue = param
+                    name, _type, defaultValue = param
                     value = params[x] if len(params) > x else defaultValue
                     value = value if value != "" else defaultValue
-                    if type == bool and isinstance(value, basestring):
+                    if _type == bool and isinstance(value, basestring):
                         value = bool(value) if value.lower() != "false" and value != "0" else False
                     paramDict[name] = value
                 col = colClass(self, paramDict)
@@ -230,7 +222,7 @@ class Display(wx.ListCtrl):
             stuffItemCount = len(stuff)
 
             if listItemCount < stuffItemCount:
-                for i in range(stuffItemCount - listItemCount):
+                for __ in range(stuffItemCount - listItemCount):
                     self.InsertStringItem(sys.maxint, "")
 
             if listItemCount > stuffItemCount:
@@ -256,7 +248,7 @@ class Display(wx.ListCtrl):
                 colItem = self.GetItem(item, i)
                 oldText = colItem.GetText()
                 oldImageId = colItem.GetImage()
-                newText = col.getText(st)
+                newText = col.getColumnText(st)
                 if newText is False:
                     col.delayedText(st, self, colItem)
                     newText = u"\u21bb"
@@ -307,5 +299,5 @@ class Display(wx.ListCtrl):
         self.refresh(stuff)
 
     def getColumn(self, point):
-        row, _, col = self.HitTestSubItem(point)
+        __, _, col = self.HitTestSubItem(point)
         return col

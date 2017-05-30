@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ship: Ragnarok
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

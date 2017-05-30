@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ship: Garmur
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

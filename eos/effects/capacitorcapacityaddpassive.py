@@ -3,9 +3,9 @@
 # Used by:
 # Subsystems from group: Engineering Systems (16 of 16)
 # Subsystem: Tengu Offensive - Magnetic Infusion Basin
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.ship.increaseItemAttr("capacitorCapacity",
-                              module.getModifiedItemAttr("capacitorCapacity"))
+                              container.getModifiedItemAttr("capacitorCapacity"))

@@ -37,7 +37,7 @@ class SlotColumn(ViewColumn):
         self.mask = wx.LIST_MASK_TEXT
         self.projectedView = isinstance(fittingView, gui.projectedView.ProjectedView)
 
-    def getText(self, stuff):
+    def getColumnText(self, stuff):
         slot_name = Slot.getName(stuff.slot)
 
         if slot_name:
@@ -47,8 +47,8 @@ class SlotColumn(ViewColumn):
 
         return ""
 
-    def getImageId(self, stuff):
-        slot_name = Slot.getName(stuff.slot)
+    def getImageId(self, mod):
+        slot_name = Slot.getName(mod.slot)
 
         if slot_name:
             slot_icon = self.fittingView.imageList.GetImageIndex("slot_%s_small" % slot_name.lower(), "gui")

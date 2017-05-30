@@ -1,8 +1,8 @@
 # pyfa.fit
 
-_Master_: [![Build Status](https://travis-ci.org/Pyfa-fit/Pyfa.svg?branch=master)](https://travis-ci.org/pyfa-fit/Pyfa) [![Build Status](https://ci.appveyor.com/api/projects/status/6o0qe49yajcg7hyy/branch/master?svg=true)](https://ci.appveyor.com/project/Ebag333/pyfa-nr5qw/branch/master) [![codecov](https://codecov.io/gh/Pyfa-fit/Pyfa-fit/branch/master/graph/badge.svg)](https://codecov.io/gh/Pyfa-fit/Pyfa) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/86ace8fc05c24ae59b61e0223f7d161b)](https://www.codacy.com/app/Ebag333/Pyfa-fit?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Pyfa-fit/Pyfa-fit&amp;utm_campaign=Badge_Grade)
+_Master_: [![Build Status](https://api.travis-ci.org/Pyfa-fit/Pyfa-fit.svg?branch=master)](https://travis-ci.org/Pyfa-fit/Pyfa-fit) [![Build Status](https://ci.appveyor.com/api/projects/status/6o0qe49yajcg7hyy/branch/master?svg=true)](https://ci.appveyor.com/project/Ebag333/pyfa-nr5qw/branch/master) [![codecov](https://codecov.io/gh/Pyfa-fit/Pyfa-fit/branch/master/graph/badge.svg)](https://codecov.io/gh/Pyfa-fit/Pyfa-fit) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/86ace8fc05c24ae59b61e0223f7d161b)](https://www.codacy.com/app/Ebag333/Pyfa-fit?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Pyfa-fit/Pyfa-fit&amp;utm_campaign=Badge_Grade)
 
-_Development_: [![Build Status](https://travis-ci.org/Pyfa-fit/Pyfa.svg?branch=development)](https://travis-ci.org/pyfa-fit/Pyfa) [![Build Status](https://ci.appveyor.com/api/projects/status/6o0qe49yajcg7hyy/branch/development?svg=true)](https://ci.appveyor.com/project/Ebag333/pyfa-nr5qw/branch/development) [![codecov](https://codecov.io/gh/Pyfa-fit/Pyfa-fit/branch/development/graph/badge.svg)](https://codecov.io/gh/Pyfa-fit/Pyfa)
+_Development_: [![Build Status](https://travis-ci.org/Pyfa-fit/Pyfa-fit.svg?branch=development)](https://travis-ci.org/Pyfa-fit/Pyfa-fit) [![Build Status](https://ci.appveyor.com/api/projects/status/6o0qe49yajcg7hyy/branch/development?svg=true)](https://ci.appveyor.com/project/Ebag333/pyfa-nr5qw/branch/development) [![codecov](https://codecov.io/gh/Pyfa-fit/Pyfa-fit/branch/development/graph/badge.svg)](https://codecov.io/gh/Pyfa-fit/Pyfa-fit)
 
 ![pyfa](/imgs/mainframe.png "Pyfa")
 ## What is it?
@@ -16,7 +16,7 @@ The latest version along with release notes can always be found on the project's
 Development releases will have newer features, and may not function correctly. Use at your own risk.
 
 _*Release Downloads*_:
-[Current Release](https://github.com/Pyfa-fit/Pyfa/releases)
+[Current Release](https://github.com/Pyfa-fit/Pyfa-fit/releases)
 
 ### Development Downloads
 

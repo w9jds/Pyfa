@@ -3,7 +3,7 @@
 # Used by:
 # Ship: Naga
 # Ship: Talos
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

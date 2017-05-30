@@ -2,10 +2,10 @@
 #
 # Used by:
 # Modules from group: ECM Stabilizer (6 of 6)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "ECM",
-                                  "scanRadarStrengthBonus", module.getModifiedItemAttr("ecmStrengthBonusPercent"),
+                                  "scanRadarStrengthBonus", container.getModifiedItemAttr("ecmStrengthBonusPercent"),
                                   stackingPenalties=True)

@@ -4,7 +4,7 @@
 # Implant: Federation Navy Command Mindlink
 # Implant: Republic Fleet Command Mindlink
 # Implant: Skirmish Command Mindlink
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

@@ -3,10 +3,10 @@
 # Used by:
 # Celestials named like: Magnetar Effect Beacon Class (6 of 6)
 runTime = "early"
-type = ("projected", "passive")
+effectType = ("projected", "passive")
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemMultiply(lambda mod: mod.item.requiresSkill("Gunnery"),
-                                     "trackingSpeed", module.getModifiedItemAttr("trackingSpeedMultiplier"),
+                                     "trackingSpeed", container.getModifiedItemAttr("trackingSpeedMultiplier"),
                                      stackingPenalties=True, penaltyGroup="postMul")

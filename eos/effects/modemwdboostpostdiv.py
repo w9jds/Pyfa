@@ -2,14 +2,14 @@
 #
 # Used by:
 # Module: Hecate Propulsion Mode
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemMultiply(
             lambda mod: mod.item.requiresSkill("High Speed Maneuvering"),
             "speedFactor",
-            1 / module.getModifiedItemAttr("modeMWDVelocityPostDiv"),
+            1 / container.getModifiedItemAttr("modeMWDVelocityPostDiv"),
             stackingPenalties=True,
             penaltyGroup="postDiv"
     )

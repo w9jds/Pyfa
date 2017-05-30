@@ -2,7 +2,7 @@
 #
 # Used by:
 # Variations of module: Siege Module I (2 of 2)
-type = "active"
+effectType = "active"
 runTime = "early"
 
 
@@ -14,11 +14,11 @@ def handler(fit, src, context):
                                   "damageMultiplier", src.getModifiedItemAttr("siegeTurretDamageBonus"))
 
     # Missiles
-    for type in ("kinetic", "thermal", "explosive", "em"):
+    for resist_type in ("kinetic", "thermal", "explosive", "em"):
         fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("XL Torpedoes") or
                                                     mod.charge.requiresSkill("XL Cruise Missiles") or
                                                     mod.charge.requiresSkill("Torpedoes"),
-                                        "%sDamage" % type, src.getModifiedItemAttr("siegeMissileDamageBonus"))
+                                        "%sDamage" % resist_type, src.getModifiedItemAttr("siegeMissileDamageBonus"))
 
     # Reppers
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Capital Shield Operation") or

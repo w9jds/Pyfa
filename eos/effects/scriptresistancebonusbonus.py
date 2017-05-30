@@ -2,7 +2,7 @@
 #
 # Used by:
 # Charges named like: Resistance Script (8 of 8)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

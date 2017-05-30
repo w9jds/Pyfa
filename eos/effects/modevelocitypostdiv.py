@@ -2,13 +2,13 @@
 #
 # Used by:
 # Module: Jackdaw Propulsion Mode
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.ship.multiplyItemAttr(
             "maxVelocity",
-            1 / module.getModifiedItemAttr("modeVelocityPostDiv"),
+            1 / container.getModifiedItemAttr("modeVelocityPostDiv"),
             stackingPenalties=True,
             penaltyGroup="postDiv"
     )

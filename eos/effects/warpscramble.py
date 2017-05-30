@@ -2,8 +2,8 @@
 #
 # Used by:
 # Modules named like: Warp Disruptor (27 of 27)
-type = "projected", "active"
+effectType = "projected", "active"
 
 
-def handler(fit, module, context):
-    fit.ship.increaseItemAttr("warpScrambleStatus", module.getModifiedItemAttr("warpScrambleStrength"))
+def handler(fit, container, context):
+    fit.ship.increaseItemAttr("warpScrambleStatus", container.getModifiedItemAttr("warpScrambleStrength"))

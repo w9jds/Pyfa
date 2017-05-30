@@ -4,8 +4,8 @@
 # Modules from group: Rig Electronic Systems (40 of 48)
 # Modules from group: Rig Targeting (16 of 16)
 # Modules named like: Signal Focusing Kit (8 of 8)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.boostItemAttr("shieldCapacity", module.getModifiedItemAttr("drawback"))
+def handler(fit, container, context):
+    fit.ship.boostItemAttr("shieldCapacity", container.getModifiedItemAttr("drawback"))

@@ -2,11 +2,11 @@
 #
 # Used by:
 # Subsystem: Loki Electronics - Emergent Locus Analyzer
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredChargeBoost(lambda mod: mod.charge.group.name == "Scanner Probe",
                                     "baseSensorStrength",
-                                    module.getModifiedItemAttr("subsystemBonusMinmatarElectronic"),
+                                    container.getModifiedItemAttr("subsystemBonusMinmatarElectronic"),
                                     skill="Minmatar Electronic Systems")

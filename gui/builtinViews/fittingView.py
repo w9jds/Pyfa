@@ -35,7 +35,7 @@ from gui.bitmapLoader import BitmapLoader
 import gui.builtinViews.emptyView
 from logbook import Logger
 from gui.chromeTabs import EVT_NOTEBOOK_PAGE_CHANGED
-from service.settings import GeneralSettings
+from gui.utils.fonts import Fonts
 
 from service.fit import Fit
 from service.market import Market
@@ -80,8 +80,8 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
             self.multiSwitch.ReplaceActivePage(view)
             view.fitSelected(event)
 
-    def handleDrag(self, type, fitID):
-        if type == "fit":
+    def handleDrag(self, drag_type, fitID):
+        if drag_type == "fit":
             for page in self.multiSwitch.pages:
                 if isinstance(page, FittingView) and page.activeFitID == fitID:
                     index = self.multiSwitch.GetPageIndex(page)
@@ -91,12 +91,12 @@ class FitSpawner(gui.multiSwitch.TabSpawner):
                 elif isinstance(page, gui.builtinViews.emptyView.BlankPage):
                     view = FittingView(self.multiSwitch)
                     self.multiSwitch.ReplaceActivePage(view)
-                    view.handleDrag(type, fitID)
+                    view.handleDrag(drag_type, fitID)
                     return
 
             view = FittingView(self.multiSwitch)
             self.multiSwitch.AddPage(view)
-            view.handleDrag(type, fitID)
+            view.handleDrag(drag_type, fitID)
 
 
 FitSpawner.register()
@@ -135,14 +135,6 @@ class FittingView(d.Display):
 
     def __init__(self, parent):
         d.Display.__init__(self, parent, size=(0, 0), style=wx.BORDER_NONE)
-
-        general_settings = GeneralSettings.getInstance()
-        self.font = wx.Font(
-                general_settings.get('fontSize'),
-                getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
-                getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
-                getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
-        )
 
         self.Show(False)
         self.parent = parent
@@ -222,12 +214,12 @@ class FittingView(d.Display):
             pyfalog.error(u"Error matching data ({0}:{1}) to valid category", data[0], data[1])
             pyfalog.exception(e)
 
-    def handleDrag(self, type, fitID):
+    def handleDrag(self, drag_type, fitID):
         # Those are drags coming from pyfa sources, NOT builtin wx drags
-        if type == "fit":
+        if drag_type == "fit":
             wx.PostEvent(self.mainFrame, gui.shipBrowser.FitSelected(fitID=fitID))
 
-    def Destroy(self):
+    def Destroy(self, **kwargs):
         self.parent.Unbind(EVT_NOTEBOOK_PAGE_CHANGED, handler=self.pageChanged)
         self.mainFrame.Unbind(GE.FIT_CHANGED, handler=self.fitChanged)
         self.mainFrame.Unbind(gui.shipBrowser.EVT_FIT_RENAMED, handler=self.fitRenamed)
@@ -251,7 +243,7 @@ class FittingView(d.Display):
     def startDrag(self, event):
         row = event.GetIndex()
 
-        if row != -1 and row not in self.blanks:
+        if row != -1 and row not in self.blanks and isinstance(self.mods[row], Module) and not self.mods[row].isEmpty:
             data = wx.PyTextDataObject()
             data.SetText("fitting:" + str(self.mods[row].modPosition))
 
@@ -305,7 +297,6 @@ class FittingView(d.Display):
                     wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.activeFitID))
         except wx._core.PyDeadObjectError:
             pyfalog.error("Caught dead object on fit removed")
-            pass
 
         event.Skip()
 
@@ -353,11 +344,14 @@ class FittingView(d.Display):
                     modules = []
                     sel = self.GetFirstSelected()
                     while sel != -1 and sel not in self.blanks:
-                        modules.append(self.mods[self.GetItemData(sel)])
+                        mod = self.mods[self.GetItemData(sel)]
+                        if isinstance(mod, Module) and not mod.isEmpty:
+                            modules.append(self.mods[self.GetItemData(sel)])
                         sel = self.GetNextSelected(sel)
 
-                    sFit.setAmmo(fitID, itemID, modules)
-                    wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
+                    if len(modules) > 0:
+                        sFit.setAmmo(fitID, itemID, modules)
+                        wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
                 else:
                     populate = sFit.appendModule(fitID, itemID)
                     if populate is not None:
@@ -367,6 +361,8 @@ class FittingView(d.Display):
         event.Skip()
 
     def removeItem(self, event):
+        if event.CmdDown():
+            return
         row, _ = self.HitTest(event.Position)
         if row != -1 and row not in self.blanks and isinstance(self.mods[row], Module):
             col = self.getColumn(event.Position)
@@ -398,6 +394,10 @@ class FittingView(d.Display):
         if dstRow != -1 and dstRow not in self.blanks:
             sFit = Fit.getInstance()
             fitID = self.mainFrame.getActiveFit()
+            mod = self.mods[dstRow]
+            if not isinstance(mod, Module):  # make sure we're not adding something to a T3D Mode
+                return
+
             moduleChanged = sFit.changeModule(fitID, self.mods[dstRow].modPosition, srcIdx)
             if moduleChanged is None:
                 # the new module doesn't fit in specified slot, try to simply append it
@@ -411,14 +411,17 @@ class FittingView(d.Display):
 
         dstRow, _ = self.HitTest((x, y))
         if dstRow != -1 and dstRow not in self.blanks:
-            module = self.mods[dstRow]
+            _module = self.mods[dstRow]
+
+            if not isinstance(_module, Module):
+                return
 
             sFit = Fit.getInstance()
             fit = sFit.getFit(self.activeFitID)
             typeID = fit.cargo[srcIdx].item.ID
 
-            sFit.moveCargoToModule(self.mainFrame.getActiveFit(), module.modPosition, srcIdx,
-                                   mstate.CmdDown() and module.isEmpty)
+            sFit.moveCargoToModule(self.mainFrame.getActiveFit(), _module.modPosition, srcIdx,
+                                   mstate.CmdDown() and _module.isEmpty)
 
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=self.mainFrame.getActiveFit(), action="modadd", typeID=typeID))
 
@@ -439,6 +442,9 @@ class FittingView(d.Display):
 
             mod1 = fit.modules[srcIdx]
             mod2 = self.mods[dstRow]
+
+            if not isinstance(mod2, Module):
+                return
 
             # can't swap modules to different racks
             if mod1.slot != mod2.slot:
@@ -580,7 +586,7 @@ class FittingView(d.Display):
             self.PopupMenu(menu)
         except Exception as e:
             # We can destroy the context menu before it's fully spawned.  See:
-            # https://github.com/Pyfa-fit/Pyfa/issues/50
+            # https://github.com/Pyfa-fit/Pyfa-fit/issues/50
             pyfalog.warning("Caught exception trying to spawn context menu.")
             pyfalog.warning(e)
 
@@ -657,21 +663,22 @@ class FittingView(d.Display):
             self.SetItemBackgroundColour(i, self.GetBackgroundColour())
 
             #  only consider changing color if we're dealing with a Module
-            if type(mod) is Module:
+            if isinstance(mod, Module):
                 if slotMap[mod.slot]:  # Color too many modules as red
                     self.SetItemBackgroundColour(i, wx.Colour(204, 51, 51))
                 elif sFit.serviceFittingOptions["colorFitBySlot"]:  # Color by slot it enabled
                     self.SetItemBackgroundColour(i, self.slotColour(mod.slot))
 
             # Set rack face to bold
+            font_standard = Fonts.getFont("font_standard")
             if isinstance(mod, Rack) and \
                     sFit.serviceFittingOptions["rackSlots"] and \
                     sFit.serviceFittingOptions["rackLabels"]:
-                self.font.SetWeight(wx.FONTWEIGHT_BOLD)
-                self.SetItemFont(i, self.font)
+                font_standard.SetWeight(wx.FONTWEIGHT_BOLD)
+                self.SetItemFont(i, font_standard)
             else:
-                self.font.SetWeight(wx.FONTWEIGHT_NORMAL)
-                self.SetItemFont(i, self.font)
+                font_standard.SetWeight(wx.FONTWEIGHT_NORMAL)
+                self.SetItemFont(i, font_standard)
 
         self.Thaw()
         self.itemCount = self.GetItemCount()
@@ -704,7 +711,7 @@ class FittingView(d.Display):
         tbmp = wx.EmptyBitmap(16, 16)
         tdc = wx.MemoryDC()
         tdc.SelectObject(tbmp)
-        tdc.SetFont(self.font)
+        tdc.SetFont(Fonts.getFont("font_standard"))
 
         columnsWidths = []
         for i in range(len(self.DEFAULT_COLS)):
@@ -714,6 +721,7 @@ class FittingView(d.Display):
         try:
             fit = sFit.getFit(self.activeFitID)
         except Exception as e:
+            fit = None
             pyfalog.critical("Failed to get fit")
             pyfalog.critical(e)
 
@@ -735,7 +743,7 @@ class FittingView(d.Display):
             for i, col in enumerate(self.activeColumns):
                 if i > maxColumns:
                     break
-                name = col.getText(st)
+                name = col.getColumnText(st)
 
                 if not isinstance(name, basestring):
                     name = ""
@@ -799,7 +807,7 @@ class FittingView(d.Display):
         mdc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)))
         mdc.Clear()
 
-        mdc.SetFont(self.font)
+        mdc.SetFont(Fonts.getFont("font_standard"))
         mdc.SetTextForeground(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT))
 
         cx = padding
@@ -843,7 +851,7 @@ class FittingView(d.Display):
                 if i > maxColumns:
                     break
 
-                name = col.getText(st)
+                name = col.getColumnText(st)
                 if not isinstance(name, basestring):
                     name = ""
 

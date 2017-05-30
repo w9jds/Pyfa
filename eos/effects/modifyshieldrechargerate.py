@@ -6,8 +6,8 @@
 # Modules from group: Reactor Control Unit (22 of 22)
 # Modules from group: Shield Recharger (4 of 4)
 # Modules named like: Flux Coil (12 of 12)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.multiplyItemAttr("shieldRechargeRate", module.getModifiedItemAttr("shieldRechargeRateMultiplier") or 1)
+def handler(fit, container, context):
+    fit.ship.multiplyItemAttr("shieldRechargeRate", container.getModifiedItemAttr("shieldRechargeRateMultiplier") or 1)

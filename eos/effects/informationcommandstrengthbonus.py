@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Information Command Specialist
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

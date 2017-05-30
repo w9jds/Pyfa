@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Target Breaker Amplification
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, skill, context):

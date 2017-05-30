@@ -3,7 +3,7 @@
 # Used by:
 # Modules named like: Nanobot Accelerator (8 of 8)
 # Skill: Capital Repair Systems
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, container, context):

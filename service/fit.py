@@ -395,15 +395,15 @@ class Fit(object):
             fighter = es_Fighter(thing)
             fit.projectedFighters.append(fighter)
         elif thing.group.name == "Effect Beacon":
-            module = es_Module(thing)
-            module.state = State.ONLINE
-            fit.projectedModules.append(module)
+            _module = es_Module(thing)
+            _module.state = State.ONLINE
+            fit.projectedModules.append(_module)
         else:
-            module = es_Module(thing)
-            module.state = State.ACTIVE
-            if not module.canHaveState(module.state, fit):
-                module.state = State.OFFLINE
-            fit.projectedModules.append(module)
+            _module = es_Module(thing)
+            _module.state = State.ACTIVE
+            if not _module.canHaveState(_module.state, fit):
+                _module.state = State.OFFLINE
+            fit.projectedModules.append(_module)
 
         self.recalc(fit)
         return True
@@ -556,13 +556,23 @@ class Fit(object):
         return numSlots != len(fit.modules)
 
     def changeModule(self, fitID, position, newItemID):
-        pyfalog.debug("Changing position of module from position ({0}) for fit ID: {1}", position, fitID)
         fit = self.getFit(fitID, basic=True)
+
+        # We're trying to add a charge to a slot, which won't work. Instead, try to add the charge to the module in that slot.
+        if self.isAmmo(newItemID):
+            pyfalog.debug("Applying ammo to position ({0}) for fit ID: {1}", position, fitID)
+            _module = fit.modules[position]
+            if not _module.isEmpty:
+                self.setAmmo(fitID, newItemID, [_module])
+            return True
+
+        pyfalog.debug("Changing position of module from position ({0}) for fit ID: {1}", position, fitID)
+
+        item = eos.db.getItem(newItemID, eager=("attributes", "group.category"))
 
         # Dummy it out in case the next bit fails
         fit.modules.toDummy(position)
 
-        item = eos.db.getItem(newItemID, eager=("attributes", "group.category"))
         try:
             m = es_Module(item)
         except ValueError:
@@ -595,11 +605,20 @@ class Fit(object):
         sanity checks as opposed to the GUI View. This is different than how the
         normal .swapModules() does things, which is mostly a blind swap.
         """
-        pyfalog.debug("Moving cargo item to module for fit ID: {0}", fitID)
         fit = self.getFit(fitID, basic=True)
 
-        module = fit.modules[moduleIdx]
+        _module = fit.modules[moduleIdx]
         cargo = fit.cargo[cargoIdx]
+
+        # We're trying to move a charge from cargo to a slot - try to add charge to dst module. Don't do anything with
+        # the charge in the cargo (don't respect move vs copy)
+        if self.isAmmo(cargo.item.ID):
+            pyfalog.debug("Move charge from cargo to a slot for fit ID: {0}", fitID)
+            if not _module.isEmpty:
+                self.setAmmo(fitID, cargo.item.ID, [_module])
+            return
+
+        pyfalog.debug("Moving cargo item to module for fit ID: {1}", fitID)
 
         # Gather modules and convert Cargo item to Module, silently return if not a module
         try:
@@ -611,14 +630,14 @@ class Fit(object):
             pyfalog.warning("Invalid item: {0}", cargo.item)
             return
 
-        if cargoP.slot != module.slot:  # can't swap modules to different racks
+        if cargoP.slot != _module.slot:  # can't swap modules to different racks
             return
 
         # remove module that we are trying to move cargo to
-        fit.modules.remove(module)
+        fit.modules.remove(_module)
 
         if not cargoP.fits(fit):  # if cargo doesn't fit, rollback and return
-            fit.modules.insert(moduleIdx, module)
+            fit.modules.insert(moduleIdx, _module)
             return
 
         fit.modules.insert(moduleIdx, cargoP)
@@ -629,12 +648,12 @@ class Fit(object):
             else:
                 cargo.amount -= 1
 
-        if not module.isEmpty:  # if module is placeholder, we don't want to convert/add it
-            for x in fit.cargo.find(module.item):
+        if not _module.isEmpty:  # if module is placeholder, we don't want to convert/add it
+            for x in fit.cargo.find(_module.item):
                 x.amount += 1
                 break
             else:
-                moduleP = es_Cargo(module.item)
+                moduleP = es_Cargo(_module.item)
                 moduleP.amount = 1
                 fit.cargo.insert(cargoIdx, moduleP)
 
@@ -732,12 +751,7 @@ class Fit(object):
         item = eos.db.getItem(itemID, eager=("attributes", "group.category"))
         if item.category.name == "Fighter":
             fighter = None
-            '''
-            for d in fit.fighters.find(item):
-                if d is not None and d.amountActive == 0 and d.amount < max(5, fit.extraAttributes["maxActiveDrones"]):
-                    drone = d
-                    break
-            '''
+
             if fighter is None:
                 fighter = es_Fighter(item)
                 used = fit.getSlotsUsed(fighter.slot)

@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ships from group: Interceptor (6 of 10)
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

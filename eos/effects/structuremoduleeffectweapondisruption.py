@@ -1,9 +1,9 @@
 # Not used by any item
 
-type = "active", "projected"
+effectType = "active", "projected"
 
 
-def handler(fit, module, context, *args, **kwargs):
+def handler(fit, container, context, *args, **kwargs):
     if "projected" in context:
         for srcAttr, tgtAttr in (
                 ("aoeCloudSizeBonus", "aoeCloudSize"),
@@ -12,15 +12,15 @@ def handler(fit, module, context, *args, **kwargs):
                 ("explosionDelayBonus", "explosionDelay"),
         ):
             fit.modules.filteredChargeBoost(lambda mod: mod.charge.requiresSkill("Missile Launcher Operation"),
-                                            tgtAttr, module.getModifiedItemAttr(srcAttr),
+                                            tgtAttr, container.getModifiedItemAttr(srcAttr),
                                             stackingPenalties=True, *args, **kwargs)
 
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Gunnery"),
-                                      "trackingSpeed", module.getModifiedItemAttr("trackingSpeedBonus"),
+                                      "trackingSpeed", container.getModifiedItemAttr("trackingSpeedBonus"),
                                       stackingPenalties=True, *args, **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Gunnery"),
-                                      "maxRange", module.getModifiedItemAttr("maxRangeBonus"),
+                                      "maxRange", container.getModifiedItemAttr("maxRangeBonus"),
                                       stackingPenalties=True, *args, **kwargs)
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Gunnery"),
-                                      "falloff", module.getModifiedItemAttr("falloffBonus"),
+                                      "falloff", container.getModifiedItemAttr("falloffBonus"),
                                       stackingPenalties=True, *args, **kwargs)

@@ -374,12 +374,13 @@ class Character(object):
         thread = UpdateAPIThread(charID, charName, (self.apiFetchCallback, callback))
         thread.start()
 
-    def apiFetchCallback(self, guiCallback, e=None):
+    @staticmethod
+    def apiFetchCallback(guiCallback, e=None):
         eos.db.commit()
         wx.CallAfter(guiCallback, e)
 
     @staticmethod
-    def apiUpdateCharSheet(charID, skills, securitystatus):
+    def apiUpdateCharSheet(charID, skills, securitystatus=0):
         char = eos.db.getCharacter(charID)
         char.apiUpdateCharSheet(skills, securitystatus)
         eos.db.commit()

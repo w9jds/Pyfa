@@ -2,9 +2,9 @@
 #
 # Used by:
 # Subsystem: Loki Engineering - Power Core Multiplier
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
-    fit.ship.boostItemAttr("powerOutput", module.getModifiedItemAttr("subsystemBonusMinmatarEngineering"),
+def handler(fit, container, context):
+    fit.ship.boostItemAttr("powerOutput", container.getModifiedItemAttr("subsystemBonusMinmatarEngineering"),
                            skill="Minmatar Engineering Systems")

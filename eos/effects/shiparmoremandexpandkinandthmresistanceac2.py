@@ -4,7 +4,7 @@
 # Ships named like: Stratios (2 of 2)
 # Ship: Sacrilege
 # Ship: Vangel
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

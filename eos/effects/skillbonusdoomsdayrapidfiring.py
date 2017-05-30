@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Doomsday Rapid Firing
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

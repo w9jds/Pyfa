@@ -2,10 +2,10 @@
 #
 # Used by:
 # Subsystem: Proteus Offensive - Drone Synthesis Projector
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill("Drones"),
-                                 "damageMultiplier", module.getModifiedItemAttr("subsystemBonusGallenteOffensive3"),
+                                 "damageMultiplier", container.getModifiedItemAttr("subsystemBonusGallenteOffensive3"),
                                  skill="Gallente Offensive Systems")

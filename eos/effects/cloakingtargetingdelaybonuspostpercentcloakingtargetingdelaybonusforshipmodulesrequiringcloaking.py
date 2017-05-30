@@ -2,7 +2,7 @@
 #
 # Used by:
 # Skill: Cloaking
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, skill, context):

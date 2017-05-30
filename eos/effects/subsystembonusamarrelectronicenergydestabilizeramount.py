@@ -2,11 +2,11 @@
 #
 # Used by:
 # Subsystem: Legion Electronics - Energy Parasitic Complex
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.group.name == "Energy Neutralizer",
                                   "energyNeutralizerAmount",
-                                  module.getModifiedItemAttr("subsystemBonusAmarrElectronic"),
+                                  container.getModifiedItemAttr("subsystemBonusAmarrElectronic"),
                                   skill="Amarr Electronic Systems")

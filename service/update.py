@@ -46,7 +46,7 @@ class CheckUpdateThread(threading.Thread):
         network = Network.getInstance()
 
         try:
-            response = network.request('https://api.github.com/repos/Pyfa-fit/Pyfa/releases', network.UPDATE)
+            response = network.request('https://api.github.com/repos/Pyfa-fit/Pyfa-fit/releases', network.UPDATE)
             jsonResponse = json.loads(response.read())
             jsonResponse.sort(
                     key=lambda x: calendar.timegm(dateutil.parser.parse(x['published_at']).utctimetuple()),
@@ -88,11 +88,14 @@ class CheckUpdateThread(threading.Thread):
         except Exception as e:
             pyfalog.error("Caught exception in run")
             pyfalog.error(e)
-            pass
 
     @staticmethod
     def versiontuple(v):
-        return tuple(map(int, (v.split("."))))
+        try:
+            return tuple(map(int, (v.split("."))))
+        except ValueError:
+            pyfalog.error("Error parsing version into a tuple.")
+            raise
 
 
 class Update(object):

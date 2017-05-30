@@ -2,10 +2,10 @@
 #
 # Used by:
 # Subsystem: Tengu Electronics - Emergent Locus Analyzer
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredChargeBoost(lambda mod: mod.charge.group.name == "Scanner Probe",
-                                    "baseSensorStrength", module.getModifiedItemAttr("subsystemBonusCaldariElectronic"),
+                                    "baseSensorStrength", container.getModifiedItemAttr("subsystemBonusCaldariElectronic"),
                                     skill="Caldari Electronic Systems")

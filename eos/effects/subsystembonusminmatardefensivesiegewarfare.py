@@ -2,7 +2,7 @@
 #
 # Used by:
 # Subsystem: Loki Defensive - Warfare Processor
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

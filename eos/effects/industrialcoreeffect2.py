@@ -2,7 +2,7 @@
 #
 # Used by:
 # Variations of module: Industrial Core I (2 of 2)
-type = "active"
+effectType = "active"
 runTime = "early"
 
 

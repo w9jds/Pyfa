@@ -2,8 +2,8 @@
 #
 # Used by:
 # Module: 'Gjallarhorn' Explosive Doomsday
-type = 'active'
+effectType = 'active'
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     pass

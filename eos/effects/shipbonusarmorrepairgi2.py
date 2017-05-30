@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ship: Occator
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, ship, context):

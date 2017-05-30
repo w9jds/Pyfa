@@ -2,11 +2,11 @@
 #
 # Used by:
 # Subsystem: Proteus Defensive - Adaptive Augmenter
-type = "passive"
+effectType = "passive"
 runTime = "early"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill("Remote Armor Repair Systems"),
-                                  "armorDamageAmount", module.getModifiedItemAttr("subsystemBonusGallenteDefensive2"),
+                                  "armorDamageAmount", container.getModifiedItemAttr("subsystemBonusGallenteDefensive2"),
                                   skill="Gallente Defensive Systems")

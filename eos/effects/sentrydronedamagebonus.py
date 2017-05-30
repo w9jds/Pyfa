@@ -2,10 +2,10 @@
 #
 # Used by:
 # Modules named like: Sentry Damage Augmentor (8 of 8)
-type = "passive"
+effectType = "passive"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     fit.drones.filteredItemBoost(lambda drone: drone.item.requiresSkill("Sentry Drone Interfacing"),
-                                 "damageMultiplier", module.getModifiedItemAttr("damageMultiplierBonus"),
+                                 "damageMultiplier", container.getModifiedItemAttr("damageMultiplierBonus"),
                                  stackingPenalties=True)

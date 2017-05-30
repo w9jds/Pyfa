@@ -2,7 +2,7 @@
 #
 # Used by:
 # Ship: Sentinel
-type = "passive"
+effectType = "passive"
 
 
 def handler(fit, src, context):

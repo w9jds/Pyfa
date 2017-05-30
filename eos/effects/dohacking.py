@@ -2,8 +2,8 @@
 #
 # Used by:
 # Modules from group: Data Miners (15 of 16)
-type = "active"
+effectType = "active"
 
 
-def handler(fit, module, context):
+def handler(fit, container, context):
     pass
