@@ -29,6 +29,7 @@ from gui.bitmapLoader import BitmapLoader
 from logbook import Logger
 from gui.utils.fonts import Fonts
 from service.settings import GeneralSettings
+from utils.staticHelpers import DragDropHelper
 
 pyfalog = Logger(__name__)
 
@@ -294,6 +295,7 @@ class ItemView(Display):
             data.SetText(dataStr)
             dropSource = wx.DropSource(self)
             dropSource.SetData(data)
+            DragDropHelper.data = dataStr
             dropSource.DoDragDrop()
 
     def itemActivated(self, event=None):
