@@ -116,7 +116,7 @@ class FittingViewDrop(wx.PyDropTarget):
     def OnData(self, x, y, t):
         if self.GetData():
             dragged_data = DragDropHelper.data
-            #pyfalog.debug("fittingView: recieved drag: " + self.dropData.GetText())
+            # pyfalog.debug("fittingView: recieved drag: " + self.dropData.GetText())
             data = dragged_data.split(':')
             self.dropFn(x, y, data)
         return t
@@ -288,8 +288,10 @@ class FittingView(d.Display):
         We also refresh the fit of the new current page in case
         delete fit caused change in stats (projected)
         """
+        pyfalog.debug("FittingView::fitRemoved")
         active_fit_id = self.getActiveFit()
         if event.fitID == active_fit_id:
+            pyfalog.debug("    Deleted fit is currently active")
             self.parent.DeletePage(self.parent.GetPageIndex(self))
 
         try:
