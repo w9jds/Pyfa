@@ -54,8 +54,9 @@ install:
   - conda install -c https://conda.anaconda.org/travis wxpython
   # Not sure why this only works on OS X, but it fixes an issue with matplotlib
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-      conda install matplotlib
+      conda install matplotlib;
     fi
+
 before_script:
   - pip install -r requirements.txt
   - pip install -r requirements_test.txt
