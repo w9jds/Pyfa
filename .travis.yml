@@ -5,11 +5,11 @@ matrix:
       sudo: required
       language: python
       python: 2.7
-      env: "TOXENV=pep8 ARTIFACTS_BUCKET=pyfa.builds ARTIFACTS_PATHS=\"$TRAVIS_BUILD_DIR/pyfa_linux.zip:/$TRAVIS_BUILD_DIR/pyfa_linux_debug.zip:$TRAVIS_BUILD_DIR/build/pyfa/warnpyfa.txt\""
+      env: "TOXENV=pep8 ARTIFACTS_BUCKET=pyfa.builds ARTIFACTS_PATHS=\"$TRAVIS_BUILD_DIR/pyfa_linux.zip:/$TRAVIS_BUILD_DIR/pyfa_linux_debug.zip:$TRAVIS_BUILD_DIR/build/warnpyfa_linux.txt\""
     - os: osx
       language: generic
       python: 2.7
-      env: "TOXENV=pep8 ARTIFACTS_BUCKET=pyfa.builds ARTIFACTS_PATHS=\"$TRAVIS_BUILD_DIR/pyfa_mac.zip:$TRAVIS_BUILD_DIR/pyfa_mac_debug.zip:$TRAVIS_BUILD_DIR/build/pyfa/warnpyfa.txt\""
+      env: "TOXENV=pep8 ARTIFACTS_BUCKET=pyfa.builds ARTIFACTS_PATHS=\"$TRAVIS_BUILD_DIR/pyfa_mac.zip:$TRAVIS_BUILD_DIR/pyfa_mac_debug.zip:$TRAVIS_BUILD_DIR/build/warnpyfa_osx.txt\""
 addons:
   apt:
     packages:
@@ -27,11 +27,16 @@ before_install:
       sudo apt-get install fonts-cantarell lmodern ttf-aenigma ttf-georgewilliams ttf-bitstream-vera ttf-sjfonts ttf-tuffy tv-fonts;
       sudo apt-get install ubuntustudio-font-meta;
       sudo apt-get update && sudo apt-get --reinstall install -qq language-pack-en language-pack-ru language-pack-he language-pack-zh-hans;
-      wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh;
     fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-      brew update;
-      brew install graphviz;
+  # Disabling brew for now to try and trim down build time
+  # - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+  #     brew update;
+  #     brew install graphviz;
+  #   fi
+
+  # Conda Install
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh;
     fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       wget https://repo.continuum.io/miniconda/Miniconda2-latest-MacOSX-x86_64.sh -O miniconda.sh;
@@ -42,11 +47,15 @@ before_install:
   - conda config --set always_yes yes --set changeps1 no
   - conda update -q conda
   # Useful for debugging any issues with conda
-  - conda info -a
+  # - conda info -a
+
 install:
   # install wxPython 3.0.0.0
   - conda install -c https://conda.anaconda.org/travis wxpython
-  - conda install matplotlib
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      # Not sure why this only works on OS X, but it fixes an issue with matplotlib
+      conda install matplotlib
+    fi
 before_script:
   - pip install -r requirements.txt
   - pip install -r requirements_test.txt
@@ -68,18 +77,19 @@ after_success:
       cp $TRAVIS_BUILD_DIR/dist_assets/mac/pyfa.spec $TRAVIS_BUILD_DIR/pyfa.spec;
       cp $TRAVIS_BUILD_DIR/dist_assets/mac/pyfa_debug.spec $TRAVIS_BUILD_DIR/pyfa_debug.spec;
     fi
-  - ls $TRAVIS_BUILD_DIR
-  - if [[ "$TRAVIS_OS_NAME" == "mac" ]]; then
-      cp ~/dist_assets/mac/pyfa.spec ~/pyfa.spec;
-      cp ~/dist_assets/mac/pyfa_debug.spec ~/pyfa_debug.spec;
-    fi
-  - ls $TRAVIS_BUILD_DIR
-  - ls $TRAVIS_BUILD_DIR/dist_assets/mac/
 
   # Run build
   - cd $TRAVIS_BUILD_DIR
   - pyinstaller --clean --noconfirm --windowed $TRAVIS_BUILD_DIR/pyfa.spec
   - pyinstaller --clean --noconfirm --windowed $TRAVIS_BUILD_DIR/pyfa_debug.spec
+
+  # Copy warnings down
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      cp $TRAVIS_BUILD_DIR/build/pyfa/warnpyfa.txt $TRAVIS_BUILD_DIR/build/warnpyfa_linux.txt;
+    fi
+  - if [[ "$TRAVIS_OS_NAME" == "mac" ]]; then
+      cp $TRAVIS_BUILD_DIR/build/pyfa/warnpyfa.txt $TRAVIS_BUILD_DIR/build/warnpyfa_osx.txt;
+    fi
 
   # zip builds
   - cd $TRAVIS_BUILD_DIR/dist/;
