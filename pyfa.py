@@ -412,7 +412,15 @@ if __name__ == "__main__":
         from gui.mainFrame import MainFrame
 
         pyfalog.debug("Creating wx application.")
-        pyfa = wx.App(False)
+        try:
+            pyfa = wx.App(False)
+        except Exception as e:
+            pyfalog.error("Failed to initialize wx.App")
+            pyfalog.trace(e)
+            pyfalog.debug(repr(pyfa))
+        finally:
+            pyfalog.debug(repr(pyfa))
+
         pyfalog.debug("Creating GUI main frame.")
         MainFrame(options.title)
         pyfalog.debug("Launching Pyfa.")
