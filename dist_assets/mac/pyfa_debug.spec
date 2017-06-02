@@ -11,6 +11,9 @@
 #  pathex=['C:\\Users\\Ebag333\\Documents\\GitHub\\Ebag333\\Pyfa'],
 
 import os
+import sys
+
+sys.path.append(os.path.realpath(os.getcwd()))
 
 block_cipher = None
 
@@ -64,7 +67,7 @@ exe = EXE(pyz,
           debug=True,
           console=True,
           strip=False,
-          upx=True,
+          upx=False,
           name='pyfa_debug',
           icon='dist_assets/mac/pyfa.icns',
           onefile=False,
@@ -76,7 +79,7 @@ coll = COLLECT(
                a.zipfiles,
                a.datas,
                strip=False,
-               upx=True,
+               upx=False,
                onefile=False,
                name='pyfa_debug',
                icon='dist_assets/mac/pyfa.icns',
