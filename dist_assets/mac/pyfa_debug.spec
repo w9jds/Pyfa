@@ -41,6 +41,11 @@ for root, folders, files in os.walk("eos/effects"):
             )
             import_these.append(mod_name)
 
+excluded_modules = [
+    'setup',
+    'setup-osx',
+]
+
 a = Analysis(
              ['pyfa.py'],
              pathex=['$TRAVIS_BUILD_DIR'],
@@ -49,7 +54,7 @@ a = Analysis(
              hiddenimports=import_these,
              hookspath=[],
              runtime_hooks=[],
-             excludes=[],
+             excludes=excluded_modules,
              win_no_prefer_redirects=False,
              win_private_assemblies=False,
              cipher=block_cipher,
