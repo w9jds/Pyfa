@@ -7,4 +7,7 @@ pyparsing >= 2.1.10
 tornado
 
 # Windows specific
-pypiwin32 >= 219; sys_platform == 'win'
+pypiwin32 >= 219
+# ; sys_platform == 'win'
+
+# OS X specific
