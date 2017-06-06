@@ -27,6 +27,7 @@ from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
 from service.damagePattern import DamagePattern, ImportError
 from logbook import Logger
 from gui.utils.fonts import Fonts
+from service.settings import GeneralSettings
 
 pyfalog = Logger(__name__)
 
@@ -87,7 +88,17 @@ class DmgPatternEditorDlg(wx.Dialog):
     DAMAGE_TYPES = ("em", "thermal", "kinetic", "explosive")
 
     def __init__(self, parent):
-        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title=u"Damage Pattern Editor", size=wx.Size(400, 240))
+        self.generalSettings = GeneralSettings.getInstance()
+        fontSize = self.generalSettings.get("fontSize")
+
+        window_x = 400
+        window_y = 240
+
+        if fontSize > 9:
+            window_x *= 1.25
+            window_y *= 1.1
+
+        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title=u"Damage Pattern Editor", size=wx.Size(window_x, window_y))
 
         self.block = False
         self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)

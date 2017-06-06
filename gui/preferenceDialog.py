@@ -21,7 +21,7 @@
 import wx
 from gui.preferenceView import PreferenceView
 from gui.bitmapLoader import BitmapLoader
-from service.settings import SettingsProvider
+from service.settings import SettingsProvider, GeneralSettings
 from logbook import Logger
 from gui.utils.fonts import Fonts
 
@@ -70,14 +70,22 @@ class PreferenceDialog(wx.Dialog):
             prefView.populatePrefPanel(page)
             self.listbook.AddPage(page, prefView.title, imageId=imgID)
 
+        self.generalSettings = GeneralSettings.getInstance()
+        fontSize = self.generalSettings.get("fontSize")
+
+        window_x = 650
+        window_y = 550
+
         # Set the height based on a condition. Can all the panels fit in the current height?
         # If not, use the .GetBestVirtualSize() to ensure that all content is available.
-        minHeight = 550
         bestFit = self.GetBestVirtualSize()
-        if minHeight > bestFit[1]:
-            self.SetSizeWH(650, minHeight)
-        else:
-            self.SetSizeWH(650, bestFit[1])
+        if window_y < bestFit[1]:
+            window_y = bestFit[1]
+
+        if fontSize > 9:
+            window_x *= 1.25
+
+        self.SetSizeWH(window_x, window_y)
 
         self.Layout()
 
