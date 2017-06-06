@@ -31,6 +31,7 @@ from gui.graph import Graph
 from gui.bitmapLoader import BitmapLoader
 import traceback
 from gui.utils.fonts import Fonts
+from service.settings import GeneralSettings
 
 pyfalog = Logger(__name__)
 
@@ -100,7 +101,17 @@ class GraphFrame(wx.Frame):
 
         mplImported = True
 
-        wx.Frame.__init__(self, parent, title=u"pyfa: Graph Generator", style=style, size=(520, 390))
+        self.generalSettings = GeneralSettings.getInstance()
+        fontSize = self.generalSettings.get("fontSize")
+
+        window_x = 520
+        window_y = 390
+
+        if fontSize > 9:
+            window_x *= 1.25
+            window_y *= 1.1
+
+        wx.Frame.__init__(self, parent, title=u"pyfa: Graph Generator", style=style, size=(window_x, window_y))
 
         i = wx.IconFromBitmap(BitmapLoader.getBitmap("graphs_small", "gui"))
         self.SetIcon(i)

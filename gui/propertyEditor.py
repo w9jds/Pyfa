@@ -21,14 +21,25 @@ import gui.PFSearchBox as SBox
 from gui.marketBrowser import SearchBox
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.fonts import Fonts
+from service.settings import GeneralSettings
 
 pyfalog = Logger(__name__)
 
 
 class AttributeEditor(wx.Frame):
     def __init__(self, parent):
+        self.generalSettings = GeneralSettings.getInstance()
+        fontSize = self.generalSettings.get("fontSize")
+
+        window_x = 800
+        window_y = 600
+
+        if fontSize > 9:
+            window_x *= 1.25
+            window_y *= 1.1
+
         wx.Frame.__init__(self, parent, wx.ID_ANY, title="Attribute Editor", pos=wx.DefaultPosition,
-                          size=wx.Size(650, 600),
+                          size=wx.Size(window_x, window_y),
                           style=wx.DEFAULT_FRAME_STYLE | wx.FRAME_FLOAT_ON_PARENT | wx.TAB_TRAVERSAL)
 
         i = wx.IconFromBitmap(BitmapLoader.getBitmap("fit_rename_small", "gui"))

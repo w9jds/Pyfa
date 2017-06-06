@@ -20,6 +20,7 @@
 import platform
 import sys
 from gui.utils.fonts import Fonts
+from service.settings import GeneralSettings
 
 # noinspection PyPackageRequirements
 import wx
@@ -46,7 +47,20 @@ class ErrorFrame(wx.Frame):
     def __init__(self, exception=None, tb=None, error_title='Error!'):
         v = sys.version_info
 
-        wx.Frame.__init__(self, None, id=wx.ID_ANY, title="pyfa error", pos=wx.DefaultPosition, size=wx.Size(500, 600),
+        try:
+            self.generalSettings = GeneralSettings.getInstance()
+            fontSize = self.generalSettings.get("fontSize")
+        except:
+            fontSize = 9
+
+        window_x = 500
+        window_y = 600
+
+        if fontSize > 9:
+            window_x *= 1.25
+            window_y *= 1.1
+
+        wx.Frame.__init__(self, None, id=wx.ID_ANY, title="pyfa error", pos=wx.DefaultPosition, size=wx.Size(window_x, window_y),
                           style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER | wx.STAY_ON_TOP)
 
         desc = "pyfa has experienced an unexpected issue. Below is a message that contains crucial\n" \

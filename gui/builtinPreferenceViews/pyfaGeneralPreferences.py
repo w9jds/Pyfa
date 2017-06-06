@@ -7,8 +7,7 @@ from gui.bitmapLoader import BitmapLoader
 
 import gui.mainFrame
 import gui.globalEvents as GE
-from service.settings import SettingsProvider
-from service.settings import GeneralSettings
+from service.settings import SettingsProvider, GeneralSettings
 from service.fit import Fit
 from service.price import Price
 from gui.utils.fonts import Fonts

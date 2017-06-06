@@ -25,6 +25,7 @@ from service.implantSet import ImplantSets
 from gui.builtinViews.implantEditor import BaseImplantEditorView
 from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
+from service.settings import GeneralSettings
 
 pyfalog = Logger(__name__)
 
@@ -111,6 +112,16 @@ class ImplantSetEditor(BaseImplantEditorView):
 
 class ImplantSetEditorDlg(wx.Dialog):
     def __init__(self, parent):
+        self.generalSettings = GeneralSettings.getInstance()
+        fontSize = self.generalSettings.get("fontSize")
+
+        window_x = 640
+        window_y = 600
+
+        if fontSize > 9:
+            window_x *= 1.25
+            window_y *= 1.1
+
         wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title=u"Implant Set Editor", size=wx.Size(640, 600))
 
         self.block = False
