@@ -184,7 +184,7 @@ class Fit(object):
             if booster.boosted_fit != fit and booster.boosted_fit in eos.db.saveddata_session:  # GH issue #359
                 refreshFits.add(booster.boosted_fit)
 
-        pyfalog.debug("    Need to refresh {} fits: {}", len(refreshFits), refreshFits)
+        pyfalog.debug("Need to refresh {} fits: {}", len(refreshFits), refreshFits)
         for fit in refreshFits:
             eos.db.saveddata_session.refresh(fit)
 
