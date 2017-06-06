@@ -40,6 +40,8 @@ from gui.utils.fonts import Fonts
 from service.fit import Fit
 from service.market import Market
 
+from gui.utils.staticHelpers import DragDropHelper
+
 import gui.globalEvents as GE
 
 pyfalog = Logger(__name__)
@@ -113,8 +115,9 @@ class FittingViewDrop(wx.PyDropTarget):
 
     def OnData(self, x, y, t):
         if self.GetData():
-            pyfalog.debug("fittingView: recieved drag: " + self.dropData.GetText())
-            data = self.dropData.GetText().split(':')
+            dragged_data = DragDropHelper.data
+            # pyfalog.debug("fittingView: recieved drag: " + self.dropData.GetText())
+            data = dragged_data.split(':')
             self.dropFn(x, y, data)
         return t
 
@@ -245,10 +248,12 @@ class FittingView(d.Display):
 
         if row != -1 and row not in self.blanks and isinstance(self.mods[row], Module) and not self.mods[row].isEmpty:
             data = wx.PyTextDataObject()
-            data.SetText("fitting:" + str(self.mods[row].modPosition))
+            dataStr = "fitting:" + str(self.mods[row].modPosition)
+            data.SetText(dataStr)
 
             dropSource = wx.DropSource(self)
             dropSource.SetData(data)
+            DragDropHelper.data = dataStr
             dropSource.DoDragDrop()
 
     def getSelectedMods(self):
@@ -283,8 +288,10 @@ class FittingView(d.Display):
         We also refresh the fit of the new current page in case
         delete fit caused change in stats (projected)
         """
+        pyfalog.debug("FittingView::fitRemoved")
         active_fit_id = self.getActiveFit()
         if event.fitID == active_fit_id:
+            pyfalog.debug("    Deleted fit is currently active")
             self.parent.DeletePage(self.parent.GetPageIndex(self))
 
         try:
