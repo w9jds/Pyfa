@@ -142,7 +142,7 @@ class PFGeneralPref(PreferenceView):
         self.stFontText.Wrap(-1)
         fontSizeSizer.Add(self.stFontText, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.chFontSize = wx.Choice(panel, choices=['6', '7', '8', '9', '10', '11', '12'])
+        self.chFontSize = wx.Choice(panel, choices=['6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16'])
         fontSizeSizer.Add(self.chFontSize, 1, wx.ALL | wx.EXPAND, 5)
 
         self.stFontText = wx.StaticText(panel, wx.ID_ANY, u"Type:", wx.DefaultPosition, wx.DefaultSize, 0)
