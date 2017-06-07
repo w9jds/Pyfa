@@ -26,7 +26,7 @@ from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
 from service.damagePattern import DamagePattern, ImportError
 from logbook import Logger
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts
 from service.settings import GeneralSettings
 
 pyfalog = Logger(__name__)

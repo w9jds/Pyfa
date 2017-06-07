@@ -35,12 +35,10 @@ from gui.bitmapLoader import BitmapLoader
 import gui.builtinViews.emptyView
 from logbook import Logger
 from gui.chromeTabs import EVT_NOTEBOOK_PAGE_CHANGED
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts, DragDropHelper, Frame
 
 from service.fit import Fit
 from service.market import Market
-
-from gui.utils.staticHelpers import DragDropHelper
 
 import gui.globalEvents as GE
 
@@ -667,7 +665,8 @@ class FittingView(d.Display):
             slotMap[slot] = fit.getSlotsFree(slot) < 0
 
         for i, mod in enumerate(self.mods):
-            self.SetItemBackgroundColour(i, self.GetBackgroundColour())
+            # self.SetItemBackgroundColour(i, self.GetBackgroundColour())
+            self.SetItemBackgroundColour(i, Frame.getBackgroundColor())
 
             #  only consider changing color if we're dealing with a Module
             if isinstance(mod, Module):
@@ -811,11 +810,11 @@ class FittingView(d.Display):
 
         mdc.SelectObject(mbmp)
 
-        mdc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)))
+        mdc.SetBackground(wx.Brush(Frame.getBackgroundColor()))
         mdc.Clear()
 
         mdc.SetFont(Fonts.getFont("font_standard"))
-        mdc.SetTextForeground(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT))
+        mdc.SetTextForeground(Frame.getForegroundColor())
 
         cx = padding
         for i, col in enumerate(self.activeColumns):

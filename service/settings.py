@@ -373,6 +373,8 @@ class GeneralSettings(object):
             "fontType": 'DEFAULT',
             "fontStyle": 'NORMAL',
             "fontWeight": 'NORMAL',
+            "colorBackground": "SYS_COLOUR_FRAMEBK",
+            "colorForeground": "SYS_COLOUR_WINDOWTEXT",
             "showAllMarketGroups": False,
         }
 

@@ -23,7 +23,7 @@ from gui.preferenceView import PreferenceView
 from gui.bitmapLoader import BitmapLoader
 from service.settings import SettingsProvider, GeneralSettings
 from logbook import Logger
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts
 
 pyfalog = Logger(__name__)
 

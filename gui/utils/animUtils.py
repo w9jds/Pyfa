@@ -1,6 +1,7 @@
 # noinspection PyPackageRequirements
 import wx
 import gui.utils.colorUtils as colorUtils
+from gui.utils.helpers_wxPython import Frame
 
 
 class LoadAnimation(wx.Window):
@@ -53,11 +54,10 @@ class LoadAnimation(wx.Window):
     def OnPaint(self, event):
         rect = self.GetClientRect()
         dc = wx.BufferedPaintDC(self)
-        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
-        dc.SetBackground(wx.Brush(windowColor))
+        dc.SetBackground(wx.Brush(Frame.getBackgroundColor()))
         dc.Clear()
 
-        barColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)
+        barColor = Frame.getForegroundColor()
         shadeColor = colorUtils.GetSuitableColor(barColor, 0.75)
 
         barWidth = rect.width / self.bars
@@ -81,8 +81,7 @@ class LoadAnimation(wx.Window):
             dc.DrawRectangle(x, y, barWidth, bh)
             x += barWidth
 
-        textColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)
-        dc.SetTextForeground(textColor)
+        dc.SetTextForeground(Frame.getForegroundColor())
         dc.DrawLabel(self.label, rect, wx.ALIGN_CENTER)
 
 

@@ -28,6 +28,7 @@ from gui.chromeTabs import EVT_NOTEBOOK_PAGE_CHANGED
 from eos.saveddata.module import Hardpoint
 
 from gui.utils.numberFormatter import formatAmount
+from gui.utils.helpers_wxPython import Frame
 
 
 class ResourcesViewFull(StatsView):
@@ -291,7 +292,7 @@ class ResourcesViewFull(StatsView):
                 label.SetToolTip(wx.ToolTip("%.1f" % value))
 
         colorWarn = wx.Colour(204, 51, 51)
-        colorNormal = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)
+        colorNormal = Frame.getForegroundColor()
 
         if usedTurretHardpoints > totalTurretHardpoints:
             colorT = colorWarn

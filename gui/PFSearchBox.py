@@ -2,6 +2,7 @@
 import wx
 import gui.utils.colorUtils as colorUtils
 import gui.utils.drawUtils as drawUtils
+from gui.utils.helpers_wxPython import Frame
 
 SearchButton, EVT_SEARCH_BTN = wx.lib.newevent.NewEvent()
 CancelButton, EVT_CANCEL_BTN = wx.lib.newevent.NewEvent()
@@ -226,7 +227,7 @@ class PFSearchBox(wx.Window):
     def OnPaint(self, event):
         dc = wx.BufferedPaintDC(self)
 
-        bkColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
+        bkColor = Frame.getBackgroundColor()
         sepColor = colorUtils.GetSuitableColor(bkColor, 0.2)
         rect = self.GetRect()
 

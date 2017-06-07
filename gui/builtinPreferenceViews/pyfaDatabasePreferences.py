@@ -10,7 +10,7 @@ from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
 from service.settings import DatabaseSettings
 from service.esi import esiItems, esiDogma
 import sys
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts
 
 import logging
 

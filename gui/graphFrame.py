@@ -30,7 +30,7 @@ import gui.globalEvents as GE
 from gui.graph import Graph
 from gui.bitmapLoader import BitmapLoader
 import traceback
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts, Frame
 from service.settings import GeneralSettings
 
 pyfalog = Logger(__name__)
@@ -141,7 +141,7 @@ class GraphFrame(wx.Frame):
         self.figure.set_edgecolor(clr)
 
         self.canvas = Canvas(self, -1, self.figure)
-        self.canvas.SetBackgroundColour(wx.Colour(*rgbtuple))
+        self.canvas.SetBackgroundColour(Frame.getBackgroundColor())
 
         self.subplot = self.figure.add_subplot(111)
         self.subplot.grid(True)

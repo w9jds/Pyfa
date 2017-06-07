@@ -48,7 +48,7 @@ import gui.mainFrame
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from gui.contextMenu import ContextMenu
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts, Frame
 
 
 class ItemStatsDialog(wx.Dialog):
@@ -260,8 +260,8 @@ class ItemDescription(wx.Panel):
         self.SetFont(Fonts.getFont("font_standard"))
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(mainSizer)
-        bgcolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
-        fgcolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)
+        bgcolor = Frame.getBackgroundColor()
+        fgcolor = Frame.getForegroundColor()
 
         self.description = wx.html.HtmlWindow(self)
 

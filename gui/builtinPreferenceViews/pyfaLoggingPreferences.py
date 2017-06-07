@@ -4,7 +4,7 @@ from gui.preferenceView import PreferenceView
 from gui.bitmapLoader import BitmapLoader
 import config
 from logbook import Logger
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts
 
 pyfalog = Logger(__name__)
 

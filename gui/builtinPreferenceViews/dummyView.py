@@ -20,7 +20,7 @@
 # noinspection PyPackageRequirements
 import wx
 from gui.preferenceView import PreferenceView
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts
 
 
 class DummyView(PreferenceView):

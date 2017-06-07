@@ -27,9 +27,8 @@ from gui.cachingImageList import CachingImageList
 from gui.contextMenu import ContextMenu
 from gui.bitmapLoader import BitmapLoader
 from logbook import Logger
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts, DragDropHelper
 from service.settings import GeneralSettings
-from utils.staticHelpers import DragDropHelper
 
 pyfalog = Logger(__name__)
 

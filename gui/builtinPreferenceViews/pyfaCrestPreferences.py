@@ -7,7 +7,7 @@ from gui.bitmapLoader import BitmapLoader
 import gui.mainFrame
 
 from service.settings import CRESTSettings
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts
 
 # noinspection PyPackageRequirements
 from wx.lib.intctrl import IntCtrl

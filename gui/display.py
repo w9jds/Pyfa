@@ -23,7 +23,7 @@ import wx
 import gui.mainFrame
 from gui.viewColumn import ViewColumn
 from gui.cachingImageList import CachingImageList
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts
 
 
 class Display(wx.ListCtrl):

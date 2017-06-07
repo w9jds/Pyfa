@@ -19,7 +19,7 @@
 
 import platform
 import sys
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts, Frame
 from service.settings import GeneralSettings
 
 # noinspection PyPackageRequirements
@@ -63,15 +63,15 @@ class ErrorFrame(wx.Frame):
         wx.Frame.__init__(self, None, id=wx.ID_ANY, title="pyfa error", pos=wx.DefaultPosition, size=wx.Size(window_x, window_y),
                           style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER | wx.STAY_ON_TOP)
 
+
         desc = "pyfa has experienced an unexpected issue. Below is a message that contains crucial\n" \
                "information about how this was triggered. Please contact the developers with the\n" \
                "information provided through the EVE Online forums or file a GitHub issue."
 
         self.SetFont(Fonts.getFont("font_standard"))
         self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
-
-        if 'wxMSW' in wx.PlatformInfo:
-            self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
+        self.SetBackgroundColour(Frame.getBackgroundColor())
+        self.SetForegroundColour(Frame.getForegroundColor())
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         headSizer = wx.BoxSizer(wx.HORIZONTAL)

@@ -24,7 +24,7 @@ from gui.bitmapLoader import BitmapLoader
 from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
 from logbook import Logger
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts
 
 pyfalog = Logger(__name__)
 

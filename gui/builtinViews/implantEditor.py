@@ -8,6 +8,7 @@ import gui.display as d
 import gui.PFSearchBox as SBox
 from gui.bitmapLoader import BitmapLoader
 from gui.marketBrowser import SearchBox
+from gui.utils.helpers_wxPython import Frame
 
 
 class BaseImplantEditorView(wx.Panel):
@@ -23,7 +24,8 @@ class BaseImplantEditorView(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
                           style=wx.TAB_TRAVERSAL)
-        self.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
+        # TODO: Doesn't seem to do anything, remove?
+        self.SetBackgroundColour(Frame.getBackgroundColor())
 
         pmainSizer = wx.BoxSizer(wx.HORIZONTAL)
 

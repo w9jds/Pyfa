@@ -22,7 +22,7 @@ import wx
 # noinspection PyPackageRequirements
 import dateutil.parser
 from service.settings import UpdateSettings as svc_UpdateSettings
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts
 
 
 class UpdateDialog(wx.Dialog):

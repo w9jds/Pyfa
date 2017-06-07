@@ -20,7 +20,7 @@ import gui.globalEvents as GE
 import gui.PFSearchBox as SBox
 from gui.marketBrowser import SearchBox
 from gui.bitmapLoader import BitmapLoader
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts
 from service.settings import GeneralSettings
 
 pyfalog = Logger(__name__)

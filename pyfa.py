@@ -384,6 +384,7 @@ if __name__ == "__main__":
                 import requests
                 config.requestsVersion = requests.__version__
             except ImportError:
+                requests = None
                 raise PreCheckException("Cannot import requests. You can download requests from https://pypi.python.org/pypi/requests.")
 
         import eos.db

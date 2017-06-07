@@ -10,7 +10,7 @@ import gui.globalEvents as GE
 from service.settings import SettingsProvider, GeneralSettings
 from service.fit import Fit
 from service.price import Price
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts
 
 
 class PFGeneralPref(PreferenceView):
@@ -168,6 +168,30 @@ class PFGeneralPref(PreferenceView):
 
         mainSizer.Add(fontSizeSizer, 0, wx.ALL | wx.EXPAND, 0)
 
+        # Background/Text Colors
+        bgColorSizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.stBackgroundColor = wx.StaticText(panel, wx.ID_ANY, u"Background Color:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stBackgroundColor.Wrap(-1)
+        bgColorSizer.Add(self.stBackgroundColor, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+
+        self.chBackgroundColor = wx.Choice(panel, choices=['BLACK', 'BLUE', 'CYAN', 'GREEN', 'YELLOW', 'LIGHT_GREY', 'RED', 'WHITE', 'SYS_COLOUR_SCROLLBAR', 'SYS_COLOUR_BACKGROUND', 'SYS_COLOUR_ACTIVECAPTION', 'SYS_COLOUR_INACTIVECAPTION', 'SYS_COLOUR_MENU', 'SYS_COLOUR_WINDOW', 'SYS_COLOUR_WINDOWFRAME', 'SYS_COLOUR_MENUTEXT', 'SYS_COLOUR_WINDOWTEXT', 'SYS_COLOUR_CAPTIONTEXT', 'SYS_COLOUR_ACTIVEBORDER', 'SYS_COLOUR_INACTIVEBORDER', 'SYS_COLOUR_APPWORKSPACE', 'SYS_COLOUR_HIGHLIGHT', 'SYS_COLOUR_HIGHLIGHTTEXT', 'SYS_COLOUR_BTNFACE', 'SYS_COLOUR_BTNSHADOW', 'SYS_COLOUR_GRAYTEXT', 'SYS_COLOUR_BTNTEXT', 'SYS_COLOUR_INACTIVECAPTIONTEXT', 'SYS_COLOUR_BTNHIGHLIGHT', 'SYS_COLOUR_3DDKSHADOW', 'SYS_COLOUR_3DLIGHT', 'SYS_COLOUR_INFOTEXT', 'SYS_COLOUR_INFOBK', 'SYS_COLOUR_LISTBOX', 'SYS_COLOUR_HOTLIGHT', 'SYS_COLOUR_GRADIENTACTIVECAPTION', 'SYS_COLOUR_GRADIENTINACTIVECAPTION', 'SYS_COLOUR_MENUHILIGHT', 'SYS_COLOUR_MENUBAR', 'SYS_COLOUR_LISTBOXTEXT', 'SYS_COLOUR_LISTBOXHIGHLIGHTTEXT', 'SYS_COLOUR_MAX', 'SYS_COLOUR_DESKTOP', 'SYS_COLOUR_3DFACE', 'SYS_COLOUR_3DSHADOW', 'SYS_COLOUR_BTNHILIGHT', 'SYS_COLOUR_3DHIGHLIGHT', 'SYS_COLOUR_3DHILIGHT', 'SYS_COLOUR_FRAMEBK'])
+        bgColorSizer.Add(self.chBackgroundColor, 1, wx.ALL | wx.EXPAND, 5)
+
+        mainSizer.Add(bgColorSizer, 0, wx.ALL | wx.EXPAND, 0)
+
+        # Text Colors
+        txtColorSizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.stBackgroundColor = wx.StaticText(panel, wx.ID_ANY, u"Text Color:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stBackgroundColor.Wrap(-1)
+        txtColorSizer.Add(self.stBackgroundColor, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+
+        self.chForegroundColor = wx.Choice(panel, choices=['BLACK', 'BLUE', 'CYAN', 'GREEN', 'YELLOW', 'LIGHT_GREY', 'RED', 'WHITE', 'SYS_COLOUR_SCROLLBAR', 'SYS_COLOUR_BACKGROUND', 'SYS_COLOUR_ACTIVECAPTION', 'SYS_COLOUR_INACTIVECAPTION', 'SYS_COLOUR_MENU', 'SYS_COLOUR_WINDOW', 'SYS_COLOUR_WINDOWFRAME', 'SYS_COLOUR_MENUTEXT', 'SYS_COLOUR_WINDOWTEXT', 'SYS_COLOUR_CAPTIONTEXT', 'SYS_COLOUR_ACTIVEBORDER', 'SYS_COLOUR_INACTIVEBORDER', 'SYS_COLOUR_APPWORKSPACE', 'SYS_COLOUR_HIGHLIGHT', 'SYS_COLOUR_HIGHLIGHTTEXT', 'SYS_COLOUR_BTNFACE', 'SYS_COLOUR_BTNSHADOW', 'SYS_COLOUR_GRAYTEXT', 'SYS_COLOUR_BTNTEXT', 'SYS_COLOUR_INACTIVECAPTIONTEXT', 'SYS_COLOUR_BTNHIGHLIGHT', 'SYS_COLOUR_3DDKSHADOW', 'SYS_COLOUR_3DLIGHT', 'SYS_COLOUR_INFOTEXT', 'SYS_COLOUR_INFOBK', 'SYS_COLOUR_LISTBOX', 'SYS_COLOUR_HOTLIGHT', 'SYS_COLOUR_GRADIENTACTIVECAPTION', 'SYS_COLOUR_GRADIENTINACTIVECAPTION', 'SYS_COLOUR_MENUHILIGHT', 'SYS_COLOUR_MENUBAR', 'SYS_COLOUR_LISTBOXTEXT', 'SYS_COLOUR_LISTBOXHIGHLIGHTTEXT', 'SYS_COLOUR_MAX', 'SYS_COLOUR_DESKTOP', 'SYS_COLOUR_3DFACE', 'SYS_COLOUR_3DSHADOW', 'SYS_COLOUR_BTNHILIGHT', 'SYS_COLOUR_3DHIGHLIGHT', 'SYS_COLOUR_3DHILIGHT', 'SYS_COLOUR_FRAMEBK'])
+        txtColorSizer.Add(self.chForegroundColor, 1, wx.ALL | wx.EXPAND, 5)
+
+        mainSizer.Add(txtColorSizer, 0, wx.ALL | wx.EXPAND, 0)
+
         self.m_staticline = wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
         mainSizer.Add(self.m_staticline, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
@@ -201,6 +225,8 @@ class PFGeneralPref(PreferenceView):
         self.chFontType.SetStringSelection(self.generalSettings.get("fontType"))
         self.chFontStyle.SetStringSelection(self.generalSettings.get("fontStyle"))
         self.chFontWeight.SetStringSelection(self.generalSettings.get("fontWeight"))
+        self.chBackgroundColor.SetStringSelection(self.generalSettings.get("colorBackground"))
+        self.chForegroundColor.SetStringSelection(self.generalSettings.get("colorForeground"))
 
         self.cbGlobalChar.Bind(wx.EVT_CHECKBOX, self.OnWindowLeave)
         self.cbGlobalDmgPattern.Bind(wx.EVT_CHECKBOX, self.OnWindowLeave)
@@ -224,6 +250,8 @@ class PFGeneralPref(PreferenceView):
         self.chFontType.Bind(wx.lib.intctrl.EVT_INT, self.OnWindowLeave)
         self.chFontStyle.Bind(wx.lib.intctrl.EVT_INT, self.OnWindowLeave)
         self.chFontWeight.Bind(wx.lib.intctrl.EVT_INT, self.OnWindowLeave)
+        self.chBackgroundColor.Bind(wx.lib.intctrl.EVT_INT, self.OnWindowLeave)
+        self.chForegroundColor.Bind(wx.lib.intctrl.EVT_INT, self.OnWindowLeave)
         self.btnApply.Bind(wx.EVT_BUTTON, self.OnWindowLeave)
 
         self.cbRackLabels.Enable(self.sFit.serviceFittingOptions["rackSlots"] or False)
@@ -261,6 +289,10 @@ class PFGeneralPref(PreferenceView):
         self.generalSettings.set('fontType', self.chFontType.GetString(self.chFontType.GetSelection()))
         self.generalSettings.set('fontStyle', self.chFontStyle.GetString(self.chFontStyle.GetSelection()))
         self.generalSettings.set('fontWeight', self.chFontWeight.GetString(self.chFontWeight.GetSelection()))
+
+        # Background & foreground color settings
+        self.generalSettings.set('colorBackground', self.chBackgroundColor.GetString(self.chBackgroundColor.GetSelection()))
+        self.generalSettings.set('colorForeground', self.chForegroundColor.GetString(self.chForegroundColor.GetSelection()))
 
         fitID = self.mainFrame.getActiveFit()
         if fitID:

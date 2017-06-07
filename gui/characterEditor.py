@@ -35,7 +35,7 @@ from service.character import Character
 from service.network import AuthenticationError, TimeoutError
 from service.market import Market
 from logbook import Logger
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts, Frame
 
 pyfalog = Logger(__name__)
 
@@ -138,7 +138,7 @@ class CharacterEditor(wx.Frame):
         # self.disableWin = wx.WindowDisabler(self)
         sFit = Fit.getInstance()
 
-        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
+        self.SetBackgroundColour(Frame.getBackgroundColor())
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -271,7 +271,7 @@ class SkillTreeView(wx.Panel):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
                           style=wx.TAB_TRAVERSAL)
         self.charEditor = self.Parent.Parent  # first parent is Notebook, second is Character Editor
-        self.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
+        self.SetBackgroundColour(Frame.getBackgroundColor())
         self.SetFont(Fonts.getFont("font_standard"))
 
         pmainSizer = wx.BoxSizer(wx.VERTICAL)
@@ -608,7 +608,7 @@ class APIView(wx.Panel):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.Size(500, 300),
                           style=wx.TAB_TRAVERSAL)
         self.charEditor = self.Parent.Parent  # first parent is Notebook, second is Character Editor
-        self.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
+        self.SetBackgroundColour(Frame.getBackgroundColor())
 
         self.apiUrlCreatePredefined = u"https://community.eveonline.com/support/api-key/CreatePredefined?accessMask=8"
         self.apiUrlKeyList = u"https://community.eveonline.com/support/api-key/"

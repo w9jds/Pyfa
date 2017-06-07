@@ -75,6 +75,7 @@ from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
 from eos.db.saveddata.queries import getFit as db_getFit
 from service.port import Port, IPortUser
 from service.settings import HTMLExportSettings
+from gui.utils.helpers_wxPython import Frame
 
 from time import gmtime, strftime
 
@@ -156,9 +157,7 @@ class MainFrame(wx.Frame, IPortUser):
 
         self.disableOverrideEditor = disableOverrideEditor
 
-        # Fix for msw (have the frame background color match panel color
-        if 'wxMSW' in wx.PlatformInfo:
-            self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
+        self.SetBackgroundColour(Frame.getBackgroundColor())
 
         # Load and set the icon for pyfa main window
         i = wx.IconFromBitmap(BitmapLoader.getBitmap("pyfa", "gui"))

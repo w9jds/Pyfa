@@ -26,7 +26,7 @@ import gui.utils.drawUtils as drawUtils
 from gui.bitmapLoader import BitmapLoader
 from logbook import Logger
 from service.fit import Fit
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts, Frame
 
 pyfalog = Logger(__name__)
 
@@ -120,7 +120,8 @@ class PFNotebook(wx.Panel):
 
         contentSizer = wx.BoxSizer(wx.VERTICAL)
         self.pageContainer = wx.Panel(self, style=style)
-        self.pageContainer.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
+        self.pageContainer.SetBackgroundColour(Frame.getBackgroundColor())
+        self.pageContainer.SetForegroundColour(Frame.getForegroundColor())
         contentSizer.Add(self.pageContainer, 1, wx.EXPAND, 5)
 
         mainSizer.Add(tabsSizer, 0, wx.EXPAND, 5)

@@ -7,7 +7,7 @@ from service.fit import Fit
 from gui.bitmapLoader import BitmapLoader
 from gui.preferenceView import PreferenceView
 from service.settings import EOSSettings
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts
 
 logger = logging.getLogger(__name__)
 

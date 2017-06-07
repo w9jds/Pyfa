@@ -29,7 +29,7 @@ from gui.statsView import StatsView
 from gui.contextMenu import ContextMenu
 from gui.pyfatogglepanel import TogglePanel
 from logbook import Logger
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts
 
 pyfalog = Logger(__name__)
 

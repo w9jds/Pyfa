@@ -7,7 +7,7 @@ from gui.bitmapLoader import BitmapLoader
 import gui.mainFrame
 from service.settings import NetworkSettings
 from service.network import Network
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts
 
 
 class PFNetworkPref(PreferenceView):
