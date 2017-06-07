@@ -19,11 +19,12 @@
 
 import platform
 import sys
-from gui.utils.helpers_wxPython import Fonts, Frame
-from service.settings import GeneralSettings
 
 # noinspection PyPackageRequirements
 import wx
+
+from gui.utils.helpers_wxPython import Fonts, Frame
+from service.settings import GeneralSettings
 
 try:
     import config
@@ -62,7 +63,6 @@ class ErrorFrame(wx.Frame):
 
         wx.Frame.__init__(self, None, id=wx.ID_ANY, title="pyfa error", pos=wx.DefaultPosition, size=wx.Size(window_x, window_y),
                           style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER | wx.STAY_ON_TOP)
-
 
         desc = "pyfa has experienced an unexpected issue. Below is a message that contains crucial\n" \
                "information about how this was triggered. Please contact the developers with the\n" \

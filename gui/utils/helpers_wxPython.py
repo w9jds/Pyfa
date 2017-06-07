@@ -1,3 +1,4 @@
+# noinspection PyPackageRequirements
 import wx
 
 from service.settings import GeneralSettings
@@ -55,79 +56,108 @@ class Fonts(object):
     general_settings = GeneralSettings.getInstance()
 
     font_standard = (
-            general_settings.get('fontSize'),
-            getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
-            getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
-            getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
+        general_settings.get('fontSize'),
+        getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
+        getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
+        getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
     )
 
     font_title_plus_one = (
-            general_settings.get('fontSize') + 1,
-            getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
-            getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
-            wx.FONTWEIGHT_BOLD,
+        general_settings.get('fontSize') + 1,
+        getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
+        getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
+        wx.FONTWEIGHT_BOLD,
     )
 
     font_title_plus_two = (
-            general_settings.get('fontSize') + 2,
-            getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
-            getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
-            wx.FONTWEIGHT_BOLD,
+        general_settings.get('fontSize') + 2,
+        getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
+        getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
+        wx.FONTWEIGHT_BOLD,
     )
 
     font_minus_one = (
-            general_settings.get('fontSize') - 1,
-            getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
-            getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
-            getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
+        general_settings.get('fontSize') - 1,
+        getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
+        getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
+        getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
     )
 
     font_plus_one = (
-            general_settings.get('fontSize') + 1,
-            getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
-            getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
-            getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
+        general_settings.get('fontSize') + 1,
+        getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
+        getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
+        getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
     )
 
     font_standard_bold = (
-            general_settings.get('fontSize'),
-            getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
-            getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
-            wx.FONTWEIGHT_BOLD,
+        general_settings.get('fontSize'),
+        getattr(wx, 'FONTFAMILY_' + general_settings.get('fontType'), wx.FONTFAMILY_DEFAULT),
+        getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
+        wx.FONTWEIGHT_BOLD,
     )
 
     font_console = (
-            general_settings.get('fontSize'),
-            wx.FONTFAMILY_TELETYPE,
-            getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
-            getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
+        general_settings.get('fontSize'),
+        wx.FONTFAMILY_TELETYPE,
+        getattr(wx, 'FONTSTYLE_' + general_settings.get('fontStyle'), wx.FONTSTYLE_NORMAL),
+        getattr(wx, 'FONTWEIGHT_' + general_settings.get('fontWeight'), wx.FONTWEIGHT_NORMAL),
     )
 
 
 class Frame(object):
     @staticmethod
-    def getBackgroundColor():
-        general_settings = GeneralSettings.getInstance()
+    def ColorParser(color, default):
+        # Check for valid color
+        if color not in [
+            'BLACK', 'BLUE', 'CYAN', 'GREEN', 'YELLOW', 'LIGHT_GREY', 'RED', 'WHITE', 'SYS_COLOUR_SCROLLBAR', 'SYS_COLOUR_BACKGROUND', 'SYS_COLOUR_ACTIVECAPTION',
+            'SYS_COLOUR_INACTIVECAPTION', 'SYS_COLOUR_MENU', 'SYS_COLOUR_WINDOW', 'SYS_COLOUR_WINDOWFRAME', 'SYS_COLOUR_MENUTEXT', 'SYS_COLOUR_WINDOWTEXT',
+            'SYS_COLOUR_CAPTIONTEXT', 'SYS_COLOUR_ACTIVEBORDER', 'SYS_COLOUR_INACTIVEBORDER', 'SYS_COLOUR_APPWORKSPACE', 'SYS_COLOUR_HIGHLIGHT',
+            'SYS_COLOUR_HIGHLIGHTTEXT', 'SYS_COLOUR_BTNFACE', 'SYS_COLOUR_BTNSHADOW', 'SYS_COLOUR_GRAYTEXT', 'SYS_COLOUR_BTNTEXT', 'SYS_COLOUR_INACTIVECAPTIONTEXT',
+            'SYS_COLOUR_BTNHIGHLIGHT', 'SYS_COLOUR_3DDKSHADOW', 'SYS_COLOUR_3DLIGHT', 'SYS_COLOUR_INFOTEXT', 'SYS_COLOUR_INFOBK', 'SYS_COLOUR_LISTBOX',
+            'SYS_COLOUR_HOTLIGHT', 'SYS_COLOUR_GRADIENTACTIVECAPTION', 'SYS_COLOUR_GRADIENTINACTIVECAPTION', 'SYS_COLOUR_MENUHILIGHT', 'SYS_COLOUR_MENUBAR',
+            'SYS_COLOUR_LISTBOXTEXT', 'SYS_COLOUR_LISTBOXHIGHLIGHTTEXT', 'SYS_COLOUR_MAX', 'SYS_COLOUR_DESKTOP', 'SYS_COLOUR_3DFACE', 'SYS_COLOUR_3DSHADOW',
+            'SYS_COLOUR_BTNHILIGHT', 'SYS_COLOUR_3DHIGHLIGHT', 'SYS_COLOUR_3DHILIGHT', 'SYS_COLOUR_FRAMEBK'
+        ]:
+            color = 'BLACK'
 
-        color = general_settings.get('colorBackground')
+        # Check for valid default colors
+        # We use a limited list to make it simpler to handle compatibility
+        if default not in ['BLACK', 'BLUE', 'CYAN', 'GREEN', 'YELLOW', 'LIGHT_GREY', 'RED', 'WHITE']:
+            default = 'BLACK'
 
         if "SYS_COLOUR_" in color:
-            color = wx.SystemSettings.GetColour(getattr(wx, color, wx.SYS_COLOUR_FRAMEBK))
+            color = wx.SystemSettings.GetColour(getattr(wx, color, getattr(wx, default)))
         else:
-            color = getattr(wx, color, wx.SYS_COLOUR_FRAMEBK)
+            color = getattr(wx, color, getattr(wx, default))
+
+        return color
+
+    @staticmethod
+    def getBackgroundColor():
+        general_settings = GeneralSettings.getInstance()
+        color = Frame.ColorParser(general_settings.get('colorBackground'), 'LIGHT_GREY')
 
         return color
 
     @staticmethod
     def getForegroundColor():
         general_settings = GeneralSettings.getInstance()
+        color = Frame.ColorParser(general_settings.get('colorForeground'), 'BLACK')
 
-        color = general_settings.get('colorForeground')
+        return color
 
-        if "SYS_COLOUR_" in color:
-            color = wx.SystemSettings.GetColour(getattr(wx, color, wx.SYS_COLOUR_WINDOWTEXT))
-        else:
-            color = getattr(wx, color, wx.SYS_COLOUR_WINDOWTEXT)
+    @staticmethod
+    def getWarningColor():
+        general_settings = GeneralSettings.getInstance()
+        color = Frame.ColorParser(general_settings.get('colorWarning'), 'RED')
+
+        return color
+
+    @staticmethod
+    def getHighlightColor():
+        general_settings = GeneralSettings.getInstance()
+        color = Frame.ColorParser(general_settings.get('colorHighlight'), 'YELLOW')
 
         return color
 

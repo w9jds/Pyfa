@@ -17,70 +17,61 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-import sys
 import os.path
-from logbook import Logger
+import sys
+import threading
+import time
+import webbrowser
+from codecs import open
+from time import gmtime, strftime
 
 import sqlalchemy
 # noinspection PyPackageRequirements
 import wx
+from logbook import Logger
 # noinspection PyPackageRequirements
 from wx._core import PyDeadObjectError
 # noinspection PyPackageRequirements
-from wx.lib.wordwrap import wordwrap
-# noinspection PyPackageRequirements
 from wx.lib.inspection import InspectionTool
-import time
-
-from codecs import open
+# noinspection PyPackageRequirements
+from wx.lib.wordwrap import wordwrap
 
 import config
-
-from eos.config import gamedata_version
-
 import gui.aboutData
-from gui.chromeTabs import PFNotebook
 import gui.globalEvents as GE
-
-from gui.bitmapLoader import BitmapLoader
-from gui.mainMenuBar import MainMenuBar
-from gui.additionsPane import AdditionsPane
-from gui.marketBrowser import MarketBrowser, ItemSelected
-from gui.multiSwitch import MultiSwitch
-from gui.statsPane import StatsPane
-from gui.shipBrowser import ShipBrowser, FitSelected, ImportSelected, Stage3Selected
-from gui.recentShipBrowser import RecentShipBrowser
-from gui.characterEditor import CharacterEditor, SaveCharacterAs
-from gui.characterSelection import CharacterSelection
-from gui.patternEditor import DmgPatternEditorDlg
-from gui.resistsEditor import ResistsEditorDlg
-from gui.setEditor import ImplantSetEditorDlg
-from gui.preferenceDialog import PreferenceDialog
-from gui.graphFrame import GraphFrame
-from gui.copySelectDialog import CopySelectDialog
-from gui.utils.clipboard import toClipboard, fromClipboard
-from gui.updateDialog import UpdateDialog
-# noinspection PyUnresolvedReferences
-from gui.builtinViews import emptyView, entityEditor, fittingView, implantEditor  # noqa: F401
-from gui import graphFrame
-
-from service.settings import SettingsProvider
-from service.fit import Fit
-from service.character import Character
-from service.update import Update
-
-# import this to access override setting
-from eos.modifiedAttributeDict import ModifiedAttributeDict
+from eos.config import gamedata_version
 from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
 from eos.db.saveddata.queries import getFit as db_getFit
-from service.port import Port, IPortUser
-from service.settings import HTMLExportSettings
+# import this to access override setting
+from eos.modifiedAttributeDict import ModifiedAttributeDict
+from gui import graphFrame
+from gui.additionsPane import AdditionsPane
+from gui.bitmapLoader import BitmapLoader
+# noinspection PyUnresolvedReferences
+from gui.builtinViews import emptyView, entityEditor, fittingView, implantEditor  # noqa: F401
+from gui.characterEditor import CharacterEditor, SaveCharacterAs
+from gui.characterSelection import CharacterSelection
+from gui.chromeTabs import PFNotebook
+from gui.copySelectDialog import CopySelectDialog
+from gui.graphFrame import GraphFrame
+from gui.mainMenuBar import MainMenuBar
+from gui.marketBrowser import ItemSelected, MarketBrowser
+from gui.multiSwitch import MultiSwitch
+from gui.patternEditor import DmgPatternEditorDlg
+from gui.preferenceDialog import PreferenceDialog
+from gui.recentShipBrowser import RecentShipBrowser
+from gui.resistsEditor import ResistsEditorDlg
+from gui.setEditor import ImplantSetEditorDlg
+from gui.shipBrowser import FitSelected, ImportSelected, ShipBrowser, Stage3Selected
+from gui.statsPane import StatsPane
+from gui.updateDialog import UpdateDialog
+from gui.utils.clipboard import fromClipboard, toClipboard
 from gui.utils.helpers_wxPython import Frame
-
-from time import gmtime, strftime
-
-import threading
-import webbrowser
+from service.character import Character
+from service.fit import Fit
+from service.port import IPortUser, Port
+from service.settings import HTMLExportSettings, SettingsProvider
+from service.update import Update
 
 if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
     from service.crest import Crest

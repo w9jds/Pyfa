@@ -5,23 +5,23 @@ import time
 
 # noinspection PyPackageRequirements
 import wx
+from logbook import Logger
 # noinspection PyPackageRequirements
 from wx.lib.buttons import GenBitmapButton
 
-from service.fit import Fit
-from service.market import Market
-import gui.mainFrame
 import gui.globalEvents as GE
+import gui.mainFrame
 import gui.sfBrowserItem as SFItem
+import gui.utils.animEffects as animEffects
+import gui.utils.animUtils as animUtils
 import gui.utils.colorUtils as colorUtils
 import gui.utils.drawUtils as drawUtils
-import gui.utils.animUtils as animUtils
-import gui.utils.animEffects as animEffects
 from gui.PFListPane import PFListPane
-from gui.contextMenu import ContextMenu
 from gui.bitmapLoader import BitmapLoader
-from logbook import Logger
+from gui.contextMenu import ContextMenu
 from gui.utils.helpers_wxPython import Fonts, Frame
+from service.fit import Fit
+from service.market import Market
 
 pyfalog = Logger(__name__)
 
@@ -751,9 +751,6 @@ class ShipItem(SFItem.SFBrowserItem):
         self.thoverw = wlabel
 
     def DrawItem(self, mdc):
-        # rect = self.GetRect()
-
-        windowColor = Frame.getBackgroundColor()
         textColor = Frame.getForegroundColor()
 
         mdc.SetTextForeground(textColor)
@@ -1244,7 +1241,6 @@ class FitItem(SFItem.SFBrowserItem):
     def DrawItem(self, mdc):
         rect = self.GetRect()
 
-        windowColor = Frame.getBackgroundColor()
         textColor = Frame.getForegroundColor()
 
         mdc.SetTextForeground(textColor)

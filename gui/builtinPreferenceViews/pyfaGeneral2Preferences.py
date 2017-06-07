@@ -1,16 +1,13 @@
 # noinspection PyPackageRequirements
 import wx
-from wx.lib.intctrl import IntCtrl
 
-from gui.preferenceView import PreferenceView
-from gui.bitmapLoader import BitmapLoader
-
-import gui.mainFrame
 import gui.globalEvents as GE
-from service.settings import SettingsProvider, GeneralSettings
-from service.fit import Fit
-from service.price import Price
+import gui.mainFrame
+from gui.bitmapLoader import BitmapLoader
+from gui.preferenceView import PreferenceView
 from gui.utils.helpers_wxPython import Fonts
+from service.fit import Fit
+from service.settings import GeneralSettings, SettingsProvider
 
 
 class PFGeneral2Pref(PreferenceView):
@@ -23,8 +20,6 @@ class PFGeneral2Pref(PreferenceView):
                                                                            {"enabled": False, "pyfaOpenFits": []})
         self.sFit = Fit.getInstance()
         self.generalSettings = GeneralSettings.getInstance()
-
-        helpCursor = wx.StockCursor(wx.CURSOR_QUESTION_ARROW)
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -77,29 +72,63 @@ class PFGeneral2Pref(PreferenceView):
 
         mainSizer.Add(fontSizeSizer, 0, wx.ALL | wx.EXPAND, 0)
 
-        # Background/Text Colors
+        # Background/ Colors
         bgColorSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.stBackgroundColor = wx.StaticText(panel, wx.ID_ANY, u"Background Color:", wx.DefaultPosition, wx.DefaultSize, 0)
-        self.stBackgroundColor.Wrap(-1)
-        bgColorSizer.Add(self.stBackgroundColor, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+        textString = wx.StaticText(panel, wx.ID_ANY, u"Background Color:", wx.DefaultPosition, wx.DefaultSize, 0)
+        textString.Wrap(-1)
+        bgColorSizer.Add(textString, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.chBackgroundColor = wx.Choice(panel, choices=['BLACK', 'BLUE', 'CYAN', 'GREEN', 'YELLOW', 'LIGHT_GREY', 'RED', 'WHITE', 'SYS_COLOUR_SCROLLBAR', 'SYS_COLOUR_BACKGROUND', 'SYS_COLOUR_ACTIVECAPTION', 'SYS_COLOUR_INACTIVECAPTION', 'SYS_COLOUR_MENU', 'SYS_COLOUR_WINDOW', 'SYS_COLOUR_WINDOWFRAME', 'SYS_COLOUR_MENUTEXT', 'SYS_COLOUR_WINDOWTEXT', 'SYS_COLOUR_CAPTIONTEXT', 'SYS_COLOUR_ACTIVEBORDER', 'SYS_COLOUR_INACTIVEBORDER', 'SYS_COLOUR_APPWORKSPACE', 'SYS_COLOUR_HIGHLIGHT', 'SYS_COLOUR_HIGHLIGHTTEXT', 'SYS_COLOUR_BTNFACE', 'SYS_COLOUR_BTNSHADOW', 'SYS_COLOUR_GRAYTEXT', 'SYS_COLOUR_BTNTEXT', 'SYS_COLOUR_INACTIVECAPTIONTEXT', 'SYS_COLOUR_BTNHIGHLIGHT', 'SYS_COLOUR_3DDKSHADOW', 'SYS_COLOUR_3DLIGHT', 'SYS_COLOUR_INFOTEXT', 'SYS_COLOUR_INFOBK', 'SYS_COLOUR_LISTBOX', 'SYS_COLOUR_HOTLIGHT', 'SYS_COLOUR_GRADIENTACTIVECAPTION', 'SYS_COLOUR_GRADIENTINACTIVECAPTION', 'SYS_COLOUR_MENUHILIGHT', 'SYS_COLOUR_MENUBAR', 'SYS_COLOUR_LISTBOXTEXT', 'SYS_COLOUR_LISTBOXHIGHLIGHTTEXT', 'SYS_COLOUR_MAX', 'SYS_COLOUR_DESKTOP', 'SYS_COLOUR_3DFACE', 'SYS_COLOUR_3DSHADOW', 'SYS_COLOUR_BTNHILIGHT', 'SYS_COLOUR_3DHIGHLIGHT', 'SYS_COLOUR_3DHILIGHT', 'SYS_COLOUR_FRAMEBK'])
+        self.colorChoices = [
+            'BLACK', 'BLUE', 'CYAN', 'GREEN', 'YELLOW', 'LIGHT_GREY', 'RED', 'WHITE', 'SYS_COLOUR_SCROLLBAR', 'SYS_COLOUR_BACKGROUND', 'SYS_COLOUR_ACTIVECAPTION',
+            'SYS_COLOUR_INACTIVECAPTION', 'SYS_COLOUR_MENU', 'SYS_COLOUR_WINDOW', 'SYS_COLOUR_WINDOWFRAME', 'SYS_COLOUR_MENUTEXT', 'SYS_COLOUR_WINDOWTEXT',
+            'SYS_COLOUR_CAPTIONTEXT', 'SYS_COLOUR_ACTIVEBORDER', 'SYS_COLOUR_INACTIVEBORDER', 'SYS_COLOUR_APPWORKSPACE', 'SYS_COLOUR_HIGHLIGHT',
+            'SYS_COLOUR_HIGHLIGHTTEXT', 'SYS_COLOUR_BTNFACE', 'SYS_COLOUR_BTNSHADOW', 'SYS_COLOUR_GRAYTEXT', 'SYS_COLOUR_BTNTEXT', 'SYS_COLOUR_INACTIVECAPTIONTEXT',
+            'SYS_COLOUR_BTNHIGHLIGHT', 'SYS_COLOUR_3DDKSHADOW', 'SYS_COLOUR_3DLIGHT', 'SYS_COLOUR_INFOTEXT', 'SYS_COLOUR_INFOBK', 'SYS_COLOUR_LISTBOX',
+            'SYS_COLOUR_HOTLIGHT', 'SYS_COLOUR_GRADIENTACTIVECAPTION', 'SYS_COLOUR_GRADIENTINACTIVECAPTION', 'SYS_COLOUR_MENUHILIGHT', 'SYS_COLOUR_MENUBAR',
+            'SYS_COLOUR_LISTBOXTEXT', 'SYS_COLOUR_LISTBOXHIGHLIGHTTEXT', 'SYS_COLOUR_MAX', 'SYS_COLOUR_DESKTOP', 'SYS_COLOUR_3DFACE', 'SYS_COLOUR_3DSHADOW',
+            'SYS_COLOUR_BTNHILIGHT', 'SYS_COLOUR_3DHIGHLIGHT', 'SYS_COLOUR_3DHILIGHT', 'SYS_COLOUR_FRAMEBK'
+        ]
+        self.chBackgroundColor = wx.Choice(panel, choices=self.colorChoices)
         bgColorSizer.Add(self.chBackgroundColor, 1, wx.ALL | wx.EXPAND, 5)
 
         mainSizer.Add(bgColorSizer, 0, wx.ALL | wx.EXPAND, 0)
 
-        # Text Colors
+        # Text Color
         txtColorSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.stBackgroundColor = wx.StaticText(panel, wx.ID_ANY, u"Text Color:", wx.DefaultPosition, wx.DefaultSize, 0)
-        self.stBackgroundColor.Wrap(-1)
-        txtColorSizer.Add(self.stBackgroundColor, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+        textString = wx.StaticText(panel, wx.ID_ANY, u"Text Color:", wx.DefaultPosition, wx.DefaultSize, 0)
+        textString.Wrap(-1)
+        txtColorSizer.Add(textString, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.chForegroundColor = wx.Choice(panel, choices=['BLACK', 'BLUE', 'CYAN', 'GREEN', 'YELLOW', 'LIGHT_GREY', 'RED', 'WHITE', 'SYS_COLOUR_SCROLLBAR', 'SYS_COLOUR_BACKGROUND', 'SYS_COLOUR_ACTIVECAPTION', 'SYS_COLOUR_INACTIVECAPTION', 'SYS_COLOUR_MENU', 'SYS_COLOUR_WINDOW', 'SYS_COLOUR_WINDOWFRAME', 'SYS_COLOUR_MENUTEXT', 'SYS_COLOUR_WINDOWTEXT', 'SYS_COLOUR_CAPTIONTEXT', 'SYS_COLOUR_ACTIVEBORDER', 'SYS_COLOUR_INACTIVEBORDER', 'SYS_COLOUR_APPWORKSPACE', 'SYS_COLOUR_HIGHLIGHT', 'SYS_COLOUR_HIGHLIGHTTEXT', 'SYS_COLOUR_BTNFACE', 'SYS_COLOUR_BTNSHADOW', 'SYS_COLOUR_GRAYTEXT', 'SYS_COLOUR_BTNTEXT', 'SYS_COLOUR_INACTIVECAPTIONTEXT', 'SYS_COLOUR_BTNHIGHLIGHT', 'SYS_COLOUR_3DDKSHADOW', 'SYS_COLOUR_3DLIGHT', 'SYS_COLOUR_INFOTEXT', 'SYS_COLOUR_INFOBK', 'SYS_COLOUR_LISTBOX', 'SYS_COLOUR_HOTLIGHT', 'SYS_COLOUR_GRADIENTACTIVECAPTION', 'SYS_COLOUR_GRADIENTINACTIVECAPTION', 'SYS_COLOUR_MENUHILIGHT', 'SYS_COLOUR_MENUBAR', 'SYS_COLOUR_LISTBOXTEXT', 'SYS_COLOUR_LISTBOXHIGHLIGHTTEXT', 'SYS_COLOUR_MAX', 'SYS_COLOUR_DESKTOP', 'SYS_COLOUR_3DFACE', 'SYS_COLOUR_3DSHADOW', 'SYS_COLOUR_BTNHILIGHT', 'SYS_COLOUR_3DHIGHLIGHT', 'SYS_COLOUR_3DHILIGHT', 'SYS_COLOUR_FRAMEBK'])
+        self.chForegroundColor = wx.Choice(panel, choices=self.colorChoices)
         txtColorSizer.Add(self.chForegroundColor, 1, wx.ALL | wx.EXPAND, 5)
 
         mainSizer.Add(txtColorSizer, 0, wx.ALL | wx.EXPAND, 0)
+
+        # Warning Text Color
+        warnTextColorSizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        textString = wx.StaticText(panel, wx.ID_ANY, u"Warning Text Color:", wx.DefaultPosition, wx.DefaultSize, 0)
+        textString.Wrap(-1)
+        warnTextColorSizer.Add(textString, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+
+        self.chWarningTextColor = wx.Choice(panel, choices=self.colorChoices)
+        warnTextColorSizer.Add(self.chWarningTextColor, 1, wx.ALL | wx.EXPAND, 5)
+
+        mainSizer.Add(warnTextColorSizer, 0, wx.ALL | wx.EXPAND, 0)
+
+        # Highlight Text Color
+        highlightTextColorSizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        textString = wx.StaticText(panel, wx.ID_ANY, u"Highlight Color:", wx.DefaultPosition, wx.DefaultSize, 0)
+        textString.Wrap(-1)
+        highlightTextColorSizer.Add(textString, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+
+        self.chHighlightColor = wx.Choice(panel, choices=self.colorChoices)
+        highlightTextColorSizer.Add(self.chHighlightColor, 1, wx.ALL | wx.EXPAND, 5)
+
+        mainSizer.Add(highlightTextColorSizer, 0, wx.ALL | wx.EXPAND, 0)
 
         self.m_staticline = wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
         mainSizer.Add(self.m_staticline, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
@@ -121,6 +150,8 @@ class PFGeneral2Pref(PreferenceView):
         self.chFontWeight.SetStringSelection(self.generalSettings.get("fontWeight"))
         self.chBackgroundColor.SetStringSelection(self.generalSettings.get("colorBackground"))
         self.chForegroundColor.SetStringSelection(self.generalSettings.get("colorForeground"))
+        self.chForegroundColor.SetStringSelection(self.generalSettings.get("colorWarning"))
+        self.chForegroundColor.SetStringSelection(self.generalSettings.get("colorHighlight"))
 
         self.cbFitColorSlots.Bind(wx.EVT_CHECKBOX, self.OnWindowLeave)
         self.cbGaugeAnimation.Bind(wx.EVT_CHECKBOX, self.OnWindowLeave)
@@ -130,6 +161,8 @@ class PFGeneral2Pref(PreferenceView):
         self.chFontWeight.Bind(wx.lib.intctrl.EVT_INT, self.OnWindowLeave)
         self.chBackgroundColor.Bind(wx.lib.intctrl.EVT_INT, self.OnWindowLeave)
         self.chForegroundColor.Bind(wx.lib.intctrl.EVT_INT, self.OnWindowLeave)
+        self.chWarningTextColor.Bind(wx.lib.intctrl.EVT_INT, self.OnWindowLeave)
+        self.chHighlightColor.Bind(wx.lib.intctrl.EVT_INT, self.OnWindowLeave)
         self.btnApply.Bind(wx.EVT_BUTTON, self.OnWindowLeave)
 
         panel.SetSizer(mainSizer)
@@ -148,9 +181,11 @@ class PFGeneral2Pref(PreferenceView):
         self.generalSettings.set('fontStyle', self.chFontStyle.GetString(self.chFontStyle.GetSelection()))
         self.generalSettings.set('fontWeight', self.chFontWeight.GetString(self.chFontWeight.GetSelection()))
 
-        # Background & foreground color settings
+        # Color settings
         self.generalSettings.set('colorBackground', self.chBackgroundColor.GetString(self.chBackgroundColor.GetSelection()))
         self.generalSettings.set('colorForeground', self.chForegroundColor.GetString(self.chForegroundColor.GetSelection()))
+        self.generalSettings.set('colorWarning', self.chWarningTextColor.GetString(self.chWarningTextColor.GetSelection()))
+        self.generalSettings.set('colorHighlight', self.chHighlightColor.GetString(self.chHighlightColor.GetSelection()))
 
         fitID = self.mainFrame.getActiveFit()
         if fitID:

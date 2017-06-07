@@ -21,9 +21,10 @@ import cPickle
 import os.path
 import urllib2
 
+from logbook import Logger
+
 import config
 import eos.config as eos_config
-from logbook import Logger
 
 pyfalog = Logger(__name__)
 
@@ -367,14 +368,16 @@ class GeneralSettings(object):
     def __init__(self):
         # standardFont = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
         GeneralDefaultSettings = {
-            "itemSearchLimit": 150,
-            "marketSearchDelay": 250,
-            "fontSize": 9,
-            "fontType": 'DEFAULT',
-            "fontStyle": 'NORMAL',
-            "fontWeight": 'NORMAL',
-            "colorBackground": "SYS_COLOUR_FRAMEBK",
-            "colorForeground": "SYS_COLOUR_WINDOWTEXT",
+            "itemSearchLimit"    : 150,
+            "marketSearchDelay"  : 250,
+            "fontSize"           : 9,
+            "fontType"           : 'DEFAULT',
+            "fontStyle"          : 'NORMAL',
+            "fontWeight"         : 'NORMAL',
+            "colorBackground"    : "SYS_COLOUR_FRAMEBK",
+            "colorForeground"    : "SYS_COLOUR_WINDOWTEXT",
+            "colorWarning"       : "RED",
+            "ColorHighlight"     : "YELLOW",
             "showAllMarketGroups": False,
         }
 
@@ -408,8 +411,8 @@ class DatabaseSettings(object):
         # 2 - Full View
         DatabaseDefaultSettings = {
             "ImportItemsNotInMarketGroups": False,
-            "ImportItemsNotPublished": False,
-            "UpdateThreads": 25,
+            "ImportItemsNotPublished"     : False,
+            "UpdateThreads"               : 25,
         }
 
         self.serviceDatabaseDefaultSettings = SettingsProvider.getInstance().getSettings("pyfaDatabaseSettings", DatabaseDefaultSettings)
