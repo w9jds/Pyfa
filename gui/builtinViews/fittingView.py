@@ -643,7 +643,7 @@ class FittingView(d.Display):
     }
 
     def slotColour(self, slot):
-        return self.slotColourMap.get(slot) or self.GetBackgroundColour()
+        return self.slotColourMap.get(slot) or Frame.getBackgroundColor()
 
     def refresh(self, stuff):
         """
