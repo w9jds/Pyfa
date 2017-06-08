@@ -39,8 +39,20 @@ class PreferenceDialog(wx.Dialog):
 
         self.listbook = wx.Listbook(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LB_DEFAULT)
         self.listbook.SetBackgroundColour(Frame.getBackgroundColor())
+
+        preferences_listview = self.listbook.Children[0]
+
+        preferences_listview.SetBackgroundColour(Frame.getBackgroundColorOffset())
+        preferences_listview.SetForegroundColour(Frame.getForegroundColor())
+        preferences_listview.Size.x = self.listbook.GetTextExtent("Statistics Panels")[0]
+        # preferences_listview.SetSize((self.listbook.GetTextExtent("Statistics Panels")[0], -1))
+
+        '''
         self.listbook.Children[0].SetBackgroundColour(Frame.getBackgroundColorOffset())
         self.listbook.Children[0].SetForegroundColour(Frame.getForegroundColor())
+        self.listbook.Children[0].SetSize((self.listbook.GetTextExtent("Statistics Panels")[0], -1))
+        test = self.listbook.Children[0]
+        '''
 
         self.imageList = wx.ImageList(32, 32)
         self.listbook.SetImageList(self.imageList)

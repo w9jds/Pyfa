@@ -108,11 +108,8 @@ class ItemStatsDialog(wx.Dialog):
         self.SetTitle("%s: %s%s" % ("%s Stats" % itmContext if itmContext is not None else "Stats", item.name,
                                     " (%d)" % item.ID if config.debug else ""))
 
-        self.SetMinSize((300, 200))
-        if "wxGTK" in wx.PlatformInfo:  # GTK has huge tab widgets, give it a bit more room
-            self.SetSize((580, 500))
-        else:
-            self.SetSize((550, 500))
+        self.SetMinSize((400, 300))
+        self.SetSize((750, 600))
         # self.SetMaxSize((500, -1))
         self.mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.container = ItemStatsContainer(self, victim, item, itmContext)

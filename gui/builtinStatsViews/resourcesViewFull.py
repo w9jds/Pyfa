@@ -28,7 +28,7 @@ from gui.chromeTabs import EVT_NOTEBOOK_PAGE_CHANGED
 from eos.saveddata.module import Hardpoint
 
 from gui.utils.numberFormatter import formatAmount
-from gui.utils.helpers_wxPython import Frame
+from gui.utils.helpers_wxPython import Frame, Fonts
 
 
 class ResourcesViewFull(StatsView):
@@ -80,9 +80,9 @@ class ResourcesViewFull(StatsView):
     def getHeaderText(self, fit):
         return "Resources"
 
-    def getTextExtentW(self, text):
-        width, __ = self.parent.GetTextExtent(text)
-        return width
+    def getTextExtentSize(self, text):
+        width, height = self.parent.GetTextExtent(text)
+        return width, height
 
     def populatePanel(self, contentPanel, headerPanel):
 
@@ -105,7 +105,9 @@ class ResourcesViewFull(StatsView):
         sizer.AddSpacer((0, 0), 1, wx.EXPAND, 5)
         # Turrets & launcher hardslots display
         tooltipText = {
-            "turret" : "Turret hardpoints", "launcher": "Launcher hardpoints", "drones": "Drones active",
+            "turret" : "Turret hardpoints",
+            "launcher": "Launcher hardpoints",
+            "drones": "Drones active",
             "fighter": "Fighter squadrons active", "calibration": "Calibration"
         }
         for type_ in ("turret", "launcher", "drones", "fighter", "calibration"):
@@ -187,8 +189,16 @@ class ResourcesViewFull(StatsView):
 
                 gauge = PyGauge(parent, wx.ID_ANY, 1)
                 gauge.SetValueRange(0, 0)
-                gauge.SetMinSize((self.getTextExtentW("1.999M/1.99M MW"), 23))
-                gauge.SetFractionDigits(2)
+                bar_size = self.getTextExtentSize("0000000 LEFT")
+                bar_size = (bar_size[0] + 10, bar_size[1] + 2)
+
+                gauge.SetMinSize(bar_size)
+
+                # Too large of a font will cause issuses with size and fit, so don't display extra info
+                if 10 < Fonts.getFont("font_standard"):
+                    gauge.SetFractionDigits(0)
+                else:
+                    gauge.SetFractionDigits(1)
 
                 setattr(self, "gauge%s%s" % (panel.capitalize(), capitalizedType), gauge)
                 stats.Add(gauge, 0, wx.ALIGN_CENTER)

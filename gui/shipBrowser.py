@@ -1341,7 +1341,9 @@ class ShipItem(SFItem.SFBrowserItem):
             fformat = "%d fits"
 
         mdc.SetFont(Fonts.getFont("font_standard"))
-        mdc.DrawText(fformat % fittings if fittings > 0 else fformat, self.textStartx, self.fittingsy)
+        if Fonts.getFont("font_standard") < 13:
+            # If the font is too big, we don't have room, so don't include this extra information
+            mdc.DrawText(fformat % fittings if fittings > 0 else fformat, self.textStartx, self.fittingsy)
 
         mdc.SetFont(Fonts.getFont("font_minus_one"))
         mdc.DrawText(self.toolbar.hoverLabel, self.thoverx, self.thovery)
@@ -1889,18 +1891,18 @@ class FitItem(SFItem.SFBrowserItem):
 
         fitDate = self.timestamp.strftime("%m/%d/%Y %H:%M")
         fitLocalDate = fitDate  # "%d/%02d/%02d %02d:%02d" % (fitDate[0], fitDate[1], fitDate[2], fitDate[3], fitDate[4])
-        pfdate = drawUtils.GetPartialText(mdc, fitLocalDate,
-                                          self.toolbarx - self.textStartx - self.padding * 2 - self.thoverw)
+        pfdate = drawUtils.GetPartialText(mdc, fitLocalDate, self.toolbarx - self.textStartx - self.padding * 2 - self.thoverw)
 
-        mdc.DrawText(pfdate, self.textStartx, self.timestampy)
+        if Fonts.getFont("font_standard") < 13:
+            # Too large of a font will cause issuses with size and fit, so don't display extra info
+            mdc.DrawText(pfdate, self.textStartx, self.timestampy)
 
         mdc.SetFont(Fonts.getFont("font_minus_one"))
         mdc.DrawText(self.toolbar.hoverLabel, self.thoverx, self.thovery)
 
         mdc.SetFont(Fonts.getFont("font_plus_one"))
 
-        psname = drawUtils.GetPartialText(mdc, self.fitName,
-                                          self.toolbarx - self.textStartx - self.padding * 2 - self.thoverw)
+        psname = drawUtils.GetPartialText(mdc, self.fitName, self.toolbarx - self.textStartx - self.padding * 2 - self.thoverw)
 
         mdc.DrawText(psname, self.textStartx, self.fitNamey)
 

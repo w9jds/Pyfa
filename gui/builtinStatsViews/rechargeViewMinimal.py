@@ -26,6 +26,7 @@ import gui.mainFrame
 from gui.builtinStatsViews.resistancesViewFull import EFFECTIVE_HP_TOGGLED as EHP_TOGGLE_FULL
 from gui.builtinStatsViews.resistancesViewMinimal import EFFECTIVE_HP_TOGGLED as EHP_TOGGLE_MINIMAL
 from service.fit import Fit
+from gui.utils.helpers_wxPython import Fonts
 
 
 class RechargeViewMinimal(StatsView):
@@ -120,14 +121,14 @@ class RechargeViewMinimal(StatsView):
                 unitlbl = getattr(self, "unitLabelTank%s%sActive" % (stability.capitalize(), name.capitalize()))
                 unitlbl.SetLabel(unit)
                 if tank is not None:
-                    lbl.SetLabel("%.1f" % tank["%sRepair" % name])
+                    lbl.SetLabel("%i" % tank["%sRepair" % name])
                 else:
-                    lbl.SetLabel("0.0")
+                    lbl.SetLabel("0")
 
         if fit is not None:
             label = getattr(self, "labelTankReinforcedShieldPassive")
             value = fit.effectiveTank["passiveShield"] if self.effective else fit.tank["passiveShield"]
-            label.SetLabel(formatAmount(value, 3, 0, 9))
+            label.SetLabel(formatAmount(value, 1, 0, 9))
 
         else:
             value = 0

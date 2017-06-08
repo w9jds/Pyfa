@@ -8,7 +8,7 @@ from gui.utils.helpers_wxPython import Fonts
 
 
 class PFContextMenuPref(PreferenceView):
-    title = "Context Menu Panel"
+    title = "Context Menu"
 
     def populatePrefPanel(self, panel):
         self.settings = ContextMenuSettings.getInstance()

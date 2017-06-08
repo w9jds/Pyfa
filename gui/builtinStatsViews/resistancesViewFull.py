@@ -25,6 +25,7 @@ from gui.pygauge import PyGauge
 from gui.utils.numberFormatter import formatAmount
 import gui.mainFrame
 import gui.globalEvents as GE
+from gui.utils.helpers_wxPython import Fonts
 
 EffectiveHpToggled, EFFECTIVE_HP_TOGGLED = wx.lib.newevent.NewEvent()
 
@@ -44,9 +45,9 @@ class ResistancesViewFull(StatsView):
     def getHeaderText(self, fit):
         return "Resistances"
 
-    def getTextExtentW(self, text):
-        width, __ = self.parent.GetTextExtent(text)
-        return width
+    def getTextExtentSize(self, text):
+        width, height = self.parent.GetTextExtent(text)
+        return width, height
 
     def populatePanel(self, contentPanel, headerPanel):
         contentSizer = contentPanel.GetSizer()
@@ -138,18 +139,28 @@ class ResistancesViewFull(StatsView):
                 currGColour += 1
 
                 lbl = PyGauge(contentPanel, wx.ID_ANY, 100)
-                lbl.SetMinSize((48, 16))
+
+                bar_size = self.getTextExtentSize("000%")
+                bar_size = (bar_size[0] + 10, bar_size[1] + 2)
+
+                lbl.SetMinSize(bar_size)
+
                 lbl.SetBackgroundColour(wx.Colour(bc[0], bc[1], bc[2]))
                 lbl.SetBarColour(wx.Colour(fc[0], fc[1], fc[2]))
                 lbl.SetBarGradient()
-                lbl.SetFractionDigits(1)
+
+                # Too large of a font will cause issuses with size and fit, so don't display extra info
+                if 10 < Fonts.getFont("font_standard"):
+                    lbl.SetFractionDigits(0)
+                else:
+                    lbl.SetFractionDigits(1)
 
                 setattr(self, "gaugeResistance%s%s" % (tankType.capitalize(), damageType.capitalize()), lbl)
                 box.Add(lbl, 0, wx.ALIGN_CENTER)
 
                 col += 1
             box = wx.BoxSizer(wx.VERTICAL)
-            box.SetMinSize(wx.Size(self.getTextExtentW("WWWWk"), -1))
+            box.SetMinSize(wx.Size(self.getTextExtentSize("WWWWk")[0], -1))
 
             lbl = wx.StaticText(contentPanel, wx.ID_ANY, "0" if tankType != "damagePattern" else "")
             box.Add(lbl, 0, wx.ALIGN_CENTER)

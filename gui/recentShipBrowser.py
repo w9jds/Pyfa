@@ -1265,7 +1265,9 @@ class FitItem(SFItem.SFBrowserItem):
         pfdate = drawUtils.GetPartialText(mdc, fitLocalDate,
                                           self.toolbarx - self.textStartx - self.padding * 2 - self.thoverw)
 
-        mdc.DrawText(pfdate, self.textStartx, self.timestampy)
+        if Fonts.getFont("font_standard") < 13:
+            # Too large of a font will cause issuses with size and fit, so don't display extra info
+            mdc.DrawText(pfdate, self.textStartx, self.timestampy)
 
         mdc.SetFont(Fonts.getFont("font_minus_one"))
         mdc.DrawText(self.toolbar.hoverLabel, self.thoverx, self.thovery)
