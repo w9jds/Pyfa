@@ -127,18 +127,6 @@ class PFGeneral2Pref(PreferenceView):
 
         mainSizer.Add(warnTextColorSizer, 0, wx.ALL | wx.EXPAND, 0)
 
-        # Highlight Text Color
-        highlightTextColorSizer = wx.BoxSizer(wx.HORIZONTAL)
-
-        textString = wx.StaticText(panel, wx.ID_ANY, u"Highlight Color:", wx.DefaultPosition, wx.DefaultSize, 0)
-        textString.Wrap(-1)
-        highlightTextColorSizer.Add(textString, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
-
-        self.chHighlightColor = wx.Choice(panel, choices=self.colorChoices)
-        highlightTextColorSizer.Add(self.chHighlightColor, 1, wx.ALL | wx.EXPAND, 5)
-
-        mainSizer.Add(highlightTextColorSizer, 0, wx.ALL | wx.EXPAND, 0)
-
         self.m_staticline = wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
         mainSizer.Add(self.m_staticline, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
@@ -160,7 +148,6 @@ class PFGeneral2Pref(PreferenceView):
         self.chBackgroundColor.SetStringSelection(self.generalSettings.get("colorBackground"))
         self.chForegroundColor.SetStringSelection(self.generalSettings.get("colorForeground"))
         self.chWarningTextColor.SetStringSelection(self.generalSettings.get("colorWarning"))
-        self.chHighlightColor.SetStringSelection(self.generalSettings.get("colorHighlight"))
 
         self.cbFitColorSlots.Bind(wx.EVT_CHECKBOX, self.OnWindowLeave)
         self.cbGaugeAnimation.Bind(wx.EVT_CHECKBOX, self.OnWindowLeave)
@@ -171,7 +158,6 @@ class PFGeneral2Pref(PreferenceView):
         self.chBackgroundColor.Bind(wx.lib.intctrl.EVT_INT, self.OnWindowLeave)
         self.chForegroundColor.Bind(wx.lib.intctrl.EVT_INT, self.OnWindowLeave)
         self.chWarningTextColor.Bind(wx.lib.intctrl.EVT_INT, self.OnWindowLeave)
-        self.chHighlightColor.Bind(wx.lib.intctrl.EVT_INT, self.OnWindowLeave)
         self.btnApply.Bind(wx.EVT_BUTTON, self.OnWindowLeave)
 
         panel.SetSizer(mainSizer)
@@ -194,7 +180,6 @@ class PFGeneral2Pref(PreferenceView):
         self.generalSettings.set('colorBackground', self.chBackgroundColor.GetString(self.chBackgroundColor.GetSelection()))
         self.generalSettings.set('colorForeground', self.chForegroundColor.GetString(self.chForegroundColor.GetSelection()))
         self.generalSettings.set('colorWarning', self.chWarningTextColor.GetString(self.chWarningTextColor.GetSelection()))
-        self.generalSettings.set('colorHighlight', self.chHighlightColor.GetString(self.chHighlightColor.GetSelection()))
 
         fitID = self.mainFrame.getActiveFit()
         if fitID:

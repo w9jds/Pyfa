@@ -377,7 +377,6 @@ class GeneralSettings(object):
             "colorBackground"    : "SYS_COLOUR_FRAMEBK",
             "colorForeground"    : "SYS_COLOUR_WINDOWTEXT",
             "colorWarning"       : "RED",
-            "colorHighlight"     : "YELLOW",
             "showAllMarketGroups": False,
         }
 

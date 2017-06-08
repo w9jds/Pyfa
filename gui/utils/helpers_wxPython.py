@@ -164,13 +164,6 @@ class Frame(object):
 
         return color
 
-    @staticmethod
-    def getHighlightColor():
-        general_settings = GeneralSettings.getInstance()
-        color = Frame.ColorParser(general_settings.get('colorHighlight'), 'YELLOW')
-
-        return color
-
 
 class DragDropHelper(object):
     data = None
