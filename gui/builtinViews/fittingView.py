@@ -671,7 +671,7 @@ class FittingView(d.Display):
             #  only consider changing color if we're dealing with a Module
             if isinstance(mod, Module):
                 if slotMap[mod.slot]:  # Color too many modules as red
-                    self.SetItemBackgroundColour(i, wx.Colour(204, 51, 51))
+                    self.SetItemBackgroundColour(i, Frame.getWarningColor())
                 elif sFit.serviceFittingOptions["colorFitBySlot"]:  # Color by slot it enabled
                     self.SetItemBackgroundColour(i, self.slotColour(mod.slot))
 
@@ -840,8 +840,8 @@ class FittingView(d.Display):
 
             cx += columnsWidths[i]
 
-        brush = wx.Brush(wx.Colour(224, 51, 51))
-        pen = wx.Pen(wx.Colour(224, 51, 51))
+        brush = wx.Brush(Frame.getWarningColor())
+        pen = wx.Pen(Frame.getWarningColor())
 
         mdc.SetPen(pen)
         mdc.SetBrush(brush)

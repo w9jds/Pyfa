@@ -377,13 +377,15 @@ class GeneralSettings(object):
             "colorBackground"    : "SYS_COLOUR_FRAMEBK",
             "colorForeground"    : "SYS_COLOUR_WINDOWTEXT",
             "colorWarning"       : "RED",
-            "ColorHighlight"     : "YELLOW",
+            "colorHighlight"     : "YELLOW",
             "showAllMarketGroups": False,
         }
 
         self.serviceGeneralDefaultSettings = SettingsProvider.getInstance().getSettings("pyfaGeneralSettings", GeneralDefaultSettings)
 
         # We're changing the way we're handling font sizes, so switch to the new method
+        # Shouldn't ever need to do this, but there was a brief window where we tried
+        # to use the old named sizes instead of numbers.
         if not isinstance(self.serviceGeneralDefaultSettings['fontSize'], int):
             self.serviceGeneralDefaultSettings['fontSize'] = 9
 

@@ -1,6 +1,7 @@
 # noinspection PyPackageRequirements
 import wx
 
+import gui.utils.colorUtils as colorUtils
 from service.settings import GeneralSettings
 
 
@@ -137,6 +138,15 @@ class Frame(object):
     def getBackgroundColor():
         general_settings = GeneralSettings.getInstance()
         color = Frame.ColorParser(general_settings.get('colorBackground'), 'LIGHT_GREY')
+
+        return color
+
+    @staticmethod
+    def getBackgroundColorOffset():
+        general_settings = GeneralSettings.getInstance()
+        color = Frame.ColorParser(general_settings.get('colorBackground'), 'LIGHT_GREY')
+
+        color = colorUtils.GetSuitableColor(color, 0.1)
 
         return color
 

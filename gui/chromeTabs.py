@@ -107,6 +107,8 @@ class PFNotebook(wx.Panel):
 
         wx.Panel.__init__(self, parent, wx.ID_ANY, size=(-1, -1))
 
+        self.SetBackgroundColour(Frame.getBackgroundColor())
+
         self.pages = []
         self.activePage = None
 
@@ -114,6 +116,7 @@ class PFNotebook(wx.Panel):
 
         tabsSizer = wx.BoxSizer(wx.VERTICAL)
         self.tabsContainer = PFTabsContainer(self, canAdd=canAdd)
+
         tabsSizer.Add(self.tabsContainer, 0, wx.EXPAND)
 
         style = wx.DOUBLE_BORDER if 'wxMSW' in wx.PlatformInfo else wx.SIMPLE_BORDER
@@ -222,14 +225,29 @@ class PFNotebook(wx.Panel):
         if not tabWnd:
             tabWnd = wx.Panel(self)
 
+        self.SetFont(Fonts.getFont("font_standard"))
+        self.SetBackgroundColour(Frame.getBackgroundColor())
+        self.SetForegroundColour(Frame.getForegroundColor())
+
         tabWnd.Reparent(self.pageContainer)
+
+        tabWnd.SetBackgroundColour(Frame.getBackgroundColor())
+        tabWnd.SetForegroundColour(Frame.getForegroundColor())
+        self.pageContainer.SetBackgroundColour(Frame.getBackgroundColor())
+        self.pageContainer.SetForegroundColour(Frame.getForegroundColor())
 
         self.pageContainer.Layout()
 
         self.pages.append(tabWnd)
         self.tabsContainer.AddTab(tabTitle, tabImage, showClose)
 
+        self.tabsContainer.SetBackgroundColour(Frame.getBackgroundColor())
+        self.tabsContainer.SetForegroundColour(Frame.getForegroundColor())
+
         self.activePage = tabWnd
+        self.activePage.SetBackgroundColour(Frame.getBackgroundColor())
+        self.activePage.SetForegroundColour(Frame.getForegroundColor())
+
         self.ShowActive(True)
 
     def DisablePage(self, page, toggle):
@@ -568,7 +586,7 @@ class PFTabRenderer(object):
 
     def InitColors(self):
         """Determines colors used for tab, based on system settings"""
-        self.tabColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_3DFACE)
+        self.tabColor = Frame.getBackgroundColor()
         self.inactiveColor = colorUtils.GetSuitableColor(self.tabColor, 0.25)
         self.selectedColor = colorUtils.GetSuitableColor(self.tabColor, 0.10)
 
@@ -609,9 +627,11 @@ class PFTabRenderer(object):
         mdc.SetFont(Fonts.getFont("font_standard"))
 
         maxsize = self.tabWidth - textStart - self.rightWidth - self.padding * 4
-        color = self.selectedColor if self.selected else self.inactiveColor
 
-        mdc.SetTextForeground(colorUtils.GetSuitableColor(color, 1))
+        if self.selected:
+            mdc.SetTextForeground(Frame.getForegroundColor())
+        else:
+            mdc.SetTextForeground(colorUtils.GetSuitableColor(Frame.getForegroundColor(), .2))
 
         text = drawUtils.GetPartialText(mdc, self.text, maxsize, "")
         __, ty = mdc.GetTextExtent(text)
@@ -721,14 +741,14 @@ class PFAddRenderer(object):
 
 
 class PFTabsContainer(wx.Panel):
-    def __init__(self, parent, pos=(0, 0), size=(100, 22), id=wx.ID_ANY, canAdd=True):
+    def __init__(self, parent, pos=(0, 0), size=(100, 22), init_id=wx.ID_ANY, canAdd=True):
         """
         Defines the tab container. Handles functions such as tab selection and
         dragging, and defines minimum width of tabs (all tabs are of equal width,
         which is determined via widest tab). Also handles the tab preview, if any.
         """
 
-        wx.Panel.__init__(self, parent, id, pos, size)
+        wx.Panel.__init__(self, parent, init_id, pos, size)
         if wx.VERSION >= (3, 0):
             self.SetBackgroundStyle(wx.BG_STYLE_PAINT)
 
@@ -1364,7 +1384,7 @@ class PFNotebookPagePreview(wx.Frame):
         wx.Frame.__init__(
                 self,
                 parent,
-                id=wx.ID_ANY,
+                init_id=wx.ID_ANY,
                 title=wx.EmptyString,
                 pos=pos,
                 size=wx.DefaultSize,

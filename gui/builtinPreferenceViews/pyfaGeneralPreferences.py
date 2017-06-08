@@ -14,6 +14,9 @@ from gui.utils.helpers_wxPython import Fonts
 
 
 class PFGeneralPref(PreferenceView):
+    def refreshPanel(self, fit):
+        pass
+
     title = "General"
 
     def populatePrefPanel(self, panel):
@@ -92,7 +95,7 @@ class PFGeneralPref(PreferenceView):
         mainSizer.Add(priceSizer, 0, wx.ALL | wx.EXPAND, 0)
 
         self.cbShowAllMarketGroups = wx.CheckBox(panel, wx.ID_ANY, u"Show all market groups (requires restart)",
-                                                    wx.DefaultPosition, wx.DefaultSize, 0)
+                                                 wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbShowAllMarketGroups, 0, wx.ALL | wx.EXPAND, 5)
 
         delayTimer = wx.BoxSizer(wx.HORIZONTAL)
@@ -101,7 +104,7 @@ class PFGeneralPref(PreferenceView):
         self.stMarketDelay.Wrap(-1)
         self.stMarketDelay.SetCursor(helpCursor)
         self.stMarketDelay.SetToolTip(
-            wx.ToolTip('The delay between a keystroke and the market search. Can help reduce lag when typing fast in the market search box.'))
+                wx.ToolTip('The delay between a keystroke and the market search. Can help reduce lag when typing fast in the market search box.'))
 
         delayTimer.Add(self.stMarketDelay, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 

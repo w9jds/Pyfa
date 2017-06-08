@@ -46,9 +46,9 @@ class PFFittingEnginePref(PreferenceView):
                                                wx.DefaultPosition, wx.DefaultSize, 0)
         self.cbStrictSkillLevels.SetCursor(helpCursor)
         self.cbStrictSkillLevels.SetToolTip(wx.ToolTip(
-            u'When enabled, skills will check their dependencies\' requirements when their levels change and reset ' +
-            u'skills that no longer meet the requirement.\neg: Setting Drones from level V to IV will reset the Heavy ' +
-            u'Drone Operation skill, as that requires Drones V'))
+                u'When enabled, skills will check their dependencies\' requirements when their levels change and reset ' +
+                u'skills that no longer meet the requirement.\neg: Setting Drones from level V to IV will reset the Heavy ' +
+                u'Drone Operation skill, as that requires Drones V'))
 
         mainSizer.Add(self.cbStrictSkillLevels, 0, wx.ALL | wx.EXPAND, 5)
 
@@ -58,8 +58,7 @@ class PFFittingEnginePref(PreferenceView):
         mainSizer.Add(self.cbUniversalAdaptiveArmorHardener, 0, wx.ALL | wx.EXPAND, 5)
 
         self.cbStrictFitting = wx.CheckBox(panel, wx.ID_ANY,
-                                           u"Only allow fits that strictly match fitting rules. If this is disabled, fits allowed may not work in EVE." +
-                                           u"\n(Only recommended for expert players)",
+                                           u"Only allow fits that strictly match fitting rules.",
                                            wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbStrictFitting, 0, wx.ALL | wx.EXPAND, 5)
 

@@ -11,6 +11,9 @@ from service.settings import GeneralSettings, SettingsProvider
 
 
 class PFGeneral2Pref(PreferenceView):
+    def refreshPanel(self, fit):
+        pass
+
     title = "General (2)"
 
     def populatePrefPanel(self, panel):
@@ -29,6 +32,12 @@ class PFGeneral2Pref(PreferenceView):
 
         mainSizer.Add(self.stTitle, 0, wx.ALL, 5)
 
+        self.stSubTitle = wx.StaticText(panel, wx.ID_ANY,
+                                        u"Changes require restart of pyfa to take effect.",
+                                        wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stSubTitle.Wrap(-1)
+        mainSizer.Add(self.stSubTitle, 0, wx.ALL, 3)
+
         self.m_staticline1 = wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
         mainSizer.Add(self.m_staticline1, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
@@ -42,7 +51,7 @@ class PFGeneral2Pref(PreferenceView):
         # Font size
         fontSizeSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.stFontText = wx.StaticText(panel, wx.ID_ANY, u"Size:", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.stFontText = wx.StaticText(panel, wx.ID_ANY, u"Font Size:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.stFontText.Wrap(-1)
         fontSizeSizer.Add(self.stFontText, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
@@ -150,8 +159,8 @@ class PFGeneral2Pref(PreferenceView):
         self.chFontWeight.SetStringSelection(self.generalSettings.get("fontWeight"))
         self.chBackgroundColor.SetStringSelection(self.generalSettings.get("colorBackground"))
         self.chForegroundColor.SetStringSelection(self.generalSettings.get("colorForeground"))
-        self.chForegroundColor.SetStringSelection(self.generalSettings.get("colorWarning"))
-        self.chForegroundColor.SetStringSelection(self.generalSettings.get("colorHighlight"))
+        self.chWarningTextColor.SetStringSelection(self.generalSettings.get("colorWarning"))
+        self.chHighlightColor.SetStringSelection(self.generalSettings.get("colorHighlight"))
 
         self.cbFitColorSlots.Bind(wx.EVT_CHECKBOX, self.OnWindowLeave)
         self.cbGaugeAnimation.Bind(wx.EVT_CHECKBOX, self.OnWindowLeave)

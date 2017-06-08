@@ -149,6 +149,7 @@ class MainFrame(wx.Frame, IPortUser):
         self.disableOverrideEditor = disableOverrideEditor
 
         self.SetBackgroundColour(Frame.getBackgroundColor())
+        self.SetForegroundColour(Frame.getForegroundColor())
 
         # Load and set the icon for pyfa main window
         i = wx.IconFromBitmap(BitmapLoader.getBitmap("pyfa", "gui"))
@@ -236,6 +237,8 @@ class MainFrame(wx.Frame, IPortUser):
 
     def ShowUpdateBox(self, release):
         dlg = UpdateDialog(self, release)
+        dlg.SetBackgroundColour(Frame.getBackgroundColor())
+        dlg.SetForegroundColour(Frame.getForegroundColor())
         dlg.ShowModal()
 
     def LoadPreviousOpenFits(self):
@@ -269,7 +272,6 @@ class MainFrame(wx.Frame, IPortUser):
         }
         self.mainFrameAttribs = SettingsProvider.getInstance().getSettings("pyfaMainWindowAttribs",
                                                                            mainFrameDefaultAttribs)
-
         if self.mainFrameAttribs["wnd_maximized"]:
             width = mainFrameDefaultAttribs["wnd_width"]
             height = mainFrameDefaultAttribs["wnd_height"]
@@ -379,10 +381,14 @@ class MainFrame(wx.Frame, IPortUser):
 
     def showCharacterEditor(self, event):
         dlg = CharacterEditor(self)
+        dlg.SetBackgroundColour(Frame.getBackgroundColor())
+        dlg.SetForegroundColour(Frame.getForegroundColor())
         dlg.Show()
 
     def showAttrEditor(self, event):
         dlg = AttributeEditor(self)
+        dlg.SetBackgroundColour(Frame.getBackgroundColor())
+        dlg.SetForegroundColour(Frame.getForegroundColor())
         dlg.Show()
 
     def showTargetResistsEditor(self, event):
@@ -390,7 +396,12 @@ class MainFrame(wx.Frame, IPortUser):
 
     def showDamagePatternEditor(self, event):
         dlg = DmgPatternEditorDlg(self)
+
+        dlg.SetBackgroundColour(Frame.getBackgroundColor())
+        dlg.SetForegroundColour(Frame.getForegroundColor())
+
         dlg.ShowModal()
+
         try:
             dlg.Destroy()
         except PyDeadObjectError:
@@ -409,6 +420,10 @@ class MainFrame(wx.Frame, IPortUser):
                             wildcard="EVE XML fitting files (*.xml)|*.xml",
                             style=wx.FD_SAVE,
                             defaultFile=defaultFile)
+
+        dlg.SetBackgroundColour(Frame.getBackgroundColor())
+        dlg.SetForegroundColour(Frame.getForegroundColor())
+
         if dlg.ShowModal() == wx.ID_OK:
             format_ = dlg.GetFilterIndex()
             path = dlg.GetPath()
@@ -435,6 +450,8 @@ class MainFrame(wx.Frame, IPortUser):
 
     def showPreferenceDialog(self, event):
         dlg = PreferenceDialog(self)
+        dlg.SetBackgroundColour(Frame.getBackgroundColor())
+        dlg.SetForegroundColour(Frame.getForegroundColor())
         dlg.ShowModal()
 
     @staticmethod
@@ -577,6 +594,8 @@ class MainFrame(wx.Frame, IPortUser):
 
     def eveFittings(self, event):
         dlg = CrestFittings(self)
+        dlg.SetBackgroundColour(Frame.getBackgroundColor())
+        dlg.SetForegroundColour(Frame.getForegroundColor())
         dlg.Show()
 
     def updateTitle(self, event):
@@ -637,10 +656,14 @@ class MainFrame(wx.Frame, IPortUser):
                 webbrowser.open(uri)
         else:
             dlg = CrestMgmt(self)
+            dlg.SetBackgroundColour(Frame.getBackgroundColor())
+            dlg.SetForegroundColour(Frame.getForegroundColor())
             dlg.Show()
 
     def exportToEve(self, event):
         dlg = ExportToEve(self)
+        dlg.SetBackgroundColour(Frame.getBackgroundColor())
+        dlg.SetForegroundColour(Frame.getForegroundColor())
         dlg.Show()
 
     def toggleOverrides(self, event):
@@ -659,6 +682,8 @@ class MainFrame(wx.Frame, IPortUser):
     def saveCharAs(self, event):
         charID = self.charSelection.getActiveCharacter()
         dlg = SaveCharacterAs(self, charID)
+        dlg.SetBackgroundColour(Frame.getBackgroundColor())
+        dlg.SetForegroundColour(Frame.getForegroundColor())
         dlg.ShowModal()
 
     def revertChar(self, event):
@@ -744,6 +769,8 @@ class MainFrame(wx.Frame, IPortUser):
             CopySelectDialog.copyFormatMultiBuy: self.clipboardMultiBuy
         }
         dlg = CopySelectDialog(self)
+        dlg.SetBackgroundColour(Frame.getBackgroundColor())
+        dlg.SetForegroundColour(Frame.getForegroundColor())
         dlg.ShowModal()
         selected = dlg.GetSelected()
 
@@ -765,6 +792,9 @@ class MainFrame(wx.Frame, IPortUser):
                           "Text skills training file (*.txt)|*.txt"),
                 style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT,
         )
+
+        saveDialog.SetBackgroundColour(Frame.getBackgroundColor())
+        saveDialog.SetForegroundColour(Frame.getForegroundColor())
 
         if saveDialog.ShowModal() == wx.ID_OK:
             saveFmtInt = saveDialog.GetFilterIndex()
@@ -795,6 +825,10 @@ class MainFrame(wx.Frame, IPortUser):
                           "All Files (*)|*"),
                 style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE
         )
+
+        dlg.SetBackgroundColour(Frame.getBackgroundColor())
+        dlg.SetForegroundColour(Frame.getForegroundColor())
+
         if dlg.ShowModal() == wx.ID_OK:
             self.progressDialog = wx.ProgressDialog(
                 "Importing fits",
@@ -802,7 +836,8 @@ class MainFrame(wx.Frame, IPortUser):
                 parent=self,
                 style=wx.PD_CAN_ABORT | wx.PD_SMOOTH | wx.PD_ELAPSED_TIME | wx.PD_APP_MODAL
             )
-            # self.progressDialog.message = None
+            self.progressDialog.SetBackgroundColour(Frame.getBackgroundColor())
+            self.progressDialog.SetForegroundColour(Frame.getForegroundColor())
             Port.importFitsThreaded(dlg.GetPaths(), self)
             self.progressDialog.ShowModal()
             try:
@@ -822,6 +857,9 @@ class MainFrame(wx.Frame, IPortUser):
                 defaultFile=defaultFile,
         )
 
+        saveDialog.SetBackgroundColour(Frame.getBackgroundColor())
+        saveDialog.SetForegroundColour(Frame.getForegroundColor())
+
         if saveDialog.ShowModal() == wx.ID_OK:
             filePath = saveDialog.GetPath()
             if u'.' not in os.path.basename(filePath):
@@ -837,11 +875,13 @@ class MainFrame(wx.Frame, IPortUser):
                 parent=self,
                 style=wx.PD_CAN_ABORT | wx.PD_SMOOTH | wx.PD_ELAPSED_TIME | wx.PD_APP_MODAL
             )
+            self.progressDialog.SetBackgroundColour(Frame.getBackgroundColor())
+            self.progressDialog.SetForegroundColour(Frame.getForegroundColor())
             Port.backupFits(filePath, self)
             self.progressDialog.ShowModal()
 
     def exportHtml(self, event):
-        from gui.utils.exportHtml import exportHtml
+        from gui.utils.exportHtml import ExportHtml
         sFit = Fit.getInstance()
         settings = HTMLExportSettings.getInstance()
 
@@ -856,6 +896,9 @@ class MainFrame(wx.Frame, IPortUser):
                     wx.OK | wx.ICON_ERROR
             )
 
+            dlg.SetBackgroundColour(Frame.getBackgroundColor())
+            dlg.SetForegroundColour(Frame.getForegroundColor())
+
             if dlg.ShowModal() == wx.ID_OK:
                 return
 
@@ -866,7 +909,10 @@ class MainFrame(wx.Frame, IPortUser):
                 style=wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME
         )
 
-        exportHtml.getInstance().refreshFittingHtml(True, self.backupCallback)
+        self.progressDialog.SetBackgroundColour(Frame.getBackgroundColor())
+        self.progressDialog.SetForegroundColour(Frame.getForegroundColor())
+
+        ExportHtml.getInstance().refreshFittingHtml(True, self.backupCallback)
         self.progressDialog.ShowModal()
 
     def backupCallback(self, info):
@@ -908,8 +954,8 @@ class MainFrame(wx.Frame, IPortUser):
             dlg = wx.MessageDialog(self,
                                    "The following error was generated\n\n%s\n\nBe aware that already processed fits were not saved" % data,
                                    _message, wx.OK | wx.ICON_ERROR)
-            # if dlg.ShowModal() == wx.ID_OK:
-            #     return
+            dlg.SetBackgroundColour(Frame.getBackgroundColor())
+            dlg.SetForegroundColour(Frame.getForegroundColor())
             dlg.ShowModal()
             return
 
@@ -970,6 +1016,9 @@ class MainFrame(wx.Frame, IPortUser):
                 wildcard="EVE API XML character files (*.xml)|*.xml|All Files (*)|*",
                 style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE
         )
+
+        dlg.SetBackgroundColour(Frame.getBackgroundColor())
+        dlg.SetForegroundColour(Frame.getForegroundColor())
 
         if dlg.ShowModal() == wx.ID_OK:
             self.waitDialog = wx.BusyInfo("Importing Character...")

@@ -255,6 +255,8 @@ class ItemTraits(wx.Panel):
 
         self.traits = wx.html.HtmlWindow(self)
         self.traits.SetPage(item.traits.traitText)
+        self.traits.SetBackgroundColour(Frame.getBackgroundColorOffset())
+        self.traits.SetForegroundColour(Frame.getForegroundColor())
 
         mainSizer.Add(self.traits, 1, wx.ALL | wx.EXPAND, 0)
         self.Layout()
@@ -268,7 +270,7 @@ class ItemDescription(wx.Panel):
         self.SetForegroundColour(Frame.getForegroundColor())
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(mainSizer)
-        bgcolor = Frame.getBackgroundColor()
+        bgcolor = Frame.getBackgroundColorOffset()
         fgcolor = Frame.getForegroundColor()
 
         self.description = wx.html.HtmlWindow(self)
@@ -768,6 +770,8 @@ class ItemRequirements(wx.Panel):
         self.SetSizer(mainSizer)
         self.root = self.reqTree.AddRoot("WINRARZOR")
         self.reqTree.SetPyData(self.root, None)
+        self.reqTree.SetBackgroundColour(Frame.getBackgroundColorOffset())
+        self.reqTree.SetForegroundColour(Frame.getForegroundColor())
 
         self.imageList = wx.ImageList(16, 16)
         self.reqTree.SetImageList(self.imageList)

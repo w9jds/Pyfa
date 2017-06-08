@@ -24,7 +24,7 @@ from gui.bitmapLoader import BitmapLoader
 from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
 from logbook import Logger
-from gui.utils.helpers_wxPython import Fonts
+from gui.utils.helpers_wxPython import Fonts, Frame
 
 pyfalog = Logger(__name__)
 
@@ -86,6 +86,9 @@ class ResistsEditorDlg(wx.Dialog):
 
     def __init__(self, parent):
         wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title=u"Target Resists Editor", size=wx.Size(350, 240))
+
+        self.SetBackgroundColour(Frame.getBackgroundColor())
+        self.SetForegroundColour(Frame.getForegroundColor())
 
         self.block = False
         self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
@@ -223,7 +226,7 @@ class ResistsEditorDlg(wx.Dialog):
 
                 # if everything checks out, set resist attribute
                 setattr(p, "%sAmount" % type_, value / 100)
-                editObj.SetForegroundColour(self.colorReset)
+                editObj.SetForegroundColour(Frame.getForegroundColor())
 
             self.stNotice.SetLabel("")
             self.totSizer.Layout()
@@ -234,12 +237,12 @@ class ResistsEditorDlg(wx.Dialog):
             TargetResists.getInstance().saveChanges(p)
 
         except ValueError:
-            editObj.SetForegroundColour(wx.RED)
+            editObj.SetForegroundColour(Frame.getWarningColor())
             msg = "Incorrect Formatting (decimals only)"
             pyfalog.warning(msg)
             self.stNotice.SetLabel(msg)
         except AssertionError:
-            editObj.SetForegroundColour(wx.RED)
+            editObj.SetForegroundColour(Frame.getWarningColor())
             msg = "Incorrect Range (must be 0-100)"
             pyfalog.warning(msg)
             self.stNotice.SetLabel(msg)

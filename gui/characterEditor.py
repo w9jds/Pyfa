@@ -149,6 +149,8 @@ class CharacterEditor(wx.Frame):
 
         self.viewsNBContainer = wx.Notebook(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0)
 
+        self.viewsNBContainer.SetBackgroundColour(Frame.getBackgroundColor())
+
         self.sview = SkillTreeView(self.viewsNBContainer)
         self.iview = ImplantEditorView(self.viewsNBContainer)
         self.aview = APIView(self.viewsNBContainer)
@@ -272,6 +274,7 @@ class SkillTreeView(wx.Panel):
                           style=wx.TAB_TRAVERSAL)
         self.charEditor = self.Parent.Parent  # first parent is Notebook, second is Character Editor
         self.SetBackgroundColour(Frame.getBackgroundColor())
+        self.SetForegroundColour(Frame.getForegroundColor())
         self.SetFont(Fonts.getFont("font_standard"))
 
         pmainSizer = wx.BoxSizer(wx.VERTICAL)
@@ -281,11 +284,14 @@ class SkillTreeView(wx.Panel):
         self.clonesChoice = wx.Choice(self, wx.ID_ANY, style=0)
         i = self.clonesChoice.Append("Omega Clone", None)
         self.clonesChoice.SetSelection(i)
+        self.clonesChoice.SetForegroundColour(Frame.getForegroundColor())
         hSizer.Add(self.clonesChoice, 5, wx.ALL | wx.EXPAND, 5)
 
         self.searchInput = PlaceholderTextCtrl(self, wx.ID_ANY, placeholder="Search...")
         hSizer.Add(self.searchInput, 1, wx.ALL | wx.EXPAND, 5)
         self.searchInput.Bind(wx.EVT_TEXT, self.delaySearch)
+        self.searchInput.SetBackgroundColour(Frame.getBackgroundColorOffset())
+        self.searchInput.SetForegroundColour(Frame.getForegroundColor())
 
         sChar = Character.getInstance()
         self.alphaClones = sChar.getAlphaCloneList()
@@ -306,6 +312,8 @@ class SkillTreeView(wx.Panel):
 
         tree = self.skillTreeListCtrl = wx.gizmos.TreeListCtrl(self, wx.ID_ANY, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT)
         tree.SetFont(Fonts.getFont("font_standard"))
+        tree.SetBackgroundColour(Frame.getBackgroundColor())
+        tree.SetForegroundColour(Frame.getForegroundColor())
         pmainSizer.Add(tree, 1, wx.EXPAND | wx.ALL, 5)
 
         self.imageList = wx.ImageList(16, 16)
@@ -636,6 +644,7 @@ class APIView(wx.Panel):
         fgSizerInput.Add(self.m_staticIDText, 0, wx.ALL | wx.ALIGN_RIGHT | wx.ALIGN_CENTER_VERTICAL, 5)
 
         self.inputID = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0)
+        self.inputID.SetBackgroundColour(Frame.getBackgroundColorOffset())
         fgSizerInput.Add(self.inputID, 1, wx.ALL | wx.EXPAND, 5)
 
         self.m_staticKeyText = wx.StaticText(self, wx.ID_ANY, u"vCode:", wx.DefaultPosition, wx.DefaultSize, 0)
@@ -643,6 +652,7 @@ class APIView(wx.Panel):
         fgSizerInput.Add(self.m_staticKeyText, 0, wx.ALL | wx.ALIGN_RIGHT | wx.ALIGN_CENTER_VERTICAL, 5)
 
         self.inputKey = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0)
+        self.inputKey.SetBackgroundColour(Frame.getBackgroundColorOffset())
         fgSizerInput.Add(self.inputKey, 0, wx.ALL | wx.EXPAND, 5)
 
         self.m_staticCharText = wx.StaticText(self, wx.ID_ANY, u"Character:", wx.DefaultPosition, wx.DefaultSize, 0)
@@ -824,6 +834,10 @@ class SecStatusDialog(wx.Dialog):
 
         self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
 
+        self.SetBackgroundColour(Frame.getBackgroundColor())
+        self.SetForegroundColour(Frame.getForegroundColor())
+        self.SetFont(Fonts.getFont("font_standard"))
+
         bSizer1 = wx.BoxSizer(wx.VERTICAL)
 
         self.m_staticText1 = wx.StaticText(self, wx.ID_ANY,
@@ -833,6 +847,7 @@ class SecStatusDialog(wx.Dialog):
         bSizer1.Add(self.m_staticText1, 1, wx.ALL | wx.EXPAND, 5)
 
         self.floatSpin = FloatSpin(self, value=sec, min_val=-5.0, max_val=5.0, increment=0.1, digits=2, size=(100, -1))
+        self.floatSpin.SetBackgroundColour(Frame.getBackgroundColorOffset())
         bSizer1.Add(self.floatSpin, 0, wx.ALIGN_CENTER | wx.ALL, 5)
 
         btnOk = wx.Button(self, wx.ID_OK)

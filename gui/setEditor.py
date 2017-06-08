@@ -26,7 +26,7 @@ from gui.builtinViews.implantEditor import BaseImplantEditorView
 from gui.utils.clipboard import toClipboard, fromClipboard
 from gui.builtinViews.entityEditor import EntityEditor, BaseValidator
 from service.settings import GeneralSettings
-from gui.utils.helpers_wxPython import Frame
+from gui.utils.helpers_wxPython import Fonts, Frame
 
 pyfalog = Logger(__name__)
 
@@ -123,6 +123,10 @@ class ImplantSetEditorDlg(wx.Dialog):
             window_y *= 1.1
 
         wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title=u"Implant Set Editor", size=wx.Size(640, 600))
+
+        self.SetBackgroundColour(Frame.getBackgroundColor())
+        self.SetForegroundColour(Frame.getForegroundColor())
+        self.SetFont(Fonts.getFont("font_standard"))
 
         self.block = False
         self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)

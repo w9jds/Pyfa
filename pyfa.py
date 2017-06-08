@@ -124,8 +124,8 @@ def handleGUIException(exc_type, exc_value, exc_traceback):
 
             if wx and ErrorFrame:
                 pyfa_gui = wx.App(False)
-                if exc_type == PreCheckException:
-                    ErrorFrame(exc_value, tb, "Missing prerequisites")
+                if exc_type == PreCheckException or isinstance(exc_value, ImportError):
+                    ErrorFrame(exc_value, tb, "Missing prerequisites\nPlease import all modules from requirements.txt")
                 else:
                     ErrorFrame(exc_value, tb)
 
@@ -146,7 +146,7 @@ def handleGUIException(exc_type, exc_value, exc_traceback):
 
         if wx and ErrorFrame:
             pyfa_gui = wx.App(False)
-            if exc_type == PreCheckException:
+            if exc_type == PreCheckException or isinstance(exc_value, ImportError):
                 ErrorFrame(exc_value, tb, "Missing prerequisites")
             else:
                 ErrorFrame(exc_value, tb)

@@ -20,7 +20,7 @@ import gui.globalEvents as GE
 import gui.PFSearchBox as SBox
 from gui.marketBrowser import SearchBox
 from gui.bitmapLoader import BitmapLoader
-from gui.utils.helpers_wxPython import Fonts
+from gui.utils.helpers_wxPython import Fonts, Frame
 from service.settings import GeneralSettings
 
 pyfalog = Logger(__name__)
@@ -74,7 +74,13 @@ class AttributeEditor(wx.Frame):
                              style=wx.DOUBLE_BORDER if 'wxMSW' in wx.PlatformInfo else wx.SIMPLE_BORDER)
 
         self.searchBox = SearchBox(leftPanel)
+        self.searchBox.SetBackgroundColour(Frame.getBackgroundColorOffset())
+        self.searchBox.SetForegroundColour(Frame.getForegroundColor())
+        self.searchBox.SetFont(Fonts.getFont("font_standard"))
+
         self.itemView = ItemView(leftPanel)
+        self.itemView.SetBackgroundColour(Frame.getBackgroundColorOffset())
+        self.itemView.SetForegroundColour(Frame.getForegroundColor())
 
         leftSizer.Add(self.searchBox, 0, wx.EXPAND)
         leftSizer.Add(self.itemView, 1, wx.EXPAND)

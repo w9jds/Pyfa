@@ -291,7 +291,7 @@ class ResourcesViewFull(StatsView):
                 label.SetLabel(formatAmount(value, prec, lowest, highest))
                 label.SetToolTip(wx.ToolTip("%.1f" % value))
 
-        colorWarn = wx.Colour(204, 51, 51)
+        colorWarn = Frame.getWarningColor()
         colorNormal = Frame.getForegroundColor()
 
         if usedTurretHardpoints > totalTurretHardpoints:

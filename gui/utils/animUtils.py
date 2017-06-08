@@ -1,12 +1,13 @@
 # noinspection PyPackageRequirements
 import wx
+
 import gui.utils.colorUtils as colorUtils
 from gui.utils.helpers_wxPython import Frame
 
 
 class LoadAnimation(wx.Window):
-    def __init__(self, parent, id=wx.ID_ANY, label="", pos=wx.DefaultPosition, size=wx.DefaultSize, style=0):
-        wx.Window.__init__(self, parent, id, pos=pos, size=size, style=style)
+    def __init__(self, parent, init_id=wx.ID_ANY, label="", pos=wx.DefaultPosition, size=wx.DefaultSize, style=0):
+        wx.Window.__init__(self, parent, init_id, pos=pos, size=size, style=style)
 
         self.label = label
 
@@ -87,7 +88,7 @@ class LoadAnimation(wx.Window):
 
 class WaitDialog(wx.Dialog):
     def __init__(self, parent, title="Processing"):
-        wx.Dialog.__init__(self, parent, id=wx.ID_ANY, title=title, size=(300, 30),
+        wx.Dialog.__init__(self, parent, init_id=wx.ID_ANY, title=title, size=(300, 30),
                            style=wx.NO_BORDER)
         mainSizer = wx.BoxSizer(wx.HORIZONTAL)
 

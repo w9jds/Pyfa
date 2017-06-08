@@ -32,12 +32,15 @@ from gui.pyfatogglepanel import TogglePanel
 from gui.bitmapLoader import BitmapLoader
 
 from gui.chromeTabs import PFNotebook
+from gui.utils.helpers_wxPython import Frame
 
 
 class AdditionsPane(TogglePanel):
     def __init__(self, parent):
 
         TogglePanel.__init__(self, parent, forceLayout=1)
+        self.SetBackgroundColour(Frame.getBackgroundColor())
+        self.SetForegroundColour(Frame.getForegroundColor())
 
         self.SetLabel("Additions")
         pane = self.GetContentPane()
