@@ -25,7 +25,6 @@ from gui.pygauge import PyGauge
 from gui.utils.numberFormatter import formatAmount
 import gui.mainFrame
 import gui.globalEvents as GE
-from gui.utils.helpers_wxPython import Fonts
 
 EffectiveHpToggled, EFFECTIVE_HP_TOGGLED = wx.lib.newevent.NewEvent()
 

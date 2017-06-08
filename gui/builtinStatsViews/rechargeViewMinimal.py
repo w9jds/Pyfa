@@ -26,7 +26,6 @@ import gui.mainFrame
 from gui.builtinStatsViews.resistancesViewFull import EFFECTIVE_HP_TOGGLED as EHP_TOGGLE_FULL
 from gui.builtinStatsViews.resistancesViewMinimal import EFFECTIVE_HP_TOGGLED as EHP_TOGGLE_MINIMAL
 from service.fit import Fit
-from gui.utils.helpers_wxPython import Fonts
 
 
 class RechargeViewMinimal(StatsView):

@@ -20,7 +20,6 @@
 import gui.builtinViews.emptyView
 from gui.chromeTabs import PFNotebook
 from gui.utils.helpers_wxPython import Frame
-import wx
 
 
 class MultiSwitch(PFNotebook):
