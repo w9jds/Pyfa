@@ -11,6 +11,9 @@
 #  pathex=['C:\\Users\\Ebag333\\Documents\\GitHub\\Ebag333\\Pyfa'],
 
 import os
+import sys
+
+sys.path.append(os.path.realpath(os.getcwd()))
 
 block_cipher = None
 
@@ -38,6 +41,11 @@ for root, folders, files in os.walk("eos/effects"):
             )
             import_these.append(mod_name)
 
+excluded_modules = [
+    'setup',
+    'setup-osx',
+]
+
 a = Analysis(
              ['pyfa.py'],
              pathex=['$TRAVIS_BUILD_DIR'],
@@ -46,7 +54,7 @@ a = Analysis(
              hiddenimports=import_these,
              hookspath=[],
              runtime_hooks=[],
-             excludes=[],
+             excludes=excluded_modules,
              win_no_prefer_redirects=False,
              win_private_assemblies=False,
              cipher=block_cipher,
@@ -64,7 +72,7 @@ exe = EXE(pyz,
           debug=False,
           console=False,
           strip=False,
-          upx=True,
+          upx=False,
           name='pyfa',
           icon='dist_assets/mac/pyfa.icns',
           onefile=False,
@@ -76,7 +84,7 @@ coll = COLLECT(
                a.zipfiles,
                a.datas,
                strip=False,
-               upx=True,
+               upx=False,
                onefile=False,
                name='pyfa',
                icon='dist_assets/mac/pyfa.icns',
