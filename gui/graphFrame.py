@@ -30,7 +30,7 @@ import gui.globalEvents as GE
 from gui.graph import Graph
 from gui.bitmapLoader import BitmapLoader
 import traceback
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts, Frame
 from service.settings import GeneralSettings
 
 pyfalog = Logger(__name__)
@@ -116,6 +116,8 @@ class GraphFrame(wx.Frame):
         i = wx.IconFromBitmap(BitmapLoader.getBitmap("graphs_small", "gui"))
         self.SetIcon(i)
         self.SetFont(Fonts.getFont("font_standard"))
+        self.SetBackgroundColour(Frame.getBackgroundColor())
+        self.SetForegroundColour(Frame.getForegroundColor())
         self.mainFrame = gui.mainFrame.MainFrame.getInstance()
         self.CreateStatusBar()
 
@@ -135,13 +137,12 @@ class GraphFrame(wx.Frame):
 
         self.figure = Figure(figsize=(4, 3))
 
-        rgbtuple = wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE).Get()
-        clr = [c / 255. for c in rgbtuple]
+        clr = [c / 255. for c in wx.LIGHT_GREY]
         self.figure.set_facecolor(clr)
         self.figure.set_edgecolor(clr)
 
         self.canvas = Canvas(self, -1, self.figure)
-        self.canvas.SetBackgroundColour(wx.Colour(*rgbtuple))
+        self.canvas.SetBackgroundColour(Frame.getBackgroundColorOffset())
 
         self.subplot = self.figure.add_subplot(111)
         self.subplot.grid(True)
@@ -234,8 +235,9 @@ class GraphFrame(wx.Frame):
             else:
                 label = field
 
-            imgLabelSizer.Add(wx.StaticText(self.gridPanel, wx.ID_ANY, label), 0,
-                              wx.LEFT | wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, 3)
+            labelText = wx.StaticText(self.gridPanel, wx.ID_ANY, label)
+            labelText.SetForegroundColour(Frame.getForegroundColor())
+            imgLabelSizer.Add(labelText, 0, wx.LEFT | wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, 3)
             sizer.Add(imgLabelSizer, 0, wx.ALIGN_CENTER_VERTICAL)
         self.draw()
 

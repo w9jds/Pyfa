@@ -24,6 +24,7 @@ from gui.statsView import StatsView
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from service.fit import Fit
+from gui.utils.helpers_wxPython import Fonts
 
 
 class FirepowerViewFull(StatsView):
@@ -74,7 +75,7 @@ class FirepowerViewFull(StatsView):
             hbox = wx.BoxSizer(wx.HORIZONTAL)
             box.Add(hbox, 1, wx.ALIGN_CENTER)
 
-            lbl = wx.StaticText(parent, wx.ID_ANY, "0.0 DPS")
+            lbl = wx.StaticText(parent, wx.ID_ANY, "0 DPS")
             setattr(self, "label%sDps%s" % (panel.capitalize(), damageType.capitalize()), lbl)
 
             hbox.Add(lbl, 0, wx.ALIGN_CENTER)
@@ -91,14 +92,14 @@ class FirepowerViewFull(StatsView):
 
         baseBox.Add(gridS, 0)
 
-        lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
+        lbl = wx.StaticText(parent, wx.ID_ANY, "0")
         setattr(self, "label%sVolleyTotal" % panel.capitalize(), lbl)
         gridS.Add(wx.StaticText(parent, wx.ID_ANY, " Volley: "), 0, wx.ALL | wx.ALIGN_RIGHT)
         gridS.Add(lbl, 0, wx.ALIGN_LEFT)
 
         self._cachedValues.append(0)
 
-        lbl = wx.StaticText(parent, wx.ID_ANY, "0.0")
+        lbl = wx.StaticText(parent, wx.ID_ANY, "0")
         setattr(self, "label%sDpsTotal" % panel.capitalize(), lbl)
         gridS.Add(wx.StaticText(parent, wx.ID_ANY, " DPS: "), 0, wx.ALL | wx.ALIGN_RIGHT)
 
@@ -164,7 +165,11 @@ class FirepowerViewFull(StatsView):
             value = value() if fit is not None else 0
             value = value if value is not None else 0
             if self._cachedValues[counter] != value:
-                valueStr = formatAmount(value, prec, lowest, highest)
+                if 10 < Fonts.getFont("font_standard"):
+                    valueStr = formatAmount(value, 1, lowest, highest)
+                else:
+                    valueStr = formatAmount(value, prec, lowest, highest)
+
                 label.SetLabel(valueFormat % valueStr)
                 tipStr = valueFormat % valueStr if altFormat is None else altFormat % value
                 label.SetToolTip(wx.ToolTip(tipStr))

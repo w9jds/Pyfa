@@ -26,6 +26,7 @@ import gui.mainFrame
 from gui.builtinStatsViews.resistancesViewFull import EFFECTIVE_HP_TOGGLED as EHP_TOGGLE_FULL
 from gui.builtinStatsViews.resistancesViewMinimal import EFFECTIVE_HP_TOGGLED as EHP_TOGGLE_MINIMAL
 from service.fit import Fit
+from gui.utils.helpers_wxPython import Fonts
 
 
 class RechargeViewFull(StatsView):
@@ -127,14 +128,24 @@ class RechargeViewFull(StatsView):
                 unitlbl = getattr(self, "unitLabelTank%s%sActive" % (stability.capitalize(), name.capitalize()))
                 unitlbl.SetLabel(unit)
                 if tank is not None:
-                    lbl.SetLabel("%.1f" % tank["%sRepair" % name])
+                    # Too large of a font will cause issuses with size and fit, so don't display extra info
+                    if 10 < Fonts.getFont("font_standard"):
+                        lbl.SetLabel("%i" % tank["%sRepair" % name])
+                    else:
+                        lbl.SetLabel("%.1f" % tank["%sRepair" % name])
                 else:
-                    lbl.SetLabel("0.0")
+                    lbl.SetLabel("0")
 
         if fit is not None:
             label = getattr(self, "labelTankReinforcedShieldPassive")
             value = fit.effectiveTank["passiveShield"] if self.effective else fit.tank["passiveShield"]
-            label.SetLabel(formatAmount(value, 3, 0, 9))
+
+            # Too large of a font will cause issuses with size and fit, so don't display extra info
+            if 10 < Fonts.getFont("font_standard"):
+                label.SetLabel(formatAmount(value, 1, 0, 9))
+            else:
+                label.SetLabel(formatAmount(value, 3, 0, 9))
+
             unitlbl = getattr(self, "unitLabelTankReinforcedShieldPassive")
             unitlbl.SetLabel(unit)
 

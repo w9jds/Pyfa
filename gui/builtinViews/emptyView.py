@@ -1,8 +1,10 @@
 # noinspection PyPackageRequirements
 import wx
+
 import gui.globalEvents as GE
-from gui.chromeTabs import EVT_NOTEBOOK_PAGE_CHANGED
 import gui.mainFrame
+from gui.chromeTabs import EVT_NOTEBOOK_PAGE_CHANGED
+from gui.utils.helpers_wxPython import Frame
 
 
 class BlankPage(wx.Panel):
@@ -13,7 +15,7 @@ class BlankPage(wx.Panel):
         self.parent = parent
 
         self.parent.Bind(EVT_NOTEBOOK_PAGE_CHANGED, self.pageChanged)
-        self.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
+        self.SetBackgroundColour(Frame.getBackgroundColor())
 
         wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=None))
 
@@ -24,8 +26,6 @@ class BlankPage(wx.Panel):
     def pageChanged(self, event):
         if self.parent.IsActive(self):
             fitID = None
-            # sFit = Fit.getInstance()
-            # sFit.switchFit(fitID)
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
         event.Skip()

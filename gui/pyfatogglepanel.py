@@ -24,7 +24,7 @@
 # noinspection PyPackageRequirements
 import wx
 from gui.bitmapLoader import BitmapLoader
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts, Frame
 
 
 class TogglePanel(wx.Panel):
@@ -35,7 +35,8 @@ class TogglePanel(wx.Panel):
         self._toggle = 1
         self.parent = parent
         self.forceLayout = forceLayout
-        self.bkColour = self.GetBackgroundColour()
+        # self.bkColour = self.GetBackgroundColour()
+        self.bkColour = Frame.getBackgroundColor()
 
         # Create the main sizer of this panel
         self.mainSizer = wx.BoxSizer(wx.VERTICAL)
@@ -51,7 +52,8 @@ class TogglePanel(wx.Panel):
         self.bmpCollapsed = BitmapLoader.getBitmap("up-arrow2", "gui")
 
         # Make the bitmaps have the same color as window text
-        sysTextColour = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)
+        # sysTextColour = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)
+        sysTextColour = Frame.getForegroundColor()
 
         img = self.bmpExpanded.ConvertToImage()
         img.Replace(0, 0, 0, sysTextColour[0], sysTextColour[1], sysTextColour[2])
@@ -76,6 +78,7 @@ class TogglePanel(wx.Panel):
         hbmpSizer.Add(self.headerBmp, 0, 0, 5)
 
         self.headerLabel = wx.StaticText(self.headerPanel, wx.ID_ANY, u"PYFA", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.headerLabel.SetForegroundColour(Frame.getForegroundColor())
         hlblSizer.Add(self.headerLabel, 0, wx.EXPAND, 5)
 
         headerSizer.Add(hbmpSizer, 0, wx.RIGHT, 5)

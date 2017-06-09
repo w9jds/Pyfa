@@ -248,7 +248,7 @@ class FloatTextCtrl(wx.TextCtrl):
     of :class:`FloatSpin`.
     """
 
-    def __init__(self, parent, id=wx.ID_ANY, value="", pos=wx.DefaultPosition,
+    def __init__(self, parent, init_id=wx.ID_ANY, value="", pos=wx.DefaultPosition,
                  size=wx.DefaultSize, style=wx.TE_NOHIDESEL | wx.TE_PROCESS_ENTER,
                  validator=wx.DefaultValidator,
                  name=wx.TextCtrlNameStr):
@@ -257,7 +257,7 @@ class FloatTextCtrl(wx.TextCtrl):
         Used internally. Do not call directly this class in your code!
 
         :param parent: the :class:`FloatTextCtrl` parent;
-        :param id: an identifier for the control: a value of -1 is taken to mean a default;
+        :param init_id: an identifier for the control: a value of -1 is taken to mean a default;
         :param value: default text value;
         :param pos: the control position. A value of (-1, -1) indicates a default position,
          chosen by either the windowing system or wxPython, depending on platform;
@@ -269,7 +269,7 @@ class FloatTextCtrl(wx.TextCtrl):
 
         """
 
-        wx.TextCtrl.__init__(self, parent, id, value, pos, size, style, validator, name)
+        wx.TextCtrl.__init__(self, parent, init_id, value, pos, size, style, validator, name)
 
         self._parent = parent
         self.Bind(wx.EVT_WINDOW_DESTROY, self.OnDestroy)
@@ -329,7 +329,7 @@ class FloatSpin(wx.PyControl):
     from Tim Peters.
     """
 
-    def __init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition,
+    def __init__(self, parent, init_id=wx.ID_ANY, pos=wx.DefaultPosition,
                  size=(95, -1), style=0, value=0.0, min_val=None, max_val=None,
                  increment=1.0, digits=-1, agwStyle=FS_LEFT,
                  name="FloatSpin"):
@@ -337,7 +337,7 @@ class FloatSpin(wx.PyControl):
         Default class constructor.
 
         :param parent: the :class:`FloatSpin` parent;
-        :param id: an identifier for the control: a value of -1 is taken to mean a default;
+        :param init_id: an identifier for the control: a value of -1 is taken to mean a default;
         :param pos: the control position. A value of (-1, -1) indicates a default position,
          chosen by either the windowing system or wxPython, depending on platform;
         :param size: the control size. A value of (-1, -1) indicates a default size,
@@ -363,7 +363,7 @@ class FloatSpin(wx.PyControl):
 
         """
 
-        wx.PyControl.__init__(self, parent, id, pos, size, style | wx.NO_BORDER |
+        wx.PyControl.__init__(self, parent, init_id, pos, size, style | wx.NO_BORDER |
                               wx.NO_FULL_REPAINT_ON_RESIZE | wx.CLIP_CHILDREN,
                               wx.DefaultValidator, name)
 

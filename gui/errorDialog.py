@@ -19,11 +19,12 @@
 
 import platform
 import sys
-from gui.utils.fonts import Fonts
-from service.settings import GeneralSettings
 
 # noinspection PyPackageRequirements
 import wx
+
+from gui.utils.helpers_wxPython import Fonts, Frame
+from service.settings import GeneralSettings
 
 try:
     import config
@@ -69,9 +70,8 @@ class ErrorFrame(wx.Frame):
 
         self.SetFont(Fonts.getFont("font_standard"))
         self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
-
-        if 'wxMSW' in wx.PlatformInfo:
-            self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
+        self.SetBackgroundColour(Frame.getBackgroundColor())
+        self.SetForegroundColour(Frame.getForegroundColor())
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         headSizer = wx.BoxSizer(wx.HORIZONTAL)

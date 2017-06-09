@@ -22,7 +22,7 @@ import wx
 # noinspection PyPackageRequirements
 import dateutil.parser
 from service.settings import UpdateSettings as svc_UpdateSettings
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts, Frame
 
 
 class UpdateDialog(wx.Dialog):
@@ -54,7 +54,7 @@ class UpdateDialog(wx.Dialog):
         if self.releaseInfo['prerelease']:
             self.releaseText = wx.StaticText(self, wx.ID_ANY, "Pre-release:", wx.DefaultPosition, wx.DefaultSize,
                                              wx.ALIGN_RIGHT)
-            self.releaseText.SetForegroundColour(wx.Colour(230, 0, 0))
+            self.releaseText.SetForegroundColour(Frame.getWarningColor())
         else:
             self.releaseText = wx.StaticText(self, wx.ID_ANY, "Stable:", wx.DefaultPosition, wx.DefaultSize,
                                              wx.ALIGN_RIGHT)

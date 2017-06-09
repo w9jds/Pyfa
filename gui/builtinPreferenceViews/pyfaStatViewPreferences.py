@@ -4,7 +4,7 @@ import wx
 from gui.preferenceView import PreferenceView
 from gui.bitmapLoader import BitmapLoader
 from service.settings import StatViewSettings
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts
 
 
 class PFStatViewPref(PreferenceView):

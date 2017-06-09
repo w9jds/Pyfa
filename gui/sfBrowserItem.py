@@ -2,6 +2,7 @@
 import wx
 from wx._core import PyDeadObjectError
 import gui.utils.drawUtils as drawUtils
+from gui.utils.helpers_wxPython import Frame
 
 SB_ITEM_NORMAL = 0
 SB_ITEM_SELECTED = 1
@@ -388,7 +389,7 @@ class SFBrowserItem(wx.Window):
     def RenderBackground(self):
         rect = self.GetRect()
 
-        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
+        windowColor = Frame.getBackgroundColor()
 
         state = self.GetState()
 

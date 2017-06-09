@@ -3,6 +3,7 @@ import wx
 
 __all__ = [
     "pyfaGeneralPreferences",
+    "pyfaGeneral2Preferences",
     "pyfaHTMLExportPreferences",
     "pyfaUpdatePreferences",
     "pyfaNetworkPreferences",

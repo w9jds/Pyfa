@@ -1,6 +1,7 @@
 # noinspection PyPackageRequirements
-import wx
 import math
+
+import wx
 
 
 def BrightenColor(color, factor):

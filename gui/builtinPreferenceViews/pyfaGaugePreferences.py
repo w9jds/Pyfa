@@ -2,14 +2,16 @@
 # -*- coding: utf-8 -*-
 
 
-# noinspection PyPackageRequirements
-import wx
 import copy
 
-from gui.preferenceView import PreferenceView
-from gui.bitmapLoader import BitmapLoader
-from gui.utils import colorUtils
+# noinspection PyPackageRequirements
+import wx
+
 import gui.utils.drawUtils as drawUtils
+from gui.bitmapLoader import BitmapLoader
+from gui.preferenceView import PreferenceView
+from gui.utils import colorUtils
+from gui.utils.helpers_wxPython import Fonts
 
 
 ###########################################################################
@@ -37,8 +39,6 @@ class PFGaugePreview(wx.Window):
 
         self.bkColor = wx.Colour(0, 0, 0, 255)
         self.SetMinSize((100, -1))
-
-        self.font = wx.FontFromPixelSize((0, 13), wx.SWISS, wx.NORMAL, wx.NORMAL, False)
 
         self.timerID = wx.NewId()
         self.timer = wx.Timer(self, self.timerID)
@@ -132,7 +132,7 @@ class PFGaugePreview(wx.Window):
 
         gBmp = drawUtils.DrawGradientBar(r.width, r.height, gMid, color, gcolor)
         dc.DrawBitmap(gBmp, 0, 0)
-        dc.SetFont(self.font)
+        self.SetFont(Fonts.getFont("font_standard"))
 
         r = copy.copy(rect)
         r.left += 1

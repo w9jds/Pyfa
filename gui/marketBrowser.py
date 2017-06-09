@@ -27,9 +27,8 @@ from gui.cachingImageList import CachingImageList
 from gui.contextMenu import ContextMenu
 from gui.bitmapLoader import BitmapLoader
 from logbook import Logger
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts, DragDropHelper, Frame
 from service.settings import GeneralSettings
-from utils.staticHelpers import DragDropHelper
 
 pyfalog = Logger(__name__)
 
@@ -64,6 +63,8 @@ class MarketBrowser(wx.Panel):
         wx.Panel.__init__(self, parent)
 
         self.SetFont(Fonts.getFont("font_standard"))
+        self.SetBackgroundColour(Frame.getBackgroundColor())
+        self.SetForegroundColour(Frame.getForegroundColor())
         pyfalog.debug("Initialize marketBrowser")
         vbox = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(vbox)
@@ -143,6 +144,10 @@ class SearchBox(SBox.PFSearchBox):
 class MarketTree(wx.TreeCtrl):
     def __init__(self, parent, marketBrowser):
         wx.TreeCtrl.__init__(self, parent, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT)
+
+        self.SetFont(Fonts.getFont("font_standard"))
+        self.SetBackgroundColour(Frame.getBackgroundColor())
+        self.SetForegroundColour(Frame.getForegroundColor())
         pyfalog.debug("Initialize marketTree")
         self.root = self.AddRoot("root")
 

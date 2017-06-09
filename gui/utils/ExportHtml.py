@@ -1,40 +1,42 @@
 import threading
 import time
+
 # noinspection PyPackageRequirements
 import wx
-from service.settings import HTMLExportSettings
-from service.fit import Fit
-from service.port import Port
-from service.market import Market
 from logbook import Logger
+
 from eos.db import getFit
+from service.fit import Fit
+from service.market import Market
+from service.port import Port
+from service.settings import HTMLExportSettings
 
 pyfalog = Logger(__name__)
 
 
-class exportHtml(object):
+class ExportHtml(object):
     _instance = None
 
     @classmethod
     def getInstance(cls):
         if cls._instance is None:
-            cls._instance = exportHtml()
+            cls._instance = ExportHtml()
 
         return cls._instance
 
     def __init__(self):
-        self.thread = exportHtmlThread()
+        self.thread = ExportHtmlThread()
 
     def refreshFittingHtml(self, force=False, callback=False):
         settings = HTMLExportSettings.getInstance()
 
         if force or settings.getEnabled():
             self.thread.stop()
-            self.thread = exportHtmlThread(callback)
+            self.thread = ExportHtmlThread(callback)
             self.thread.start()
 
 
-class exportHtmlThread(threading.Thread):
+class ExportHtmlThread(threading.Thread):
     def __init__(self, callback=False):
         threading.Thread.__init__(self)
         self.name = "HTMLExport"
@@ -202,7 +204,7 @@ class exportHtmlThread(threading.Thread):
                                          fit[1] + '</a></li>\n'
                         except:
                             pyfalog.warning("Failed to export line")
-                            pass
+                            continue
                         finally:
                             if self.callback:
                                 wx.CallAfter(self.callback, count)

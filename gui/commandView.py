@@ -26,7 +26,7 @@ import gui.droneView
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 from gui.builtinContextMenus.commandFits import CommandFits
-from gui.utils.staticHelpers import DragDropHelper
+from gui.utils.helpers_wxPython import DragDropHelper
 from service.fit import Fit
 from eos.saveddata.drone import Drone as es_Drone
 

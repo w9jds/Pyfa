@@ -35,12 +35,10 @@ from gui.bitmapLoader import BitmapLoader
 import gui.builtinViews.emptyView
 from logbook import Logger
 from gui.chromeTabs import EVT_NOTEBOOK_PAGE_CHANGED
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts, DragDropHelper, Frame
 
 from service.fit import Fit
 from service.market import Market
-
-from gui.utils.staticHelpers import DragDropHelper
 
 import gui.globalEvents as GE
 
@@ -645,7 +643,7 @@ class FittingView(d.Display):
     }
 
     def slotColour(self, slot):
-        return self.slotColourMap.get(slot) or self.GetBackgroundColour()
+        return self.slotColourMap.get(slot) or Frame.getBackgroundColor()
 
     def refresh(self, stuff):
         """
@@ -667,12 +665,13 @@ class FittingView(d.Display):
             slotMap[slot] = fit.getSlotsFree(slot) < 0
 
         for i, mod in enumerate(self.mods):
-            self.SetItemBackgroundColour(i, self.GetBackgroundColour())
+            # self.SetItemBackgroundColour(i, self.GetBackgroundColour())
+            self.SetItemBackgroundColour(i, Frame.getBackgroundColor())
 
             #  only consider changing color if we're dealing with a Module
             if isinstance(mod, Module):
                 if slotMap[mod.slot]:  # Color too many modules as red
-                    self.SetItemBackgroundColour(i, wx.Colour(204, 51, 51))
+                    self.SetItemBackgroundColour(i, Frame.getWarningColor())
                 elif sFit.serviceFittingOptions["colorFitBySlot"]:  # Color by slot it enabled
                     self.SetItemBackgroundColour(i, self.slotColour(mod.slot))
 
@@ -811,11 +810,11 @@ class FittingView(d.Display):
 
         mdc.SelectObject(mbmp)
 
-        mdc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)))
+        mdc.SetBackground(wx.Brush(Frame.getBackgroundColor()))
         mdc.Clear()
 
         mdc.SetFont(Fonts.getFont("font_standard"))
-        mdc.SetTextForeground(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT))
+        mdc.SetTextForeground(Frame.getForegroundColor())
 
         cx = padding
         for i, col in enumerate(self.activeColumns):
@@ -841,8 +840,8 @@ class FittingView(d.Display):
 
             cx += columnsWidths[i]
 
-        brush = wx.Brush(wx.Colour(224, 51, 51))
-        pen = wx.Pen(wx.Colour(224, 51, 51))
+        brush = wx.Brush(Frame.getWarningColor())
+        pen = wx.Pen(Frame.getWarningColor())
 
         mdc.SetPen(pen)
         mdc.SetBrush(brush)

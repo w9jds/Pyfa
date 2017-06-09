@@ -533,7 +533,7 @@ class Market(object):
     def getMarketGroupByItem(self, item, parentcheck=True):
         """Get market group by item, its ID or name"""
         # Check if we force market group for given item
-        pyfalog.debug("Getting market group for item: {0}", repr(item))
+        pyfalog.debug(u"Getting market group for {0} ({1})", item.name, item.ID)
         if item.name in self.ITEMS_FORCEDMARKETGROUP:
             mgid = self.ITEMS_FORCEDMARKETGROUP[item.name]
             return self.getMarketGroup(mgid)

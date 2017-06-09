@@ -29,7 +29,7 @@ from gui.statsView import StatsView
 from gui.contextMenu import ContextMenu
 from gui.pyfatogglepanel import TogglePanel
 from logbook import Logger
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts, Frame
 
 pyfalog = Logger(__name__)
 
@@ -94,6 +94,7 @@ class StatsPane(wx.Panel):
             tp = TogglePanel(self)
             contentPanel = tp.GetContentPane()
             contentPanel.viewName = viewName
+            contentPanel.SetForegroundColour(Frame.getForegroundColor())
 
             try:
                 view = StatsView.getView(viewName)(self)
@@ -105,6 +106,7 @@ class StatsPane(wx.Panel):
             self.views.append(view)
 
             headerPanel = tp.GetHeaderPanel()
+            headerPanel.SetForegroundColour(Frame.getForegroundColor())
 
             view.populatePanel(contentPanel, headerPanel)
             tp.SetLabel(view.getHeaderText(None))

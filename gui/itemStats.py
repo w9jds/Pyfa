@@ -48,7 +48,7 @@ import gui.mainFrame
 from gui.bitmapLoader import BitmapLoader
 from gui.utils.numberFormatter import formatAmount
 from gui.contextMenu import ContextMenu
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts, Frame
 
 
 class ItemStatsDialog(wx.Dialog):
@@ -75,6 +75,8 @@ class ItemStatsDialog(wx.Dialog):
 
         # Set the font size used on the stats pane
         self.SetFont(Fonts.getFont("font_standard"))
+        self.SetBackgroundColour(Frame.getBackgroundColor())
+        self.SetForegroundColour(Frame.getForegroundColor())
 
         empty = getattr(victim, "isEmpty", False)
 
@@ -106,11 +108,8 @@ class ItemStatsDialog(wx.Dialog):
         self.SetTitle("%s: %s%s" % ("%s Stats" % itmContext if itmContext is not None else "Stats", item.name,
                                     " (%d)" % item.ID if config.debug else ""))
 
-        self.SetMinSize((300, 200))
-        if "wxGTK" in wx.PlatformInfo:  # GTK has huge tab widgets, give it a bit more room
-            self.SetSize((580, 500))
-        else:
-            self.SetSize((550, 500))
+        self.SetMinSize((400, 300))
+        self.SetSize((750, 600))
         # self.SetMaxSize((500, -1))
         self.mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.container = ItemStatsContainer(self, victim, item, itmContext)
@@ -171,6 +170,8 @@ class ItemStatsContainer(wx.Panel):
     def __init__(self, parent, stuff, item, context=None):
         wx.Panel.__init__(self, parent)
         self.SetFont(Fonts.getFont("font_standard"))
+        self.SetBackgroundColour(Frame.getBackgroundColor())
+        self.SetForegroundColour(Frame.getForegroundColor())
 
         sMkt = Market.getInstance()
 
@@ -243,12 +244,16 @@ class ItemTraits(wx.Panel):
         wx.Panel.__init__(self, parent)
 
         self.SetFont(Fonts.getFont("font_standard"))
+        self.SetBackgroundColour(Frame.getBackgroundColor())
+        self.SetForegroundColour(Frame.getForegroundColor())
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(mainSizer)
 
         self.traits = wx.html.HtmlWindow(self)
         self.traits.SetPage(item.traits.traitText)
+        self.traits.SetBackgroundColour(Frame.getBackgroundColorOffset())
+        self.traits.SetForegroundColour(Frame.getForegroundColor())
 
         mainSizer.Add(self.traits, 1, wx.ALL | wx.EXPAND, 0)
         self.Layout()
@@ -258,10 +263,12 @@ class ItemDescription(wx.Panel):
     def __init__(self, parent, stuff, item):
         wx.Panel.__init__(self, parent)
         self.SetFont(Fonts.getFont("font_standard"))
+        self.SetBackgroundColour(Frame.getBackgroundColor())
+        self.SetForegroundColour(Frame.getForegroundColor())
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(mainSizer)
-        bgcolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
-        fgcolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)
+        bgcolor = Frame.getBackgroundColorOffset()
+        fgcolor = Frame.getForegroundColor()
 
         self.description = wx.html.HtmlWindow(self)
 
@@ -286,6 +293,8 @@ class ItemParams(wx.Panel):
     def __init__(self, parent, stuff, item, context=None):
         wx.Panel.__init__(self, parent)
         self.SetFont(Fonts.getFont("font_standard"))
+        self.SetBackgroundColour(Frame.getBackgroundColor())
+        self.SetForegroundColour(Frame.getForegroundColor())
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -758,6 +767,8 @@ class ItemRequirements(wx.Panel):
         self.SetSizer(mainSizer)
         self.root = self.reqTree.AddRoot("WINRARZOR")
         self.reqTree.SetPyData(self.root, None)
+        self.reqTree.SetBackgroundColour(Frame.getBackgroundColorOffset())
+        self.reqTree.SetForegroundColour(Frame.getForegroundColor())
 
         self.imageList = wx.ImageList(16, 16)
         self.reqTree.SetImageList(self.imageList)

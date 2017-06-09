@@ -10,7 +10,7 @@ from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
 from service.settings import DatabaseSettings
 from service.esi import esiItems, esiDogma
 import sys
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts
 
 import logging
 
@@ -18,6 +18,9 @@ logger = logging.getLogger(__name__)
 
 
 class PFDatabasePref(PreferenceView):
+    def refreshPanel(self, fit):
+        pass
+
     title = "Database"
 
     def __init__(self):
@@ -33,7 +36,7 @@ class PFDatabasePref(PreferenceView):
         self.stTitle.SetFont(Fonts.getFont("font_title_plus_one"))
         mainSizer.Add(self.stTitle, 0, wx.ALL, 5)
 
-        self.stSubTitle = wx.StaticText(panel, wx.ID_ANY, u"(Cannot be changed while pyfa is running. Set via command line switches.)",
+        self.stSubTitle = wx.StaticText(panel, wx.ID_ANY, u"Cannot be changed while pyfa is running. Set via command line switches.",
                                         wx.DefaultPosition, wx.DefaultSize, 0)
         self.stSubTitle.Wrap(-1)
         mainSizer.Add(self.stSubTitle, 0, wx.ALL, 3)
@@ -85,18 +88,17 @@ class PFDatabasePref(PreferenceView):
         mainSizer.Add(self.m_staticline2, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
         self.stSubTitleTwo = wx.StaticText(panel, wx.ID_ANY, u"DANGER ZONE!\nUsing these options will permanantly delete data out of the database.",
-                                        wx.DefaultPosition, wx.DefaultSize, 0)
+                                           wx.DefaultPosition, wx.DefaultSize, 0)
         self.stSubTitleTwo.Wrap(-1)
         mainSizer.Add(self.stSubTitleTwo, 0, wx.ALL, 3)
 
         self.m_staticline3 = wx.StaticLine(panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
         mainSizer.Add(self.m_staticline3, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
-        btnSizer = wx.BoxSizer(wx.VERTICAL)
-        btnSizer.AddSpacer((0, 0), 1, wx.EXPAND, 5)
+        btnSizer = wx.BoxSizer(wx.HORIZONTAL | wx.ALIGN_LEFT)
 
         self.btnDeleteDamagePatterns = wx.Button(panel, wx.ID_ANY, u"Delete All Damage Pattern Profiles", wx.DefaultPosition, wx.DefaultSize, 0)
-        btnSizer.Add(self.btnDeleteDamagePatterns, 0, wx.ALL, 5)
+        btnSizer.Add(self.btnDeleteDamagePatterns, 0, wx.ALL | wx.ALIGN_LEFT, 5)
 
         self.btnDeleteTargetResists = wx.Button(panel, wx.ID_ANY, u"Delete All Target Resist Profiles", wx.DefaultPosition, wx.DefaultSize, 0)
         btnSizer.Add(self.btnDeleteTargetResists, 0, wx.ALL, 5)
@@ -104,7 +106,7 @@ class PFDatabasePref(PreferenceView):
         self.btnPrices = wx.Button(panel, wx.ID_ANY, u"Delete All Prices", wx.DefaultPosition, wx.DefaultSize, 0)
         btnSizer.Add(self.btnPrices, 0, wx.ALL, 5)
 
-        mainSizer.Add(btnSizer, 0, wx.EXPAND, 5)
+        mainSizer.Add(btnSizer, 0, wx.EXPAND | wx.ALIGN_LEFT, 5)
 
         self.btnDeleteDamagePatterns.Bind(wx.EVT_BUTTON, self.DeleteDamagePatterns)
         self.btnDeleteTargetResists.Bind(wx.EVT_BUTTON, self.DeleteTargetResists)
@@ -115,7 +117,7 @@ class PFDatabasePref(PreferenceView):
 
         self.stSubTitleTwo = wx.StaticText(panel, wx.ID_ANY, u"Update Game Data Database\n"
                                                              u"Enabling these options will increase the length of time it takes to update.",
-                                        wx.DefaultPosition, wx.DefaultSize, 0)
+                                           wx.DefaultPosition, wx.DefaultSize, 0)
         self.stSubTitleTwo.Wrap(-1)
         mainSizer.Add(self.stSubTitleTwo, 0, wx.ALL, 3)
 
@@ -126,11 +128,11 @@ class PFDatabasePref(PreferenceView):
         mainSizer.Add(self.btnUpdateDatabase, 0, wx.ALL, 5)
 
         self.cbImportItemsNotInMarketGroups = wx.CheckBox(panel, wx.ID_ANY, u"Import items not in market groups.",
-                                                    wx.DefaultPosition, wx.DefaultSize, 0)
+                                                          wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbImportItemsNotInMarketGroups, 0, wx.ALL | wx.EXPAND, 5)
 
         self.cbImportItemsNotPublished = wx.CheckBox(panel, wx.ID_ANY, u"Import items that are not published.",
-                                                    wx.DefaultPosition, wx.DefaultSize, 0)
+                                                     wx.DefaultPosition, wx.DefaultSize, 0)
         mainSizer.Add(self.cbImportItemsNotPublished, 0, wx.ALL | wx.EXPAND, 5)
 
         delayTimer = wx.BoxSizer(wx.HORIZONTAL)
@@ -138,7 +140,7 @@ class PFDatabasePref(PreferenceView):
         self.stUpdateThreads = wx.StaticText(panel, wx.ID_ANY, u"Threads to use when updating the database:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.stUpdateThreads.Wrap(-1)
         self.stUpdateThreads.SetToolTip(
-            wx.ToolTip('More threads may speed up updating the database, but typically little gain is seen above 25.'))
+                wx.ToolTip('More threads may speed up updating the database, but typically little gain is seen above 25.'))
 
         delayTimer.Add(self.stUpdateThreads, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
 
