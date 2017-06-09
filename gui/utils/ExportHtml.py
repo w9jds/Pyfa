@@ -204,7 +204,7 @@ class ExportHtmlThread(threading.Thread):
                                          fit[1] + '</a></li>\n'
                         except:
                             pyfalog.warning("Failed to export line")
-                            pass
+                            continue
                         finally:
                             if self.callback:
                                 wx.CallAfter(self.callback, count)
