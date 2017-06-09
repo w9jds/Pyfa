@@ -1,5 +1,6 @@
 # noinspection PyPackageRequirements
 import wx
+
 import gui.utils.colorUtils as colorUtils
 
 

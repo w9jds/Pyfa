@@ -8,3 +8,5 @@ tornado
 
 # Windows specific
 pypiwin32 >= 219; sys_platform == 'win'
+
+# OS X specific

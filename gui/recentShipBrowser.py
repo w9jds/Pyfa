@@ -5,23 +5,23 @@ import time
 
 # noinspection PyPackageRequirements
 import wx
+from logbook import Logger
 # noinspection PyPackageRequirements
 from wx.lib.buttons import GenBitmapButton
 
-from service.fit import Fit
-from service.market import Market
-import gui.mainFrame
 import gui.globalEvents as GE
+import gui.mainFrame
 import gui.sfBrowserItem as SFItem
+import gui.utils.animEffects as animEffects
+import gui.utils.animUtils as animUtils
 import gui.utils.colorUtils as colorUtils
 import gui.utils.drawUtils as drawUtils
-import gui.utils.animUtils as animUtils
-import gui.utils.animEffects as animEffects
 from gui.PFListPane import PFListPane
-from gui.contextMenu import ContextMenu
 from gui.bitmapLoader import BitmapLoader
-from logbook import Logger
-from gui.utils.fonts import Fonts
+from gui.contextMenu import ContextMenu
+from gui.utils.helpers_wxPython import Fonts, Frame
+from service.fit import Fit
+from service.market import Market
 
 pyfalog = Logger(__name__)
 
@@ -104,7 +104,7 @@ class RaceSelector(wx.Window):
 
         # Make the bitmaps have the same color as window text
 
-        sysTextColour = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)
+        sysTextColour = Frame.getForegroundColor()
 
         img = self.bmpArrow.ConvertToImage()
         if layout == wx.VERTICAL:
@@ -203,8 +203,7 @@ class RaceSelector(wx.Window):
     def OnPaint(self, event):
         rect = self.GetRect()
 
-        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
-        # bkColor = colorUtils.GetSuitableColor(windowColor, 0.1)
+        windowColor = Frame.getBackgroundColor()
         sepColor = colorUtils.GetSuitableColor(windowColor, 0.2)
 
         mdc = wx.BufferedPaintDC(self)
@@ -375,8 +374,8 @@ class NavigationPanel(SFItem.SFBrowserItem):
     def DrawItem(self, mdc):
         rect = self.GetRect()
 
-        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
-        textColor = colorUtils.GetSuitableColor(windowColor, 1)
+        windowColor = Frame.getBackgroundColor()
+        textColor = Frame.getForegroundColor()
         sepColor = colorUtils.GetSuitableColor(windowColor, 0.2)
 
         mdc.SetTextForeground(textColor)
@@ -394,7 +393,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
     def RenderBackground(self):
         rect = self.GetRect()
 
-        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
+        windowColor = Frame.getBackgroundColor()
 
         sFactor = 0.1
 
@@ -559,7 +558,7 @@ class RecentShipBrowser(wx.Panel):
 class PFStaticText(wx.Panel):
     def __init__(self, parent, label=wx.EmptyString):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=parent.GetSize())
-        self.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
+        self.SetBackgroundColour(Frame.getBackgroundColor())
 
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         text = wx.StaticText(self, wx.ID_ANY, label, wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_CENTRE)
@@ -752,10 +751,7 @@ class ShipItem(SFItem.SFBrowserItem):
         self.thoverw = wlabel
 
     def DrawItem(self, mdc):
-        # rect = self.GetRect()
-
-        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
-        textColor = colorUtils.GetSuitableColor(windowColor, 1)
+        textColor = Frame.getForegroundColor()
 
         mdc.SetTextForeground(textColor)
 
@@ -1245,8 +1241,7 @@ class FitItem(SFItem.SFBrowserItem):
     def DrawItem(self, mdc):
         rect = self.GetRect()
 
-        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
-        textColor = colorUtils.GetSuitableColor(windowColor, 1)
+        textColor = Frame.getForegroundColor()
 
         mdc.SetTextForeground(textColor)
 
@@ -1270,7 +1265,9 @@ class FitItem(SFItem.SFBrowserItem):
         pfdate = drawUtils.GetPartialText(mdc, fitLocalDate,
                                           self.toolbarx - self.textStartx - self.padding * 2 - self.thoverw)
 
-        mdc.DrawText(pfdate, self.textStartx, self.timestampy)
+        if Fonts.getFont("font_standard") < 13:
+            # Too large of a font will cause issuses with size and fit, so don't display extra info
+            mdc.DrawText(pfdate, self.textStartx, self.timestampy)
 
         mdc.SetFont(Fonts.getFont("font_minus_one"))
         mdc.DrawText(self.toolbar.hoverLabel, self.thoverx, self.thovery)
@@ -1322,7 +1319,7 @@ class FitItem(SFItem.SFBrowserItem):
     def RenderBackground(self):
         rect = self.GetRect()
 
-        windowColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
+        windowColor = Frame.getBackgroundColor()
 
         # activeFitID = self.mainFrame.getActiveFit()
         state = self.GetState()

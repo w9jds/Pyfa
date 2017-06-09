@@ -20,15 +20,26 @@ import gui.globalEvents as GE
 import gui.PFSearchBox as SBox
 from gui.marketBrowser import SearchBox
 from gui.bitmapLoader import BitmapLoader
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts, Frame
+from service.settings import GeneralSettings
 
 pyfalog = Logger(__name__)
 
 
 class AttributeEditor(wx.Frame):
     def __init__(self, parent):
+        self.generalSettings = GeneralSettings.getInstance()
+        fontSize = self.generalSettings.get("fontSize")
+
+        window_x = 800
+        window_y = 600
+
+        if fontSize > 9:
+            window_x *= 1.25
+            window_y *= 1.1
+
         wx.Frame.__init__(self, parent, wx.ID_ANY, title="Attribute Editor", pos=wx.DefaultPosition,
-                          size=wx.Size(650, 600),
+                          size=wx.Size(window_x, window_y),
                           style=wx.DEFAULT_FRAME_STYLE | wx.FRAME_FLOAT_ON_PARENT | wx.TAB_TRAVERSAL)
 
         i = wx.IconFromBitmap(BitmapLoader.getBitmap("fit_rename_small", "gui"))
@@ -63,7 +74,13 @@ class AttributeEditor(wx.Frame):
                              style=wx.DOUBLE_BORDER if 'wxMSW' in wx.PlatformInfo else wx.SIMPLE_BORDER)
 
         self.searchBox = SearchBox(leftPanel)
+        self.searchBox.SetBackgroundColour(Frame.getBackgroundColorOffset())
+        self.searchBox.SetForegroundColour(Frame.getForegroundColor())
+        self.searchBox.SetFont(Fonts.getFont("font_standard"))
+
         self.itemView = ItemView(leftPanel)
+        self.itemView.SetBackgroundColour(Frame.getBackgroundColorOffset())
+        self.itemView.SetForegroundColour(Frame.getForegroundColor())
 
         leftSizer.Add(self.searchBox, 0, wx.EXPAND)
         leftSizer.Add(self.itemView, 1, wx.EXPAND)

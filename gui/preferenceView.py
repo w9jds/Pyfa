@@ -41,6 +41,7 @@ class PreferenceView(object):
 # noinspection PyUnresolvedReferences
 from gui.builtinPreferenceViews import (  # noqa: E402, F401
     pyfaGeneralPreferences,
+    pyfaGeneral2Preferences,
     pyfaNetworkPreferences,
     pyfaHTMLExportPreferences,
     pyfaCrestPreferences,

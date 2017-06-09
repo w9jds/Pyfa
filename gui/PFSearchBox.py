@@ -2,6 +2,7 @@
 import wx
 import gui.utils.colorUtils as colorUtils
 import gui.utils.drawUtils as drawUtils
+from gui.utils.helpers_wxPython import Frame
 
 SearchButton, EVT_SEARCH_BTN = wx.lib.newevent.NewEvent()
 CancelButton, EVT_CANCEL_BTN = wx.lib.newevent.NewEvent()
@@ -10,8 +11,8 @@ TextTyped, EVT_TEXT = wx.lib.newevent.NewEvent()
 
 
 class PFSearchBox(wx.Window):
-    def __init__(self, parent, id=wx.ID_ANY, value="", pos=wx.DefaultPosition, size=wx.Size(-1, 24), style=0):
-        wx.Window.__init__(self, parent, id, pos, size, style=style)
+    def __init__(self, parent, init_id=wx.ID_ANY, value="", pos=wx.DefaultPosition, size=wx.Size(-1, 24), style=0):
+        wx.Window.__init__(self, parent, init_id, pos, size, style=style)
 
         self.isSearchButtonVisible = False
         self.isCancelButtonVisible = False
@@ -222,11 +223,13 @@ class PFSearchBox(wx.Window):
         self.editY = (cheight - editHeight) / 2
         self.EditBox.SetPosition((self.editX, self.editY))
         self.EditBox.SetSize((self.cancelButtonX - self.padding - self.editX, -1))
+        self.EditBox.SetBackgroundColour(Frame.getBackgroundColorOffset())
+        self.EditBox.SetForegroundColour(Frame.getForegroundColor())
 
     def OnPaint(self, event):
         dc = wx.BufferedPaintDC(self)
 
-        bkColor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)
+        bkColor = Frame.getBackgroundColor()
         sepColor = colorUtils.GetSuitableColor(bkColor, 0.2)
         rect = self.GetRect()
 

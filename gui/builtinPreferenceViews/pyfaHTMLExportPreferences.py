@@ -8,7 +8,7 @@ from gui.bitmapLoader import BitmapLoader
 import gui.mainFrame
 
 from service.settings import HTMLExportSettings
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts
 
 
 class PFHTMLExportPref(PreferenceView):

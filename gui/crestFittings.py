@@ -15,7 +15,7 @@ from gui.display import Display
 import gui.globalEvents as GE
 
 from logbook import Logger
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts, Frame
 
 pyfalog = Logger(__name__)
 
@@ -28,7 +28,7 @@ class CrestFittings(wx.Frame):
         wx.Frame.__init__(self, parent, id=wx.ID_ANY, title="Browse EVE Fittings", pos=wx.DefaultPosition,
                           size=wx.Size(550, 450), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
 
-        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
+        self.SetBackgroundColour(Frame.getBackgroundColor())
 
         self.mainFrame = parent
         mainSizer = wx.BoxSizer(wx.VERTICAL)
@@ -195,7 +195,7 @@ class ExportToEve(wx.Frame):
                           size=(wx.Size(350, 100)), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
 
         self.mainFrame = parent
-        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
+        self.SetBackgroundColour(Frame.getBackgroundColor())
 
         sCrest = Crest.getInstance()
         mainSizer = wx.BoxSizer(wx.VERTICAL)
@@ -415,7 +415,13 @@ class FittingsTreeView(wx.Panel):
 
     def displayFit(self, event):
         selection = self.fittingsTreeCtrl.GetSelection()
-        fit = json.loads(self.fittingsTreeCtrl.GetPyData(selection))
+        data = self.fittingsTreeCtrl.GetPyData(selection)
+
+        if data is None:
+            event.Skip()
+            return
+
+        fit = json.loads(data)
         _list = []
 
         for item in fit['items']:

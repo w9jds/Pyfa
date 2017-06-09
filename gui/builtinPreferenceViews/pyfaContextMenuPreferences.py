@@ -4,11 +4,11 @@ from gui.preferenceView import PreferenceView
 from gui.bitmapLoader import BitmapLoader
 import gui.mainFrame
 from service.settings import ContextMenuSettings
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts
 
 
 class PFContextMenuPref(PreferenceView):
-    title = "Context Menu Panel"
+    title = "Context Menu"
 
     def populatePrefPanel(self, panel):
         self.settings = ContextMenuSettings.getInstance()

@@ -17,69 +17,61 @@
 # along with pyfa.  If not, see <http://www.gnu.org/licenses/>.
 # =============================================================================
 
-import sys
 import os.path
-from logbook import Logger
+import sys
+import threading
+import time
+import webbrowser
+from codecs import open
+from time import gmtime, strftime
 
 import sqlalchemy
 # noinspection PyPackageRequirements
 import wx
+from logbook import Logger
 # noinspection PyPackageRequirements
 from wx._core import PyDeadObjectError
 # noinspection PyPackageRequirements
-from wx.lib.wordwrap import wordwrap
-# noinspection PyPackageRequirements
 from wx.lib.inspection import InspectionTool
-import time
-
-from codecs import open
+# noinspection PyPackageRequirements
+from wx.lib.wordwrap import wordwrap
 
 import config
-
-from eos.config import gamedata_version
-
 import gui.aboutData
-from gui.chromeTabs import PFNotebook
 import gui.globalEvents as GE
-
-from gui.bitmapLoader import BitmapLoader
-from gui.mainMenuBar import MainMenuBar
-from gui.additionsPane import AdditionsPane
-from gui.marketBrowser import MarketBrowser, ItemSelected
-from gui.multiSwitch import MultiSwitch
-from gui.statsPane import StatsPane
-from gui.shipBrowser import ShipBrowser, FitSelected, ImportSelected, Stage3Selected
-from gui.recentShipBrowser import RecentShipBrowser
-from gui.characterEditor import CharacterEditor, SaveCharacterAs
-from gui.characterSelection import CharacterSelection
-from gui.patternEditor import DmgPatternEditorDlg
-from gui.resistsEditor import ResistsEditorDlg
-from gui.setEditor import ImplantSetEditorDlg
-from gui.preferenceDialog import PreferenceDialog
-from gui.graphFrame import GraphFrame
-from gui.copySelectDialog import CopySelectDialog
-from gui.utils.clipboard import toClipboard, fromClipboard
-from gui.updateDialog import UpdateDialog
-# noinspection PyUnresolvedReferences
-from gui.builtinViews import emptyView, entityEditor, fittingView, implantEditor  # noqa: F401
-from gui import graphFrame
-
-from service.settings import SettingsProvider
-from service.fit import Fit
-from service.character import Character
-from service.update import Update
-
-# import this to access override setting
-from eos.modifiedAttributeDict import ModifiedAttributeDict
+from eos.config import gamedata_version
 from eos.db.saveddata.loadDefaultDatabaseValues import DefaultDatabaseValues
 from eos.db.saveddata.queries import getFit as db_getFit
-from service.port import Port, IPortUser
-from service.settings import HTMLExportSettings
-
-from time import gmtime, strftime
-
-import threading
-import webbrowser
+# import this to access override setting
+from eos.modifiedAttributeDict import ModifiedAttributeDict
+from gui import graphFrame
+from gui.additionsPane import AdditionsPane
+from gui.bitmapLoader import BitmapLoader
+# noinspection PyUnresolvedReferences
+from gui.builtinViews import emptyView, entityEditor, fittingView, implantEditor  # noqa: F401
+from gui.characterEditor import CharacterEditor, SaveCharacterAs
+from gui.characterSelection import CharacterSelection
+from gui.chromeTabs import PFNotebook
+from gui.copySelectDialog import CopySelectDialog
+from gui.graphFrame import GraphFrame
+from gui.mainMenuBar import MainMenuBar
+from gui.marketBrowser import ItemSelected, MarketBrowser
+from gui.multiSwitch import MultiSwitch
+from gui.patternEditor import DmgPatternEditorDlg
+from gui.preferenceDialog import PreferenceDialog
+from gui.recentShipBrowser import RecentShipBrowser
+from gui.resistsEditor import ResistsEditorDlg
+from gui.setEditor import ImplantSetEditorDlg
+from gui.shipBrowser import FitSelected, ImportSelected, ShipBrowser, Stage3Selected
+from gui.statsPane import StatsPane
+from gui.updateDialog import UpdateDialog
+from gui.utils.clipboard import fromClipboard, toClipboard
+from gui.utils.helpers_wxPython import Frame
+from service.character import Character
+from service.fit import Fit
+from service.port import IPortUser, Port
+from service.settings import HTMLExportSettings, SettingsProvider
+from service.update import Update
 
 if 'wxMac' not in wx.PlatformInfo or ('wxMac' in wx.PlatformInfo and wx.VERSION >= (3, 0)):
     from service.crest import Crest
@@ -156,9 +148,8 @@ class MainFrame(wx.Frame, IPortUser):
 
         self.disableOverrideEditor = disableOverrideEditor
 
-        # Fix for msw (have the frame background color match panel color
-        if 'wxMSW' in wx.PlatformInfo:
-            self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
+        self.SetBackgroundColour(Frame.getBackgroundColor())
+        self.SetForegroundColour(Frame.getForegroundColor())
 
         # Load and set the icon for pyfa main window
         i = wx.IconFromBitmap(BitmapLoader.getBitmap("pyfa", "gui"))
@@ -246,6 +237,8 @@ class MainFrame(wx.Frame, IPortUser):
 
     def ShowUpdateBox(self, release):
         dlg = UpdateDialog(self, release)
+        dlg.SetBackgroundColour(Frame.getBackgroundColor())
+        dlg.SetForegroundColour(Frame.getForegroundColor())
         dlg.ShowModal()
 
     def LoadPreviousOpenFits(self):
@@ -279,7 +272,6 @@ class MainFrame(wx.Frame, IPortUser):
         }
         self.mainFrameAttribs = SettingsProvider.getInstance().getSettings("pyfaMainWindowAttribs",
                                                                            mainFrameDefaultAttribs)
-
         if self.mainFrameAttribs["wnd_maximized"]:
             width = mainFrameDefaultAttribs["wnd_width"]
             height = mainFrameDefaultAttribs["wnd_height"]
@@ -389,10 +381,14 @@ class MainFrame(wx.Frame, IPortUser):
 
     def showCharacterEditor(self, event):
         dlg = CharacterEditor(self)
+        dlg.SetBackgroundColour(Frame.getBackgroundColor())
+        dlg.SetForegroundColour(Frame.getForegroundColor())
         dlg.Show()
 
     def showAttrEditor(self, event):
         dlg = AttributeEditor(self)
+        dlg.SetBackgroundColour(Frame.getBackgroundColor())
+        dlg.SetForegroundColour(Frame.getForegroundColor())
         dlg.Show()
 
     def showTargetResistsEditor(self, event):
@@ -400,7 +396,12 @@ class MainFrame(wx.Frame, IPortUser):
 
     def showDamagePatternEditor(self, event):
         dlg = DmgPatternEditorDlg(self)
+
+        dlg.SetBackgroundColour(Frame.getBackgroundColor())
+        dlg.SetForegroundColour(Frame.getForegroundColor())
+
         dlg.ShowModal()
+
         try:
             dlg.Destroy()
         except PyDeadObjectError:
@@ -419,6 +420,10 @@ class MainFrame(wx.Frame, IPortUser):
                             wildcard="EVE XML fitting files (*.xml)|*.xml",
                             style=wx.FD_SAVE,
                             defaultFile=defaultFile)
+
+        dlg.SetBackgroundColour(Frame.getBackgroundColor())
+        dlg.SetForegroundColour(Frame.getForegroundColor())
+
         if dlg.ShowModal() == wx.ID_OK:
             format_ = dlg.GetFilterIndex()
             path = dlg.GetPath()
@@ -445,6 +450,8 @@ class MainFrame(wx.Frame, IPortUser):
 
     def showPreferenceDialog(self, event):
         dlg = PreferenceDialog(self)
+        dlg.SetBackgroundColour(Frame.getBackgroundColor())
+        dlg.SetForegroundColour(Frame.getForegroundColor())
         dlg.ShowModal()
 
     @staticmethod
@@ -587,6 +594,8 @@ class MainFrame(wx.Frame, IPortUser):
 
     def eveFittings(self, event):
         dlg = CrestFittings(self)
+        dlg.SetBackgroundColour(Frame.getBackgroundColor())
+        dlg.SetForegroundColour(Frame.getForegroundColor())
         dlg.Show()
 
     def updateTitle(self, event):
@@ -647,10 +656,14 @@ class MainFrame(wx.Frame, IPortUser):
                 webbrowser.open(uri)
         else:
             dlg = CrestMgmt(self)
+            dlg.SetBackgroundColour(Frame.getBackgroundColor())
+            dlg.SetForegroundColour(Frame.getForegroundColor())
             dlg.Show()
 
     def exportToEve(self, event):
         dlg = ExportToEve(self)
+        dlg.SetBackgroundColour(Frame.getBackgroundColor())
+        dlg.SetForegroundColour(Frame.getForegroundColor())
         dlg.Show()
 
     def toggleOverrides(self, event):
@@ -669,6 +682,8 @@ class MainFrame(wx.Frame, IPortUser):
     def saveCharAs(self, event):
         charID = self.charSelection.getActiveCharacter()
         dlg = SaveCharacterAs(self, charID)
+        dlg.SetBackgroundColour(Frame.getBackgroundColor())
+        dlg.SetForegroundColour(Frame.getForegroundColor())
         dlg.ShowModal()
 
     def revertChar(self, event):
@@ -754,6 +769,8 @@ class MainFrame(wx.Frame, IPortUser):
             CopySelectDialog.copyFormatMultiBuy: self.clipboardMultiBuy
         }
         dlg = CopySelectDialog(self)
+        dlg.SetBackgroundColour(Frame.getBackgroundColor())
+        dlg.SetForegroundColour(Frame.getForegroundColor())
         dlg.ShowModal()
         selected = dlg.GetSelected()
 
@@ -775,6 +792,9 @@ class MainFrame(wx.Frame, IPortUser):
                           "Text skills training file (*.txt)|*.txt"),
                 style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT,
         )
+
+        saveDialog.SetBackgroundColour(Frame.getBackgroundColor())
+        saveDialog.SetForegroundColour(Frame.getForegroundColor())
 
         if saveDialog.ShowModal() == wx.ID_OK:
             saveFmtInt = saveDialog.GetFilterIndex()
@@ -805,6 +825,10 @@ class MainFrame(wx.Frame, IPortUser):
                           "All Files (*)|*"),
                 style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE
         )
+
+        dlg.SetBackgroundColour(Frame.getBackgroundColor())
+        dlg.SetForegroundColour(Frame.getForegroundColor())
+
         if dlg.ShowModal() == wx.ID_OK:
             self.progressDialog = wx.ProgressDialog(
                 "Importing fits",
@@ -812,7 +836,8 @@ class MainFrame(wx.Frame, IPortUser):
                 parent=self,
                 style=wx.PD_CAN_ABORT | wx.PD_SMOOTH | wx.PD_ELAPSED_TIME | wx.PD_APP_MODAL
             )
-            # self.progressDialog.message = None
+            self.progressDialog.SetBackgroundColour(Frame.getBackgroundColor())
+            self.progressDialog.SetForegroundColour(Frame.getForegroundColor())
             Port.importFitsThreaded(dlg.GetPaths(), self)
             self.progressDialog.ShowModal()
             try:
@@ -832,6 +857,9 @@ class MainFrame(wx.Frame, IPortUser):
                 defaultFile=defaultFile,
         )
 
+        saveDialog.SetBackgroundColour(Frame.getBackgroundColor())
+        saveDialog.SetForegroundColour(Frame.getForegroundColor())
+
         if saveDialog.ShowModal() == wx.ID_OK:
             filePath = saveDialog.GetPath()
             if u'.' not in os.path.basename(filePath):
@@ -847,11 +875,13 @@ class MainFrame(wx.Frame, IPortUser):
                 parent=self,
                 style=wx.PD_CAN_ABORT | wx.PD_SMOOTH | wx.PD_ELAPSED_TIME | wx.PD_APP_MODAL
             )
+            self.progressDialog.SetBackgroundColour(Frame.getBackgroundColor())
+            self.progressDialog.SetForegroundColour(Frame.getForegroundColor())
             Port.backupFits(filePath, self)
             self.progressDialog.ShowModal()
 
     def exportHtml(self, event):
-        from gui.utils.exportHtml import exportHtml
+        from gui.utils.exportHtml import ExportHtml
         sFit = Fit.getInstance()
         settings = HTMLExportSettings.getInstance()
 
@@ -866,6 +896,9 @@ class MainFrame(wx.Frame, IPortUser):
                     wx.OK | wx.ICON_ERROR
             )
 
+            dlg.SetBackgroundColour(Frame.getBackgroundColor())
+            dlg.SetForegroundColour(Frame.getForegroundColor())
+
             if dlg.ShowModal() == wx.ID_OK:
                 return
 
@@ -876,7 +909,10 @@ class MainFrame(wx.Frame, IPortUser):
                 style=wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME
         )
 
-        exportHtml.getInstance().refreshFittingHtml(True, self.backupCallback)
+        self.progressDialog.SetBackgroundColour(Frame.getBackgroundColor())
+        self.progressDialog.SetForegroundColour(Frame.getForegroundColor())
+
+        ExportHtml.getInstance().refreshFittingHtml(True, self.backupCallback)
         self.progressDialog.ShowModal()
 
     def backupCallback(self, info):
@@ -918,8 +954,8 @@ class MainFrame(wx.Frame, IPortUser):
             dlg = wx.MessageDialog(self,
                                    "The following error was generated\n\n%s\n\nBe aware that already processed fits were not saved" % data,
                                    _message, wx.OK | wx.ICON_ERROR)
-            # if dlg.ShowModal() == wx.ID_OK:
-            #     return
+            dlg.SetBackgroundColour(Frame.getBackgroundColor())
+            dlg.SetForegroundColour(Frame.getForegroundColor())
             dlg.ShowModal()
             return
 
@@ -980,6 +1016,9 @@ class MainFrame(wx.Frame, IPortUser):
                 wildcard="EVE API XML character files (*.xml)|*.xml|All Files (*)|*",
                 style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE
         )
+
+        dlg.SetBackgroundColour(Frame.getBackgroundColor())
+        dlg.SetForegroundColour(Frame.getForegroundColor())
 
         if dlg.ShowModal() == wx.ID_OK:
             self.waitDialog = wx.BusyInfo("Importing Character...")

@@ -18,7 +18,7 @@ import copy
 from gui.utils import colorUtils
 import gui.utils.drawUtils as drawUtils
 import gui.utils.animEffects as animEffects
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts
 
 from service.fit import Fit
 

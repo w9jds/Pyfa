@@ -19,11 +19,13 @@
 
 # noinspection PyPackageRequirements
 import wx
+
 import gui.display as d
 import gui.globalEvents as GE
 import gui.marketBrowser as marketBrowser
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
+from gui.utils.helpers_wxPython import DragDropHelper
 from service.fit import Fit
 
 
@@ -37,7 +39,8 @@ class BoosterViewDrop(wx.PyDropTarget):
 
     def OnData(self, x, y, t):
         if self.GetData():
-            data = self.dropData.GetText().split(':')
+            dragged_data = DragDropHelper.data
+            data = dragged_data.split(':')
             self.dropFn(x, y, data)
         return t
 

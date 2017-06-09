@@ -21,9 +21,9 @@
 import wx
 from gui.preferenceView import PreferenceView
 from gui.bitmapLoader import BitmapLoader
-from service.settings import SettingsProvider
+from service.settings import SettingsProvider, GeneralSettings
 from logbook import Logger
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts, Frame
 
 pyfalog = Logger(__name__)
 
@@ -38,10 +38,21 @@ class PreferenceDialog(wx.Dialog):
         mainSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.listbook = wx.Listbook(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LB_DEFAULT)
+        self.listbook.SetBackgroundColour(Frame.getBackgroundColor())
 
-        self.listview = self.listbook.GetListView()
-        # self.listview.SetMinSize((500, -1))
-        # self.listview.SetSize((500, -1))
+        preferences_listview = self.listbook.Children[0]
+
+        preferences_listview.SetBackgroundColour(Frame.getBackgroundColorOffset())
+        preferences_listview.SetForegroundColour(Frame.getForegroundColor())
+        preferences_listview.Size.x = self.listbook.GetTextExtent("Statistics Panels")[0]
+        # preferences_listview.SetSize((self.listbook.GetTextExtent("Statistics Panels")[0], -1))
+
+        '''
+        self.listbook.Children[0].SetBackgroundColour(Frame.getBackgroundColorOffset())
+        self.listbook.Children[0].SetForegroundColour(Frame.getForegroundColor())
+        self.listbook.Children[0].SetSize((self.listbook.GetTextExtent("Statistics Panels")[0], -1))
+        test = self.listbook.Children[0]
+        '''
 
         self.imageList = wx.ImageList(32, 32)
         self.listbook.SetImageList(self.imageList)
@@ -62,6 +73,7 @@ class PreferenceDialog(wx.Dialog):
 
         for prefView in PreferenceView.views:
             page = wx.Panel(self.listbook)
+            page.SetForegroundColour(Frame.getForegroundColor())
             bmp = prefView.getImage()
             if bmp:
                 imgID = self.imageList.Add(bmp)
@@ -70,14 +82,22 @@ class PreferenceDialog(wx.Dialog):
             prefView.populatePrefPanel(page)
             self.listbook.AddPage(page, prefView.title, imageId=imgID)
 
+        self.generalSettings = GeneralSettings.getInstance()
+        fontSize = self.generalSettings.get("fontSize")
+
+        window_x = 900
+        window_y = 450
+
         # Set the height based on a condition. Can all the panels fit in the current height?
         # If not, use the .GetBestVirtualSize() to ensure that all content is available.
-        minHeight = 550
         bestFit = self.GetBestVirtualSize()
-        if minHeight > bestFit[1]:
-            self.SetSizeWH(650, minHeight)
-        else:
-            self.SetSizeWH(650, bestFit[1])
+        if window_y < bestFit[1]:
+            window_y = bestFit[1]
+
+        if fontSize > 9:
+            window_x *= 1.25
+
+        self.SetSizeWH(window_x, window_y)
 
         self.Layout()
 

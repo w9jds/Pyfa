@@ -35,7 +35,7 @@ from gui.bitmapLoader import BitmapLoader
 import gui.builtinViews.emptyView
 from logbook import Logger
 from gui.chromeTabs import EVT_NOTEBOOK_PAGE_CHANGED
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts, DragDropHelper, Frame
 
 from service.fit import Fit
 from service.market import Market
@@ -113,8 +113,9 @@ class FittingViewDrop(wx.PyDropTarget):
 
     def OnData(self, x, y, t):
         if self.GetData():
-            pyfalog.debug("fittingView: recieved drag: " + self.dropData.GetText())
-            data = self.dropData.GetText().split(':')
+            dragged_data = DragDropHelper.data
+            # pyfalog.debug("fittingView: recieved drag: " + self.dropData.GetText())
+            data = dragged_data.split(':')
             self.dropFn(x, y, data)
         return t
 
@@ -245,10 +246,12 @@ class FittingView(d.Display):
 
         if row != -1 and row not in self.blanks and isinstance(self.mods[row], Module) and not self.mods[row].isEmpty:
             data = wx.PyTextDataObject()
-            data.SetText("fitting:" + str(self.mods[row].modPosition))
+            dataStr = "fitting:" + str(self.mods[row].modPosition)
+            data.SetText(dataStr)
 
             dropSource = wx.DropSource(self)
             dropSource.SetData(data)
+            DragDropHelper.data = dataStr
             dropSource.DoDragDrop()
 
     def getSelectedMods(self):
@@ -283,8 +286,10 @@ class FittingView(d.Display):
         We also refresh the fit of the new current page in case
         delete fit caused change in stats (projected)
         """
+        pyfalog.debug("FittingView::fitRemoved")
         active_fit_id = self.getActiveFit()
         if event.fitID == active_fit_id:
+            pyfalog.debug("    Deleted fit is currently active")
             self.parent.DeletePage(self.parent.GetPageIndex(self))
 
         try:
@@ -638,7 +643,7 @@ class FittingView(d.Display):
     }
 
     def slotColour(self, slot):
-        return self.slotColourMap.get(slot) or self.GetBackgroundColour()
+        return self.slotColourMap.get(slot) or Frame.getBackgroundColor()
 
     def refresh(self, stuff):
         """
@@ -660,12 +665,13 @@ class FittingView(d.Display):
             slotMap[slot] = fit.getSlotsFree(slot) < 0
 
         for i, mod in enumerate(self.mods):
-            self.SetItemBackgroundColour(i, self.GetBackgroundColour())
+            # self.SetItemBackgroundColour(i, self.GetBackgroundColour())
+            self.SetItemBackgroundColour(i, Frame.getBackgroundColor())
 
             #  only consider changing color if we're dealing with a Module
             if isinstance(mod, Module):
                 if slotMap[mod.slot]:  # Color too many modules as red
-                    self.SetItemBackgroundColour(i, wx.Colour(204, 51, 51))
+                    self.SetItemBackgroundColour(i, Frame.getWarningColor())
                 elif sFit.serviceFittingOptions["colorFitBySlot"]:  # Color by slot it enabled
                     self.SetItemBackgroundColour(i, self.slotColour(mod.slot))
 
@@ -804,11 +810,11 @@ class FittingView(d.Display):
 
         mdc.SelectObject(mbmp)
 
-        mdc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW)))
+        mdc.SetBackground(wx.Brush(Frame.getBackgroundColor()))
         mdc.Clear()
 
         mdc.SetFont(Fonts.getFont("font_standard"))
-        mdc.SetTextForeground(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT))
+        mdc.SetTextForeground(Frame.getForegroundColor())
 
         cx = padding
         for i, col in enumerate(self.activeColumns):
@@ -834,8 +840,8 @@ class FittingView(d.Display):
 
             cx += columnsWidths[i]
 
-        brush = wx.Brush(wx.Colour(224, 51, 51))
-        pen = wx.Pen(wx.Colour(224, 51, 51))
+        brush = wx.Brush(Frame.getWarningColor())
+        pen = wx.Pen(Frame.getWarningColor())
 
         mdc.SetPen(pen)
         mdc.SetBrush(brush)

@@ -26,7 +26,7 @@ from service.character import Character
 from service.fit import Fit
 from logbook import Logger
 from eos.config import settings as eos_settings
-from gui.utils.fonts import Fonts
+from gui.utils.helpers_wxPython import Fonts
 
 pyfalog = Logger(__name__)
 

@@ -124,8 +124,8 @@ def handleGUIException(exc_type, exc_value, exc_traceback):
 
             if wx and ErrorFrame:
                 pyfa_gui = wx.App(False)
-                if exc_type == PreCheckException:
-                    ErrorFrame(exc_value, tb, "Missing prerequisites")
+                if exc_type == PreCheckException or isinstance(exc_value, ImportError):
+                    ErrorFrame(exc_value, tb, "Missing prerequisites\nPlease import all modules from requirements.txt")
                 else:
                     ErrorFrame(exc_value, tb)
 
@@ -146,7 +146,7 @@ def handleGUIException(exc_type, exc_value, exc_traceback):
 
         if wx and ErrorFrame:
             pyfa_gui = wx.App(False)
-            if exc_type == PreCheckException:
+            if exc_type == PreCheckException or isinstance(exc_value, ImportError):
                 ErrorFrame(exc_value, tb, "Missing prerequisites")
             else:
                 ErrorFrame(exc_value, tb)
@@ -384,6 +384,7 @@ if __name__ == "__main__":
                 import requests
                 config.requestsVersion = requests.__version__
             except ImportError:
+                requests = None
                 raise PreCheckException("Cannot import requests. You can download requests from https://pypi.python.org/pypi/requests.")
 
         import eos.db
@@ -394,21 +395,29 @@ if __name__ == "__main__":
             import eos.events
 
         # noinspection PyUnresolvedReferences
+        pyfalog.debug("Running prefetch service.")
         import service.prefetch  # noqa: F401
 
         # Make sure the saveddata db exists
+        pyfalog.debug("Validate savedata DB path.")
         if not os.path.exists(config.savePath):
             os.mkdir(config.savePath)
 
+        pyfalog.debug("Creating DB metadata.")
         eos.db.saveddata_meta.create_all()
 
         pyfalog.info("Starting threads")
         executeStartupThreads()
 
+        pyfalog.debug("Importing main GUI interface.")
         from gui.mainFrame import MainFrame
 
+        pyfalog.debug("Creating wx application.")
         pyfa = wx.App(False)
+
+        pyfalog.debug("Creating GUI main frame.")
         MainFrame(options.title)
+        pyfalog.debug("Launching Pyfa.")
         pyfa.MainLoop()
 
         # TODO: Add some thread cleanup code here. Right now we bail, and that can lead to orphaned threads or threads not properly exiting.

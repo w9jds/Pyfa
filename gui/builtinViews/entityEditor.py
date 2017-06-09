@@ -1,6 +1,7 @@
 # noinspection PyPackageRequirements
 import wx
 from gui.bitmapLoader import BitmapLoader
+from gui.utils.helpers_wxPython import Frame, Fonts
 # TODO: Add font sizing to this
 # from gui.utils.fonts import Fonts
 
@@ -103,6 +104,9 @@ class EntityEditor(wx.Panel):
                                        u"Enter a name for your new {}:".format(self.entityName),
                                        u"New {}".format(self.entityName))
         dlg.CenterOnParent()
+        dlg.SetBackgroundColour(Frame.getBackgroundColorOffset())
+        dlg.SetForegroundColour(Frame.getForegroundColor())
+        dlg.SetFont(Fonts.getFont("font_standard"))
 
         if dlg.ShowModal() == wx.ID_OK:
             # using dlg.textctrl.GetValue instead of simply dlg.GetValue because the proper way does not work in wxPython 2.8
@@ -120,6 +124,9 @@ class EntityEditor(wx.Panel):
         dlg.SetValue(u"{} Copy".format(active.name))
         dlg.txtctrl.SetInsertionPointEnd()
         dlg.CenterOnParent()
+        dlg.SetBackgroundColour(Frame.getBackgroundColorOffset())
+        dlg.SetForegroundColour(Frame.getForegroundColor())
+        dlg.SetFont(Fonts.getFont("font_standard"))
 
         if dlg.ShowModal() == wx.ID_OK:
             copy = self.DoCopy(active, dlg.txtctrl.GetValue().strip())
@@ -134,6 +141,9 @@ class EntityEditor(wx.Panel):
         dlg.SetValue(active.name)
         dlg.txtctrl.SetInsertionPointEnd()
         dlg.CenterOnParent()
+        dlg.SetBackgroundColour(Frame.getBackgroundColorOffset())
+        dlg.SetForegroundColour(Frame.getForegroundColor())
+        dlg.SetFont(Fonts.getFont("font_standard"))
 
         if dlg.ShowModal() == wx.ID_OK:
             self.DoRename(active, dlg.txtctrl.GetValue().strip())
@@ -146,6 +156,9 @@ class EntityEditor(wx.Panel):
                                                                                 self.entityName),
                                u"Confirm Delete", wx.YES | wx.NO | wx.ICON_QUESTION)
         dlg.CenterOnParent()
+        dlg.SetBackgroundColour(Frame.getBackgroundColorOffset())
+        dlg.SetForegroundColour(Frame.getForegroundColor())
+        dlg.SetFont(Fonts.getFont("font_standard"))
 
         if dlg.ShowModal() == wx.ID_YES:
             self.DoDelete(self.getActiveEntity())

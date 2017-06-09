@@ -8,6 +8,7 @@ import gui.display as d
 import gui.PFSearchBox as SBox
 from gui.bitmapLoader import BitmapLoader
 from gui.marketBrowser import SearchBox
+from gui.utils.helpers_wxPython import Frame
 
 
 class BaseImplantEditorView(wx.Panel):
@@ -23,15 +24,13 @@ class BaseImplantEditorView(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
                           style=wx.TAB_TRAVERSAL)
-        self.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
-
         pmainSizer = wx.BoxSizer(wx.HORIZONTAL)
 
         availableSizer = wx.BoxSizer(wx.VERTICAL)
 
         self.searchBox = SearchBox(self)
-        self.itemView = ItemView(self)
 
+        self.itemView = ItemView(self)
         self.itemView.Hide()
 
         availableSizer.Add(self.searchBox, 0, wx.EXPAND)
@@ -41,6 +40,9 @@ class BaseImplantEditorView(wx.Panel):
         root = self.availableRoot = self.availableImplantsTree.AddRoot("Available")
         self.availableImplantsImageList = wx.ImageList(16, 16)
         self.availableImplantsTree.SetImageList(self.availableImplantsImageList)
+
+        self.availableImplantsTree.SetBackgroundColour(Frame.getBackgroundColorOffset())
+        self.availableImplantsTree.SetForegroundColour(Frame.getForegroundColor())
 
         availableSizer.Add(self.availableImplantsTree, 1, wx.EXPAND)
 
@@ -62,6 +64,7 @@ class BaseImplantEditorView(wx.Panel):
 
         characterImplantSizer = wx.BoxSizer(wx.VERTICAL)
         self.pluggedImplantsTree = AvailableImplantsView(self)
+        self.pluggedImplantsTree.SetBackgroundColour(Frame.getBackgroundColorOffset())
         characterImplantSizer.Add(self.pluggedImplantsTree, 1, wx.ALL | wx.EXPAND, 5)
         pmainSizer.Add(characterImplantSizer, 1, wx.EXPAND, 5)
 

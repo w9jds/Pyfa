@@ -27,6 +27,7 @@ import gui.display as d
 from gui.builtinViewColumns.state import State
 from eos.saveddata.module import Slot
 from gui.contextMenu import ContextMenu
+from gui.utils.helpers_wxPython import DragDropHelper, Frame
 from service.fit import Fit
 from service.market import Market
 
@@ -41,7 +42,8 @@ class FighterViewDrop(wx.PyDropTarget):
 
     def OnData(self, x, y, t):
         if self.GetData():
-            data = self.dropData.GetText().split(':')
+            dragged_data = DragDropHelper.data
+            data = dragged_data.split(':')
             self.dropFn(x, y, data)
         return t
 
@@ -92,8 +94,7 @@ class FighterView(wx.Panel):
                 slot = getattr(Slot, "F_{}".format(x.upper()))
                 used = fit.getSlotsUsed(slot)
                 total = fit.getNumSlots(slot)
-                color = wx.Colour(204, 51, 51) if used > total else wx.SystemSettings_GetColour(
-                        wx.SYS_COLOUR_WINDOWTEXT)
+                color = Frame.getWarningColor() if used > total else Frame.getForegroundColor()
 
                 lbl = getattr(self, "label%sUsed" % x.capitalize())
                 lbl.SetLabel(str(int(used)))
@@ -184,10 +185,12 @@ class FighterDisplay(d.Display):
         row = event.GetIndex()
         if row != -1:
             data = wx.PyTextDataObject()
-            data.SetText("fighter:" + str(row))
+            dataStr = "fighter:" + str(row)
+            data.SetText(dataStr)
 
             dropSource = wx.DropSource(self)
             dropSource.SetData(data)
+            DragDropHelper.data = dataStr
             dropSource.DoDragDrop()
 
     def handleDragDrop(self, x, y, data):
