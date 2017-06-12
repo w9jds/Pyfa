@@ -1064,8 +1064,20 @@ class Conversions(object):
         See GH issue #67 on why this is needed
         """
         self.PACKS['skinnedShips'] = {
-            "Miasmos Amastris Edition"         : "Miasmos Quafe Ultra Edition",
-            "Miasmos Quafe Ultramarine Edition": "Miasmos Quafe Ultra Edition",
             "Rattlesnake Victory Edition"      : "Rattlesnake",
             "Stratios Emergency Responder"     : "Stratios",
+            "Aliastra Catalyst"                : "Catalyst",
+            "Inner Zone Shipping Catalyst"     : "Catalyst",
+            "Intaki Syndicate Catalyst"        : "Catalyst",
+            "InterBus Catalyst"                : "Catalyst",
+            "Quafe Catalyst"                   : "Catalyst",
+            "Inner Zone Shipping Imicus"       : "Imicus",
+            "Miasmos Amastris Edition"         : "Miasmos",
+            "Miasmos Quafe Ultra Edition"      : "Miasmos",
+            "Miasmos Quafe Ultramarine Edition": "Miasmos",
+            "Nefantar Thrasher"                : "Thrasher",
+            "Sarum Magnate"                    : "Magnate",
+            "Tash-Murkon Magnate"              : "Magnate",
+            "Sukuuvestaa Heron"                : "Heron",
+            "Vherokior Probe"                  : "Probe",
         }
