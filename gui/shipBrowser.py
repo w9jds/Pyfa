@@ -1086,7 +1086,7 @@ class CategoryItem(SFItem.SFBrowserItem):
 
         mdc.SetFont(Fonts.getFont("font_plus_one"))
 
-        categoryName, fittings = self.fittingInfo
+        categoryName, __ = self.fittingInfo
 
         mdc.DrawText(categoryName, self.catx, self.caty)
 
@@ -1233,7 +1233,7 @@ class ShipItem(SFItem.SFBrowserItem):
             self.newBtn.SetBitmap(self.newBmp)
             self.Refresh()
         else:
-            shipName, __, fittings = self.shipFittingInfo
+            __, __, fittings = self.shipFittingInfo
             if fittings > 0:
                 wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=self.shipID, back=True))
             else:
@@ -1299,7 +1299,7 @@ class ShipItem(SFItem.SFBrowserItem):
 
         self.shipNamey = (rect.height - self.shipBmp.GetHeight()) / 2
 
-        shipName, shipTrait, fittings = self.shipFittingInfo
+        shipName, __, fittings = self.shipFittingInfo
 
         mdc.SetFont(Fonts.getFont("font_plus_one"))
         __, htext = mdc.GetTextExtent(shipName)

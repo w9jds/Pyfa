@@ -19,6 +19,7 @@
 
 # noinspection PyPackageRequirements
 import wx
+from wx.lib import newevent
 from service.market import Market
 from service.attribute import Attribute
 from gui.display import Display
@@ -32,7 +33,7 @@ from service.settings import GeneralSettings
 
 pyfalog = Logger(__name__)
 
-ItemSelected, ITEM_SELECTED = wx.lib.newevent.NewEvent()
+ItemSelected, ITEM_SELECTED = newevent.NewEvent()
 
 RECENTLY_USED_MODULES = -2
 MAX_RECENTLY_USED_MODULES = 50
@@ -207,7 +208,7 @@ class MarketTree(wx.TreeCtrl):
             self.SortChildren(root)
 
     def jump(self, item):
-        pyfalog.debug("Open market group and meta tab for item: {0}", repr(item))
+        pyfalog.debug("Open market group and meta tab for item: {0}", item.name)
         self.marketBrowser.searchMode = False
         sMkt = self.sMkt
         mg = sMkt.getMarketGroupByItem(item)

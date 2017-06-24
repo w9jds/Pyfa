@@ -480,7 +480,7 @@ class Fit(object):
             self.commandBonuses[warfareBuffID] = (runTime, value, _module, effect)
 
     def __runCommandBoosts(self, runTime="normal"):
-        pyfalog.debug("Applying gang boosts for {0}", repr(self))
+        pyfalog.debug(u"Applying gang boosts for {0}", self.name)
         for warfareBuffID in self.commandBonuses.keys():
             # Unpack all data required to run effect properly
             effect_runTime, value, thing, effect = self.commandBonuses[warfareBuffID]

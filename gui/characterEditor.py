@@ -795,7 +795,7 @@ class APIView(wx.Panel):
         if e is None:
             self.stStatus.SetLabel("Successfully fetched {}\'s skills from EVE API.".format(charName))
         else:
-            exc_type, exc_obj, __ = e
+            __, exc_obj, __ = e
             pyfalog.error("Unable to retrieve {0}\'s skills. Error message:\n{1}".format(charName, exc_obj))
             self.stStatus.SetLabel("Unable to retrieve {}\'s skills. Error message:\n{}".format(charName, exc_obj))
 

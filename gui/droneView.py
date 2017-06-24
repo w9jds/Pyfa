@@ -28,6 +28,7 @@ from gui.contextMenu import ContextMenu
 from gui.utils.helpers_wxPython import DragDropHelper
 from service.fit import Fit
 from service.market import Market
+from gui.utils.helpers_static import DRONE_ORDER
 
 
 class DroneViewDrop(wx.PyDropTarget):
@@ -155,17 +156,12 @@ class DroneView(Display):
         if sFit.mergeDrones(fitID, self.drones[src], self.drones[dst]):
             wx.PostEvent(self.mainFrame, GE.FitChanged(fitID=fitID))
 
-    DRONE_ORDER = ('Light Scout Drones', 'Medium Scout Drones',
-                   'Heavy Attack Drones', 'Sentry Drones', 'Fighters',
-                   'Fighter Bombers', 'Combat Utility Drones',
-                   'Electronic Warfare Drones', 'Logistic Drones', 'Mining Drones', 'Salvage Drones')
-
     def droneKey(self, drone):
         sMkt = Market.getInstance()
 
         groupName = sMkt.getMarketGroupByItem(drone.item).name
 
-        return (self.DRONE_ORDER.index(groupName),
+        return (DRONE_ORDER.index(groupName),
                 drone.item.name)
 
     def fitChanged(self, event):

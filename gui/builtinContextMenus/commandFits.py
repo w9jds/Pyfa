@@ -28,7 +28,7 @@ class CommandFits(ContextMenu):
             if evt is not None:
                 ids = getattr(evt, 'typeID')
                 if not isinstance(ids, set):
-                    ids = set([ids])
+                    ids = {ids}
             else:
                 ids = None
 
@@ -67,7 +67,7 @@ class CommandFits(ContextMenu):
 
         if len(self.__class__.commandFits) < 15:
             for fit in sorted(self.__class__.commandFits, key=lambda x: x.name):
-                pyfalog.debug(repr(fit))
+                pyfalog.debug(fit.name)
                 menuItem = self.addFit(rootMenu if msw else sub, fit, True)
                 sub.AppendItem(menuItem)
         else:

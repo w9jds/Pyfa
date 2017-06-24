@@ -171,7 +171,7 @@ class PFToolbar(object):
                     button.SetState(state | (not BTN_PRESSED))
                     return button
 
-            bwidth, bheight = button.GetSize()
+            bwidth, __ = button.GetSize()
             bx += bwidth + self.padding
 
         return None

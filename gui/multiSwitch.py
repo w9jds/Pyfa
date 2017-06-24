@@ -44,8 +44,8 @@ class MultiSwitch(PFNotebook):
 
         PFNotebook.AddPage(self, tabWnd, tabTitle, tabImage, True)
 
-    def DeletePage(self, n, *args, **kwargs):
-        PFNotebook.DeletePage(self, n, *args, **kwargs)
+    def DeletePage(self, n, internal=False):
+        PFNotebook.DeletePage(self, n, internal=internal)
         if self.GetPageCount() == 0:
             self.AddPage()
 
