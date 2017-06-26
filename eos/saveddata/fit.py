@@ -1192,7 +1192,8 @@ class Fit(object):
             if module_list['ReactivationDelay']:
                 total_run_time += module_list['ReactivationDelay']
 
-            cap_per_second += total_amount / (total_run_time / 1000)
+            if total_run_time > 0 and total_amount > 0:
+                cap_per_second += total_amount / (total_run_time / 1000)
 
         self.__capUsed = cap_per_second
 
