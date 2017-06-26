@@ -383,7 +383,7 @@ class Port(object):
             db.save(fit)
         return fits
 
-    """Service which houses all import/export format functions"""
+    # Service which houses all import/export format functions
 
     @classmethod
     def exportCrest(cls, ofit, callback=None):
@@ -600,7 +600,6 @@ class Port(object):
                 break
             except:
                 pyfalog.warning("Exception caught in importDna")
-                pass
         string = string[:string.index("::") + 2]
         info = string.split(":")
 

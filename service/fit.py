@@ -37,6 +37,7 @@ from eos.saveddata.fit import Fit as FitType
 from service.character import Character
 from service.damagePattern import DamagePattern
 from service.settings import SettingsProvider
+from eos.config import settings as eos_settings
 
 pyfalog = Logger(__name__)
 
@@ -1086,8 +1087,9 @@ class Fit(object):
 
             # As some items may affect state-limiting attributes of the ship, calculate new attributes first
             self.recalc(fit)
-            # Then, check states of all modules and change where needed. This will recalc if needed
-            self.checkStates(fit, base)
+            if eos_settings['strictFitting']:
+                # Then, check states of all modules and change where needed. This will recalc if needed
+                self.checkStates(fit, base)
 
     # Old state : New State
     localMap = {

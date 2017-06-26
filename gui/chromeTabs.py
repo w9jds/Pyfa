@@ -741,14 +741,14 @@ class PFAddRenderer(object):
 
 
 class PFTabsContainer(wx.Panel):
-    def __init__(self, parent, pos=(0, 0), size=(100, 22), init_id=wx.ID_ANY, canAdd=True):
+    def __init__(self, parent, pos=(0, 0), size=(100, 22), id=wx.ID_ANY, canAdd=True):
         """
         Defines the tab container. Handles functions such as tab selection and
         dragging, and defines minimum width of tabs (all tabs are of equal width,
         which is determined via widest tab). Also handles the tab preview, if any.
         """
 
-        wx.Panel.__init__(self, parent, init_id, pos, size)
+        wx.Panel.__init__(self, parent, id, pos, size)
         if wx.VERSION >= (3, 0):
             self.SetBackgroundStyle(wx.BG_STYLE_PAINT)
 
@@ -1384,7 +1384,7 @@ class PFNotebookPagePreview(wx.Frame):
         wx.Frame.__init__(
                 self,
                 parent,
-                init_id=wx.ID_ANY,
+                id=wx.ID_ANY,
                 title=wx.EmptyString,
                 pos=pos,
                 size=wx.DefaultSize,

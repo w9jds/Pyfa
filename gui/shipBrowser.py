@@ -627,7 +627,8 @@ class ShipBrowser(wx.Panel):
 
     def RefreshList(self, event):
         stage = self.GetActiveStage()
-        if stage == 3 or stage == 4:
+
+        if stage in (3, 4):
             self.lpane.RefreshList(True)
         event.Skip()
 
@@ -919,6 +920,10 @@ class ShipBrowser(wx.Panel):
             self.Layout()
 
     def importStage(self, event):
+        """
+        The import stage handles both displaying fits after importing as well as displaying recent fits. todo: need to
+        reconcile these two better into a more uniform function, right now hacked together to get working
+        """
         self.lpane.ShowLoading(False)
 
         self.navpanel.ShowNewFitButton(False)
@@ -932,29 +937,28 @@ class ShipBrowser(wx.Panel):
 
         fits = event.fits
 
-        # sort by ship name, then fit name
-        fits.sort(key=lambda _fit: (_fit.ship.item.name, _fit.name))
-
         self.lastdata = fits
         self.lpane.Freeze()
         self.lpane.DestroyAllChildren()
 
         if fits:
             for fit in fits:
-                shipTrait = fit.ship.item.traits.traitText if (fit.ship.item.traits is not None) else ""
+                shipItem = fit[3]
+                shipTrait = shipItem.traits.traitText if (shipItem.traits is not None) else ""
                 # empty string if no traits
 
                 self.lpane.AddWidget(FitItem(
-                        self.lpane,
-                        fit.ID,
-                        (
-                            fit.ship.item.name,
-                            shipTrait,
-                            fit.name,
-                            fit.booster,
-                            fit.timestamp,
-                        ),
-                        fit.ship.item.ID,
+                    self.lpane,
+                    fit[0],
+                    (
+                        shipItem.name,
+                        shipTrait,
+                        fit[1],
+                        False,
+                        fit[2],
+                        fit[4]
+                    ),
+                    shipItem.ID,
                 ))
             self.lpane.RefreshList(doFocus=False)
         self.lpane.Thaw()
@@ -1082,7 +1086,7 @@ class CategoryItem(SFItem.SFBrowserItem):
 
         mdc.SetFont(Fonts.getFont("font_plus_one"))
 
-        categoryName, fittings = self.fittingInfo
+        categoryName, __ = self.fittingInfo
 
         mdc.DrawText(categoryName, self.catx, self.caty)
 
@@ -1229,7 +1233,7 @@ class ShipItem(SFItem.SFBrowserItem):
             self.newBtn.SetBitmap(self.newBmp)
             self.Refresh()
         else:
-            shipName, __, fittings = self.shipFittingInfo
+            __, __, fittings = self.shipFittingInfo
             if fittings > 0:
                 wx.PostEvent(self.shipBrowser, Stage3Selected(shipID=self.shipID, back=True))
             else:
@@ -1295,7 +1299,7 @@ class ShipItem(SFItem.SFBrowserItem):
 
         self.shipNamey = (rect.height - self.shipBmp.GetHeight()) / 2
 
-        shipName, shipTrait, fittings = self.shipFittingInfo
+        shipName, __, fittings = self.shipFittingInfo
 
         mdc.SetFont(Fonts.getFont("font_plus_one"))
         __, htext = mdc.GetTextExtent(shipName)

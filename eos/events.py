@@ -62,7 +62,7 @@ def rel_listener(target, value, initiator):
     if not target or (isinstance(value, Module) and value.isEmpty):
         return
 
-    pyfalog.debug('{0} changed the relationship with {1}', repr(value), repr(target))
+    pyfalog.debug(u'Changed the relationship with {0}', target.ship.name)
     target.modified = datetime.datetime.now()
 
 

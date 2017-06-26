@@ -315,8 +315,15 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
                 volley *= self.getModifiedItemAttr("damageMultiplier") or 1
                 if volley:
                     cycleTime = self.cycleTime
+                    # Some weapons repeat multiple times in one cycle (think doomsdays)
+                    # Get the number of times it fires off
+                    weaponDoT = max(
+                            self.getModifiedItemAttr("doomsdayDamageDuration", 1) / self.getModifiedItemAttr("doomsdayDamageCycleTime", 1),
+                            1
+                    )
+
                     self.__volley = volley
-                    self.__dps = volley / (cycleTime / 1000.0)
+                    self.__dps = (volley * weaponDoT) / (cycleTime / 1000.0)
 
         return self.__dps, self.__volley
 
@@ -358,14 +365,15 @@ class Module(HandledItem, HandledCharge, ItemAttrShortcut, ChargeAttrShortcut):
         if factor_reload:
             # Get reload time from attrs first, then use
             # custom value specified otherwise (e.g. in effects)
-            moduleReloadTime = self.getModifiedItemAttr("reloadTime")
-            if moduleReloadTime is None:
-                moduleReloadTime = self.__reloadTime
+            moduleReloadTime = self.getModifiedItemAttr("reloadTime", getattr(self, "__reloadTime", 0))
 
             if moduleReloadTime is None and getattr(self.item.group, 'name', None) == 'Capacitor Booster':
                 # Cap boosters don't have reload times, so manually set to 10 seconds
                 moduleReloadTime = 10
         else:
+            moduleReloadTime = 0
+
+        if moduleReloadTime is None:
             moduleReloadTime = 0
 
         return moduleReloadTime

@@ -20,9 +20,9 @@
 # noinspection PyPackageRequirements
 import wx
 from logbook import Logger
-import gui.display as d
 import gui.globalEvents as GE
-import gui.droneView
+from gui.utils.helpers_static import DRONE_ORDER
+from gui.display import Display
 from gui.builtinViewColumns.state import State
 from gui.contextMenu import ContextMenu
 from gui.utils.helpers_wxPython import DragDropHelper
@@ -62,7 +62,7 @@ class ProjectedViewDrop(wx.PyDropTarget):
         return t
 
 
-class ProjectedView(d.Display):
+class ProjectedView(Display):
     DEFAULT_COLS = ["State",
                     "Ammo Icon",
                     "Base Icon",
@@ -70,7 +70,7 @@ class ProjectedView(d.Display):
                     "Ammo"]
 
     def __init__(self, parent):
-        d.Display.__init__(self, parent, style=wx.LC_SINGLE_SEL | wx.BORDER_NONE)
+        Display.__init__(self, parent, style=wx.LC_SINGLE_SEL | wx.BORDER_NONE)
 
         self.lastFitId = None
 
@@ -79,8 +79,6 @@ class ProjectedView(d.Display):
         self.Bind(wx.EVT_RIGHT_DOWN, self.click)
         self.Bind(wx.EVT_LEFT_DCLICK, self.remove)
         self.Bind(wx.EVT_KEY_UP, self.kbEvent)
-
-        self.droneView = gui.droneView.DroneView
 
         if "__WXGTK__" in wx.PlatformInfo:
             self.Bind(wx.EVT_RIGHT_UP, self.scheduleMenu)
@@ -167,7 +165,7 @@ class ProjectedView(d.Display):
         if item.marketGroup is None:
             item = item.metaGroup.parent
 
-        return (self.droneView.DRONE_ORDER.index(item.marketGroup.name),
+        return (DRONE_ORDER.index(item.marketGroup.name),
                 drone.item.name)
 
     @staticmethod
@@ -177,7 +175,8 @@ class ProjectedView(d.Display):
     def fitChanged(self, event):
         sFit = Fit.getInstance()
         fit = sFit.getFit(event.fitID)
-        pyfalog.debug("ProjectedView::fitChanged: {}", repr(fit))
+        if fit:
+            pyfalog.debug("ProjectedView::fitChanged: {0}", fit.name)
 
         self.Parent.Parent.DisablePage(self, not fit or fit.isStructure)
 
