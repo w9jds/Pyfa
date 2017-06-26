@@ -146,7 +146,7 @@ class PFListPane(wx.ScrolledWindow):
             self.SetFocus()
 
         for i in xrange(len(self._wList)):
-            iwidth, iheight = self._wList[i].GetSize()
+            __, iheight = self._wList[i].GetSize()
             self._wList[i].SetSize((cwidth, iheight))
             if doRefresh is True:
                 self._wList[i].Refresh()

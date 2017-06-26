@@ -148,7 +148,6 @@ class StoppableHTTPServer(BaseHTTPServer.HTTPServer):
                 self.handle_request()
             except TypeError:
                 pyfalog.debug("Caught exception in serve")
-                pass
 
         self.server_close()
 

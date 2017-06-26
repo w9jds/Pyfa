@@ -33,7 +33,7 @@ developers = (
     "DarkPhoenix \tKadesh Priestess (retired)",
     "Darriele \t\tDarriele (retired)",
 )
-credits = (
+devcredits = (
     "Entity (Entity) \tCapacitor calculations / EVEAPI python lib / Reverence",
     "Aurora \t\tMaths",
     "Corollax (Aamrr) \tVarious EOS / pyfa improvements",

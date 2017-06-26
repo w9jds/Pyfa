@@ -35,6 +35,9 @@ pyfalog = Logger(__name__)
 
 
 class BaseName(ViewColumn):
+    def delayedText(self, display, colItem):
+        pass
+
     name = "Base Name"
 
     def __init__(self, fittingView, params):
@@ -44,7 +47,8 @@ class BaseName(ViewColumn):
         self.columnText = "Name"
         self.shipImage = fittingView.imageList.GetImageIndex("ship_small", "gui")
         self.mask = wx.LIST_MASK_TEXT
-        self.projectedView = isinstance(fittingView, gui.projectedView.ProjectedView)
+        # We can't do an isInstance here because we'll get a circular import
+        self.projectedView = type(fittingView).__name__ == "ProjectedView"
 
     def getColumnText(self, stuff):
         if isinstance(stuff, Drone):
@@ -63,8 +67,7 @@ class BaseName(ViewColumn):
                 if info:
                     return "%dx %s (%s)" % (stuff.getProjectionInfo(fitID).amount, stuff.name, stuff.ship.item.name)
 
-                pyfalog.warning("Projected View trying to display things that aren't there. stuff: {}, info: {}", repr(stuff),
-                                info)
+                pyfalog.warning(u"Projected View trying to display things that aren't there.")
                 return "<unknown>"
             else:
                 return "%s (%s)" % (stuff.name, stuff.ship.item.name)

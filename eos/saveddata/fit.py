@@ -480,7 +480,7 @@ class Fit(object):
             self.commandBonuses[warfareBuffID] = (runTime, value, _module, effect)
 
     def __runCommandBoosts(self, runTime="normal"):
-        pyfalog.debug("Applying gang boosts for {0}", repr(self))
+        pyfalog.debug(u"Applying gang boosts for {0}", self.name)
         for warfareBuffID in self.commandBonuses.keys():
             # Unpack all data required to run effect properly
             effect_runTime, value, thing, effect = self.commandBonuses[warfareBuffID]
@@ -1192,7 +1192,8 @@ class Fit(object):
             if module_list['ReactivationDelay']:
                 total_run_time += module_list['ReactivationDelay']
 
-            cap_per_second += total_amount / (total_run_time / 1000)
+            if total_run_time > 0 and total_amount > 0:
+                cap_per_second += total_amount / (total_run_time / 1000)
 
         self.__capUsed = cap_per_second
 

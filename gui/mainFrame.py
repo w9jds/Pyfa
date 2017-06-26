@@ -22,7 +22,6 @@ import sys
 import threading
 import time
 import webbrowser
-from codecs import open
 from time import gmtime, strftime
 
 import sqlalchemy
@@ -53,7 +52,6 @@ from gui.characterEditor import CharacterEditor, SaveCharacterAs
 from gui.characterSelection import CharacterSelection
 from gui.chromeTabs import PFNotebook
 from gui.copySelectDialog import CopySelectDialog
-from gui.graphFrame import GraphFrame
 from gui.mainMenuBar import MainMenuBar
 from gui.marketBrowser import ItemSelected, MarketBrowser
 from gui.multiSwitch import MultiSwitch
@@ -67,6 +65,7 @@ from gui.statsPane import StatsPane
 from gui.updateDialog import UpdateDialog
 from gui.utils.clipboard import fromClipboard, toClipboard
 from gui.utils.helpers_wxPython import Frame
+from gui.utils.ExportHtml import ExportHtml
 from service.character import Character
 from service.fit import Fit
 from service.port import IPortUser, Port
@@ -366,7 +365,7 @@ class MainFrame(wx.Frame, IPortUser):
         info.Description = wordwrap(gui.aboutData.description + "\n\nDevelopers:\n\t" +
                                     "\n\t".join(gui.aboutData.developers) +
                                     "\n\nAdditional credits:\n\t" +
-                                    "\n\t".join(gui.aboutData.credits) +
+                                    "\n\t".join(gui.aboutData.devcredits) +
                                     "\n\nLicenses:\n\t" +
                                     "\n\t".join(gui.aboutData.licenses) +
                                     "\n\nEVE Data: \t" + gamedata_version +
@@ -881,7 +880,6 @@ class MainFrame(wx.Frame, IPortUser):
             self.progressDialog.ShowModal()
 
     def exportHtml(self, event):
-        from gui.utils.exportHtml import ExportHtml
         sFit = Fit.getInstance()
         settings = HTMLExportSettings.getInstance()
 
@@ -1034,7 +1032,7 @@ class MainFrame(wx.Frame, IPortUser):
 
     def openGraphFrame(self, event):
         if not self.graphFrame:
-            self.graphFrame = GraphFrame(self)
+            self.graphFrame = graphFrame.GraphFrame(self)
 
             if graphFrame.graphFrame_enabled:
                 self.graphFrame.Show()

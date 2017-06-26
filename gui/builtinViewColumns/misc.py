@@ -31,6 +31,9 @@ from eos.saveddata.drone import Drone
 
 
 class Miscellanea(ViewColumn):
+    def delayedText(self, display, colItem):
+        pass
+
     name = "Miscellanea"
 
     def __init__(self, fittingView, params=None):
@@ -72,6 +75,29 @@ class Miscellanea(ViewColumn):
 
         if itemGroup == "Ship Modifiers":
             return "", None
+        elif itemGroup in ("Super Weapon", "Structure Doomsday Weapon"):
+            doomsday_duration = stuff.getModifiedItemAttr("doomsdayDamageDuration", 1)
+            doomsday_dottime = stuff.getModifiedItemAttr("doomsdayDamageCycleTime", 1)
+            func = stuff.getModifiedItemAttr
+
+            volley = sum(
+                map(
+                    lambda attr: (func("%sDamage" % attr) or 0),
+                    ("em", "thermal", "kinetic", "explosive")
+                )
+            )
+            volley *= stuff.getModifiedItemAttr("damageMultiplier") or 1
+
+            if volley <= 0:
+                text = ""
+                tooltip = ""
+            elif max(doomsday_duration / doomsday_dottime, 1) > 1:
+                text = "{0} dmg over {1} s".format(formatAmount(volley * (doomsday_duration / doomsday_dottime), 3, 0, 3), doomsday_duration / 1000)
+                tooltip = "Raw damage done over time"
+            else:
+                text = "{0} dmg".format(formatAmount(volley * (doomsday_duration / doomsday_dottime), 3, 0, 3))
+                tooltip = "Raw damage done"
+            return text, tooltip
         elif itemGroup in ("Energy Weapon", "Hybrid Weapon", "Projectile Weapon", "Combat Drone", "Fighter Drone"):
             trackingSpeed = stuff.getModifiedItemAttr("trackingSpeed")
             if not trackingSpeed:
@@ -524,7 +550,7 @@ class Miscellanea(ViewColumn):
 
             duration = cycles * cycleTime / 1000
             for number_of_cycles in {5, 10, 25}:
-                tooltip = "{0}\n{1} charges lasts {2} seconds ({3} cycles)".format(
+                tooltip = "{0}\n{1} charges lasts {2} ` ({3} cycles)".format(
                         tooltip,
                         formatAmount(number_of_cycles * cycles, 3, 0, 3),
                         formatAmount((duration + reload_time) * number_of_cycles, 3, 0, 3),
