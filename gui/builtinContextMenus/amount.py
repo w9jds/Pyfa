@@ -61,15 +61,16 @@ class AmountChanger(wx.Dialog):
             return
 
         sFit = Fit.getInstance()
+        cleanInput = re.sub(r'[^0-9]', '', self.input.GetLineText(0).strip())
         mainFrame = gui.mainFrame.MainFrame.getInstance()
         fitID = mainFrame.getActiveFit()
 
         if isinstance(self.thing, es_Cargo):
-            sFit.addCargo(fitID, self.thing.item.ID, int(float(self.input.GetLineText(0))), replace=True)
+            sFit.addCargo(fitID, self.thing.item.ID, int(float(cleanInput)), replace=True)
         elif isinstance(self.thing, es_Fit):
-            sFit.changeAmount(fitID, self.thing, int(float(self.input.GetLineText(0))))
+            sFit.changeAmount(fitID, self.thing, int(float(cleanInput)))
         elif isinstance(self.thing, es_Fighter):
-            sFit.changeActiveFighters(fitID, self.thing, int(float(self.input.GetLineText(0))))
+            sFit.changeActiveFighters(fitID, self.thing, int(float(cleanInput)))
 
         wx.PostEvent(mainFrame, GE.FitChanged(fitID=fitID))
 
